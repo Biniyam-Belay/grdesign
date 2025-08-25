@@ -1,0 +1,70 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { initGSAP } from "@lib/gsap";
+import { useReducedMotion } from "@lib/hooks/useReducedMotion";
+import { usePageTransition } from "@lib/gsapPageTransition";
+import Container from "@components/layout/Container";
+import ProjectCard from "@components/content/ProjectCard";
+import SplitText from "@components/motion/SplitText";
+import { getProjects } from "@lib/data/projects";
+import type { Project } from "@lib/types";
+
+// Define a minimal interface for GSAP to satisfy the type checker
+interface GSAPInterface {
+  timeline: () => { 
+    fromTo: <T>(target: T, fromVars: object, toVars: object, position?: string | number) => T; 
+    to: <T>(target: T, vars: object, position?: string | number) => T 
+  };
+  to: <T>(target: T, vars: object, position?: string | number) => T;
+}
+
+export default function Page() {
+  const reduced = useReducedMotion();
+  const heroRef = useRef<HTMLDivElement | null>(null);
+  const pageRef = useRef<HTMLElement>(null!);
+  const titleRef = useRef<HTMLHeadingElement | null>(null);
+  const subtitleRef = useRef<HTMLParagraphElement | null>(null);
+  const timelineRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!heroRef.current || reduced) return;
+    const gsap = initGSAP();
+    const heroElement = heroRef.current;
+    
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+      
+      // Animate hero section elements
+      tl.from(heroElement, { opacity: 0, duration: 0.6 });
+      
+      // Badge animation
+      const badgeElement = heroElement.querySelector('.inline-block');
+      if (badgeElement) {
+        tl.from(badgeElement, { y: -20, opacity: 0, duration: 0.5 }, "<0.1");
+      }
+      
+      // Title and subtitle animations
+      if (titleRef.current) {
+        tl.from(titleRef.current, { y: 30, opacity: 0, duration: 0.8 }, "<0.2");
+      }
+      if (subtitleRef.current) {
+        tl.from(subtitleRef.current, { y: 20, opacity: 0, duration: 0.7 }, "<0.3");
+      }
+      
+      // Button animations
+      const buttonElements = heroElement.querySelectorAll('.cta-buttons a');
+      if (buttonElements.length) {
+        tl.from(buttonElements, { 
+          y: 15, 
+          opacity: 0, 
+          stagger: 0.15,
+          duration: 0.5,
+          clearProps: "all" // Important: Ensures props are cleared after animation
+        }, "<0.4");
+      }
+      
+      // Categories animation
+      const categoriesElement = heroElement.querySelector('.mt-16');

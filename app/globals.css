@@ -58,7 +58,15 @@ a {
   text-decoration: none;
 }
 a:hover {
-  text-decoration: underline;
+  text-decoration: none;
+}
+
+/* Ensure all links never have underlines */
+a,
+a:hover,
+.cta-button,
+.cta-button:hover {
+  text-decoration: none !important;
 }
 
 /* Cards */

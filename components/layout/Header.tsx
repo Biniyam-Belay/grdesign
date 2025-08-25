@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { initGSAP } from "@lib/gsap";
+import { useReducedMotion } from "@lib/hooks/useReducedMotion";
 
 type NavItem = { href: string; label: string };
 const NAV: NavItem[] = [
@@ -13,7 +14,8 @@ const NAV: NavItem[] = [
   { href: "/contact", label: "Contact" },
 ];
 
-function isActive(pathname: string, href: string) {
+function isActive(pathname: string | null, href: string) {
+  if (!pathname) return false;
   if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(href + "/");
 }
@@ -21,27 +23,62 @@ function isActive(pathname: string, href: string) {
 export function Header() {
   const pathname = usePathname();
   const rootRef = useRef<HTMLElement | null>(null);
+  const navbarRef = useRef<HTMLDivElement | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const reduced = useReducedMotion();
 
-  // Subtle drop-in on mount (GSAP)
+  // Subtle reveal animation on mount with staggered nav links (GSAP)
   useEffect(() => {
+    if (reduced) return;
+
     const gsap = initGSAP();
-    if (!rootRef.current) return;
-    const ctx = gsap.context(() => {
-      gsap.from(rootRef.current, {
-        y: -12,
-        opacity: 0,
-        duration: 0.45,
-        ease: "power2.out",
-      });
-    });
-    return () => ctx.revert();
-  }, []);
+    if (!rootRef.current || !navbarRef.current) return;
 
-  // Shadow + border on scroll
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+      // Animate the header container
+      tl.fromTo(rootRef.current, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.6 });
+
+      // Staggered animation for nav links
+      if (navbarRef.current) {
+        const navLinks = navbarRef.current.querySelectorAll(".nav-link");
+        tl.fromTo(
+          navLinks,
+          { opacity: 0, y: -8 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.4,
+            stagger: 0.05,
+          },
+          "-=0.3", // Start slightly before the previous animation finishes
+        );
+
+        // Animate the CTA button
+        const cta = navbarRef.current.querySelector(".cta-button");
+        if (cta) {
+          tl.fromTo(
+            cta,
+            { opacity: 0, scale: 0.95 },
+            { opacity: 1, scale: 1, duration: 0.4 },
+            "-=0.2",
+          );
+        }
+      }
+    });
+
+    return () => ctx.revert();
+  }, [reduced]);
+
+  // Enhanced scroll effect
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => {
+      const scrollPosition = window.scrollY;
+      setScrolled(scrollPosition > 20);
+    };
+
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -54,17 +91,17 @@ export function Header() {
         href={href}
         data-active={active}
         aria-current={active ? "page" : undefined}
-        className={[
-          "group relative inline-flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors",
-          active ? "text-neutral-900" : "text-neutral-500 hover:text-neutral-900",
-          // underline accent on active/hover
-          "before:absolute before:-bottom-1 before:left-3 before:right-3 before:h-[2px] before:rounded-full",
-          "before:scale-x-0 before:transition-transform before:duration-200 before:origin-center",
-          "before:bg-neutral-900",
-          "hover:before:scale-x-100 data-[active=true]:before:scale-x-100",
-          // focus ring
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900/70 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
-        ].join(" ")}
+        className={`
+          nav-link relative inline-flex items-center px-3 py-2 text-sm tracking-wide 
+          font-medium transition-all duration-200 no-underline transform
+          ${active ? "text-neutral-900" : "text-neutral-500"}
+          hover:text-neutral-900 hover:no-underline hover:scale-105
+          
+          /* Focus styles */
+          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900/30
+          focus-visible:ring-offset-2 focus-visible:ring-offset-white
+        `}
+        style={{ textDecoration: "none" }}
       >
         {label}
       </Link>
@@ -74,101 +111,143 @@ export function Header() {
   return (
     <header
       ref={rootRef}
-      className={[
-        "sticky top-0 z-50",
-        // white background with gentle translucency + blur (only when supported)
-        "bg-white/90 supports-[backdrop-filter]:bg-white/70 supports-[backdrop-filter]:backdrop-blur",
-        // border & shadow when scrolled
-        scrolled ? "border-b border-neutral-200/70 shadow-sm" : "border-b border-transparent",
-        "transition-colors",
-      ].join(" ")}
+      className={`
+        sticky top-0 z-50 py-1 transition-all duration-300 bg-white
+        ${scrolled ? "py-2 shadow-[0_1px_3px_rgba(0,0,0,0.05)]" : "py-4"}
+      `}
     >
-      <nav
-        className="mx-auto flex max-w-6xl items-center justify-between px-4 sm:px-6 py-3"
-        aria-label="Main"
-      >
-        <Link
-          href="/"
-          className="font-semibold tracking-tight text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900/70 focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-md px-1"
-        >
-          GR<span className="text-neutral-400">.</span>
-        </Link>
-
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-1">
-          {NAV.map((item) => (
-            <NavLink key={item.href} {...item} />
-          ))}
-        </div>
-
-        {/* Contact CTA (desktop) */}
-        <div className="hidden md:block">
+      <div ref={navbarRef} className="mx-auto max-w-6xl px-4 sm:px-6">
+        <nav className="flex items-center justify-between" aria-label="Main">
+          {/* Logo */}
           <Link
-            href="/contact"
-            className="inline-flex items-center rounded-lg border border-neutral-200 px-3 py-2 text-sm font-medium text-neutral-900 hover:border-neutral-900 hover:bg-neutral-900 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900/70 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            href="/"
+            className="group relative font-serif text-2xl tracking-tight text-neutral-900
+                      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900/30
+                      focus-visible:ring-offset-2 focus-visible:ring-offset-white px-2 py-1 rounded-md
+                      transition-all duration-300 transform hover:scale-105"
           >
-            Let’s work
+            <span className="font-medium">GR</span>
+            <span className="text-neutral-300 group-hover:text-neutral-400 transition-colors">
+              .
+            </span>
           </Link>
-        </div>
 
-        {/* Mobile toggle */}
-        <button
-          aria-label="Toggle menu"
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
-          className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-md border border-neutral-200 text-neutral-900 hover:bg-neutral-50 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900/70 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-        >
-          <span className="sr-only">Menu</span>
-          <svg
-            width="22"
-            height="22"
-            viewBox="0 0 24 24"
-            fill="none"
-            className="transition-transform"
-            style={{ transform: open ? "rotate(90deg)" : "rotate(0deg)" }}
+          {/* Desktop navigation */}
+          <div className="hidden md:flex items-center gap-2">
+            {NAV.map((item) => (
+              <NavLink key={item.href} {...item} />
+            ))}
+          </div>
+
+          {/* Availability badge (desktop) */}
+          <div className="hidden md:block">
+            <Link
+              href="/contact"
+              className={`
+                cta-button inline-flex items-center gap-1.5 rounded-full 
+                bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700
+                transition-all duration-200 no-underline transform
+                hover:bg-emerald-100 hover:no-underline hover:scale-105
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/40
+                focus-visible:ring-offset-2 focus-visible:ring-offset-white
+              `}
+              style={{ textDecoration: "none" }}
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+              </span>
+              <span>Available for projects</span>
+            </Link>
+          </div>
+
+          {/* Mobile menu button */}
+          <button
+            aria-label="Toggle menu"
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+            className={`
+              md:hidden relative inline-flex h-10 w-10 items-center justify-center
+              rounded-full text-neutral-900 transition-all duration-300
+              hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 
+              focus-visible:ring-neutral-900/30 focus-visible:ring-offset-2 
+              focus-visible:ring-offset-white overflow-hidden
+              ${open ? "bg-neutral-100" : ""}
+            `}
           >
-            <path
-              d="M4 7h16M4 12h16M4 17h16"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
-        </button>
-      </nav>
+            <span className="sr-only">Menu</span>
+            <span
+              className={`
+              absolute block h-0.5 w-5 rounded-sm bg-current transition-transform duration-300
+              ${open ? "rotate-45" : "-translate-y-1.5"}
+            `}
+            ></span>
+            <span
+              className={`
+              absolute block h-0.5 w-5 rounded-sm bg-current transition-opacity duration-300
+              ${open ? "opacity-0" : "opacity-100"}
+            `}
+            ></span>
+            <span
+              className={`
+              absolute block h-0.5 w-5 rounded-sm bg-current transition-transform duration-300
+              ${open ? "-rotate-45" : "translate-y-1.5"}
+            `}
+            ></span>
+          </button>
+        </nav>
+      </div>
 
-      {/* Mobile sheet */}
+      {/* Mobile navigation panel with enhanced animation */}
       <div
-        className={[
-          "md:hidden overflow-hidden transition-[max-height,opacity]",
-          open ? "max-h-96 opacity-100" : "max-h-0 opacity-0",
-        ].join(" ")}
+        className={`
+          md:hidden overflow-hidden transition-all duration-500 ease-in-out bg-white
+          ${open ? "max-h-[300px] opacity-100 shadow-[0_2px_4px_rgba(0,0,0,0.03)]" : "max-h-0 opacity-0"}
+        `}
       >
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 pb-4">
-          <div className="grid gap-1">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-4 space-y-4">
+          <div className="grid gap-1 border-t border-neutral-100 pt-4">
             {NAV.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
                 data-active={isActive(pathname, item.href)}
-                className={[
-                  "rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                  isActive(pathname, item.href)
-                    ? "text-neutral-900 bg-neutral-50"
-                    : "text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900/70 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
-                ].join(" ")}
+                className={`
+                  px-4 py-2.5 text-sm font-medium transition-all 
+                  duration-200 relative group no-underline transform
+                  ${
+                    isActive(pathname, item.href)
+                      ? "text-neutral-900"
+                      : "text-neutral-600 hover:text-neutral-900 hover:scale-105"
+                  }
+                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900/30
+                  focus-visible:ring-offset-2 focus-visible:ring-offset-white
+                `}
               >
                 {item.label}
+                {isActive(pathname, item.href) && (
+                  <span className="absolute top-0 right-0 h-full w-1 bg-neutral-200"></span>
+                )}
               </Link>
             ))}
+
             <Link
               href="/contact"
               onClick={() => setOpen(false)}
-              className="mt-1 inline-flex items-center justify-center rounded-lg border border-neutral-200 px-3 py-2 text-sm font-medium text-neutral-900 hover:border-neutral-900 hover:bg-neutral-900 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900/70 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+              className="mt-3 inline-flex items-center gap-1.5 justify-center 
+                        bg-emerald-50 text-emerald-700 px-4 py-2 text-sm font-medium 
+                        rounded-full transition-all duration-200 hover:bg-emerald-100
+                        no-underline hover:no-underline transform hover:scale-105
+                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/40
+                        focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+              style={{ textDecoration: "none" }}
             >
-              Let’s work
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+              </span>
+              Available for projects
             </Link>
           </div>
         </div>

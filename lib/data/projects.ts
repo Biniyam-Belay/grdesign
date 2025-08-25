@@ -23,9 +23,10 @@ export function getProjects(): Project[] {
   const parsed = ProjectsSchema.safeParse(raw);
   if (!parsed.success) {
     const message = parsed.error.issues
-      .map(
-        (i: { path: (string | number)[]; message: string }) => `${i.path.join(".")}: ${i.message}`,
-      )
+      .map((i) => {
+        const path = i.path.join(".");
+        return `${path}: ${i.message}`;
+      })
       .join("; ");
     throw new Error(`Invalid projects data: ${message}`);
   }
