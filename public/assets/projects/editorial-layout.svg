@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <rect width="1200" height="900" fill="#f7f7f7"/>
+  <rect x="120" y="140" width="960" height="620" fill="#ebebeb"/>
+  <rect x="160" y="180" width="360" height="540" fill="#dddddd"/>
+  <rect x="560" y="180" width="520" height="80" fill="#d0d0d0"/>
+  <rect x="560" y="280" width="520" height="440" fill="#e3e3e3"/>
+  <text x="50%" y="820" dominant-baseline="middle" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="40" fill="#777">Editorial Layout</text>
+</svg>
