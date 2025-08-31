@@ -1,124 +1,173 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #111111;
-  --accent: #0a0a0a;
-  --accent-contrast: #ffffff;
-  /* Motion tokens */
-  --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --dur-xs: 120ms;
-  --dur-sm: 200ms;
-  --dur-md: 320ms;
-  --dur-lg: 480ms;
-  /* Typography tokens */
-  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-sans:
-    var(--font-geist-sans), system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
-    "Apple Color Emoji", "Segoe UI Emoji";
-  --font-mono:
-    var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
-  /* Scale */
-  --size-1: 0.75rem;
-  --size-2: 0.875rem;
-  --size-3: 1rem;
-  --size-4: 1.125rem;
-  --size-5: 1.25rem;
-  --size-6: 1.5rem;
-  --size-7: 1.875rem;
-  --size-8: 2.25rem;
-  --size-9: 3rem;
-  /* Radius */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 8px 28px rgba(0, 0, 0, 0.08);
+  --background: oklch(1 0 0); /* Pure white background */
+  --foreground: oklch(0.25 0 0); /* Dark gray for primary text */
+  --card: oklch(0.98 0.02 142); /* Soft green background for cards */
+  --card-foreground: oklch(0.25 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.25 0 0);
+  --primary: oklch(0.45 0.15 142); /* Sophisticated green primary */
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.98 0.02 142); /* Soft green secondary */
+  --secondary-foreground: oklch(0.25 0 0);
+  --muted: oklch(0.97 0.01 180); /* Very light cyan for muted sections */
+  --muted-foreground: oklch(0.25 0 0);
+  --accent: oklch(0.65 0.2 120); /* Bright green accent */
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.92 0.01 142); /* Subtle green-tinted border */
+  --input: oklch(0.98 0.01 142);
+  --ring: oklch(0.65 0.2 120 / 0.5); /* Accent color with transparency */
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.5rem; /* Reduced radius for cleaner look */
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.25 0 0);
+  --sidebar-primary: oklch(0.45 0.15 142);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.98 0.02 142);
+  --sidebar-accent-foreground: oklch(0.25 0 0);
+  --sidebar-border: oklch(0.92 0.01 142);
+  --sidebar-ring: oklch(0.65 0.2 120 / 0.5);
 }
 
-/* Design tokens are provided as CSS variables on :root; Tailwind consumes utility classes */
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Utility mappings for token classes (no dark mode) */
+.bg-background {
+  background-color: var(--background);
 }
-
-body {
-  background: var(--background);
+.text-foreground {
   color: var(--foreground);
-  font-family: var(--font-sans);
 }
-/* Links */
-a {
-  color: var(--accent);
-  text-decoration: none;
+.text-muted-foreground {
+  color: var(--muted-foreground);
 }
-a:hover {
-  text-decoration: none;
+.bg-card {
+  background-color: var(--card);
 }
-
-/* Ensure all links never have underlines */
-a,
-a:hover,
-.cta-button,
-.cta-button:hover {
-  text-decoration: none !important;
+.border-border {
+  border-color: var(--border);
 }
-
-/* Cards */
-.card {
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
+.bg-border {
+  background-color: var(--border);
 }
-
-/* Global typography */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-serif);
-  letter-spacing: -0.01em;
+.text-primary {
+  color: var(--primary);
 }
-
-h1 {
-  font-size: var(--size-9);
-  line-height: 1.05;
+.bg-primary {
+  background-color: var(--primary);
 }
-h2 {
-  font-size: var(--size-7);
-  line-height: 1.15;
+.text-primary-foreground {
+  color: var(--primary-foreground);
 }
-h3 {
-  font-size: var(--size-6);
-  line-height: 1.2;
+.bg-accent {
+  background-color: var(--accent);
+}
+.text-neutral-400 {
+  color: #a3a3a3;
+}
+.min-w-\[140px\] {
+  min-width: 140px;
+}
+.min-w-\[140px\] {
+  min-width: 140px;
+}
+.text-8xl {
+  font-size: 6rem;
+  line-height: 1;
+}
+.text-9xl {
+  font-size: 8rem;
+  line-height: 1;
 }
 
-p {
-  font-size: var(--size-3);
-  line-height: 1.65;
+/* Custom classes for header responsive behavior */
+.desktop-nav {
+  display: flex;
 }
 
-small {
-  font-size: var(--size-2);
+.hamburger-button {
+  display: none;
 }
 
-@media (max-width: 640px) {
-  h1 {
-    font-size: 2.25rem;
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none;
   }
-  h2 {
-    font-size: 1.75rem;
+  .hamburger-button {
+    display: flex;
   }
 }
 
-/* Focus outlines for a11y */
-:focus-visible {
-  outline: 2px solid #111;
-  outline-offset: 2px;
+@media (min-width: 769px) {
+  .mobile-menu {
+    display: none !important;
+  }
+}
+
+/* All Tailwind utility classes have been removed to avoid conflicts */
+
+/* Hover variants used in markup */
+.hover\:text-foreground:hover {
+  color: var(--foreground);
+}
+.hover\:text-primary:hover {
+  color: var(--primary);
+}
+.hover\:bg-accent:hover {
+  background-color: var(--accent);
+}
+/* Group hover variant for custom token */
+.group:hover .group-hover\:text-primary {
+  color: var(--primary);
+}
+
+/* Opacity variant used in nav background */
+.bg-background\/80 {
+  background-color: oklch(1 0 0 / 0.8);
+}
+
+/* New contact button styles */
+.contact-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  padding: 0 24px;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border-radius: 26px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.contact-button .text {
+  transition: transform 0.3s ease;
+}
+
+.contact-button .icon {
+  position: absolute;
+  transform: translateX(100px);
+  transition: transform 0.3s ease;
+}
+
+.contact-button:hover {
+  background-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.contact-button:hover .text {
+  transform: translateX(-20px);
+}
+
+.contact-button:hover .icon {
+  transform: translateX(0);
 }

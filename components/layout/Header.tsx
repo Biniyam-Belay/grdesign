@@ -2,258 +2,137 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { initGSAP } from "@lib/gsap";
-import { useReducedMotion } from "@lib/hooks/useReducedMotion";
+import { useState, useEffect } from "react";
 
-type NavItem = { href: string; label: string };
-const NAV: NavItem[] = [
+const NAV_ITEMS = [
   { href: "/work", label: "Work" },
   { href: "/about", label: "About" },
-  { href: "/services", label: "Services" },
   { href: "/contact", label: "Contact" },
 ];
 
-function isActive(pathname: string | null, href: string) {
-  if (!pathname) return false;
-  if (href === "/") return pathname === "/";
-  return pathname === href || pathname.startsWith(href + "/");
-}
-
-export function Header() {
+export default function Header() {
   const pathname = usePathname();
-  const rootRef = useRef<HTMLElement | null>(null);
-  const navbarRef = useRef<HTMLDivElement | null>(null);
-  const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
-  const reduced = useReducedMotion();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  // Subtle reveal animation on mount with staggered nav links (GSAP)
+  // Handle scroll effect
   useEffect(() => {
-    if (reduced) return;
-
-    const gsap = initGSAP();
-    if (!rootRef.current || !navbarRef.current) return;
-
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-
-      // Animate the header container
-      tl.fromTo(rootRef.current, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.6 });
-
-      // Staggered animation for nav links
-      if (navbarRef.current) {
-        const navLinks = navbarRef.current.querySelectorAll(".nav-link");
-        tl.fromTo(
-          navLinks,
-          { opacity: 0, y: -8 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.4,
-            stagger: 0.05,
-          },
-          "-=0.3", // Start slightly before the previous animation finishes
-        );
-
-        // Animate the CTA button
-        const cta = navbarRef.current.querySelector(".cta-button");
-        if (cta) {
-          tl.fromTo(
-            cta,
-            { opacity: 0, scale: 0.95 },
-            { opacity: 1, scale: 1, duration: 0.4 },
-            "-=0.2",
-          );
-        }
-      }
-    });
-
-    return () => ctx.revert();
-  }, [reduced]);
-
-  // Enhanced scroll effect
-  useEffect(() => {
-    const onScroll = () => {
-      const scrollPosition = window.scrollY;
-      setScrolled(scrollPosition > 20);
-    };
-
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const NavLink = ({ href, label }: NavItem) => {
-    const active = isActive(pathname, href);
-    return (
-      <Link
-        href={href}
-        data-active={active}
-        aria-current={active ? "page" : undefined}
-        className={`
-          nav-link relative inline-flex items-center px-3 py-2 text-sm tracking-wide 
-          font-medium transition-all duration-200 no-underline transform
-          ${active ? "text-neutral-900" : "text-neutral-500"}
-          hover:text-neutral-900 hover:no-underline hover:scale-105
-          
-          /* Focus styles */
-          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900/30
-          focus-visible:ring-offset-2 focus-visible:ring-offset-white
-        `}
-        style={{ textDecoration: "none" }}
-      >
-        {label}
-      </Link>
-    );
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    const { style } = document.body;
+    const prev = style.overflow;
+    style.overflow = isMenuOpen ? "hidden" : prev || "";
+    return () => {
+      style.overflow = prev || "";
+    };
+  }, [isMenuOpen]);
+
+  // Check if the current path matches the link
+  const isActive = (href: string) => {
+    if (href === "/") return pathname === "/";
+    return pathname === href || pathname?.startsWith(`${href}/`);
   };
 
   return (
-    <header
-      ref={rootRef}
-      className={`
-        sticky top-0 z-50 py-1 transition-all duration-300 bg-white
-        ${scrolled ? "py-2 shadow-[0_1px_3px_rgba(0,0,0,0.05)]" : "py-4"}
-      `}
-    >
-      <div ref={navbarRef} className="mx-auto max-w-6xl px-4 sm:px-6">
-        <nav className="flex items-center justify-between" aria-label="Main">
+    <>
+      <header
+        className={`fixed top-0 left-0 right-0 z-[9999] w-full bg-white transition-all duration-300 ease-in-out ${
+          isScrolled ? "py-2.5 shadow-sm" : "py-4"
+        }`}
+      >
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5">
           {/* Logo */}
-          <Link
-            href="/"
-            className="group relative font-serif text-2xl tracking-tight text-neutral-900
-                      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900/30
-                      focus-visible:ring-offset-2 focus-visible:ring-offset-white px-2 py-1 rounded-md
-                      transition-all duration-300 transform hover:scale-105"
-          >
-            <span className="font-medium">GR</span>
-            <span className="text-neutral-300 group-hover:text-neutral-400 transition-colors">
-              .
-            </span>
-          </Link>
-
-          {/* Desktop navigation */}
-          <div className="hidden md:flex items-center gap-2">
-            {NAV.map((item) => (
-              <NavLink key={item.href} {...item} />
-            ))}
-          </div>
-
-          {/* Availability badge (desktop) */}
-          <div className="hidden md:block">
-            <Link
-              href="/contact"
-              className={`
-                cta-button inline-flex items-center gap-1.5 rounded-full 
-                bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700
-                transition-all duration-200 no-underline transform
-                hover:bg-emerald-100 hover:no-underline hover:scale-105
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/40
-                focus-visible:ring-offset-2 focus-visible:ring-offset-white
-              `}
-              style={{ textDecoration: "none" }}
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+          <div>
+            <Link href="/" className="flex items-center font-serif text-2xl font-medium text-black">
+              Bini
+              <span className="text-gray-300 transition-colors duration-300 group-hover:text-gray-400">
+                .
               </span>
-              <span>Available for projects</span>
             </Link>
           </div>
 
-          {/* Mobile menu button */}
+          {/* Desktop Navigation */}
+          <nav className="hidden items-center gap-8 md:flex">
+            {NAV_ITEMS.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`relative py-2 text-sm font-medium uppercase tracking-wider transition-colors ${
+                    active ? "text-black" : "text-gray-500 hover:text-black"
+                  }`}
+                  aria-current={active ? "page" : undefined}
+                >
+                  {item.label}
+                  {active && (
+                    <span className="absolute left-1/2 bottom-0 h-1 w-1 -translate-x-1/2 rounded-full bg-black" />
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* Mobile Hamburger Button */}
           <button
+            type="button"
             aria-label="Toggle menu"
-            aria-expanded={open}
-            onClick={() => setOpen((v) => !v)}
-            className={`
-              md:hidden relative inline-flex h-10 w-10 items-center justify-center
-              rounded-full text-neutral-900 transition-all duration-300
-              hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 
-              focus-visible:ring-neutral-900/30 focus-visible:ring-offset-2 
-              focus-visible:ring-offset-white overflow-hidden
-              ${open ? "bg-neutral-100" : ""}
-            `}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-menu"
+            onClick={() => setIsMenuOpen((v) => !v)}
+            className="flex items-center justify-center p-2 md:hidden"
           >
-            <span className="sr-only">Menu</span>
-            <span
-              className={`
-              absolute block h-0.5 w-5 rounded-sm bg-current transition-transform duration-300
-              ${open ? "rotate-45" : "-translate-y-1.5"}
-            `}
-            ></span>
-            <span
-              className={`
-              absolute block h-0.5 w-5 rounded-sm bg-current transition-opacity duration-300
-              ${open ? "opacity-0" : "opacity-100"}
-            `}
-            ></span>
-            <span
-              className={`
-              absolute block h-0.5 w-5 rounded-sm bg-current transition-transform duration-300
-              ${open ? "-rotate-45" : "translate-y-1.5"}
-            `}
-            ></span>
+            <div className="relative h-5 w-6">
+              <span
+                className={`absolute left-0 h-0.5 w-full bg-black transition-all duration-300 ease-in-out ${
+                  isMenuOpen ? "top-2 rotate-45" : "top-0"
+                }`}
+              />
+              <span
+                className={`absolute left-0 top-2 h-0.5 w-full bg-black transition-opacity duration-300 ease-in-out ${
+                  isMenuOpen ? "opacity-0" : "opacity-100"
+                }`}
+              />
+              <span
+                className={`absolute left-0 h-0.5 w-full bg-black transition-all duration-300 ease-in-out ${
+                  isMenuOpen ? "top-2 -rotate-45" : "top-4"
+                }`}
+              />
+            </div>
           </button>
+        </div>
+      </header>
+
+      {/* Full Screen Mobile Menu */}
+      <div
+        id="mobile-menu"
+        className={`fixed inset-0 z-[9998] flex flex-col items-center justify-center bg-white transition-opacity duration-300 ease-in-out md:hidden ${
+          isMenuOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+        }`}
+        role="dialog"
+        aria-modal="true"
+      >
+        <nav className="flex w-full flex-col items-center justify-center space-y-8 p-5">
+          {NAV_ITEMS.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setIsMenuOpen(false)}
+              className={`text-2xl font-medium tracking-wider transition-colors ${
+                isActive(item.href) ? "text-black" : "text-gray-500 hover:text-black"
+              }`}
+            >
+              {item.label}
+            </Link>
+          ))}
         </nav>
       </div>
-
-      {/* Mobile navigation panel with enhanced animation */}
-      <div
-        className={`
-          md:hidden overflow-hidden transition-all duration-500 ease-in-out bg-white
-          ${open ? "max-h-[300px] opacity-100 shadow-[0_2px_4px_rgba(0,0,0,0.03)]" : "max-h-0 opacity-0"}
-        `}
-      >
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-4 space-y-4">
-          <div className="grid gap-1 border-t border-neutral-100 pt-4">
-            {NAV.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                data-active={isActive(pathname, item.href)}
-                className={`
-                  px-4 py-2.5 text-sm font-medium transition-all 
-                  duration-200 relative group no-underline transform
-                  ${
-                    isActive(pathname, item.href)
-                      ? "text-neutral-900"
-                      : "text-neutral-600 hover:text-neutral-900 hover:scale-105"
-                  }
-                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900/30
-                  focus-visible:ring-offset-2 focus-visible:ring-offset-white
-                `}
-              >
-                {item.label}
-                {isActive(pathname, item.href) && (
-                  <span className="absolute top-0 right-0 h-full w-1 bg-neutral-200"></span>
-                )}
-              </Link>
-            ))}
-
-            <Link
-              href="/contact"
-              onClick={() => setOpen(false)}
-              className="mt-3 inline-flex items-center gap-1.5 justify-center 
-                        bg-emerald-50 text-emerald-700 px-4 py-2 text-sm font-medium 
-                        rounded-full transition-all duration-200 hover:bg-emerald-100
-                        no-underline hover:no-underline transform hover:scale-105
-                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/40
-                        focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-              style={{ textDecoration: "none" }}
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
-              </span>
-              Available for projects
-            </Link>
-          </div>
-        </div>
-      </div>
-    </header>
+    </>
   );
 }
-
-export default Header;
