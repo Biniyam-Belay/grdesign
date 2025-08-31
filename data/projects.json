@@ -40,5 +40,47 @@
       { "src": "/assets/projects/packaging.svg", "alt": "Pack family" },
       { "src": "/assets/projects/packaging.svg", "alt": "Close-up" }
     ]
+  },
+  {
+    "slug": "packaging-series",
+    "title": "Packaging Series",
+    "roles": ["Packaging", "Illustration"],
+    "tools": ["Illustrator", "Cinema4D"],
+    "thumb": "/assets/projects/packaging.svg",
+    "excerpt": "A clean packaging system featuring subtle texture and simple color cues.",
+    "alt": "Three minimal packaging boxes arranged on a clean surface.",
+    "credits": "Design: GR",
+    "gallery": [
+      { "src": "/assets/projects/packaging.svg", "alt": "Pack family" },
+      { "src": "/assets/projects/packaging.svg", "alt": "Close-up" }
+    ]
+  },
+  {
+    "slug": "packaging-series",
+    "title": "Packaging Series",
+    "roles": ["Packaging", "Illustration"],
+    "tools": ["Illustrator", "Cinema4D"],
+    "thumb": "/assets/projects/packaging.svg",
+    "excerpt": "A clean packaging system featuring subtle texture and simple color cues.",
+    "alt": "Three minimal packaging boxes arranged on a clean surface.",
+    "credits": "Design: GR",
+    "gallery": [
+      { "src": "/assets/projects/packaging.svg", "alt": "Pack family" },
+      { "src": "/assets/projects/packaging.svg", "alt": "Close-up" }
+    ]
+  },
+  {
+    "slug": "packaging-series",
+    "title": "Packaging Series",
+    "roles": ["Packaging", "Illustration"],
+    "tools": ["Illustrator", "Cinema4D"],
+    "thumb": "/assets/projects/packaging.svg",
+    "excerpt": "A clean packaging system featuring subtle texture and simple color cues.",
+    "alt": "Three minimal packaging boxes arranged on a clean surface.",
+    "credits": "Design: GR",
+    "gallery": [
+      { "src": "/assets/projects/packaging.svg", "alt": "Pack family" },
+      { "src": "/assets/projects/packaging.svg", "alt": "Close-up" }
+    ]
   }
 ]

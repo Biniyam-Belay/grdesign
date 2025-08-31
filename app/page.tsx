@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Hero from "@/components/content/Hero";
 import AboutSection from "@/components/content/AboutSection";
 import ProjectsSection from "@/components/content/ProjectsSection";
+import AboutMeSection from "@/components/content/AboutMeSection";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -49,6 +50,7 @@ export default function Home() {
       <div className="about-section relative z-10 bg-white">
         <AboutSection />
         <ProjectsSection />
+        <AboutMeSection />
       </div>
     </main>
   );
