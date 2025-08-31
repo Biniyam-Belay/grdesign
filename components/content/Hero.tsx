@@ -121,8 +121,10 @@ export default function Hero({ offsetTop = 120 }: Props) {
               <div className="w-20 h-20 bg-gray-200 rounded-full"></div>
               <Link
                 data-anim="cta"
-                href="/contact"
+                href="https://calendar.app.google/1RTjShD5sgqBmm3K7"
                 className="group inline-flex items-center gap-3 rounded-full border border-border px-5 py-2 text-sm transition-colors hover:bg-foreground hover:text-background"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <span>Contact</span>
                 <svg
@@ -174,8 +176,10 @@ export default function Hero({ offsetTop = 120 }: Props) {
             <div className="hidden md:block">
               <Link
                 data-anim="cta-contact"
-                href="/contact"
+                href="https://calendar.app.google/1RTjShD5sgqBmm3K7"
                 className="group inline-flex items-center gap-3 rounded-full border border-border px-5 py-2 text-sm transition-colors hover:bg-foreground hover:text-background"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <span>Contact</span>
                 <svg

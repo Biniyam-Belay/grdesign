@@ -8,7 +8,7 @@ import { AnimatePresence, motion } from "framer-motion";
 const NAV_ITEMS = [
   { href: "/work", label: "Work" },
   { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
+  { href: "https://calendar.app.google/1RTjShD5sgqBmm3K7", label: "Contact" },
 ];
 
 export default function Header() {
@@ -49,24 +49,28 @@ export default function Header() {
 
         {/* Desktop Navigation */}
         <div className="desktop-nav hidden md:flex items-center space-x-8">
-          {NAV_ITEMS.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`relative text-sm font-medium text-white transition-opacity hover:opacity-75 ${
-                pathname === item.href ? "opacity-100" : "opacity-60"
-              }`}
-            >
-              {item.label}
-              {pathname === item.href && (
-                <motion.div
-                  className="absolute bottom-[-4px] left-0 right-0 h-[2px] bg-white"
-                  layoutId="underline"
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                />
-              )}
-            </Link>
-          ))}
+          {NAV_ITEMS.map((item) => {
+            const isExternal = item.href.startsWith("http");
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`relative text-sm font-medium text-white transition-opacity hover:opacity-75 ${
+                  pathname === item.href ? "opacity-100" : "opacity-60"
+                }`}
+                {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              >
+                {item.label}
+                {pathname === item.href && (
+                  <motion.div
+                    className="absolute bottom-[-4px] left-0 right-0 h-[2px] bg-white"
+                    layoutId="underline"
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
+                )}
+              </Link>
+            );
+          })}
         </div>
 
         {/* Hamburger Button */}
@@ -97,16 +101,20 @@ export default function Header() {
               exit={{ opacity: 0 }}
               className="fixed inset-0 bg-background z-40 flex flex-col items-center justify-center space-y-8"
             >
-              {NAV_ITEMS.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="text-3xl font-bold text-foreground"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {NAV_ITEMS.map((item) => {
+                const isExternal = item.href.startsWith("http");
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="text-3xl font-bold text-foreground"
+                    {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
             </motion.div>
           )}
         </AnimatePresence>

@@ -103,8 +103,10 @@ export default function AboutMeSection() {
 
             {/* Contact button (flip + arrow nudge) */}
             <a
-              href="/contact"
+              href="https://calendar.app.google/1RTjShD5sgqBmm3K7"
               className="group relative flex h-14 w-56 items-center justify-center overflow-hidden rounded-xl bg-black pr-10 text-white"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <motion.div
                 className="relative"

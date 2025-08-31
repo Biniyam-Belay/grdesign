@@ -46,12 +46,23 @@ export default function Footer() {
               <ul className="flex flex-wrap gap-6 text-sm">
                 {["Work", "About", "Contact"].map((item) => (
                   <li key={item}>
-                    <Link
-                      href={`/${item.toLowerCase()}`}
-                      className="text-neutral-700 hover:text-black transition-colors"
-                    >
-                      {item}
-                    </Link>
+                    {item === "Contact" ? (
+                      <Link
+                        href="https://calendar.app.google/1RTjShD5sgqBmm3K7"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-neutral-700 hover:text-black transition-colors"
+                      >
+                        {item}
+                      </Link>
+                    ) : (
+                      <Link
+                        href={`/${item.toLowerCase()}`}
+                        className="text-neutral-700 hover:text-black transition-colors"
+                      >
+                        {item}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>
