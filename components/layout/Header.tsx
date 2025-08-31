@@ -46,7 +46,7 @@ export default function Header() {
           isScrolled ? "py-2.5 shadow-sm" : "py-4"
         }`}
       >
-        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5">
+        <div className="mx-auto flex w-full max-w-8xl items-center justify-between px-5">
           {/* Logo */}
           <div>
             <Link href="/" className="flex items-center font-serif text-2xl font-medium text-black">

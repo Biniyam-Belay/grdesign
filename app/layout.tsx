@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@components/layout/Header";
 import Footer from "@components/layout/Footer";
 
-const outfit = Outfit({
-  variable: "--font-outfit",
+const inter = Inter({
   subsets: ["latin"],
-  display: "swap",
+  variable: "--font-inter",
 });
 
 import { generateMeta } from "@lib/meta";
@@ -21,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="bg-white">
-      <body className={`${outfit.variable} antialiased bg-white text-neutral-900`}>
+      <body className={`${inter.variable} font-sans antialiased bg-white text-neutral-900`}>
         <Header />
         {children}
         <Footer />

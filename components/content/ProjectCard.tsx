@@ -33,12 +33,8 @@ export default function ProjectCard({ project }: { project: Project }) {
   }, [reduced]);
 
   return (
-    <Link
-      ref={cardRef}
-      href={`/work/${project.slug}`}
-      className="group block rounded-lg border bg-white p-3 shadow-sm transition-transform will-change-transform hover:-translate-y-0.5"
-    >
-      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-md bg-neutral-100">
+    <Link ref={cardRef} href={`/work/${project.slug}`} className="group block">
+      <div className="relative aspect-[3/4] w-full overflow-hidden bg-white">
         <Image
           src={project.thumb}
           alt={project.title}
@@ -48,9 +44,9 @@ export default function ProjectCard({ project }: { project: Project }) {
         />
       </div>
       <div className="mt-4">
-        <h3 className="text-lg font-medium text-neutral-900">{project.title}</h3>
-        <p className="mt-1 line-clamp-2 text-sm text-neutral-600">{project.excerpt}</p>
-        <p className="mt-2 text-xs text-neutral-500">{project.roles.join(" · ")}</p>
+        <h3 className="text-lg">
+          <span className="font-bold">{project.title}</span> - <span>{project.roles[0]}</span>
+        </h3>
       </div>
     </Link>
   );
