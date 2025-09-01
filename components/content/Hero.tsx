@@ -54,6 +54,18 @@ export default function Hero({ offsetTop = 120 }: Props) {
             { y: 0, x: 0, scale: 1, opacity: 1, duration: 1.2 },
             "<", // Start at the same time as the previous animation
           )
+          .from(
+            "[data-anim-brand]",
+            {
+              yPercent: 120,
+              rotate: () => gsap.utils.random(-40, 40),
+              opacity: 0,
+              duration: 1,
+              stagger: 0.06,
+              ease: "back.out(1.7)",
+            },
+            "-=0.8",
+          )
           // Scene 2: Content reveal
           .from("[data-anim='cta-contact']", { y: 20, opacity: 0, duration: 0.6 }, "-=0.5")
           .from("[data-anim='kicker']", { y: 16, opacity: 0, duration: 0.6 }, "-=0.2")
@@ -68,7 +80,19 @@ export default function Hero({ offsetTop = 120 }: Props) {
       // Mobile animation
       mm.add("(max-width: 767px)", () => {
         const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-        tl.from("[data-anim='title-line']", { y: 24, opacity: 0, duration: 0.7, stagger: 0.1 })
+        tl.from("[data-anim-brand]", {
+          yPercent: 120,
+          rotate: () => gsap.utils.random(-40, 40),
+          opacity: 0,
+          duration: 1,
+          stagger: 0.1,
+          ease: "back.out(1.7)",
+        })
+          .from(
+            "[data-anim='title-line']",
+            { y: 24, opacity: 0, duration: 0.7, stagger: 0.1 },
+            "-=0.2",
+          )
           .from("[data-anim='subcopy']", { y: 16, opacity: 0, duration: 0.6 }, "-=0.2")
           .from("[data-anim='cta']", { y: 20, opacity: 0, duration: 0.6 }, "-=0.3");
       });
@@ -103,7 +127,16 @@ export default function Hero({ offsetTop = 120 }: Props) {
           style={{ minHeight: "calc(100svh - 120px)" }}
         >
           <div>
-            <h2 className="text-[28vw] font-bold text-left text-foreground leading-none">Bini</h2>
+            <h2
+              className="text-[28vw] font-bold text-left text-foreground leading-none"
+              aria-label="Bini"
+            >
+              {Array.from("Bini").map((char, idx) => (
+                <span key={idx} aria-hidden="true" data-anim-brand className="inline-block">
+                  {char}
+                </span>
+              ))}
+            </h2>
           </div>
           <div className="pb-8">
             <h1 className="text-3xl font-semibold leading-[1.15] text-foreground text-left">
@@ -204,8 +237,15 @@ export default function Hero({ offsetTop = 120 }: Props) {
           <div className="absolute bottom-8 left-[-140] right-[-120] px-6 pointer-events-none">
             <div className="w-full flex items-end justify-between">
               <div data-anim="brand-text">
-                <h2 className="text-[50px] md:text-[350px] font-bold text-left text-foreground leading-none -mb-4 md:-mb-12 uppercase">
-                  Bini
+                <h2
+                  className="text-[50px] md:text-[350px] font-bold text-left text-foreground leading-none -mb-4 md:-mb-12 uppercase"
+                  aria-label="Bini"
+                >
+                  {Array.from("Bini").map((char, idx) => (
+                    <span key={idx} aria-hidden="true" data-anim-brand className="inline-block">
+                      {char}
+                    </span>
+                  ))}
                 </h2>
               </div>
               <div className="pointer-events-auto" data-anim="brand-avatar">
