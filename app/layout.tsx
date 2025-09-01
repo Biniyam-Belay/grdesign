@@ -9,9 +9,9 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-import { generateMeta } from "@lib/meta";
-
-export const metadata = generateMeta();
+export const metadata: Metadata = {
+  metadataBase: new URL("https://binigrdesign.vercel.app/"),
+};
 
 export default function RootLayout({
   children,

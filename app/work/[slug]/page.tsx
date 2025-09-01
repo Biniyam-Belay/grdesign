@@ -1,25 +1,47 @@
+// app/work/[slug]/page.tsx
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getProjectBySlug, getProjectSlugs, getProjects } from "@lib/data/projects";
 import ClientProject from "./ClientProject";
 
-export async function generateStaticParams() {
-  return getProjectSlugs().map((slug) => ({ slug }));
+export const dynamicParams = false;
+
+type Params = { slug: string };
+
+export async function generateStaticParams(): Promise<Params[]> {
+  const slugs = await getProjectSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }) {
-  const project = getProjectBySlug(params.slug);
+export async function generateMetadata(props: { params: Promise<Params> }): Promise<Metadata> {
+  const { slug } = await props.params; // ✅ await params
+  const project = await getProjectBySlug(slug);
+
+  const title = project ? `${project.title} — Work` : "Project — Work";
+  const description = project?.excerpt ?? "Project case study";
+
   return {
-    title: project ? `${project.title} — Work` : "Project — Work",
-    description: project?.excerpt ?? "Project case study",
+    title,
+    description,
+    openGraph: { title, description, type: "article" },
+    twitter: { card: "summary_large_image", title, description },
   };
 }
 
-export default function ProjectPage({ params }: { params: { slug: string } }) {
-  const project = getProjectBySlug(params.slug);
-  if (!project) return null;
-  const list = getProjects();
+export default async function ProjectPage(props: { params: Promise<Params> }) {
+  const { slug } = await props.params; // ✅ await params
+  const project = await getProjectBySlug(slug);
+  if (!project) notFound();
+
+  const list = await getProjects();
   const idx = list.findIndex((p) => p.slug === project.slug);
-  const prev = idx > 0 ? { slug: list[idx - 1].slug, title: list[idx - 1].title } : undefined;
+
+  const prev = idx > 0 ? { slug: list[idx - 1]!.slug, title: list[idx - 1]!.title } : undefined;
+
   const next =
-    idx < list.length - 1 ? { slug: list[idx + 1].slug, title: list[idx + 1].title } : undefined;
+    idx >= 0 && idx < list.length - 1
+      ? { slug: list[idx + 1]!.slug, title: list[idx + 1]!.title }
+      : undefined;
+
   return <ClientProject project={project} prev={prev} next={next} />;
 }

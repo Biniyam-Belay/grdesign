@@ -50,7 +50,7 @@ export default function ProjectCard({
     <Link ref={cardRef} href={`/work/${project.slug}`} className="group block focus:outline-none">
       {/* media */}
       <div
-        className={`relative ${ratio} w-full overflow-hidden rounded-3xl border border-neutral-200 bg-white`}
+        className={`relative ${ratio} w-full overflow-hidden rounded-2xl border border-neutral-200 bg-white`}
       >
         <Image
           src={project.thumb}
@@ -60,16 +60,6 @@ export default function ProjectCard({
           sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
           priority={false}
         />
-
-        {/* bottom meta strip (slides in on hover) */}
-        <div className="pointer-events-none absolute inset-x-3 bottom-3 translate-y-3 rounded-2xl bg-white/85 backdrop-blur-sm px-4 py-2 opacity-0 ring-1 ring-black/5 transition-all duration-300 ease-[cubic-bezier(.2,.8,.2,1)] group-hover:translate-y-0 group-hover:opacity-100">
-          <div className="flex items-center justify-between gap-4">
-            <p className="truncate text-sm font-medium text-neutral-900">{project.title}</p>
-            <span className="hidden text-xs uppercase tracking-widest text-neutral-500 sm:block">
-              {project.roles[0]}
-            </span>
-          </div>
-        </div>
 
         {/* subtle focus ring for a11y */}
         <span className="pointer-events-none absolute inset-0 rounded-3xl ring-0 transition-shadow group-focus-visible:ring-2 group-focus-visible:ring-black/60" />

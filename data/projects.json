@@ -4,13 +4,13 @@
     "title": "Minimal Brand Identity",
     "roles": ["Art Direction", "Brand Design"],
     "tools": ["Illustrator", "Figma"],
-    "thumb": "/assets/projects/brand-identity.svg",
+    "thumb": "/assets/projects/brand.svg",
     "excerpt": "A refined identity system with elegant typographic rhythm and disciplined whitespace.",
     "alt": "Minimal brand identity mockup on a neutral background.",
     "credits": "Design: GR",
     "gallery": [
-      { "src": "/assets/projects/brand-identity.svg", "alt": "Brand system cover" },
-      { "src": "/assets/projects/brand-identity.svg", "alt": "Stationery set" }
+      { "src": "/assets/projects/brand.svg", "alt": "Brand system cover" },
+      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" }
     ]
   },
   {
@@ -32,13 +32,13 @@
     "title": "Packaging Series",
     "roles": ["Packaging", "Illustration"],
     "tools": ["Illustrator", "Cinema4D"],
-    "thumb": "/assets/projects/packaging.svg",
+    "thumb": "/assets/projects/packaging.webp",
     "excerpt": "A clean packaging system featuring subtle texture and simple color cues.",
     "alt": "Three minimal packaging boxes arranged on a clean surface.",
     "credits": "Design: GR",
     "gallery": [
-      { "src": "/assets/projects/packaging.svg", "alt": "Pack family" },
-      { "src": "/assets/projects/packaging.svg", "alt": "Close-up" }
+      { "src": "/assets/projects/packaging.webp", "alt": "Pack family" },
+      { "src": "/assets/projects/packaging.webp", "alt": "Close-up" }
     ]
   },
   {
@@ -46,13 +46,13 @@
     "title": "Packaging Series",
     "roles": ["Packaging", "Illustration"],
     "tools": ["Illustrator", "Cinema4D"],
-    "thumb": "/assets/projects/packaging.svg",
+    "thumb": "/assets/projects/packaging.webp",
     "excerpt": "A clean packaging system featuring subtle texture and simple color cues.",
     "alt": "Three minimal packaging boxes arranged on a clean surface.",
     "credits": "Design: GR",
     "gallery": [
-      { "src": "/assets/projects/packaging.svg", "alt": "Pack family" },
-      { "src": "/assets/projects/packaging.svg", "alt": "Close-up" }
+      { "src": "/assets/projects/packaging.webp", "alt": "Pack family" },
+      { "src": "/assets/projects/packaging.webp", "alt": "Close-up" }
     ]
   },
   {
@@ -60,13 +60,13 @@
     "title": "Packaging Series",
     "roles": ["Packaging", "Illustration"],
     "tools": ["Illustrator", "Cinema4D"],
-    "thumb": "/assets/projects/packaging.svg",
+    "thumb": "/assets/projects/packaging.webp",
     "excerpt": "A clean packaging system featuring subtle texture and simple color cues.",
     "alt": "Three minimal packaging boxes arranged on a clean surface.",
     "credits": "Design: GR",
     "gallery": [
-      { "src": "/assets/projects/packaging.svg", "alt": "Pack family" },
-      { "src": "/assets/projects/packaging.svg", "alt": "Close-up" }
+      { "src": "/assets/projects/packaging.webp", "alt": "Pack family" },
+      { "src": "/assets/projects/packaging.webp", "alt": "Close-up" }
     ]
   },
   {
@@ -74,13 +74,27 @@
     "title": "Packaging Series",
     "roles": ["Packaging", "Illustration"],
     "tools": ["Illustrator", "Cinema4D"],
-    "thumb": "/assets/projects/packaging.svg",
+    "thumb": "/assets/projects/packaging.webp",
     "excerpt": "A clean packaging system featuring subtle texture and simple color cues.",
     "alt": "Three minimal packaging boxes arranged on a clean surface.",
     "credits": "Design: GR",
     "gallery": [
-      { "src": "/assets/projects/packaging.svg", "alt": "Pack family" },
-      { "src": "/assets/projects/packaging.svg", "alt": "Close-up" }
+      { "src": "/assets/projects/packaging.webp", "alt": "Pack family" },
+      { "src": "/assets/projects/packaging.webp", "alt": "Close-up" }
+    ]
+  },
+  {
+    "slug": "packaging-series",
+    "title": "Packaging Series",
+    "roles": ["Packaging", "Illustration"],
+    "tools": ["Illustrator", "Cinema4D"],
+    "thumb": "/assets/projects/packaging.webp",
+    "excerpt": "A clean packaging system featuring subtle texture and simple color cues.",
+    "alt": "Three minimal packaging boxes arranged on a clean surface.",
+    "credits": "Design: GR",
+    "gallery": [
+      { "src": "/assets/projects/packaging.webp", "alt": "Pack family" },
+      { "src": "/assets/projects/packaging.webp", "alt": "Close-up" }
     ]
   }
 ]

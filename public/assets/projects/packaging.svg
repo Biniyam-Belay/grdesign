@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
-  <rect width="1200" height="900" fill="#fafafa"/>
-  <g fill="#e8e8e8">
-    <rect x="180" y="260" width="240" height="380" rx="8"/>
-    <rect x="480" y="220" width="240" height="420" rx="8"/>
-    <rect x="780" y="300" width="240" height="340" rx="8"/>
-  </g>
-  <text x="50%" y="820" dominant-baseline="middle" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="40" fill="#777">Packaging Series</text>
-</svg>
