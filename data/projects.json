@@ -10,6 +10,8 @@
     "credits": "Design: GR",
     "gallery": [
       { "src": "/assets/projects/brand.svg", "alt": "Brand system cover" },
+      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
+      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
       { "src": "/assets/projects/brand.svg", "alt": "Stationery set" }
     ]
   },
@@ -94,6 +96,7 @@
     "credits": "Design: GR",
     "gallery": [
       { "src": "/assets/projects/packaging.webp", "alt": "Pack family" },
+      { "src": "/assets/projects/packaging.webp", "alt": "Close-up" },
       { "src": "/assets/projects/packaging.webp", "alt": "Close-up" }
     ]
   }

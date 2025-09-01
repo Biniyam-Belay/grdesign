@@ -70,10 +70,10 @@ export default function Footer() {
 
             <div className="text-sm">
               <a
-                href="mailto:hello@grdesign.studio"
+                href="mailto:biniyam.be.go@gmail.com"
                 className="text-neutral-700 hover:text-black transition-colors"
               >
-                hello@grdesign.studio
+                biniyam.be.go@gmail.com
               </a>
               <p className="mt-2 text-neutral-600">Based in Addis Ababa · Working worldwide</p>
             </div>

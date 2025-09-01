@@ -88,7 +88,7 @@ export default function ClientProject({
           </header>
 
           {/* Hero media */}
-          <figure className="relative mt-8 aspect-[16/9] w-full overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-50">
+          <figure className="relative mt-8 aspect-[16/9] w-full overflow-hidden border border-neutral-200 bg-neutral-50">
             <Image
               src={project.thumb}
               alt={project.alt ?? project.title}
@@ -135,7 +135,7 @@ export default function ClientProject({
                     {project.gallery.map((g, i) => (
                       <button
                         key={g.src}
-                        className="group relative overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-50"
+                        className="group relative overflow-hidden border border-neutral-200 bg-neutral-50"
                         onClick={() => setLbIndex(i)}
                         aria-label={`Open image: ${g.alt}`}
                       >

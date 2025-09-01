@@ -13,7 +13,7 @@ export default function AboutPage() {
   return (
     <main ref={pageRef} className="bg-white">
       {/* Page container: slim gutters, controlled max width for ideal line-length */}
-      <div className="mx-auto w-full max-w-7xl px-4 sm:px-8 lg:px-12">
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-8 lg:px-12 mt-20">
         {/* ===== Hero (balanced grid, vertical alignment, tighter top) ===== */}
         <header
           className="grid grid-cols-1 gap-10 pt-12 md:grid-cols-2 md:items-center md:gap-16"
@@ -22,7 +22,7 @@ export default function AboutPage() {
           {/* Left: intro copy vertically centered to align with image */}
           <div className="flex flex-col justify-center">
             <p className="text-[11px] uppercase tracking-[0.22em] text-neutral-500">
-              Addis Ababa · EAT
+              Addis Ababa · ET
             </p>
 
             <SplitText
@@ -30,7 +30,7 @@ export default function AboutPage() {
               className="mt-2 text-3xl font-semibold tracking-tight leading-normal text-neutral-900 sm:text-5xl"
               trigger
             >
-              <span id="about-hero-title">About the designer</span>
+              <span id="about-hero-title">About Me</span>
             </SplitText>
 
             <p className="mt-4 max-w-2xl text-base text-neutral-600 sm:text-lg">
@@ -50,24 +50,30 @@ export default function AboutPage() {
             </ul>
           </div>
 
-          {/* Right: portrait — fills its column with no phantom left gutter */}
+          {/* Right: portrait/video area */}
           <figure className="relative">
             <div className="relative overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-50">
-              <div className="aspect-[4/5]">
-                <Image
-                  src="/portrait-placeholder.jpg"
-                  alt="Portrait of the designer"
-                  fill
-                  sizes="(min-width: 1024px) 40vw, 100vw"
-                  className="object-cover"
-                  priority
-                />
+              <div className="aspect-[4/5] relative">
+                {/* Autoplay looping video */}
+                <video
+                  className="absolute inset-0 w-full h-full object-cover"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  disablePictureInPicture
+                  disableRemotePlayback
+                >
+                  <source src="/assets/about-reel.mp4" type="video/mp4" />
+                  Video preview
+                </video>
               </div>
+
               {/* Soft accent ring (kept subtle; hidden for reduced-motion) */}
               <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-black/5 blur-2xl motion-reduce:hidden" />
             </div>
             <figcaption className="mt-3 text-xs text-neutral-500">
-              Based in Bole/Kazanchis · Available worldwide
+              Based in Addis Ababa | ET · Available worldwide
             </figcaption>
           </figure>
         </header>
@@ -114,7 +120,7 @@ export default function AboutPage() {
             Experience
           </h2>
 
-          <ol className="relative mt-8 space-y-10 before:absolute before:left-3 before:top-0 before:h-full before:w-px before:bg-neutral-200 sm:before:left-4">
+          <ol className="relative mt-8 space-y-10 before:absolute before:left-[0rem] before:top-0 before:h-full before:w-px before:bg-neutral-200 sm:before:left-[0rem]">
             {[
               {
                 period: "2020—Present",
@@ -131,19 +137,24 @@ export default function AboutPage() {
                 title: "Designer, Agency Name",
                 body: "Developed visual systems for print and digital campaigns.",
               },
+              {
+                period: "2013—2015",
+                title: "Designer, AWiB Ethiopia",
+                body: "Developed visual systems for print and digital campaigns.",
+              },
             ].map(({ period, title, body }) => (
               <li key={title} className="grid grid-cols-1 gap-3 sm:grid-cols-12">
                 {/* Bullet */}
                 <span
                   aria-hidden
-                  className="row-span-2 h-2 w-2 translate-x-[3px] translate-y-[10px] rounded-full bg-neutral-900 sm:col-span-1 sm:translate-x-[15px]"
+                  className="absolute h-2.5 w-2.5 rounded-full bg-neutral-900 -translate-x-[0.3125rem] mt-[0.6875rem] sm:mt-[0.1875rem]"
                 />
                 {/* Period */}
-                <div className="text-[11px] uppercase tracking-[0.22em] text-neutral-500 sm:col-span-3">
+                <div className="text-[11px] uppercase tracking-[0.22em] text-neutral-500 pl-4 sm:col-span-3 sm:pl-6">
                   {period}
                 </div>
                 {/* Content */}
-                <div className="rounded-xl sm:col-span-8">
+                <div className="rounded-xl sm:col-span-8 pl-4 sm:pl-0">
                   <h3 className="text-lg font-medium text-neutral-900">{title}</h3>
                   <p className="mt-2 text-neutral-600">{body}</p>
                 </div>
@@ -167,7 +178,7 @@ export default function AboutPage() {
           <div className="flex flex-wrap items-center gap-3">
             {/* Primary CTA */}
             <Link
-              href="mailto:hello@grdesign.studio"
+              href="mailto:biniyam.be.go@gmail.com"
               className="group inline-flex items-center gap-3 rounded-xl border border-neutral-900 px-6 py-3 text-sm text-neutral-900 transition-colors hover:bg-neutral-900 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900/20"
             >
               Email
