@@ -15,9 +15,10 @@ export default function Home() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Pin the hero section and transform it while about section slides over it
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: ".about-section",
+          trigger: ".content-wrapper",
           start: "top bottom",
           end: "top top",
           scrub: 1,
@@ -25,10 +26,14 @@ export default function Home() {
           pinSpacing: false,
         },
       });
+
+      // Gradually change hero background color as we scroll
       tl.to(".hero-background", {
         backgroundColor: "hsl(0, 0%, 95%)",
         ease: "power1.inOut",
       });
+
+      // Slightly scale down hero content as we scroll
       tl.to(
         ".hero-content",
         {
@@ -47,8 +52,10 @@ export default function Home() {
       <div className="hero-section">
         <Hero />
       </div>
-      <div className="about-section relative z-10 bg-white">
-        <AboutSection />
+      <div className="content-wrapper relative z-10 bg-white">
+        <div className="about-section">
+          <AboutSection />
+        </div>
         <ProjectsSection />
         <AboutMeSection />
       </div>

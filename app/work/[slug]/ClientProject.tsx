@@ -183,31 +183,6 @@ export default function ClientProject({
                     <p className="mt-1">{project.credits}</p>
                   </div>
                 )}
-
-                <div data-reveal className="pt-6 border-t border-neutral-200/70">
-                  <h3 className="mb-2 text-xs font-semibold uppercase tracking-widest text-neutral-500">
-                    More projects
-                  </h3>
-                  <div className="flex items-center gap-3">
-                    {prev && (
-                      <Link
-                        href={`/work/${prev.slug}`}
-                        className="text-neutral-800 hover:opacity-80"
-                      >
-                        ← {prev.title}
-                      </Link>
-                    )}
-                    <span className="h-3 w-px bg-neutral-200" />
-                    {next && (
-                      <Link
-                        href={`/work/${next.slug}`}
-                        className="ml-auto text-neutral-800 hover:opacity-80"
-                      >
-                        {next.title} →
-                      </Link>
-                    )}
-                  </div>
-                </div>
               </div>
             </aside>
           </div>

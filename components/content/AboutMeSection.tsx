@@ -10,29 +10,22 @@ export default function AboutMeSection() {
       <div className="grid grid-cols-1 gap-12 md:grid-cols-3 w-full">
         {/* ===== Left: Video / Portrait Stage ===== */}
         <div className="w-full">
-          <div className="relative aspect-[3/4] md:h-[540px] overflow-hidden rounded-3xl border border-border bg-gradient-to-b from-neutral-50 to-neutral-100">
-            {/* Replace with your video/player */}
-            <div className="absolute inset-0 grid place-items-center text-neutral-400">
-              <span className="text-xs uppercase tracking-widest">Intro Reel</span>
-            </div>
-
-            {/* Minimal play control */}
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.98 }}
-              className="absolute bottom-5 left-5 inline-flex items-center gap-3 rounded-full bg-black px-4 py-2 text-xs text-white"
-              aria-label="Play video"
+          <div className="relative aspect-[3/4] md:h-[540px] overflow-hidden rounded-3xl border border-border">
+            {/* Autoplay looping video */}
+            <video
+              className="absolute inset-0 w-full h-full object-cover"
+              autoPlay
+              muted
+              loop
+              playsInline
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M8 5v14l11-7-11-7z"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  fill="currentColor"
-                />
-              </svg>
-              <span>Play</span>
-            </motion.button>
+              {/* Replace with your actual video file */}
+              <source src="/assets/intro-reel.mp4" type="video/mp4" />
+              {/* Fallback for browsers that don't support video */}
+              <div className="absolute inset-0 grid place-items-center bg-gradient-to-b from-neutral-50 to-neutral-100 text-neutral-400">
+                <span className="text-xs uppercase tracking-widest">Video Not Supported</span>
+              </div>
+            </video>
           </div>
         </div>
 

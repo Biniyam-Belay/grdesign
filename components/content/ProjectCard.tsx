@@ -50,7 +50,7 @@ export default function ProjectCard({
     <Link ref={cardRef} href={`/work/${project.slug}`} className="group block focus:outline-none">
       {/* media */}
       <div
-        className={`relative ${ratio} w-full overflow-hidden rounded-2xl border border-neutral-200 bg-white`}
+        className={`relative ${ratio} w-full overflow-hidden border border-neutral-200 bg-white`}
       >
         <Image
           src={project.thumb}
