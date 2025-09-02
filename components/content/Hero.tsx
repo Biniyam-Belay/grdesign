@@ -12,7 +12,7 @@ type Props = {
   offsetTop?: number; // e.g., 96 -> 96px top padding
 };
 
-export default function Hero({ offsetTop = 120 }: Props) {
+export default function Hero({ offsetTop = 80 }: Props) {
   const rootRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -105,7 +105,7 @@ export default function Hero({ offsetTop = 120 }: Props) {
     <section
       ref={rootRef}
       style={{ paddingTop: offsetTop }}
-      className="hero-background relative isolate min-h-[100svh] px-6 flex"
+      className="hero-background relative isolate min-h-[100svh] px-6 flex overflow-hidden"
     >
       {/* Subtle background tint + grid */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
@@ -122,13 +122,11 @@ export default function Hero({ offsetTop = 120 }: Props) {
 
       <div className="hero-content relative mx-auto w-full max-w-7xl">
         {/* Mobile Layout */}
-        <div
-          className="md:hidden flex flex-col justify-between"
-          style={{ minHeight: "calc(100svh - 120px)" }}
-        >
-          <div>
+        <div className="md:hidden flex flex-col" style={{ minHeight: "calc(100svh - 120px)" }}>
+          {/* Move BINI higher - reduce top margin */}
+          <div className="mt-4">
             <h2
-              className="text-[28vw] font-bold text-left text-foreground leading-none"
+              className="text-[25vw] font-bold text-left text-foreground leading-none"
               aria-label="Bini"
             >
               {Array.from("Bini").map((char, idx) => (
@@ -138,8 +136,10 @@ export default function Hero({ offsetTop = 120 }: Props) {
               ))}
             </h2>
           </div>
-          <div className="pb-8">
-            <h1 className="text-3xl font-semibold leading-[1.15] text-foreground text-left">
+
+          {/* Content positioned in the middle with proper spacing */}
+          <div className="flex-1 flex flex-col justify-center py-6">
+            <h1 className="text-2xl sm:text-3xl font-semibold leading-[1.15] text-foreground text-left">
               <span data-anim="title-line" className="block">
                 Graphic Designer
               </span>
@@ -147,10 +147,14 @@ export default function Hero({ offsetTop = 120 }: Props) {
                 Web Developer
               </span>
             </h1>
-            <p data-anim="subcopy" className="mt-4 text-base text-neutral-400 text-left">
+            <p data-anim="subcopy" className="mt-3 text-base text-neutral-400 text-left">
               Thoughtful identities & calm interfaces. Available for select work.
             </p>
-            <div className="mt-8 flex justify-between items-center">
+          </div>
+
+          {/* Bottom section for avatar and contact */}
+          <div className="pb-10 mt-auto">
+            <div className="flex justify-between items-center">
               <div className="w-20 h-20 bg-gray-200 rounded-full"></div>
               <Link
                 data-anim="cta"

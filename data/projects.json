@@ -4,7 +4,8 @@
     "title": "Minimal Brand Identity",
     "roles": ["Art Direction", "Brand Design"],
     "tools": ["Illustrator", "Figma"],
-    "thumb": "/assets/projects/brand.svg",
+    "thumb": "/assets/projects/SIRTONA.mp4",
+    "video": "/assets/projects/SIRTONA.mp4",
     "excerpt": "A refined identity system with elegant typographic rhythm and disciplined whitespace.",
     "alt": "Minimal brand identity mockup on a neutral background.",
     "credits": "Design: GR",
@@ -16,88 +17,105 @@
     ]
   },
   {
-    "slug": "editorial-layout-study",
-    "title": "Editorial Layout Study",
-    "roles": ["Editorial Design"],
-    "tools": ["InDesign"],
-    "thumb": "/assets/projects/editorial-layout.svg",
-    "excerpt": "An exploration of contrast, scale, and hierarchy across an airy print layout.",
-    "alt": "Editorial spread with a tall image column and text blocks.",
+    "slug": "minimal-brand-identity",
+    "title": "Minimal Brand Identity",
+    "roles": ["Art Direction", "Brand Design"],
+    "tools": ["Illustrator", "Figma"],
+    "thumb": "/assets/projects/SIRTONA.mp4",
+    "video": "/assets/projects/SIRTONA.mp4",
+    "excerpt": "A refined identity system with elegant typographic rhythm and disciplined whitespace.",
+    "alt": "Minimal brand identity mockup on a neutral background.",
     "credits": "Design: GR",
     "gallery": [
-      { "src": "/assets/projects/editorial-layout.svg", "alt": "Opening spread" },
-      { "src": "/assets/projects/editorial-layout.svg", "alt": "Grid detail" }
+      { "src": "/assets/projects/brand.svg", "alt": "Brand system cover" },
+      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
+      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
+      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" }
     ]
   },
   {
-    "slug": "packaging-series",
-    "title": "Packaging Series",
-    "roles": ["Packaging", "Illustration"],
-    "tools": ["Illustrator", "Cinema4D"],
-    "thumb": "/assets/projects/packaging.webp",
-    "excerpt": "A clean packaging system featuring subtle texture and simple color cues.",
-    "alt": "Three minimal packaging boxes arranged on a clean surface.",
+    "slug": "minimal-brand-identity",
+    "title": "Minimal Brand Identity",
+    "roles": ["Art Direction", "Brand Design"],
+    "tools": ["Illustrator", "Figma"],
+    "thumb": "/assets/projects/SIRTONA.mp4",
+    "video": "/assets/projects/SIRTONA.mp4",
+    "excerpt": "A refined identity system with elegant typographic rhythm and disciplined whitespace.",
+    "alt": "Minimal brand identity mockup on a neutral background.",
     "credits": "Design: GR",
     "gallery": [
-      { "src": "/assets/projects/packaging.webp", "alt": "Pack family" },
-      { "src": "/assets/projects/packaging.webp", "alt": "Close-up" }
+      { "src": "/assets/projects/brand.svg", "alt": "Brand system cover" },
+      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
+      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
+      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" }
     ]
   },
   {
-    "slug": "packaging-series",
-    "title": "Packaging Series",
-    "roles": ["Packaging", "Illustration"],
-    "tools": ["Illustrator", "Cinema4D"],
-    "thumb": "/assets/projects/packaging.webp",
-    "excerpt": "A clean packaging system featuring subtle texture and simple color cues.",
-    "alt": "Three minimal packaging boxes arranged on a clean surface.",
+    "slug": "minimal-brand-identity",
+    "title": "Minimal Brand Identity",
+    "roles": ["Art Direction", "Brand Design"],
+    "tools": ["Illustrator", "Figma"],
+    "thumb": "/assets/projects/SIRTONA.mp4",
+    "video": "/assets/projects/SIRTONA.mp4",
+    "excerpt": "A refined identity system with elegant typographic rhythm and disciplined whitespace.",
+    "alt": "Minimal brand identity mockup on a neutral background.",
     "credits": "Design: GR",
     "gallery": [
-      { "src": "/assets/projects/packaging.webp", "alt": "Pack family" },
-      { "src": "/assets/projects/packaging.webp", "alt": "Close-up" }
+      { "src": "/assets/projects/brand.svg", "alt": "Brand system cover" },
+      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
+      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
+      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" }
     ]
   },
   {
-    "slug": "packaging-series",
-    "title": "Packaging Series",
-    "roles": ["Packaging", "Illustration"],
-    "tools": ["Illustrator", "Cinema4D"],
-    "thumb": "/assets/projects/packaging.webp",
-    "excerpt": "A clean packaging system featuring subtle texture and simple color cues.",
-    "alt": "Three minimal packaging boxes arranged on a clean surface.",
+    "slug": "minimal-brand-identity",
+    "title": "Minimal Brand Identity",
+    "roles": ["Art Direction", "Brand Design"],
+    "tools": ["Illustrator", "Figma"],
+    "thumb": "/assets/projects/SIRTONA.mp4",
+    "video": "/assets/projects/SIRTONA.mp4",
+    "excerpt": "A refined identity system with elegant typographic rhythm and disciplined whitespace.",
+    "alt": "Minimal brand identity mockup on a neutral background.",
     "credits": "Design: GR",
     "gallery": [
-      { "src": "/assets/projects/packaging.webp", "alt": "Pack family" },
-      { "src": "/assets/projects/packaging.webp", "alt": "Close-up" }
+      { "src": "/assets/projects/brand.svg", "alt": "Brand system cover" },
+      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
+      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
+      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" }
     ]
   },
   {
-    "slug": "packaging-series",
-    "title": "Packaging Series",
-    "roles": ["Packaging", "Illustration"],
-    "tools": ["Illustrator", "Cinema4D"],
-    "thumb": "/assets/projects/packaging.webp",
-    "excerpt": "A clean packaging system featuring subtle texture and simple color cues.",
-    "alt": "Three minimal packaging boxes arranged on a clean surface.",
+    "slug": "minimal-brand-identity",
+    "title": "Minimal Brand Identity",
+    "roles": ["Art Direction", "Brand Design"],
+    "tools": ["Illustrator", "Figma"],
+    "thumb": "/assets/projects/SIRTONA.mp4",
+    "video": "/assets/projects/SIRTONA.mp4",
+    "excerpt": "A refined identity system with elegant typographic rhythm and disciplined whitespace.",
+    "alt": "Minimal brand identity mockup on a neutral background.",
     "credits": "Design: GR",
     "gallery": [
-      { "src": "/assets/projects/packaging.webp", "alt": "Pack family" },
-      { "src": "/assets/projects/packaging.webp", "alt": "Close-up" }
+      { "src": "/assets/projects/brand.svg", "alt": "Brand system cover" },
+      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
+      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
+      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" }
     ]
   },
   {
-    "slug": "packaging-series",
-    "title": "Packaging Series",
-    "roles": ["Packaging", "Illustration"],
-    "tools": ["Illustrator", "Cinema4D"],
-    "thumb": "/assets/projects/packaging.webp",
-    "excerpt": "A clean packaging system featuring subtle texture and simple color cues.",
-    "alt": "Three minimal packaging boxes arranged on a clean surface.",
+    "slug": "minimal-brand-identity",
+    "title": "Minimal Brand Identity",
+    "roles": ["Art Direction", "Brand Design"],
+    "tools": ["Illustrator", "Figma"],
+    "thumb": "/assets/projects/SIRTONA.mp4",
+    "video": "/assets/projects/SIRTONA.mp4",
+    "excerpt": "A refined identity system with elegant typographic rhythm and disciplined whitespace.",
+    "alt": "Minimal brand identity mockup on a neutral background.",
     "credits": "Design: GR",
     "gallery": [
-      { "src": "/assets/projects/packaging.webp", "alt": "Pack family" },
-      { "src": "/assets/projects/packaging.webp", "alt": "Close-up" },
-      { "src": "/assets/projects/packaging.webp", "alt": "Close-up" }
+      { "src": "/assets/projects/brand.svg", "alt": "Brand system cover" },
+      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
+      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
+      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" }
     ]
   }
 ]

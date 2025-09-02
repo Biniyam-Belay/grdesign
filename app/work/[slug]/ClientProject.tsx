@@ -5,6 +5,7 @@ import { initGSAP } from "@lib/gsap";
 import { useReducedMotion } from "@lib/hooks/useReducedMotion";
 import type { Project } from "@lib/types";
 import Lightbox from "@components/media/Lightbox";
+import VideoPlayer from "@components/media/VideoPlayer";
 import Link from "next/link";
 
 export default function ClientProject({
@@ -89,14 +90,27 @@ export default function ClientProject({
 
           {/* Hero media */}
           <figure className="relative mt-8 aspect-[16/9] w-full overflow-hidden border border-neutral-200 bg-neutral-50">
-            <Image
-              src={project.thumb}
-              alt={project.alt ?? project.title}
-              fill
-              sizes="100vw"
-              className="object-cover"
-              priority
-            />
+            {/* Display video if available, otherwise show image */}
+            {project.video || (project.thumb && project.thumb.endsWith(".mp4")) ? (
+              <div className="absolute inset-0 p-4">
+                <div className="relative w-full h-full overflow-hidden rounded-lg">
+                  <VideoPlayer
+                    src={project.video || project.thumb}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    withGradient={false}
+                  />
+                </div>
+              </div>
+            ) : (
+              <Image
+                src={project.thumb}
+                alt={project.alt ?? project.title}
+                fill
+                sizes="100vw"
+                className="object-cover"
+                priority
+              />
+            )}
           </figure>
         </div>
       </section>

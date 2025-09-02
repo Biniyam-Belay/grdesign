@@ -3,6 +3,7 @@ export type Project = {
   title: string;
   excerpt: string;
   thumb: string;
+  video?: string;
   roles: string[];
   tools?: string[];
   alt?: string;
