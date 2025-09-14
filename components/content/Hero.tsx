@@ -43,6 +43,9 @@ export default function Hero({ offsetTop = 80 }: Props) {
         const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
         // Scene 1: Brand entrance
+        // Prepare title line masking
+        gsap.set("[data-anim='title-line']", { clipPath: "inset(0 0 100% 0)" });
+
         tl.fromTo(
           "[data-anim='brand-text']",
           { y: 100, x: "30vw", scale: 0.8, opacity: 0 },
@@ -69,9 +72,17 @@ export default function Hero({ offsetTop = 80 }: Props) {
           // Scene 2: Content reveal
           .from("[data-anim='cta-contact']", { y: 20, opacity: 0, duration: 0.6 }, "-=0.5")
           .from("[data-anim='kicker']", { y: 16, opacity: 0, duration: 0.6 }, "-=0.2")
-          .from(
+          .fromTo(
             "[data-anim='title-line']",
-            { y: 24, opacity: 0, duration: 0.7, stagger: 0.08 },
+            { y: 24, opacity: 0, clipPath: "inset(0 0 100% 0)" },
+            {
+              y: 0,
+              opacity: 1,
+              clipPath: "inset(0 0 0% 0)",
+              duration: 0.85,
+              stagger: 0.1,
+              ease: "power3.out",
+            },
             "-=0.2",
           )
           .from("[data-anim='subcopy']", { y: 16, opacity: 0, duration: 0.6 }, "-=0.2");
@@ -80,6 +91,8 @@ export default function Hero({ offsetTop = 80 }: Props) {
       // Mobile animation
       mm.add("(max-width: 767px)", () => {
         const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+        gsap.set("[data-anim='title-line']", { clipPath: "inset(0 0 100% 0)" });
+
         tl.from("[data-anim-brand]", {
           yPercent: 120,
           rotate: () => gsap.utils.random(-40, 40),
@@ -88,9 +101,17 @@ export default function Hero({ offsetTop = 80 }: Props) {
           stagger: 0.1,
           ease: "back.out(1.7)",
         })
-          .from(
+          .fromTo(
             "[data-anim='title-line']",
-            { y: 24, opacity: 0, duration: 0.7, stagger: 0.1 },
+            { y: 24, opacity: 0, clipPath: "inset(0 0 100% 0)" },
+            {
+              y: 0,
+              opacity: 1,
+              clipPath: "inset(0 0 0% 0)",
+              duration: 0.85,
+              stagger: 0.12,
+              ease: "power3.out",
+            },
             "-=0.2",
           )
           .from("[data-anim='subcopy']", { y: 16, opacity: 0, duration: 0.6 }, "-=0.2")

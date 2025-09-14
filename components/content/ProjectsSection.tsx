@@ -12,9 +12,9 @@ export default function ProjectsSection() {
     i % 5 === 0 ? "wide" : i % 5 === 2 ? "tall" : "standard";
 
   return (
-    <section id="work" className="py-20 px-4 sm:px-8 lg:px-12 bg-white">
+    <section id="work" className="py-20 px-4 sm:px-8 lg:px-12 bg-white" data-reveal>
       {/* header */}
-      <div className="mb-10 flex items-end justify-between">
+      <div className="mb-10 flex items-end justify-between" data-reveal>
         <div>
           <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-neutral-900">
             Selected Work
@@ -41,7 +41,7 @@ export default function ProjectsSection() {
               : "lg:col-span-4 sm:col-span-1 col-span-1";
 
           return (
-            <div key={`${project.slug}-${i}`} className={span}>
+            <div key={`${project.slug}-${i}`} className={span} data-reveal>
               <ProjectCard project={project} variant={variant} />
             </div>
           );

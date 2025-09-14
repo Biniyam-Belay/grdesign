@@ -5,10 +5,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePageTransition } from "@lib/gsapPageTransition";
 import SplitText from "@components/motion/SplitText";
+import { useReveal } from "@lib/hooks/useReveal";
 
 export default function AboutPage() {
   const pageRef = useRef<HTMLElement>(null!);
   usePageTransition(pageRef);
+  // Apply scroll reveal animations (opt-out for users with reduced motion handled inside hook)
+  useReveal({ selector: "[data-reveal]" });
 
   return (
     <main ref={pageRef} className="bg-white">
@@ -18,6 +21,7 @@ export default function AboutPage() {
         <header
           className="grid grid-cols-1 gap-10 pt-12 md:grid-cols-2 md:items-center md:gap-16"
           aria-labelledby="about-hero-title"
+          data-reveal
         >
           {/* Left: intro copy vertically centered to align with image */}
           <div className="flex flex-col justify-center">
@@ -51,7 +55,7 @@ export default function AboutPage() {
           </div>
 
           {/* Right: portrait/video area */}
-          <figure className="relative">
+          <figure className="relative" data-reveal>
             <div className="relative overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-50">
               <div className="aspect-[4/5] relative">
                 {/* Autoplay looping video */}
@@ -82,8 +86,12 @@ export default function AboutPage() {
         <hr className="mx-0 my-14 h-px w-24 border-0 bg-neutral-200" />
 
         {/* ===== Values ===== */}
-        <section className="pb-2" aria-labelledby="values-title">
-          <h2 id="values-title" className="text-2xl font-semibold text-neutral-900 md:text-3xl">
+        <section className="pb-2" aria-labelledby="values-title" data-reveal>
+          <h2
+            id="values-title"
+            className="text-2xl font-semibold text-neutral-900 md:text-3xl"
+            data-reveal
+          >
             Design values
           </h2>
 
@@ -105,6 +113,7 @@ export default function AboutPage() {
               <article
                 key={title}
                 className="group rounded-2xl border border-neutral-200 p-6 transition-all hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-[0_6px_24px_-12px_rgba(0,0,0,0.15)] focus-within:border-neutral-300"
+                data-reveal
               >
                 <h3 className="text-lg font-medium text-neutral-900">{title}</h3>
                 <p className="mt-2 text-neutral-600">{body}</p>
@@ -115,8 +124,12 @@ export default function AboutPage() {
         </section>
 
         {/* ===== Experience (vertical rail) ===== */}
-        <section className="mt-16" aria-labelledby="experience-title">
-          <h2 id="experience-title" className="text-2xl font-semibold text-neutral-900 md:text-3xl">
+        <section className="mt-16" aria-labelledby="experience-title" data-reveal>
+          <h2
+            id="experience-title"
+            className="text-2xl font-semibold text-neutral-900 md:text-3xl"
+            data-reveal
+          >
             Experience
           </h2>
 
@@ -143,7 +156,7 @@ export default function AboutPage() {
                 body: "Developed visual systems for print and digital campaigns.",
               },
             ].map(({ period, title, body }) => (
-              <li key={title} className="grid grid-cols-1 gap-3 sm:grid-cols-12">
+              <li key={title} className="grid grid-cols-1 gap-3 sm:grid-cols-12" data-reveal>
                 {/* Bullet */}
                 <span
                   aria-hidden
@@ -167,6 +180,7 @@ export default function AboutPage() {
         <section
           className="mt-16 flex flex-col gap-4 border-t border-neutral-200 py-8 sm:flex-row sm:items-center sm:justify-between"
           aria-labelledby="contact-title"
+          data-reveal
         >
           <p
             id="contact-title"
@@ -175,7 +189,7 @@ export default function AboutPage() {
             Let’s talk
           </p>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3" data-reveal>
             {/* Primary CTA */}
             <Link
               href="mailto:biniyam.be.go@gmail.com"

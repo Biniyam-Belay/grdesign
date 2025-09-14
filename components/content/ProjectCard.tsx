@@ -6,7 +6,11 @@ import { useEffect, useRef } from "react";
 import { initGSAP } from "@lib/gsap";
 import { useReducedMotion } from "@lib/hooks/useReducedMotion";
 import type { Project } from "@lib/types";
-import VideoPlayer from "@components/media/VideoPlayer";
+// We intentionally no longer autoplay/show inline video in the card thumbnail.
+// If a project has a video, we still show the image thumbnail (thumb) and can indicate playability.
+// Any actual video playback should occur on the project detail page or via an explicit interaction.
+
+// import VideoPlayer from "@components/media/VideoPlayer"; // Removed from thumbnail usage
 
 type Variant = "wide" | "standard" | "tall";
 
@@ -53,35 +57,38 @@ export default function ProjectCard({
       <div
         className={`relative ${ratio} w-full overflow-hidden border border-neutral-200 bg-white`}
       >
-        {/* If path ends with .mp4, use video element instead of Image */}
-        {project.video || (project.thumb && project.thumb.endsWith(".mp4")) ? (
-          <>
-            {/* Add padding container for whitespace around video */}
-            <div className="absolute inset-0 p-4">
-              {/* Video container with maintained aspect ratio */}
-              <div className="relative w-full h-full overflow-hidden rounded-lg">
-                <VideoPlayer
-                  src={project.video || project.thumb}
-                  className="absolute scale-[1.15] inset-0 w-full h-full object-cover transition-transform duration-500 ease-[cubic-bezier(.2,.8,.2,1)] group-hover:scale-[1.1]"
-                  withGradient={false}
-                />
-              </div>
-            </div>
-          </>
-        ) : (
-          <div className="absolute inset-0 p-4">
-            <div className="relative w-full h-full overflow-hidden rounded-lg">
-              <Image
-                src={project.thumb}
-                alt={project.alt ?? project.title}
-                fill
-                className="object-cover transition-transform duration-500 ease-[cubic-bezier(.2,.8,.2,1)] group-hover:scale-[1.07]"
-                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                priority={false}
-              />
-            </div>
+        <div className="absolute inset-0 p-4">
+          <div className="relative w-full h-full overflow-hidden">
+            <Image
+              src={project.thumb}
+              alt={project.alt ?? project.title}
+              fill
+              className="object-cover transition-transform duration-500 ease-[cubic-bezier(.2,.8,.2,1)] group-hover:scale-[1.05]"
+              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+              priority={false}
+            />
+
+            {project.video && (
+              <span
+                className="pointer-events-none absolute bottom-2 right-2 inline-flex items-center gap-1 rounded-md bg-black/60 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-white backdrop-blur-sm opacity-80 group-hover:opacity-100 transition-opacity"
+                aria-label="Video available"
+              >
+                {/* Simple play triangle */}
+                <svg
+                  width="10"
+                  height="10"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  className="drop-shadow"
+                >
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+                Video
+              </span>
+            )}
           </div>
-        )}
+        </div>
 
         {/* subtle focus ring for a11y */}
         <span className="pointer-events-none absolute inset-0 rounded-3xl ring-0 transition-shadow group-focus-visible:ring-2 group-focus-visible:ring-black/60" />

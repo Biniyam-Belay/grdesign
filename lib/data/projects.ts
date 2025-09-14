@@ -11,6 +11,7 @@ const ProjectSchema = z.object({
   tools: z.array(z.string()).optional(),
   alt: z.string().optional(),
   credits: z.string().optional(),
+  video: z.string().optional(),
   gallery: z.array(z.object({ src: z.string().min(1), alt: z.string().min(1) })).optional(),
 });
 

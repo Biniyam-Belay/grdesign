@@ -1,5 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
+import { initGSAP } from "@lib/gsap";
+import { useReducedMotion } from "@lib/hooks/useReducedMotion";
 
 type LightboxProps = {
   src: string;
@@ -11,6 +13,9 @@ type LightboxProps = {
 
 export default function Lightbox({ src, alt, onClose, onPrev, onNext }: LightboxProps) {
   const dialogRef = useRef<HTMLDivElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const reduced = useReducedMotion();
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -22,16 +27,34 @@ export default function Lightbox({ src, alt, onClose, onPrev, onNext }: Lightbox
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose, onPrev, onNext]);
 
+  useEffect(() => {
+    if (reduced) return;
+    const gsap = initGSAP();
+    if (dialogRef.current && contentRef.current) {
+      gsap.fromTo(
+        dialogRef.current,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.35, ease: "power2.out" },
+      );
+      gsap.fromTo(
+        contentRef.current,
+        { y: 20, scale: 0.96, opacity: 0 },
+        { y: 0, scale: 1, opacity: 1, duration: 0.45, ease: "power3.out" },
+      );
+    }
+  }, [reduced]);
+
   return (
     <div
       ref={dialogRef}
       tabIndex={-1}
       aria-modal="true"
       role="dialog"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-[2px] p-4"
       onClick={onClose}
     >
       <div
+        ref={contentRef}
         className="relative max-h-[90vh] w-auto max-w-[90vw]"
         onClick={(e) => e.stopPropagation()}
       >
@@ -64,7 +87,11 @@ export default function Lightbox({ src, alt, onClose, onPrev, onNext }: Lightbox
           </button>
         )}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={src} alt={alt} className="max-h-[90vh] w-auto rounded-md shadow-xl" />
+        <img
+          src={src}
+          alt={alt}
+          className="max-h-[90vh] w-auto rounded-md shadow-xl transition-transform duration-500"
+        />
       </div>
     </div>
   );
