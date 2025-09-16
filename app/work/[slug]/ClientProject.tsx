@@ -25,27 +25,52 @@ export default function ClientProject({
   useEffect(() => {
     if (reduced || !sectionsRef.current) return;
     const gsap = initGSAP();
+
     const q = sectionsRef.current.querySelectorAll<HTMLElement>("[data-reveal]");
+    const groups = sectionsRef.current.querySelectorAll<HTMLElement>("[data-reveal-stagger]");
+
     const ctx = gsap.context(() => {
-      gsap.set(q, { opacity: 0, y: 14 });
+      // ultra-smooth, low-distance motion
+      gsap.set(q, { opacity: 0, y: 10 });
       q.forEach((el) => {
         gsap.to(el, {
           opacity: 1,
           y: 0,
-          duration: 0.5,
-          ease: "power2.out",
+          duration: 0.6,
+          ease: "power3.out",
           scrollTrigger: { trigger: el, start: "top 85%" },
+        });
+      });
+
+      groups.forEach((group) => {
+        const children = Array.from(group.children) as HTMLElement[];
+        gsap.set(children, { opacity: 0, y: 12 });
+        gsap.to(children, {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          stagger: 0.06,
+          ease: "power3.out",
+          scrollTrigger: { trigger: group, start: "top 82%" },
         });
       });
     }, sectionsRef);
     return () => ctx.revert();
   }, [reduced]);
 
+  // Flags
+  const hasProblem = !!project.problem && project.problem.trim().length > 0;
+  const hasSolution = !!project.solution && project.solution.trim().length > 0;
+  const hasHighlights = Array.isArray(project.highlights) && project.highlights.length > 0;
+  const hasApproach = !!project.approach && project.approach.trim().length > 0;
+  const hasProcess = Array.isArray(project.process) && project.process.length > 0;
+  const hasOutcome = !!project.outcome && project.outcome.trim().length > 0;
+  const hasDeliverables = Array.isArray(project.deliverables) && project.deliverables.length > 0;
+
   return (
     <main className="bg-white">
-      {/* ===== Hero ===== */}
+      {/* ===== Hero (kept) ===== */}
       <section className="relative isolate overflow-hidden min-h-screen flex items-end">
-        {/* Background media full-bleed */}
         <div className="absolute inset-0 -z-10">
           {project.gallery && project.gallery.length > 0 ? (
             <ImageCarousel
@@ -71,12 +96,10 @@ export default function ClientProject({
               className="object-cover"
             />
           )}
-          {/* Single dark gradient overlay (no radial, no white bottom fade) */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/35 to-black/75" />
         </div>
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-8 lg:px-12 pt-16 md:pt-24 pb-24 md:pb-32 w-full">
-          {/* Kicker + back link row */}
           <div className="mb-6 flex items-center justify-between gap-6" data-reveal>
             <p className="text-xs uppercase tracking-[0.2em] text-white/70">Addis Ababa · EAT</p>
             <Link
@@ -88,7 +111,6 @@ export default function ClientProject({
             </Link>
           </div>
 
-          {/* Title + excerpt + meta chips */}
           <header className="max-w-4xl" data-reveal>
             <h1 className="text-3xl md:text-5xl font-semibold tracking-tight text-white">
               {project.title}
@@ -96,7 +118,6 @@ export default function ClientProject({
             {project.excerpt && (
               <p className="mt-3 text-base md:text-lg text-white/80">{project.excerpt}</p>
             )}
-
             <div className="mt-5 flex flex-wrap items-center gap-2">
               {project.roles?.slice(0, 3).map((r) => (
                 <span
@@ -119,99 +140,275 @@ export default function ClientProject({
         </div>
       </section>
 
-      {/* ===== Body ===== */}
-      <section ref={sectionsRef} className="relative -mt-16 z-10">
-        <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-12 py-24">
-          <div className="grid grid-cols-1 gap-24 lg:grid-cols-12">
+      {/* ===== Body (minimal, no cards) ===== */}
+      <section ref={sectionsRef} className="relative z-10">
+        <div className="w-full max-w-none px-4 sm:px-5 md:px-6 lg:px-8 xl:px-10 py-16 md:py-24">
+          <div className="grid grid-cols-1 gap-14 lg:gap-20 lg:grid-cols-12">
             {/* Main narrative */}
             <article className="lg:col-span-8 space-y-12">
-              <section data-reveal className="space-y-4">
-                <h2 className="text-xl md:text-2xl font-medium tracking-tight text-neutral-900">
-                  Brief
-                </h2>
-                <p className="text-neutral-700 leading-relaxed">
-                  Objective, constraints, and the core design challenge.
+              {/* Overview */}
+              <section data-reveal>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
+                  Overview
                 </p>
+                <p className="mt-3 text-lg md:text-xl text-neutral-800 leading-relaxed">
+                  {project.excerpt ||
+                    "A concise overview describing the project’s purpose, audience, and success criteria."}
+                </p>
+
+                {/* Inline metrics */}
+                <div className="mt-6 grid grid-cols-3 gap-6 text-sm" data-reveal-stagger>
+                  <div>
+                    <div className="text-[11px] uppercase tracking-[0.18em] text-neutral-500">
+                      Assets
+                    </div>
+                    <div className="mt-1 text-neutral-900 tabular-nums">
+                      {project.gallery?.length ?? 0}
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-[11px] uppercase tracking-[0.18em] text-neutral-500">
+                      Responsibilities
+                    </div>
+                    <div className="mt-1 text-neutral-900 tabular-nums">{project.roles.length}</div>
+                  </div>
+                  <div>
+                    <div className="text-[11px] uppercase tracking-[0.18em] text-neutral-500">
+                      Tools
+                    </div>
+                    <div className="mt-1 text-neutral-900 tabular-nums">
+                      {(project.tools ?? []).length}
+                    </div>
+                  </div>
+                </div>
               </section>
 
-              <section data-reveal className="space-y-4">
-                <h2 className="text-xl md:text-2xl font-medium tracking-tight text-neutral-900">
-                  Process
-                </h2>
-                <p className="text-neutral-700 leading-relaxed">
-                  Highlights from exploration, iterations, and rationale behind key decisions.
-                </p>
-              </section>
+              {/* Divider */}
+              <div className="h-px bg-neutral-200/70" />
 
-              <section data-reveal className="space-y-4">
-                <h2 className="text-xl md:text-2xl font-medium tracking-tight text-neutral-900">
-                  Outcome
-                </h2>
-                <p className="text-neutral-700 leading-relaxed">
-                  Impact, metrics (where possible), and final delivery.
-                </p>
-              </section>
+              {/* Problem / Solution */}
+              {(hasProblem || hasSolution) && (
+                <section
+                  data-reveal
+                  className="grid grid-cols-1 md:grid-cols-2 gap-8"
+                  data-reveal-stagger
+                >
+                  {hasProblem && (
+                    <div>
+                      <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
+                        Problem
+                      </div>
+                      <p className="mt-2 text-neutral-800 leading-relaxed">{project.problem}</p>
+                    </div>
+                  )}
+                  {hasSolution && (
+                    <div>
+                      <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
+                        Solution
+                      </div>
+                      <p className="mt-2 text-neutral-800 leading-relaxed">{project.solution}</p>
+                    </div>
+                  )}
+                </section>
+              )}
 
-              {/* Gallery */}
-              {project.gallery && project.gallery.length > 0 && (
-                <section data-reveal className="mt-8">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                    {project.gallery.map((g, i) => (
-                      <button
-                        key={g.src}
-                        className="group relative overflow-hidden aspect-[4/3]"
-                        onClick={() => setLbIndex(i)}
-                        aria-label={`Open image: ${g.alt}`}
+              {hasHighlights && (
+                <>
+                  <div className="h-px bg-neutral-200/70" />
+                  <section data-reveal>
+                    <h2 className="text-xl md:text-2xl font-medium tracking-tight text-neutral-900">
+                      Highlights
+                    </h2>
+                    <ul
+                      className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4"
+                      data-reveal-stagger
+                    >
+                      {project.highlights!.map((item, idx) => (
+                        <li key={idx} className="flex items-start gap-3">
+                          <span className="mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-neutral-900 text-white text-[11px]">
+                            ✓
+                          </span>
+                          <span className="text-neutral-700 leading-relaxed">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                </>
+              )}
+
+              {hasApproach && (
+                <>
+                  <div className="h-px bg-neutral-200/70" />
+                  <section data-reveal>
+                    <h2 className="text-xl md:text-2xl font-medium tracking-tight text-neutral-900">
+                      Approach
+                    </h2>
+                    <p className="mt-2 text-neutral-700 leading-relaxed">{project.approach}</p>
+                  </section>
+                </>
+              )}
+
+              {hasProcess && (
+                <>
+                  <div className="h-px bg-neutral-200/70" />
+                  <section data-reveal>
+                    <h3 className="text-base md:text-lg font-medium tracking-tight text-neutral-900 mb-2">
+                      Process
+                    </h3>
+                    <ol className="space-y-5" data-reveal-stagger>
+                      {project.process!.map((step, idx) => (
+                        <li key={idx} className="flex gap-3">
+                          <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-[11px] tabular-nums">
+                            {idx + 1}
+                          </span>
+                          <div>
+                            <div className="text-sm font-medium leading-tight text-neutral-900">
+                              {step.title}
+                            </div>
+                            <p className="mt-1 text-sm text-neutral-700 leading-relaxed">
+                              {step.body}
+                            </p>
+                          </div>
+                        </li>
+                      ))}
+                    </ol>
+                  </section>
+                </>
+              )}
+
+              {hasOutcome && (
+                <>
+                  <div className="h-px bg-neutral-200/70" />
+                  <section data-reveal>
+                    <h2 className="text-xl md:text-2xl font-medium tracking-tight text-neutral-900">
+                      Outcome
+                    </h2>
+                    <p className="mt-2 text-neutral-700 leading-relaxed">{project.outcome}</p>
+                  </section>
+                </>
+              )}
+
+              {hasDeliverables && (
+                <section data-reveal>
+                  <h3 className="text-base md:text-lg font-medium tracking-tight text-neutral-900">
+                    Deliverables
+                  </h3>
+                  <div className="mt-3 flex flex-wrap gap-2" data-reveal-stagger>
+                    {project.deliverables!.map((d) => (
+                      <span
+                        key={d}
+                        className="rounded-full bg-neutral-100 px-3 py-1 text-xs text-neutral-700"
                       >
-                        <Image
-                          src={g.src}
-                          alt={g.alt}
-                          fill
-                          className="object-cover transition-transform duration-[1100ms] ease-[cubic-bezier(.22,.72,.17,1)] group-hover:scale-[1.05]"
-                          sizes="(min-width: 1024px) 50vw, 100vw"
-                        />
-                        <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        <span className="pointer-events-none absolute inset-0 ring-1 ring-white/10 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        <figcaption className="pointer-events-none absolute left-3 bottom-3 translate-y-2 rounded-md bg-black/55 px-2.5 py-1 text-[11px] font-medium tracking-wide text-white opacity-0 backdrop-blur-sm transition-[opacity,transform] duration-400 group-hover:translate-y-0 group-hover:opacity-100">
-                          {g.alt}
-                        </figcaption>
-                      </button>
+                        {d}
+                      </span>
                     ))}
                   </div>
                 </section>
               )}
+
+              {project.credits && (
+                <section data-reveal>
+                  <p className="text-neutral-800 italic leading-relaxed">“{project.credits}”</p>
+                </section>
+              )}
             </article>
 
-            {/* Sticky info rail (minimal style) */}
+            {/* Info rail (ultra minimal) */}
             <aside className="lg:col-span-4 lg:pl-10">
-              <div className="lg:sticky lg:top-32 space-y-10 text-sm text-neutral-700">
-                <div data-reveal className="space-y-1">
+              <div className="lg:sticky lg:top-28 space-y-8 text-sm">
+                <div data-reveal>
+                  <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
+                    Project
+                  </h3>
+                  <div className="mt-2 grid grid-cols-2 gap-3">
+                    <div>
+                      <div className="text-[11px] uppercase tracking-widest text-neutral-500">
+                        Year
+                      </div>
+                      <div className="text-neutral-900">{project.year ?? "—"}</div>
+                    </div>
+                    <div>
+                      <div className="text-[11px] uppercase tracking-widest text-neutral-500">
+                        Client
+                      </div>
+                      <div className="text-neutral-900">{project.client ?? "—"}</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div data-reveal>
+                  <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
+                    Responsibilities
+                  </h3>
+                  <div className="mt-2 flex flex-wrap gap-2" data-reveal-stagger>
+                    {project.roles.map((r) => (
+                      <span
+                        key={r}
+                        className="rounded-full bg-neutral-100 px-3 py-1 text-xs text-neutral-800"
+                      >
+                        {r}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div data-reveal>
                   <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
                     Tools
                   </h3>
-                  <p className="leading-relaxed">{(project.tools ?? ["Figma"]).join(", ")}</p>
+                  <div className="mt-2 flex flex-wrap gap-2" data-reveal-stagger>
+                    {(project.tools ?? ["Figma"]).map((t) => (
+                      <span
+                        key={t}
+                        className="rounded-full bg-neutral-50 px-3 py-1 text-xs text-neutral-700"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                <div data-reveal className="space-y-1">
-                  <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
-                    Role
-                  </h3>
-                  <p className="leading-relaxed">{project.roles.join(", ")}</p>
-                </div>
+
                 {project.credits && (
-                  <div data-reveal className="space-y-1">
+                  <div data-reveal>
                     <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
                       Credits
                     </h3>
-                    <p className="leading-relaxed">{project.credits}</p>
+                    <p className="mt-1 text-neutral-700 leading-relaxed">{project.credits}</p>
                   </div>
                 )}
               </div>
             </aside>
           </div>
         </div>
+
+        {/* ===== Gallery (same grid, curved corners, no chrome) ===== */}
+        {project.gallery && project.gallery.length > 0 && (
+          <div className="w-full max-w-none px-4 sm:px-5 md:px-6 lg:px-8 xl:px-10 pb-16 md:pb-24">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4" data-reveal-stagger>
+              {project.gallery.map((g, i) => (
+                <button
+                  key={g.src}
+                  className="group relative overflow-hidden aspect-[16/9] will-change-transform"
+                  onClick={() => setLbIndex(i)}
+                  aria-label={`Open image: ${g.alt || project.title}`}
+                  data-reveal
+                >
+                  <Image
+                    src={g.src}
+                    alt={g.alt || project.title}
+                    fill
+                    className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.015]"
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                  />
+                  <span className="pointer-events-none absolute inset-0 ring-0 ring-black/0 transition-[ring-color,ring-width] duration-300 group-hover:ring-2 group-hover:ring-black/10" />
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </section>
 
-      {/* ===== Prev / Next strip (full width, quiet) ===== */}
+      {/* ===== Prev / Next strip (unchanged) ===== */}
       <section className="border-t border-neutral-200/70">
         <div className="px-4 sm:px-8 lg:px-12 py-10">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

@@ -9,6 +9,28 @@
     "excerpt": "A refined identity system with elegant typographic rhythm and disciplined whitespace.",
     "alt": "Sirtona identity mockup on a neutral background.",
     "credits": "Design: GR",
+    "problem": "Multiple touchpoints lacked cohesion. Typography, spacing, and motion varied across surfaces, diluting brand clarity.",
+    "solution": "Establish a reduced system: a clear typographic scale, consistent spacing, and restrained motion tokens that translate seamlessly from brand to product.",
+    "highlights": [
+      "Unified typographic rhythm across channels.",
+      "Modular components for faster production.",
+      "Measured motion to guide attention.",
+      "Accessible color and contrast targets."
+    ],
+    "approach": "Start with principles, test quickly in low-fidelity, then codify in a compact design kit that scales without noise.",
+    "process": [
+      { "title": "Discovery", "body": "Interviews, brand audit, and defining constraints." },
+      {
+        "title": "Exploration",
+        "body": "Multiple low-fi routes, crits, and narrowing to a system."
+      },
+      { "title": "Refinement", "body": "Type, spacing, and motion tokens; component patterns." },
+      { "title": "Delivery", "body": "Design kit, templates, and guidance for rollout." }
+    ],
+    "year": 2023,
+    "client": "Sirtona",
+    "outcome": "A calm, durable identity system that improved brand consistency and reduced design debt across touchpoints.",
+    "deliverables": ["Design kit", "Logo and marks", "Component library", "Brand guidelines"],
     "gallery": [
       { "src": "/assets/projects/sirtona/SirtonaHero.webp", "alt": "Sirtona wide hero" },
       { "src": "/assets/projects/sirtona/SirtonaHero.webp", "alt": "Sirtona 4x3 hero" },

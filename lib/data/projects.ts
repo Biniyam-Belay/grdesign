@@ -13,6 +13,15 @@ const ProjectSchema = z.object({
   credits: z.string().optional(),
   video: z.string().optional(),
   gallery: z.array(z.object({ src: z.string().min(1), alt: z.string().min(1) })).optional(),
+  problem: z.string().optional(),
+  solution: z.string().optional(),
+  highlights: z.array(z.string()).optional(),
+  approach: z.string().optional(),
+  process: z.array(z.object({ title: z.string(), body: z.string() })).optional(),
+  outcome: z.string().optional(),
+  deliverables: z.array(z.string()).optional(),
+  year: z.union([z.string(), z.number()]).optional(),
+  client: z.string().optional(),
 });
 
 const ProjectsSchema = z.array(ProjectSchema);

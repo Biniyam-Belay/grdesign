@@ -14,4 +14,15 @@ export type Project = {
   alt?: string;
   credits?: string;
   gallery?: Array<{ src: string; alt: string }>;
+  // Optional rich content fields for the case study page
+  problem?: string;
+  solution?: string;
+  highlights?: string[];
+  approach?: string;
+  process?: Array<{ title: string; body: string }>;
+  outcome?: string;
+  deliverables?: string[];
+  // Optional meta for sidebar
+  year?: number | string;
+  client?: string;
 };

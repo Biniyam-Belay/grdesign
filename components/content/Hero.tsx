@@ -2,8 +2,10 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import GridHoverSquares from "@components/motion/GridHoverSquares";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -128,8 +130,21 @@ export default function Hero({ offsetTop = 80 }: Props) {
       style={{ paddingTop: offsetTop }}
       className="hero-background relative isolate min-h-[100svh] px-6 flex overflow-hidden"
     >
+      {/* Cursor squares overlay (desktop only) */}
+      {/* Hover grid overlay (desktop only) */}
+      <div className="pointer-events-none absolute inset-0 z-10 hidden md:block">
+        <GridHoverSquares
+          targetRef={rootRef}
+          cellSize={34}
+          gap={8}
+          color="#000000ff"
+          baseAlpha={0.16}
+          fadeMs={650}
+          composite="soft-light"
+        />
+      </div>
       {/* Subtle background tint + grid */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+      <div aria-hidden className="pointer-events-none absolute inset-0 z-1000">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/0" />
         <div
           className="absolute inset-0 opacity-[0.06]"
@@ -141,7 +156,7 @@ export default function Hero({ offsetTop = 80 }: Props) {
         />
       </div>
 
-      <div className="hero-content relative mx-auto w-full max-w-7xl">
+      <div className="hero-content relative z-20 mx-auto w-full max-w-7xl">
         {/* Mobile Layout */}
         <div className="md:hidden flex flex-col" style={{ minHeight: "calc(100svh - 120px)" }}>
           {/* Move BINI higher - reduce top margin */}
@@ -176,7 +191,14 @@ export default function Hero({ offsetTop = 80 }: Props) {
           {/* Bottom section for avatar and contact */}
           <div className="pb-10 mt-auto">
             <div className="flex justify-between items-center">
-              <div className="w-20 h-20 bg-gray-200 rounded-full"></div>
+              <Image
+                src="/assets/projects/sirtona/SirtonaHero.webp"
+                alt="Profile photo"
+                width={120}
+                height={120}
+                className="w-20 h-20 rounded-full object-cover transform transition-transform duration-300 ease-out will-change-transform hover:scale-[1.1] hover:-translate-x-1"
+                priority
+              />
               <Link
                 data-anim="cta"
                 href="https://calendar.app.google/1RTjShD5sgqBmm3K7"
@@ -274,7 +296,14 @@ export default function Hero({ offsetTop = 80 }: Props) {
                 </h2>
               </div>
               <div className="pointer-events-auto" data-anim="brand-avatar">
-                <div className="w-40 h-40 md:w-48 md:h-48 bg-gray-200 rounded-full"></div>
+                <Image
+                  src="/assets/projects/sirtona/SirtonaHero.webp"
+                  alt="Profile photo"
+                  width={192}
+                  height={192}
+                  className="w-40 h-40 md:w-48 md:h-48 rounded-full object-cover transform transition-transform duration-300 ease-out will-change-transform hover:scale-[1.08] hover:-translate-x-2"
+                  priority
+                />
               </div>
             </div>
           </div>
