@@ -54,30 +54,25 @@ export default function AboutPage() {
             </ul>
           </div>
 
-          {/* Right: portrait/video area */}
+          {/* Right: portrait area */}
           <figure className="relative" data-reveal>
-            <div className="relative overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-50">
+            <div className="relative overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-50">
               <div className="aspect-[4/5] relative">
-                {/* Autoplay looping video */}
-                <video
-                  className="absolute inset-0 w-full h-full object-cover"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  disablePictureInPicture
-                  disableRemotePlayback
-                >
-                  <source src="/assets/about-reel.mp4" type="video/mp4" />
-                  Video preview
-                </video>
+                <Image
+                  src="/assets/aboutbgremoved.webp"
+                  alt="Portrait of Biniyam Belay"
+                  fill
+                  priority
+                  className="object-cover pointer-events-none object-top transform origin-top translate-y-[2%] scale-[1.08]"
+                  sizes="(min-width: 1024px) 560px, (min-width: 768px) 50vw, 100vw"
+                />
               </div>
 
               {/* Soft accent ring (kept subtle; hidden for reduced-motion) */}
               <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-black/5 blur-2xl motion-reduce:hidden" />
             </div>
             <figcaption className="mt-3 text-xs text-neutral-500">
-              Based in Addis Ababa | ET · Available worldwide
+              Based in Addis Ababa · ET · Available worldwide
             </figcaption>
           </figure>
         </header>

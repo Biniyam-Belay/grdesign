@@ -24,14 +24,20 @@ export default function Footer() {
             {/* Socials (simple text links keep it minimal) */}
             <div className="mt-6 flex items-center gap-4">
               {[
-                { label: "Instagram", href: "https://instagram.com/" },
-                { label: "Dribbble", href: "https://dribbble.com/" },
-                { label: "LinkedIn", href: "https://linkedin.com/" },
+                {
+                  label: "Instagram",
+                  href: "https://www.instagram.com/bini.b.g?igsh=enp4OTM1NDU5YjNj",
+                },
+                { label: "Dribbble", href: "https://dribbble.com/bini-yam" },
+                { label: "LinkedIn", href: "https://www.linkedin.com/in/biniyam-belay-147673270/" },
+                { label: "Behance", href: "https://www.behance.net/biniyambelay" },
               ].map(({ label, href }) => (
                 <a
                   key={label}
                   href={href}
                   aria-label={label}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-sm text-neutral-500 hover:text-neutral-900 transition-colors"
                 >
                   {label}

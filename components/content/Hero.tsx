@@ -192,11 +192,11 @@ export default function Hero({ offsetTop = 80 }: Props) {
           <div className="pb-10 mt-auto">
             <div className="flex justify-between items-center">
               <Image
-                src="/assets/projects/sirtona/SirtonaHero.webp"
+                src="/assets/avatarmob.png"
                 alt="Profile photo"
                 width={120}
                 height={120}
-                className="w-20 h-20 rounded-full object-cover transform transition-transform duration-300 ease-out will-change-transform hover:scale-[1.1] hover:-translate-x-1"
+                className="w-20 h-20 rounded-full object-cover transform transition-transform duration-300 ease-out will-change-transform hover:scale-[1.1] hover:-translate-x-1 pointer-events-none border border-1 border-neutral-200 rounded-full"
                 priority
               />
               <Link
@@ -236,7 +236,7 @@ export default function Hero({ offsetTop = 80 }: Props) {
                 data-anim="kicker"
                 className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-4"
               >
-                Portfolio — 2025
+                Portfolio — {new Date().getFullYear()}
               </p>
 
               <h1 className="text-3xl md:text-5xl font-semibold leading-[1.15] text-foreground">
@@ -295,9 +295,12 @@ export default function Hero({ offsetTop = 80 }: Props) {
                   ))}
                 </h2>
               </div>
-              <div className="pointer-events-auto" data-anim="brand-avatar">
+              <div
+                className="pointer-events-none border border-1 border-neutral-200 rounded-full"
+                data-anim="brand-avatar"
+              >
                 <Image
-                  src="/assets/projects/sirtona/SirtonaHero.webp"
+                  src="/assets/avatardesk.png"
                   alt="Profile photo"
                   width={192}
                   height={192}

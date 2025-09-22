@@ -1,6 +1,7 @@
 "use client";
 
-import { FaInstagram, FaTiktok, FaLinkedin, FaTwitter, FaArrowRight } from "react-icons/fa";
+import { FaInstagram, FaLinkedin, FaTwitter, FaArrowRight } from "react-icons/fa";
+import { SiDribbble, SiBehance } from "react-icons/si";
 import { motion } from "framer-motion";
 
 export default function AboutMeSection() {
@@ -39,15 +40,16 @@ export default function AboutMeSection() {
           </div>
 
           {/* Copy rows */}
-          <div className="md:ml-auto md:w-[92%]">
+          <div className="md:ml-auto md:w-[80%]">
             <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
               <div>
                 <h3 className="mb-2 text-sm font-semibold uppercase tracking-widest text-neutral-700">
                   Personal
                 </h3>
                 <p className="text-[0.98rem] leading-relaxed text-neutral-600">
-                  Placeholder for your personal background. Share your journey, interests beyond
-                  design, and the principles that anchor your work and life.
+                  I’m bini. I live in Addis Ababa. I like quiet visuals, neat grids, and coffee that
+                  bites. I steal colors from street signs. I keep a folder called “nice corners.” I
+                  like shoes. I don’t like clutter.
                 </p>
               </div>
 
@@ -56,9 +58,9 @@ export default function AboutMeSection() {
                   Professional
                 </h3>
                 <p className="text-[0.98rem] leading-relaxed text-neutral-600">
-                  Placeholder for your professional background. Mention the kinds of problems you
-                  solve, industries you’ve touched, and the value clients feel when collaborating
-                  with you.
+                  I design identity pieces and build fast, readable web pages. Small scope. Clear
+                  choices. Documented handoffs. I care about consistency, speed, and taste. We keep
+                  it simple, then consistent, then live.
                 </p>
               </div>
             </div>
@@ -73,18 +75,28 @@ export default function AboutMeSection() {
           </div>
 
           {/* Socials + Contact */}
-          <div className="mt-4 flex flex-col gap-6 md:flex-row md:items-center md:justify-between md:ml-auto md:w-[92%]">
+          <div className="mt-4 flex flex-col gap-6 md:flex-row md:items-center md:justify-between md:ml-auto md:w-[80%]">
             {/* Socials */}
             <div className="flex items-center gap-5">
               {[
-                { Icon: FaInstagram, label: "Instagram", href: "#" },
-                { Icon: FaTiktok, label: "TikTok", href: "#" },
-                { Icon: FaLinkedin, label: "LinkedIn", href: "#" },
-                { Icon: FaTwitter, label: "Twitter", href: "#" },
+                {
+                  Icon: FaInstagram,
+                  label: "Instagram",
+                  href: "https://www.instagram.com/bini.b.g?igsh=enp4OTM1NDU5YjNj",
+                },
+                { Icon: SiDribbble, label: "Dribbble", href: "https://dribbble.com/bini-yam" },
+                {
+                  Icon: FaLinkedin,
+                  label: "LinkedIn",
+                  href: "https://www.linkedin.com/in/biniyam-belay-147673270/",
+                },
+                { Icon: SiBehance, label: "Behance", href: "https://www.behance.net/biniyambelay" },
               ].map(({ Icon, label, href }) => (
                 <motion.a
                   key={label}
                   href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={label}
                   className="rounded-full p-2 text-foreground/60 transition-colors hover:text-foreground"
                   whileHover={{ y: -2 }}
