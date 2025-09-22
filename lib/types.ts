@@ -14,6 +14,8 @@ export type Project = {
   alt?: string;
   credits?: string;
   gallery?: Array<{ src: string; alt: string }>;
+  /** Optional mobile-specific hero image crop for detail page hero */
+  mobileHeroSrc?: string;
   // Optional rich content fields for the case study page
   problem?: string;
   solution?: string;

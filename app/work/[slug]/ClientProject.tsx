@@ -5,8 +5,6 @@ import { initGSAP } from "@lib/gsap";
 import { useReducedMotion } from "@lib/hooks/useReducedMotion";
 import type { Project } from "@lib/types";
 import Lightbox from "@components/media/Lightbox";
-import VideoPlayer from "@components/media/VideoPlayer";
-import ImageCarousel from "@components/media/ImageCarousel";
 import Link from "next/link";
 
 export default function ClientProject({
@@ -67,35 +65,40 @@ export default function ClientProject({
   const hasOutcome = !!project.outcome && project.outcome.trim().length > 0;
   const hasDeliverables = Array.isArray(project.deliverables) && project.deliverables.length > 0;
 
+  // Static hero image: first from gallery if available, else fallback to thumb
+  const heroImg = project.gallery && project.gallery.length > 0 ? project.gallery[0] : null;
+  const heroAlt = heroImg?.alt ?? project.alt ?? project.title;
+  // Desktop uses the wide hero, mobile can use a separate crop if provided
+  const desktopHeroSrc = heroImg ? heroImg.src : project.thumb;
+  const mobileHeroSrc = project.mobileHeroSrc || desktopHeroSrc;
+
   return (
     <main className="bg-white">
-      {/* ===== Hero (kept) ===== */}
+      {/* ===== Hero (static, art-directed) ===== */}
       <section className="relative isolate overflow-hidden min-h-screen flex items-end">
         <div className="absolute inset-0 -z-10">
-          {project.gallery && project.gallery.length > 0 ? (
-            <ImageCarousel
-              images={project.gallery}
-              thumbImage={project.gallery[0].src}
-              thumbAlt={project.gallery[0].alt ?? project.alt ?? project.title}
-              interval={5000}
-              showIndicators={false}
-              className="h-full"
-            />
-          ) : project.video ? (
-            <VideoPlayer
-              src={project.video}
-              className="absolute inset-0 h-full w-full object-cover"
-              withGradient={false}
-              showPlaceholder={true}
-            />
-          ) : (
-            <Image
-              src={project.thumb}
-              alt={project.alt ?? project.title}
-              fill
-              className="object-cover"
-            />
-          )}
+          {/* Desktop (md+) */}
+          <Image
+            src={desktopHeroSrc}
+            alt={heroAlt}
+            fill
+            priority
+            fetchPriority="high"
+            quality={78}
+            sizes="(min-width: 768px) 100vw"
+            className="hidden md:block object-cover object-center"
+          />
+          {/* Mobile */}
+          <Image
+            src={mobileHeroSrc}
+            alt={heroAlt}
+            fill
+            priority
+            fetchPriority="high"
+            quality={78}
+            sizes="100vw"
+            className="md:hidden object-cover object-top"
+          />
           <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/35 to-black/75" />
         </div>
 

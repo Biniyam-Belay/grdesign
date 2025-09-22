@@ -4,7 +4,8 @@
     "title": "Sirtona",
     "roles": ["Art Direction", "Brand Identity", "Creative Strategy"],
     "tools": ["Illustrator", "Affinity Publisher", "Figma"],
-    "thumb": "/assets/projects/sirtona/brand-identity-thumb@2x.webp",
+    "thumb": "/assets/projects/sirtona/SirtonaHero.webp",
+    "mobileHeroSrc": "/assets/projects/sirtona/SirtonaMobHero.webp",
     "video": "/assets/projects/SIRTONA-IDENTITY.mp4",
     "excerpt": "A bold yet disciplined identity system for a digital-creative agency, balancing premium feel with accessibility.",
     "alt": "Sirtona brand identity mockup across digital and print assets.",
@@ -62,7 +63,7 @@
     "title": "Biruh Tutors",
     "roles": ["Brand Identity", "Visual Design"],
     "tools": ["Illustrator", "Figma"],
-    "thumb": "/assets/projects/biruh-tutors/brand-identity-thumb@2x.webp",
+    "thumb": "/assets/projects/biruh/BiruhHero.webp",
     "video": "/assets/projects/BIRUH.mp4",
     "excerpt": "A bright and trustworthy identity system designed for an online tutoring platform, balancing professionalism with warmth.",
     "alt": "Biruh Tutors logo and identity mockup displayed on stationery and digital screens.",
@@ -105,7 +106,7 @@
     ],
     "gallery": [
       {
-        "src": "/assets/projects/biruh-tutors/BiruhHero.webp",
+        "src": "/assets/projects/biruh/BiruhHero.webp",
         "alt": "Biruh Tutors hero image mockup"
       },
       {
@@ -123,7 +124,7 @@
     "title": "Sage",
     "roles": ["Brand Identity", "Art Direction"],
     "tools": ["Illustrator", "Photoshop", "Figma"],
-    "thumb": "/assets/projects/sage/barber-brand-thumb@2x.webp",
+    "thumb": "/assets/projects/sage/SAGEHero.webp",
     "video": "/assets/projects/SAGE.mp4",
     "excerpt": "A sharp and confident identity system for a modern barbershop, blending timeless craft with contemporary style.",
     "alt": "Sage barbershop branding applied across signage, grooming products, and digital presence.",
@@ -166,7 +167,7 @@
     ],
     "gallery": [
       {
-        "src": "/assets/projects/sage/SageHero.webp",
+        "src": "/assets/projects/sage/SAGEHero.webp",
         "alt": "Sage barbershop hero identity mockup"
       },
       { "src": "/assets/projects/sage/SageLogo.webp", "alt": "Sage brand logo variations" },
@@ -181,7 +182,7 @@
     "title": "AWiB Ethiopia",
     "roles": ["Social Media Design", "Brand Content Strategy"],
     "tools": ["Illustrator", "Photoshop", "Figma"],
-    "thumb": "/assets/projects/awib/awib-main-thumb@2x.webp",
+    "thumb": "/assets/projects/awib/AWiBHero.webp",
     "video": "/assets/projects/AWIB_Main.mp4",
     "excerpt": "Unified social media presence and content design for AWiB Ethiopia, enhancing storytelling across leadership, mentorship, and community.",
     "alt": "AWiB Ethiopia social media designs across campaign posts, event promos, and community stories.",
@@ -223,7 +224,7 @@
       "Style guide for content operations"
     ],
     "gallery": [
-      { "src": "/assets/projects/awib/AWIB_Hero.webp", "alt": "AWiB campaign hero post" },
+      { "src": "/assets/projects/awib/AWiBHero.webp", "alt": "AWiB campaign hero post" },
       { "src": "/assets/projects/awib/AWIB_EventPromo.webp", "alt": "Event promo post for AWiB" },
       { "src": "/assets/projects/awib/AWIB_Testimonial.webp", "alt": "Leadership testimonial post" }
     ]
@@ -233,7 +234,7 @@
     "title": "Meri (AWiB)",
     "roles": ["Brand Content Design", "Programme Visual Identity"],
     "tools": ["Illustrator", "Figma", "Canva"],
-    "thumb": "/assets/projects/meri/meri-brand-thumb@2x.webp",
+    "thumb": "/assets/projects/meri/MeriHero.webp",
     "video": "/assets/projects/MERI.mp4",
     "excerpt": "Visual identity and content design for Meri — a youth, employability, and life-skills focused programme under AWiB.",
     "alt": "Meri branding and social media templates for youth and leadership stories.",
@@ -275,7 +276,7 @@
       "Infographic designs"
     ],
     "gallery": [
-      { "src": "/assets/projects/meri/Meri_WorkshopPromo.webp", "alt": "Meri workshop promo post" },
+      { "src": "/assets/projects/meri/MeriHero.webp", "alt": "Meri workshop promo post" },
       {
         "src": "/assets/projects/meri/Meri_AlumniEvent.webp",
         "alt": "Meri alumni event social post"
@@ -288,7 +289,7 @@
     "title": "Haset (AWiB)",
     "roles": ["Visual Identity & Social Media Design", "Leadership Programme Branding"],
     "tools": ["Illustrator", "Photoshop", "Figma"],
-    "thumb": "/assets/projects/haset/haset-brand-thumb@2x.webp",
+    "thumb": "/assets/projects/haset/HasetHero.webp",
     "video": "/assets/projects/HASET.mp4",
     "excerpt": "Branding and content design for Haset — AWiB’s women leadership programme, focusing on building leadership capacity, community, and networks.",
     "alt": "Haset leadership programme visuals: event posts, club meeting promos, member success stories.",
@@ -333,7 +334,7 @@
       { "src": "/assets/projects/haset/Haset_EventBanner.webp", "alt": "Haset event promo banner" },
       { "src": "/assets/projects/haset/Haset_ClubMeeting.webp", "alt": "Haset club meeting post" },
       {
-        "src": "/assets/projects/haset/Haset_SuccessStory.webp",
+        "src": "/assets/projects/haset/HasetHero.webp",
         "alt": "Haset member success story post"
       }
     ]

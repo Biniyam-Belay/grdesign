@@ -21,7 +21,7 @@ export default function AboutMeSection() {
               playsInline
             >
               {/* Replace with your actual video file */}
-              <source src="/assets/loopingme.mp4" type="video/mp4" />
+              <source src="/assets/loop.mp4" type="video/mp4" />
               {/* Fallback for browsers that don't support video */}
               <div className="absolute inset-0 grid place-items-center bg-gradient-to-b from-neutral-50 to-neutral-100 text-neutral-400">
                 <span className="text-xs uppercase tracking-widest">Video Not Supported</span>
