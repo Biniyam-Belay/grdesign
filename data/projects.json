@@ -1,176 +1,459 @@
 [
   {
-    "slug": "sirtona",
+    "slug": "sirtona-agency",
     "title": "Sirtona",
-    "roles": ["Art Direction", "Brand Design"],
-    "tools": ["Illustrator", "Figma"],
-    "thumb": "/assets/projects/sirtona/minimal-brand-identity-thumb-wide@2x.webp",
-    "video": "/assets/projects/SIRTONA.mp4",
-    "excerpt": "A refined identity system with elegant typographic rhythm and disciplined whitespace.",
-    "alt": "Sirtona identity mockup on a neutral background.",
-    "credits": "Design: GR",
-    "problem": "Multiple touchpoints lacked cohesion. Typography, spacing, and motion varied across surfaces, diluting brand clarity.",
-    "solution": "Establish a reduced system: a clear typographic scale, consistent spacing, and restrained motion tokens that translate seamlessly from brand to product.",
+    "roles": ["Art Direction", "Brand Identity", "Creative Strategy"],
+    "tools": ["Illustrator", "Affinity Publisher", "Figma"],
+    "thumb": "/assets/projects/sirtona/brand-identity-thumb@2x.webp",
+    "video": "/assets/projects/SIRTONA-IDENTITY.mp4",
+    "excerpt": "A bold yet disciplined identity system for a digital-creative agency, balancing premium feel with accessibility.",
+    "alt": "Sirtona brand identity mockup across digital and print assets.",
+    "credits": "Design & Direction: GR (Self-initiated)",
+    "problem": "As a new digital-creative agency, Sirtona needed a strong, cohesive identity that signaled professionalism and creativity, while standing apart from crowded local agency aesthetics.",
+    "solution": "Craft a modular design system anchored in deep indigo, sharp typographic rhythm, and a flexible grid. Develop assets that adapt across digital, social, and print without losing clarity.",
     "highlights": [
-      "Unified typographic rhythm across channels.",
-      "Modular components for faster production.",
-      "Measured motion to guide attention.",
-      "Accessible color and contrast targets."
+      "Premium color system with accessible contrast targets.",
+      "Versatile logo variants suitable for small icons to large outdoor media.",
+      "Grid-based layout rules for consistency across campaigns.",
+      "Interactive brand guideline for team and collaborators."
     ],
-    "approach": "Start with principles, test quickly in low-fidelity, then codify in a compact design kit that scales without noise.",
+    "approach": "Treat the brand as both laboratory and showcase — test fast, refine rigorously, and package results into reusable brand modules that embody Sirtona’s promise.",
     "process": [
-      { "title": "Discovery", "body": "Interviews, brand audit, and defining constraints." },
+      {
+        "title": "Discovery",
+        "body": "Mapped the brand vision, values, and target audience to establish tone and positioning."
+      },
       {
         "title": "Exploration",
-        "body": "Multiple low-fi routes, crits, and narrowing to a system."
+        "body": "Generated multiple design routes exploring typography, color, and motion cues."
       },
-      { "title": "Refinement", "body": "Type, spacing, and motion tokens; component patterns." },
-      { "title": "Delivery", "body": "Design kit, templates, and guidance for rollout." }
+      {
+        "title": "Refinement",
+        "body": "Codified selected direction into logo system, palettes, type scales, and motion tokens."
+      },
+      {
+        "title": "Delivery",
+        "body": "Produced a brand kit with templates, brand book, and roll-out strategy."
+      }
     ],
-    "year": 2023,
-    "client": "Sirtona",
-    "outcome": "A calm, durable identity system that improved brand consistency and reduced design debt across touchpoints.",
-    "deliverables": ["Design kit", "Logo and marks", "Component library", "Brand guidelines"],
+    "year": 2024,
+    "client": "Internal — Sirtona",
+    "outcome": "A distinct and flexible identity system that became both the face of Sirtona and a portfolio proof of capability for future clients.",
+    "deliverables": [
+      "Logo system",
+      "Brand guidelines",
+      "Design kit",
+      "Templates for social media and print"
+    ],
     "gallery": [
-      { "src": "/assets/projects/sirtona/SirtonaHero.webp", "alt": "Sirtona wide hero" },
-      { "src": "/assets/projects/sirtona/SirtonaHero.webp", "alt": "Sirtona 4x3 hero" },
-      { "src": "/assets/projects/sirtona/SirtonaHero.webp", "alt": "Sirtona tall hero" }
+      {
+        "src": "/assets/projects/sirtona/SirtonaHero.webp",
+        "alt": "Sirtona brand identity hero mockup"
+      },
+      { "src": "/assets/projects/sirtona/SirtonaLogo.webp", "alt": "Sirtona logo variations" },
+      {
+        "src": "/assets/projects/sirtona/SirtonaBillboard.webp",
+        "alt": "Sirtona billboard mockup in urban context"
+      }
     ]
   },
   {
-    "slug": "minimal-brand-identity",
-    "title": "Minimal Brand Identity",
-    "roles": ["Art Direction", "Brand Design"],
+    "slug": "biruh-tutors",
+    "title": "Biruh Tutors",
+    "roles": ["Brand Identity", "Visual Design"],
     "tools": ["Illustrator", "Figma"],
-    "thumb": "/assets/projects/minimal-brand-identity-thumb-4x3@2x.webp",
-    "video": "/assets/projects/SIRTONA.mp4",
-    "excerpt": "A refined identity system with elegant typographic rhythm and disciplined whitespace.",
-    "alt": "Minimal brand identity mockup on a neutral background.",
+    "thumb": "/assets/projects/biruh-tutors/brand-identity-thumb@2x.webp",
+    "video": "/assets/projects/BIRUH.mp4",
+    "excerpt": "A bright and trustworthy identity system designed for an online tutoring platform, balancing professionalism with warmth.",
+    "alt": "Biruh Tutors logo and identity mockup displayed on stationery and digital screens.",
     "credits": "Design: GR",
+    "problem": "The startup had no clear visual direction. Early materials felt generic and failed to capture the supportive, aspirational tone needed to attract students and parents.",
+    "solution": "Develop a system centered on uplifting colors, approachable typefaces, and a flexible logo mark that signals clarity and trust. Establish rules for digital and print consistency.",
+    "highlights": [
+      "Friendly logo system adaptable to both small screens and large print.",
+      "Color palette inspired by light, clarity, and optimism.",
+      "Typography chosen for readability across digital learning platforms.",
+      "Brand kit enabling fast production of learning materials and ads."
+    ],
+    "approach": "Combine educational motifs with a minimal, modern style. Explore several typographic directions, refine color accessibility, and test adaptability across tutoring use cases.",
+    "process": [
+      {
+        "title": "Research",
+        "body": "Studied competitors and interviewed parents and tutors to capture the desired tone."
+      },
+      {
+        "title": "Exploration",
+        "body": "Sketched logos and experimented with palettes to find a balance between modern and academic."
+      },
+      {
+        "title": "Refinement",
+        "body": "Defined final logo, color system, and typography with detailed guidelines."
+      },
+      {
+        "title": "Delivery",
+        "body": "Packaged the identity kit with templates for social media, presentations, and certificates."
+      }
+    ],
+    "year": 2024,
+    "client": "Biruh Tutors",
+    "outcome": "A professional yet warm brand identity that strengthened trust with students and parents, improved recognizability, and set the tone for growth in the tutoring market.",
+    "deliverables": [
+      "Logo and marks",
+      "Brand guidelines",
+      "Social media templates",
+      "Stationery set"
+    ],
     "gallery": [
-      { "src": "/assets/projects/brand.svg", "alt": "Brand system cover" },
-      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
-      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
-      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" }
+      {
+        "src": "/assets/projects/biruh-tutors/BiruhHero.webp",
+        "alt": "Biruh Tutors hero image mockup"
+      },
+      {
+        "src": "/assets/projects/biruh-tutors/BiruhLogo.webp",
+        "alt": "Biruh Tutors logo presentation"
+      },
+      {
+        "src": "/assets/projects/biruh-tutors/BiruhApplications.webp",
+        "alt": "Biruh Tutors brand applications on social media and stationery"
+      }
     ]
   },
   {
-    "slug": "minimal-brand-identity",
-    "title": "Minimal Brand Identity",
-    "roles": ["Art Direction", "Brand Design"],
-    "tools": ["Illustrator", "Figma"],
-    "thumb": "/assets/projects/minimal-brand-identity-thumb-tall@2x.webp",
-    "video": "/assets/projects/SIRTONA.mp4",
-    "excerpt": "A refined identity system with elegant typographic rhythm and disciplined whitespace.",
-    "alt": "Minimal brand identity mockup on a neutral background.",
+    "slug": "sage-barbershop",
+    "title": "Sage",
+    "roles": ["Brand Identity", "Art Direction"],
+    "tools": ["Illustrator", "Photoshop", "Figma"],
+    "thumb": "/assets/projects/sage/barber-brand-thumb@2x.webp",
+    "video": "/assets/projects/SAGE.mp4",
+    "excerpt": "A sharp and confident identity system for a modern barbershop, blending timeless craft with contemporary style.",
+    "alt": "Sage barbershop branding applied across signage, grooming products, and digital presence.",
     "credits": "Design: GR",
+    "problem": "The shop had strong service quality but no distinct brand presence. Visual materials were inconsistent and failed to reflect the premium grooming experience they offered.",
+    "solution": "Develop a bold wordmark, refined iconography, and a monochrome-led palette accented with deep green. Extend the system across signage, packaging, and social media to unify perception.",
+    "highlights": [
+      "Custom logo mark that balances sharpness and sophistication.",
+      "Versatile brand system adaptable to both print (signage, cards) and digital (Instagram, website).",
+      "Palette and type choices that evoke trust, precision, and modern masculinity.",
+      "Brand kit enabling quick production of social campaigns and merchandise."
+    ],
+    "approach": "Blend traditional barbershop cues — scissors, straight razors, geometric patterns — with a minimal, fashion-forward aesthetic. Test the system in situ, from shop signage to social posts.",
+    "process": [
+      {
+        "title": "Discovery",
+        "body": "Analyzed competitor barber brands and interviewed clients about expectations and lifestyle values."
+      },
+      {
+        "title": "Exploration",
+        "body": "Sketched multiple logo directions, tested typefaces and palettes against moodboards."
+      },
+      {
+        "title": "Refinement",
+        "body": "Finalized the core mark, color codes, and secondary graphics for packaging and apparel."
+      },
+      {
+        "title": "Delivery",
+        "body": "Delivered a complete brand kit with logo system, templates, and signage-ready assets."
+      }
+    ],
+    "year": 2025,
+    "client": "Sage Barbershop",
+    "outcome": "A cohesive identity that elevated Sage’s perception as a stylish, premium grooming destination, attracting a younger and more design-conscious clientele.",
+    "deliverables": [
+      "Logo system",
+      "Brand guidelines",
+      "Social media kit",
+      "Packaging & signage assets"
+    ],
     "gallery": [
-      { "src": "/assets/projects/brand.svg", "alt": "Brand system cover" },
-      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
-      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
-      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" }
+      {
+        "src": "/assets/projects/sage/SageHero.webp",
+        "alt": "Sage barbershop hero identity mockup"
+      },
+      { "src": "/assets/projects/sage/SageLogo.webp", "alt": "Sage brand logo variations" },
+      {
+        "src": "/assets/projects/sage/SageSignage.webp",
+        "alt": "Sage signage and packaging mockup"
+      }
     ]
   },
   {
-    "slug": "minimal-brand-identity",
-    "title": "Minimal Brand Identity",
-    "roles": ["Art Direction", "Brand Design"],
-    "tools": ["Illustrator", "Figma"],
-    "thumb": "/assets/projects/minimal-brand-identity-thumb-4x3@2x.webp",
-    "video": "/assets/projects/SIRTONA.mp4",
-    "excerpt": "A refined identity system with elegant typographic rhythm and disciplined whitespace.",
-    "alt": "Minimal brand identity mockup on a neutral background.",
+    "slug": "awib",
+    "title": "AWiB Ethiopia",
+    "roles": ["Social Media Design", "Brand Content Strategy"],
+    "tools": ["Illustrator", "Photoshop", "Figma"],
+    "thumb": "/assets/projects/awib/awib-main-thumb@2x.webp",
+    "video": "/assets/projects/AWIB_Main.mp4",
+    "excerpt": "Unified social media presence and content design for AWiB Ethiopia, enhancing storytelling across leadership, mentorship, and community.",
+    "alt": "AWiB Ethiopia social media designs across campaign posts, event promos, and community stories.",
     "credits": "Design: GR",
+    "problem": "AWiB had multiple initiatives (main AWiB brand, Meri, Haset) sharing values but lacking a unified content design strategy. Their posts across campaigns and programs were inconsistent in visual identity, making their stories less cohesive and harder to recognize.",
+    "solution": "Create a content design system for AWiB’s core brand: consistent templates, color treatments, typographic hierarchy, and imagery style. Ensure adaptability so that Meri and Haset can spin off from the core without losing clarity or brand recognition.",
+    "highlights": [
+      "Cohesive branded template library for campaign, event, testimonial, and announcement posts.",
+      "Image treatment to unify photography style, including illustrations or overlays.",
+      "Improved visual hierarchy so key messages (dates, calls to action, quotes) stand out.",
+      "Streamlined design workflow for AWiB’s communications team—faster deployment across programs."
+    ],
+    "approach": "Audit existing content → define visual pillars (color, typography, imagery) → develop master templates → test variations → deliver the system with style guide for scale from 2023–2025.",
+    "process": [
+      {
+        "title": "Audit & Discovery",
+        "body": "Reviewed AWiB’s existing content, interviewed communications and program leads, identified where brand was leaking or inconsistent."
+      },
+      {
+        "title": "Mood & Visual Exploration",
+        "body": "Built moodboards for imagery, color, and layouts, tested different treatments for quotes, event promos etc."
+      },
+      {
+        "title": "Template System Development",
+        "body": "Designed reusable templates across content types (events, leadership stories, calls to action)."
+      },
+      {
+        "title": "Rollout & Feedback",
+        "body": "Deployed initial designs for AWiB, collected feedback, refined templates; documented guidelines for Meri & Haset to adapt."
+      }
+    ],
+    "year": "2023–2025",
+    "client": "AWiB Ethiopia",
+    "outcome": "More visually consistent and recognisable social media presence, improved efficiency in content creation, clearer identity across programmes, increased engagement in campaign posts.",
+    "deliverables": [
+      "Social media kits",
+      "Template library",
+      "Event & campaign visuals",
+      "Style guide for content operations"
+    ],
     "gallery": [
-      { "src": "/assets/projects/brand.svg", "alt": "Brand system cover" },
-      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
-      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
-      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" }
+      { "src": "/assets/projects/awib/AWIB_Hero.webp", "alt": "AWiB campaign hero post" },
+      { "src": "/assets/projects/awib/AWIB_EventPromo.webp", "alt": "Event promo post for AWiB" },
+      { "src": "/assets/projects/awib/AWIB_Testimonial.webp", "alt": "Leadership testimonial post" }
     ]
   },
   {
-    "slug": "minimal-brand-identity",
-    "title": "Minimal Brand Identity",
-    "roles": ["Art Direction", "Brand Design"],
-    "tools": ["Illustrator", "Figma"],
-    "thumb": "/assets/projects/minimal-brand-identity-thumb-4x3@2x.webp",
-    "video": "/assets/projects/SIRTONA.mp4",
-    "excerpt": "A refined identity system with elegant typographic rhythm and disciplined whitespace.",
-    "alt": "Minimal brand identity mockup on a neutral background.",
+    "slug": "awib-meri",
+    "title": "Meri (AWiB)",
+    "roles": ["Brand Content Design", "Programme Visual Identity"],
+    "tools": ["Illustrator", "Figma", "Canva"],
+    "thumb": "/assets/projects/meri/meri-brand-thumb@2x.webp",
+    "video": "/assets/projects/MERI.mp4",
+    "excerpt": "Visual identity and content design for Meri — a youth, employability, and life-skills focused programme under AWiB.",
+    "alt": "Meri branding and social media templates for youth and leadership stories.",
     "credits": "Design: GR",
+    "problem": "Meri needed its own voice in visuals: youthful, aspirational, approachable. While aligned under AWiB, its content was often lost in the broader branding, not resonating as strongly with the young female graduate audience.",
+    "solution": "Crafted a visual identity specific to Meri: color accents, type treatments, photography style and template designs that speak to youth empowerment, skill-building, mentorship, and professional readiness.",
+    "highlights": [
+      "Vibrant color palette and approachable fonts to appeal to young graduates.",
+      "Design templates for employability workshops, mentorship sessions, programme announcements.",
+      "Imagery and illustration styles showing peer collaboration, learning, and growth.",
+      "Consistent brand voice across digital platforms (Instagram, LinkedIn) for visibility."
+    ],
+    "approach": "Survey youth interests and aesthetics → develop moodboards → prototype templates for Meri-specific content → test on social posts and workshop promos → hand over Meri-specific guide + adapt AWiB master templates.",
+    "process": [
+      {
+        "title": "Audience & Visual Research",
+        "body": "Explored what visual styles young Ethiopian female graduates respond to; reviewed competitor youth programmes."
+      },
+      {
+        "title": "Exploration",
+        "body": "Created several visual directions: modern, energetic vs more subdued & professional; chose balance."
+      },
+      {
+        "title": "Template System",
+        "body": "Designed feed posts, stories, workshop promos, educational infographics."
+      },
+      {
+        "title": "Implementation",
+        "body": "Rolled out across seasons and collected performance feedback to refine colors, layouts."
+      }
+    ],
+    "year": "2023–2025",
+    "client": "AWiB — Meri Programme",
+    "outcome": "Stronger engagement from youth audience, clearer visual differentiation from main AWiB brand, more consistent content production for Meri’s events and promotions.",
+    "deliverables": [
+      "Programme-specific templates",
+      "Visual identity assets",
+      "Feed & story posts",
+      "Infographic designs"
+    ],
     "gallery": [
-      { "src": "/assets/projects/brand.svg", "alt": "Brand system cover" },
-      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
-      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
-      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" }
+      { "src": "/assets/projects/meri/Meri_WorkshopPromo.webp", "alt": "Meri workshop promo post" },
+      {
+        "src": "/assets/projects/meri/Meri_AlumniEvent.webp",
+        "alt": "Meri alumni event social post"
+      },
+      { "src": "/assets/projects/meri/Meri_InfoGraphic.webp", "alt": "Meri infographic design" }
     ]
   },
   {
-    "slug": "minimal-brand-identity",
-    "title": "Minimal Brand Identity",
-    "roles": ["Art Direction", "Brand Design"],
-    "tools": ["Illustrator", "Figma"],
-    "thumb": "/assets/projects/minimal-brand-identity-thumb-wide@2x.webp",
-    "video": "/assets/projects/SIRTONA.mp4",
-    "excerpt": "A refined identity system with elegant typographic rhythm and disciplined whitespace.",
-    "alt": "Minimal brand identity mockup on a neutral background.",
+    "slug": "awib-haset",
+    "title": "Haset (AWiB)",
+    "roles": ["Visual Identity & Social Media Design", "Leadership Programme Branding"],
+    "tools": ["Illustrator", "Photoshop", "Figma"],
+    "thumb": "/assets/projects/haset/haset-brand-thumb@2x.webp",
+    "video": "/assets/projects/HASET.mp4",
+    "excerpt": "Branding and content design for Haset — AWiB’s women leadership programme, focusing on building leadership capacity, community, and networks.",
+    "alt": "Haset leadership programme visuals: event posts, club meeting promos, member success stories.",
     "credits": "Design: GR",
+    "problem": "Haset needed visuals that reflect maturity, leadership, and empowerment. Previously, materials were more generic and didn’t fully communicate the programme’s depth and community aspect.",
+    "solution": "Developed an identity for Haset: strong typographic voice, refined color choices, imagery styles aligned with leadership and growth; design templates for club meeting promos, leadership workshops, and testimonies of members.",
+    "highlights": [
+      "Sophisticated typography and clean layout emphasizing clarity and authority.",
+      "Design templates for recurring Haset club meetings, promotional materials, leadership workshop events.",
+      "Visual storytelling of progress, community, and impact via member stories.",
+      "Balance between formal professionalism and personal warmth in design style."
+    ],
+    "approach": "Map out Haset’s audience values → collect visuals that show leadership and community → test different visual tones (formal, warm, personal) → codify identity; deliver adaptable assets for recurring programming.",
+    "process": [
+      {
+        "title": "Discovery & Values Mapping",
+        "body": "Interviewed programme leads and participants to understand what leadership means for them; identified visual cues of community, growth, confidence."
+      },
+      {
+        "title": "Visual Exploration",
+        "body": "Tried multiple color palettes and typographic hierarchies; picked imagery style that supports authenticity."
+      },
+      {
+        "title": "Templates and Storytelling Systems",
+        "body": "Designed templates for meeting announcements, leadership workshops, success stories."
+      },
+      {
+        "title": "Rollout & Consistency",
+        "body": "Deployed designs over multiple Haset events; refined based on feedback and metrics."
+      }
+    ],
+    "year": "2023–2025",
+    "client": "AWiB — Haset Programme",
+    "outcome": "Haset’s visuals now convey leadership, credibility, and community; clearer brand identity helped in promotion, event attendance, and member pride.",
+    "deliverables": [
+      "Haset visual identity assets",
+      "Event & club meeting templates",
+      "Leadership workshop materials",
+      "Member story templates"
+    ],
     "gallery": [
-      { "src": "/assets/projects/brand.svg", "alt": "Brand system cover" },
-      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
-      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
-      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" }
+      { "src": "/assets/projects/haset/Haset_EventBanner.webp", "alt": "Haset event promo banner" },
+      { "src": "/assets/projects/haset/Haset_ClubMeeting.webp", "alt": "Haset club meeting post" },
+      {
+        "src": "/assets/projects/haset/Haset_SuccessStory.webp",
+        "alt": "Haset member success story post"
+      }
     ]
   },
   {
-    "slug": "minimal-brand-identity",
-    "title": "Minimal Brand Identity",
-    "roles": ["Art Direction", "Brand Design"],
-    "tools": ["Illustrator", "Figma"],
-    "thumb": "/assets/projects/minimal-brand-identity-thumb-wide@2x.webp",
-    "video": "/assets/projects/SIRTONA.mp4",
-    "excerpt": "A refined identity system with elegant typographic rhythm and disciplined whitespace.",
-    "alt": "Minimal brand identity mockup on a neutral background.",
-    "credits": "Design: GR",
+    "slug": "aau-homecoming-2024",
+    "title": "AAU Homecoming 2024",
+    "roles": ["Design Lead", "Art Direction", "Brand & Merchandise Design"],
+    "tools": ["Illustrator", "Photoshop", "InDesign"],
+    "thumb": "/assets/projects/aau-homecoming/homecoming-thumb@2x.webp",
+    "video": "/assets/projects/AAU_Homecoming.mp4",
+    "excerpt": "Led the visual identity & merchandise design for Addis Ababa University’s first-ever Alumni Homecoming, bringing together legacy, school pride, and community through wearable and print assets.",
+    "alt": "AAU Homecoming design mockups on t-shirts, mugs, banners and brochures.",
+    "credits": "Design Lead: GR",
+    "problem": "AAU had never before held a comprehensive alumni homecoming event, so there was no existing event brand identity. All merchandise, signage, and printed materials needed a cohesive design that reflected the university’s prestige and resonated with alumni across generations. Materials were varied (t-shirts, mugs, banners, brochures) and needed to feel unified.",
+    "solution": "Created an event branding system anchored in AAU’s established identity, but refreshed for the homecoming context. Designed graphic motifs and logo lockups specifically for merchandise and signage. Produced designs that could scale across formats and maintain visual impact, whether on fabric or large print banners.",
+    "highlights": [
+      "Merchandise-friendly logo variants (t-shirts, mugs) that maintain clarity in small imprint areas.",
+      "Multiple large-format and print pieces (roll-ups, banners, brochures) that use consistent visual language.",
+      "A unifying motif or pattern weaving in university heritage elements to evoke pride and nostalgia.",
+      "Smooth handover of files and specs for production, ensuring printing quality and color fidelity."
+    ],
+    "approach": "Start with the AAU identity and alumni themes → design event-logo sketches and motif concepts → test mockups across merchandise and print → finalize designs with production constraints in mind (fabric, print process, size) → deliver production assets and guide usage.",
+    "process": [
+      {
+        "title": "Discovery & Research",
+        "body": "Studied AAU heritage logos, school colors, alumni expectations; attended planning meetings to understand event scope."
+      },
+      {
+        "title": "Concept & Sketching",
+        "body": "Created initial logo ideas, patterns, mockups on merchandise and signage, capturing both tradition and vibrancy."
+      },
+      {
+        "title": "Design Refinement",
+        "body": "Narrowed down layouts, typography, and motif; tested on sample t-shirt/mug mockups."
+      },
+      {
+        "title": "Production & Delivery",
+        "body": "Prepared final files for printing, coordinated with vendors for banners, roll-ups, mugs, t-shirts; ensured quality control."
+      }
+    ],
+    "year": 2024,
+    "client": "Addis Ababa University (AAU) Alumni Office",
+    "outcome": "A memorable first homecoming with strong visual identity throughout the event. Merchandise was well received; signage and printed materials elevated the brand feel of the event; built a template for future homecomings and alumni events.",
+    "deliverables": [
+      "Event logo & motif",
+      "T-shirt designs",
+      "Mug designs",
+      "Roll-ups / banners",
+      "Brochures / printed program"
+    ],
     "gallery": [
-      { "src": "/assets/projects/brand.svg", "alt": "Brand system cover" },
-      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
-      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
-      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" }
+      {
+        "src": "/assets/projects/aau-homecoming/AAU_TshirtMockup.webp",
+        "alt": "T-shirt design mockup for AAU Homecoming"
+      },
+      {
+        "src": "/assets/projects/aau-homecoming/AAU_MugMockup.webp",
+        "alt": "Mug design mockup with AAU logo and homecoming motif"
+      },
+      {
+        "src": "/assets/projects/aau-homecoming/AAU_BannerBrochure.webp",
+        "alt": "Roll-up banner and brochure spread with event branding"
+      }
     ]
   },
   {
-    "slug": "minimal-brand-identity",
-    "title": "Minimal Brand Identity",
-    "roles": ["Art Direction", "Brand Design"],
-    "tools": ["Illustrator", "Figma"],
-    "thumb": "/assets/projects/minimal-brand-identity-thumb-tall@2x.webp",
-    "video": "/assets/projects/SIRTONA.mp4",
-    "excerpt": "A refined identity system with elegant typographic rhythm and disciplined whitespace.",
-    "alt": "Minimal brand identity mockup on a neutral background.",
-    "credits": "Design: GR",
+    "slug": "britney-social",
+    "title": "Britney Social Media",
+    "roles": ["Freelance Social Media Design"],
+    "tools": ["Illustrator", "Photoshop", "Canva"],
+    "thumb": "/assets/projects/britney/britney-social-thumb@2x.webp",
+    "video": "/assets/projects/BRITNEY_SOCIAL.mp4",
+    "excerpt": "Freelance social media design for an international client, creating bold, scroll-stopping visuals tailored for lifestyle content abroad.",
+    "alt": "Britney social media designs displayed across Instagram feed mockups.",
+    "credits": "Design: GR (via collaborator)",
+    "problem": "The client needed fresh, engaging social media visuals to stand out in a saturated lifestyle and personal branding space. Previous posts lacked consistency and didn’t align with her evolving online presence.",
+    "solution": "Delivered a set of modern, on-trend templates optimized for Instagram and Facebook. Balanced bold typography with clean layouts, ensuring brand alignment while resonating with her audience abroad.",
+    "highlights": [
+      "Lifestyle-focused feed templates with consistent tone and color.",
+      "Adapted content for different formats — stories, carousels, feed posts.",
+      "Introduced reusable design elements to reduce production time.",
+      "Balanced international trends with client-specific personality."
+    ],
+    "approach": "Reviewed existing posts and competitor accounts → designed sample mockups → iterated based on feedback through the collaborator → packaged final assets as ready-to-post visuals.",
+    "process": [
+      {
+        "title": "Discovery",
+        "body": "Gathered brief through collaborator, analyzed client’s existing online presence."
+      },
+      {
+        "title": "Exploration",
+        "body": "Designed moodboards referencing international lifestyle brands."
+      },
+      {
+        "title": "Refinement",
+        "body": "Finalized palette, typography, and layout patterns; created adaptable templates."
+      },
+      {
+        "title": "Delivery",
+        "body": "Packaged assets and provided usage guide for easy adaptation in future posts."
+      }
+    ],
+    "year": 2024,
+    "client": "Britney (International, via collaborator)",
+    "outcome": "Delivered an elevated visual presence for the client’s social media channels, resulting in more polished and engaging posts while proving capability to work with international markets.",
+    "deliverables": ["Social media templates", "Instagram story designs", "Carousel post designs"],
     "gallery": [
-      { "src": "/assets/projects/brand.svg", "alt": "Brand system cover" },
-      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
-      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
-      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" }
-    ]
-  },
-  {
-    "slug": "minimal-brand-identity",
-    "title": "Minimal Brand Identity",
-    "roles": ["Art Direction", "Brand Design"],
-    "tools": ["Illustrator", "Figma"],
-    "thumb": "/assets/projects/minimal-brand-identity-thumb-wide@2x.webp",
-    "video": "/assets/projects/SIRTONA.mp4",
-    "excerpt": "A refined identity system with elegant typographic rhythm and disciplined whitespace.",
-    "alt": "Minimal brand identity mockup on a neutral background.",
-    "credits": "Design: GR",
-    "gallery": [
-      { "src": "/assets/projects/brand.svg", "alt": "Brand system cover" },
-      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
-      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" },
-      { "src": "/assets/projects/brand.svg", "alt": "Stationery set" }
+      {
+        "src": "/assets/projects/britney/BritneyFeed.webp",
+        "alt": "Britney Instagram feed mockup"
+      },
+      {
+        "src": "/assets/projects/britney/BritneyStory.webp",
+        "alt": "Britney Instagram story design"
+      },
+      {
+        "src": "/assets/projects/britney/BritneyCarousel.webp",
+        "alt": "Britney carousel post design"
+      }
     ]
   }
 ]

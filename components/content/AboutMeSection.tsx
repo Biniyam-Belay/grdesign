@@ -14,14 +14,14 @@ export default function AboutMeSection() {
           <div className="relative aspect-[3/4] md:h-[540px] overflow-hidden rounded-3xl border border-border">
             {/* Autoplay looping video */}
             <video
-              className="absolute inset-0 w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-cover pointer-events-none"
               autoPlay
               muted
               loop
               playsInline
             >
               {/* Replace with your actual video file */}
-              <source src="/assets/intro-reel.mp4" type="video/mp4" />
+              <source src="/assets/vidcomp.mp4" type="video/mp4" />
               {/* Fallback for browsers that don't support video */}
               <div className="absolute inset-0 grid place-items-center bg-gradient-to-b from-neutral-50 to-neutral-100 text-neutral-400">
                 <span className="text-xs uppercase tracking-widest">Video Not Supported</span>
