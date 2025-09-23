@@ -12,7 +12,7 @@ interface VideoPlayerProps {
 
 const VideoPlayer = memo(
   ({ src, className = "", withGradient = false, showPlaceholder = true }: VideoPlayerProps) => {
-    const { videoSrc, isLoaded, videoRef } = useCachedVideo(src);
+    const { videoSrc, videoRef } = useCachedVideo(src);
 
     // If no video source, return nothing
     if (!videoSrc) return null;
