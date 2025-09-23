@@ -4,7 +4,8 @@ import { getProjects } from "@/lib/data/projects";
 import ProjectCard from "@/components/content/ProjectCard";
 
 export default function ProjectsSection() {
-  const projects = getProjects();
+  // Exclude items deliberately marked as featured (shown in FeaturedWorks)
+  const projects = getProjects().filter((p) => !p.featured);
 
   // simple rhythm: 0, 5, 10... are "wide"; 2, 7, 12... are "tall"
   type Variant = "wide" | "tall" | "standard";

@@ -46,6 +46,7 @@
       "Design kit",
       "Templates for social media and print"
     ],
+    "featuredAspect": "portrait45",
     "gallery": [
       {
         "src": "/assets/projects/sirtona/SirtonaHero.webp",
@@ -58,12 +59,14 @@
       }
     ]
   },
+
   {
     "slug": "biruh-tutors",
     "title": "Biruh Tutors",
     "roles": ["Brand Identity", "Visual Design"],
     "tools": ["Illustrator", "Figma"],
     "thumb": "/assets/projects/biruh/BiruhHero.webp",
+    "mobileHeroSrc": "/assets/projects/biruh/BiruhMobHero.webp",
     "video": "/assets/projects/BIRUH.mp4",
     "excerpt": "A bright and trustworthy identity system designed for an online tutoring platform, balancing professionalism with warmth.",
     "alt": "Biruh Tutors logo and identity mockup displayed on stationery and digital screens.",
@@ -104,6 +107,7 @@
       "Social media templates",
       "Stationery set"
     ],
+    "featuredAspect": "square",
     "gallery": [
       {
         "src": "/assets/projects/biruh/BiruhHero.webp",
@@ -119,12 +123,14 @@
       }
     ]
   },
+
   {
     "slug": "sage-barbershop",
     "title": "Sage",
     "roles": ["Brand Identity", "Art Direction"],
     "tools": ["Illustrator", "Photoshop", "Figma"],
     "thumb": "/assets/projects/sage/SAGEHero.webp",
+    "mobileHeroSrc": "/assets/projects/sage/SAGEMobHero.webp",
     "video": "/assets/projects/SAGE.mp4",
     "excerpt": "A sharp and confident identity system for a modern barbershop, blending timeless craft with contemporary style.",
     "alt": "Sage barbershop branding applied across signage, grooming products, and digital presence.",
@@ -165,6 +171,7 @@
       "Social media kit",
       "Packaging & signage assets"
     ],
+    "featuredAspect": "portrait916",
     "gallery": [
       {
         "src": "/assets/projects/sage/SAGEHero.webp",
@@ -177,12 +184,14 @@
       }
     ]
   },
+
   {
     "slug": "awib",
     "title": "AWiB Ethiopia",
     "roles": ["Social Media Design", "Brand Content Strategy"],
     "tools": ["Illustrator", "Photoshop", "Figma"],
     "thumb": "/assets/projects/awib/AWiBHero.webp",
+    "mobileHeroSrc": "/assets/projects/awib/AWiBMobHero.webp",
     "video": "/assets/projects/AWIB_Main.mp4",
     "excerpt": "Unified social media presence and content design for AWiB Ethiopia, enhancing storytelling across leadership, mentorship, and community.",
     "alt": "AWiB Ethiopia social media designs across campaign posts, event promos, and community stories.",
@@ -456,5 +465,47 @@
         "alt": "Britney carousel post design"
       }
     ]
+  },
+  {
+    "slug": "example-featured-item",
+    "title": "Example Featured Product",
+    "roles": ["Art Direction"],
+    "tools": ["Figma"],
+    "thumb": "/assets/projects/minimal-brand-identity-thumb-4x3@2x.webp",
+    "excerpt": "Example project showing how to control Featured Works tile via data.",
+    "alt": "Example featured product thumbnail",
+    "featuredAspect": "square",
+    "featured": true,
+    "featuredSrc": "/assets/projects/packaging.webp",
+    "featuredAlt": "Tall TikTok/Reels crop used in Featured Works",
+    "gallery": [{ "src": "/assets/projects/editorial-layout.svg", "alt": "Editorial layout asset" }]
+  },
+  {
+    "slug": "example-featured-item",
+    "title": "Example Featured Product",
+    "roles": ["Art Direction"],
+    "tools": ["Figma"],
+    "thumb": "/assets/projects/minimal-brand-identity-thumb-4x3@2x.webp",
+    "excerpt": "Example project showing how to control Featured Works tile via data.",
+    "alt": "Example featured product thumbnail",
+    "featuredAspect": "square",
+    "featured": true,
+    "featuredSrc": "/assets/projects/packaging.webp",
+    "featuredAlt": "Tall TikTok/Reels crop used in Featured Works",
+    "gallery": [{ "src": "/assets/projects/editorial-layout.svg", "alt": "Editorial layout asset" }]
+  },
+  {
+    "slug": "example-featured-item",
+    "title": "Example Featured Product",
+    "roles": ["Art Direction"],
+    "tools": ["Figma"],
+    "thumb": "/assets/projects/minimal-brand-identity-thumb-4x3@2x.webp",
+    "excerpt": "Example project showing how to control Featured Works tile via data.",
+    "alt": "Example featured product thumbnail",
+    "featuredAspect": "square",
+    "featured": true,
+    "featuredSrc": "/assets/projects/packaging.webp",
+    "featuredAlt": "Tall TikTok/Reels crop used in Featured Works",
+    "gallery": [{ "src": "/assets/projects/editorial-layout.svg", "alt": "Editorial layout asset" }]
   }
 ]

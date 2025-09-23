@@ -12,6 +12,7 @@ const ProjectSchema = z.object({
   alt: z.string().optional(),
   credits: z.string().optional(),
   video: z.string().optional(),
+  mobileHeroSrc: z.string().optional(),
   gallery: z.array(z.object({ src: z.string().min(1), alt: z.string().min(1) })).optional(),
   problem: z.string().optional(),
   solution: z.string().optional(),
@@ -22,6 +23,10 @@ const ProjectSchema = z.object({
   deliverables: z.array(z.string()).optional(),
   year: z.union([z.string(), z.number()]).optional(),
   client: z.string().optional(),
+  featuredAspect: z.enum(["square", "portrait45", "portrait916"]).optional(),
+  featuredSrc: z.string().optional(),
+  featuredAlt: z.string().optional(),
+  featured: z.boolean().optional(),
 });
 
 const ProjectsSchema = z.array(ProjectSchema);

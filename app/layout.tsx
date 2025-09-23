@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Outfit } from "next/font/google";
 import "./globals.css";
 import Header from "@components/layout/Header";
 import Footer from "@components/layout/Footer";
 import { VideoCacheProvider } from "@lib/hooks/useVideoCache";
 
-const inter = Inter({
+const outfit = Outfit({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-outfit",
 });
 
 export const metadata: Metadata = {
@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="bg-white" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans antialiased bg-white text-neutral-900`}>
+      <body className={`${outfit.variable} font-sans antialiased bg-white text-neutral-900`}>
         <VideoCacheProvider>
           <Header />
           {children}

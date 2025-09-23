@@ -160,9 +160,9 @@ export default function Hero({ offsetTop = 80 }: Props) {
         {/* Mobile Layout */}
         <div className="md:hidden flex flex-col" style={{ minHeight: "calc(100svh - 120px)" }}>
           {/* Move BINI higher - reduce top margin */}
-          <div className="mt-4">
+          <div className="mt-2">
             <h2
-              className="text-[25vw] font-bold text-left text-foreground leading-none"
+              className="text-[30vw] font-bold text-left text-foreground leading-none tracking-[-0.02em] whitespace-nowrap"
               aria-label="Bini"
             >
               {Array.from("Bini").map((char, idx) => (
@@ -196,13 +196,13 @@ export default function Hero({ offsetTop = 80 }: Props) {
                 alt="Profile photo"
                 width={120}
                 height={120}
-                className="w-20 h-20 rounded-full object-cover transform transition-transform duration-300 ease-out will-change-transform hover:scale-[1.1] hover:-translate-x-1 pointer-events-none border border-1 border-neutral-200 rounded-full"
+                className="w-28 h-28 rounded-full object-cover transform transition-transform duration-300 ease-out will-change-transform hover:scale-[1.1] hover:-translate-x-1 pointer-events-none border border-1 border-neutral-200"
                 priority
               />
               <Link
                 data-anim="cta"
                 href="https://calendar.app.google/1RTjShD5sgqBmm3K7"
-                className="group inline-flex items-center gap-3 rounded-full border border-border px-5 py-2 text-sm transition-colors hover:bg-foreground hover:text-background"
+                className="group inline-flex items-center gap-3 rounded-full border border-border px-6 py-3 text-base transition-colors hover:bg-foreground hover:text-background"
                 target="_blank"
                 rel="noopener noreferrer"
               >

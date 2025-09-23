@@ -5,6 +5,8 @@ import Hero from "@/components/content/Hero";
 import AboutSection from "@/components/content/AboutSection";
 import ProjectsSection from "@/components/content/ProjectsSection";
 import AboutMeSection from "@/components/content/AboutMeSection";
+import FeaturedWorks from "@/components/content/FeaturedWorks";
+import projectsData from "@/data/projects.json";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -56,6 +58,7 @@ export default function Home() {
         <div className="about-section">
           <AboutSection />
         </div>
+        <FeaturedWorks projects={projectsData} title="Featured Works" />
         <ProjectsSection />
         <AboutMeSection />
       </div>

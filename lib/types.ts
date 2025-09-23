@@ -27,4 +27,11 @@ export type Project = {
   // Optional meta for sidebar
   year?: number | string;
   client?: string;
+  /** Optional aspect for FeaturedWorks tiles: 1:1, 4:5, or 9:16 */
+  featuredAspect?: "square" | "portrait45" | "portrait916";
+  /** Optional override image for FeaturedWorks tile (defaults to first gallery image or thumb) */
+  featuredSrc?: string;
+  featuredAlt?: string;
+  /** If true, this project appears in the FeaturedWorks section */
+  featured?: boolean;
 };

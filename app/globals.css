@@ -36,6 +36,13 @@
   --sidebar-ring: oklch(0.65 0.2 120 / 0.5);
 }
 
+/* Outfit font rendering tweaks */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
 /* Utility mappings for token classes (no dark mode) */
 .bg-background {
   background-color: var(--background);
@@ -170,4 +177,13 @@
 
 .contact-button:hover .icon {
   transform: translateX(0);
+}
+
+/* Hide scrollbar for WebKit and Firefox */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
