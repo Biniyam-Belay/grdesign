@@ -1,6 +1,6 @@
 "use client";
 
-import { FaInstagram, FaLinkedin, FaTwitter, FaArrowRight } from "react-icons/fa";
+import { FaInstagram, FaLinkedin, FaArrowRight } from "react-icons/fa";
 import { SiDribbble, SiBehance } from "react-icons/si";
 import { motion } from "framer-motion";
 

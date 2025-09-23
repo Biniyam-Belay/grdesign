@@ -1,6 +1,14 @@
 "use client";
 
-import React, { createContext, useContext, useRef, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 // Types for our video cache context
 interface VideoCacheContextType {
@@ -28,7 +36,7 @@ export function VideoCacheProvider({ children }: { children: React.ReactNode }) 
   const [, forceUpdate] = useState({});
 
   // Helper function to clean cache if it gets too large
-  const cleanCache = () => {
+  const cleanCache = useCallback(() => {
     if (videoCache.current.size > MAX_CACHE_SIZE) {
       // Convert to array for easier manipulation
       const entries = Array.from(videoCache.current.entries());
@@ -39,56 +47,64 @@ export function VideoCacheProvider({ children }: { children: React.ReactNode }) 
         loadedVideos.current.delete(key);
       });
     }
-  };
+  }, []);
 
   // Get video URL - either from cache or original
-  const getVideo = (src: string): string => {
+  const getVideo = useCallback((src: string): string => {
     return videoCache.current.get(src) || src;
-  };
+  }, []);
 
   // Check if a video is already loaded
-  const isLoaded = (src: string): boolean => {
+  const isLoaded = useCallback((src: string): boolean => {
     return loadedVideos.current.has(src);
-  };
+  }, []);
 
   // Preload a video
-  const preloadVideo = (src: string) => {
-    if (loadedVideos.current.has(src) || loadingVideos.current.has(src)) {
-      return; // Already loaded or loading
-    }
+  const preloadVideo = useCallback(
+    (src: string) => {
+      if (loadedVideos.current.has(src) || loadingVideos.current.has(src)) {
+        return; // Already loaded or loading
+      }
 
-    loadingVideos.current.add(src);
+      loadingVideos.current.add(src);
 
-    // Create a video element for preloading
-    const video = document.createElement("video");
-    video.preload = "auto";
+      // Create a video element for preloading
+      const video = document.createElement("video");
+      video.preload = "auto";
 
-    // When loaded, add to cache
-    video.onloadeddata = () => {
-      // Store the original URL in cache
-      videoCache.current.set(src, src);
-      loadedVideos.current.add(src);
-      loadingVideos.current.delete(src);
-      cleanCache();
-      // Force a re-render
-      forceUpdate({});
-    };
+      // When loaded, add to cache
+      video.onloadeddata = () => {
+        // Store the original URL in cache
+        videoCache.current.set(src, src);
+        loadedVideos.current.add(src);
+        loadingVideos.current.delete(src);
+        cleanCache();
+        // Force a re-render
+        forceUpdate({});
+      };
 
-    // Handle errors
-    video.onerror = () => {
-      console.warn(`Failed to preload video: ${src}`);
-      loadingVideos.current.delete(src);
-    };
+      // Handle errors
+      video.onerror = () => {
+        console.warn(`Failed to preload video: ${src}`);
+        loadingVideos.current.delete(src);
+      };
 
-    // Start loading
-    video.src = src;
-  };
-
-  return (
-    <VideoCacheContext.Provider value={{ getVideo, preloadVideo, isLoaded }}>
-      {children}
-    </VideoCacheContext.Provider>
+      // Start loading
+      video.src = src;
+    },
+    [cleanCache],
   );
+
+  const contextValue = useMemo(
+    () => ({
+      getVideo,
+      preloadVideo,
+      isLoaded,
+    }),
+    [getVideo, preloadVideo, isLoaded],
+  );
+
+  return <VideoCacheContext.Provider value={contextValue}>{children}</VideoCacheContext.Provider>;
 }
 
 /**
@@ -114,7 +130,7 @@ export function useCachedVideo(src?: string) {
     if (src) {
       preloadVideo(src);
     }
-  }, [src]);
+  }, [src, preloadVideo]);
 
   // Return video source and loaded state
   return {

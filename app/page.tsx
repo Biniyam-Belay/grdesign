@@ -6,13 +6,14 @@ import AboutSection from "@/components/content/AboutSection";
 import ProjectsSection from "@/components/content/ProjectsSection";
 import AboutMeSection from "@/components/content/AboutMeSection";
 import FeaturedWorks from "@/components/content/FeaturedWorks";
-import projectsData from "@/data/projects.json";
+import { getProjects } from "@/lib/data/projects";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
+  const projectsData = getProjects();
   const containerRef = useRef(null);
 
   useEffect(() => {
