@@ -1,0 +1,35 @@
+[
+  {
+    "slug": "design-systems-that-scale",
+    "title": "Design Systems that Scale",
+    "excerpt": "Principles and patterns for building design systems that grow with your product.",
+    "cover": "/assets/projects/brand.svg",
+    "date": "2025-08-01",
+    "tags": ["design systems", "components", "tokens"]
+  },
+  {
+    "slug": "motion-for-meaning",
+    "title": "Motion for Meaning",
+    "excerpt": "Using motion to guide attention without adding noise.",
+    "cover": "/assets/projects/editorial-layout.svg",
+    "date": "2025-07-15",
+    "tags": ["motion", "ux", "a11y"]
+  },
+  {
+    "slug": "bridging-design-and-code",
+    "title": "Bridging Design and Code",
+    "excerpt": "Practical ways designers and developers can collaborate better.",
+    "cover": "/assets/projects/brand.svg",
+    "date": "2025-06-20",
+    "tags": ["hand-off", "tooling", "workflow"]
+  },
+  {
+    "slug": "the-power-of-negative-space",
+    "title": "The Power of Negative Space",
+    "excerpt": "How whitespace clarifies hierarchy and elevates brand perception.",
+    "cover": "/assets/blog/negative-space.webp",
+    "date": "2025-09-24",
+    "tags": ["visual design", "brand", "layout"],
+    "content": "<p>Negative space isn’t empty—it’s a design tool. It guides attention, reveals hierarchy, and breathes life into composition.</p><h1>Why it matters</h1><p>Whitespace reduces noise, improves readability, and elevates premium feel. Use it intentionally around typography, imagery, and key CTAs.</p><p>Want examples? See the <a href='/work'>work</a> section for applications in brand and editorial systems.</p>"
+  }
+]

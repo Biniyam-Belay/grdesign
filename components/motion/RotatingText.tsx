@@ -9,6 +9,7 @@ type RotatingTextProps = {
   intervalMs?: number;
   className?: string;
   highlightClassName?: string;
+  color?: string; // optional inline color override (hex/rgb)
 };
 
 const flipVariants = {
@@ -37,12 +38,13 @@ export default function RotatingText({
   intervalMs = 50000,
   className = "",
   highlightClassName = "",
+  color,
 }: RotatingTextProps) {
   const [index, setIndex] = React.useState(0);
   const reduced = useReducedMotion();
   const containerRef = React.useRef<HTMLSpanElement>(null);
   const measureRef = React.useRef<HTMLSpanElement>(null);
-  const [maxWidth, setMaxWidth] = React.useState<number | undefined>(undefined);
+  const [currentWidth, setCurrentWidth] = React.useState<number | undefined>(undefined);
 
   React.useEffect(() => {
     if (!words?.length || reduced) return;
@@ -52,51 +54,49 @@ export default function RotatingText({
     return () => clearInterval(id);
   }, [words, intervalMs, reduced]);
 
-  // Measure the maximum width among words to avoid layout shift
+  // Measure current word width and animate container to that width
   React.useEffect(() => {
-    if (!words?.length || !measureRef.current) return;
+    if (!measureRef.current) return;
     const el = measureRef.current;
-    let max = 0;
     const compute = () => {
-      max = 0;
-      for (const w of words) {
-        el.textContent = w;
-        const wpx = el.getBoundingClientRect().width;
-        if (wpx > max) max = wpx;
-      }
-      setMaxWidth(Math.ceil(max));
+      el.textContent = words?.[index] ?? "";
+      const wpx = el.getBoundingClientRect().width;
+      setCurrentWidth(Math.ceil(wpx));
     };
-    // Initial compute after paint
     const raf = requestAnimationFrame(compute);
-
-    // Recompute on resize and container size changes
     const onResize = () => compute();
     window.addEventListener("resize", onResize);
     const ro = containerRef.current ? new ResizeObserver(() => compute()) : undefined;
     if (containerRef.current && ro) ro.observe(containerRef.current);
-
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", onResize);
       ro?.disconnect();
     };
-  }, [words]);
+  }, [index, words]);
 
   const current = words?.[index] ?? "";
 
   return (
-    <span
+    <motion.span
       ref={containerRef}
       className={[
-        "inline-flex items-center align-baseline",
+        "inline-flex items-center align-baseline overflow-hidden",
         "[perspective:800px]", // 3D perspective for flip
         className,
       ].join(" ")}
-      style={{ width: maxWidth ? `${maxWidth}px` : undefined }}
+      animate={reduced ? undefined : { width: currentWidth ?? "auto" }}
+      transition={{ duration: 0.35, ease: cubicBezier(0.22, 1, 0.36, 1) }}
+      style={{ whiteSpace: "nowrap" }}
     >
       <span className="relative inline-block">
         {reduced ? (
-          <span className={["inline-block", highlightClassName].join(" ")}>{current}</span>
+          <span
+            className={["inline-block", highlightClassName].join(" ")}
+            style={color ? { color } : undefined}
+          >
+            {current}
+          </span>
         ) : (
           <AnimatePresence mode="wait" initial={false}>
             <motion.span
@@ -106,7 +106,7 @@ export default function RotatingText({
               animate="center"
               exit="exit"
               className={["inline-block", highlightClassName].join(" ")}
-              style={{ willChange: "transform, opacity" }}
+              style={{ willChange: "transform, opacity", ...(color ? { color } : {}) }}
             >
               {current}
             </motion.span>
@@ -126,6 +126,6 @@ export default function RotatingText({
           top: 0,
         }}
       />
-    </span>
+    </motion.span>
   );
 }

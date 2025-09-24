@@ -466,46 +466,47 @@
       }
     ]
   },
+
   {
     "slug": "example-featured-item",
     "title": "Example Featured Product",
     "roles": ["Art Direction"],
     "tools": ["Figma"],
-    "thumb": "/assets/projects/minimal-brand-identity-thumb-4x3@2x.webp",
+    "thumb": "/assets/featured/2.png",
     "excerpt": "Example project showing how to control Featured Works tile via data.",
     "alt": "Example featured product thumbnail",
     "featuredAspect": "square",
     "featured": true,
-    "featuredSrc": "/assets/projects/packaging.webp",
+    "featuredSrc": "/assets/featured/One.png",
     "featuredAlt": "Tall TikTok/Reels crop used in Featured Works",
-    "gallery": [{ "src": "/assets/projects/editorial-layout.svg", "alt": "Editorial layout asset" }]
+    "gallery": [{ "src": "/assets/featured/1.png", "alt": "Editorial layout asset" }]
   },
   {
     "slug": "example-featured-item",
     "title": "Example Featured Product",
     "roles": ["Art Direction"],
     "tools": ["Figma"],
-    "thumb": "/assets/projects/minimal-brand-identity-thumb-4x3@2x.webp",
+    "thumb": "/assets/featured/One.png",
     "excerpt": "Example project showing how to control Featured Works tile via data.",
     "alt": "Example featured product thumbnail",
     "featuredAspect": "square",
     "featured": true,
-    "featuredSrc": "/assets/projects/packaging.webp",
+    "featuredSrc": "/assets/featured/One.png",
     "featuredAlt": "Tall TikTok/Reels crop used in Featured Works",
-    "gallery": [{ "src": "/assets/projects/editorial-layout.svg", "alt": "Editorial layout asset" }]
+    "gallery": [{ "src": "/assets/featured/2.png", "alt": "Editorial layout asset" }]
   },
   {
     "slug": "example-featured-item",
     "title": "Example Featured Product",
     "roles": ["Art Direction"],
     "tools": ["Figma"],
-    "thumb": "/assets/projects/minimal-brand-identity-thumb-4x3@2x.webp",
+    "thumb": "/assets/featured/2.png",
     "excerpt": "Example project showing how to control Featured Works tile via data.",
     "alt": "Example featured product thumbnail",
     "featuredAspect": "square",
     "featured": true,
-    "featuredSrc": "/assets/projects/packaging.webp",
+    "featuredSrc": "/assets/featured/One.png",
     "featuredAlt": "Tall TikTok/Reels crop used in Featured Works",
-    "gallery": [{ "src": "/assets/projects/editorial-layout.svg", "alt": "Editorial layout asset" }]
+    "gallery": [{ "src": "/assets/featured/3.png", "alt": "Editorial layout asset" }]
   }
 ]

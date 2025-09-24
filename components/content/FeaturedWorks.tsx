@@ -54,22 +54,22 @@ export default function FeaturedWorks({
         </div>
 
         {/* 3-column collage on larger screens, vertical stack on mobile; tighter gaps */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5">
+        <div className="relative grid grid-cols-1 sm:grid-cols-3 gap-1.5">
           {featured.map((p, i) => {
             const variant =
               (p.featuredAspect as TileVariant) || (pattern[i % pattern.length] as TileVariant);
             const img = p.featuredSrc || p.gallery?.[0]?.src || p.thumb!;
             const alt = p.featuredAlt || p.gallery?.[0]?.alt || p.alt || p.title;
             return (
-              <div key={`${p.slug}-${i}`} className="block">
+              <div key={`${p.slug}-${i}`} className="block relative">
                 <div
-                  className={`relative w-full ${aspectClass(variant)} overflow-hidden border border-neutral-200 bg-white`}
+                  className={`group relative w-full ${aspectClass(variant)} overflow-hidden border border-neutral-200 bg-white rounded-md transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform hover:scale-[1.06] hover:z-30 shadow-sm hover:shadow-xl`}
                 >
                   <Image
                     src={img}
                     alt={alt}
                     fill
-                    className="object-cover"
+                    className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]"
                     sizes="(min-width: 1024px) 33vw, (min-width: 640px) 33vw, 100vw"
                     priority={false}
                   />

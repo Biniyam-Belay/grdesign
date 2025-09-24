@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { href: "/", label: "Home" },
   { href: "/work", label: "Work" },
   { href: "/about", label: "About" },
+  { href: "/blog", label: "Blog" },
   { href: "https://calendar.app.google/1RTjShD5sgqBmm3K7", label: "Contact" },
 ];
 

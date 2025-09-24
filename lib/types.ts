@@ -35,3 +35,13 @@ export type Project = {
   /** If true, this project appears in the FeaturedWorks section */
   featured?: boolean;
 };
+
+export type Blog = {
+  slug: string;
+  title: string;
+  excerpt: string;
+  cover: string; // image path in /public
+  date: string; // ISO date string
+  tags?: string[];
+  content?: string; // optional full content (markdown/plain)
+};

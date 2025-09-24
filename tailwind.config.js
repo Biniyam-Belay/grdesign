@@ -12,5 +12,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  // Tailwind v4: plugins are registered via `@plugin` in CSS (see app/globals.css)
 };

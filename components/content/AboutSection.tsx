@@ -40,18 +40,20 @@ const AboutSection = () => {
       style={{ marginTop: "-1px" }}
     >
       <div className="w-[80%] px-4 sm:px-8 lg:px-12">
-        <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-normal text-neutral-800 text-left leading-tight">
+        <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-normal text-slate-800 text-left leading-tight">
           Crafting unique{" "}
           <RotatingText
-            words={["brand identities", "design systems", "component libraries"]}
-            intervalMs={3000}
-            highlightClassName="text-blue-800"
+            words={["design systems", "pattern libraries", "component systems"]}
+            intervalMs={6000}
+            highlightClassName=""
+            color="#351431"
           />{" "}
           and{" "}
           <RotatingText
-            words={["calm digital interfaces", "modern web apps", "responsive websites"]}
-            intervalMs={3200}
-            highlightClassName="text-blue-800"
+            words={["responsive websites", "accessible web apps", "progressive web apps"]}
+            intervalMs={6400}
+            highlightClassName=""
+            color="#351431"
           />{" "}
           that stand the test of time.
         </p>
