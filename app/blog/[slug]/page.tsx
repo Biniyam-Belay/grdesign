@@ -17,7 +17,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const related = getBlogs()
     .filter((b) => b.slug !== blog.slug && b.tags?.some((t) => blog.tags?.includes(t)))
     .slice(0, 3);
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "";
+  const base = "https://www.binidoes.tech";
   const canonical = `${base}/blog/${blog.slug}`;
 
   // rough reading time based on content or excerpt length
@@ -89,32 +89,93 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         {!blog.content && (
           <p className="mt-12 text-neutral-700 text-lg">Full content coming soon.</p>
         )}
+
+        {/* Author section */}
+        <div className="mt-16 pt-8 border-t border-neutral-200">
+          <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
+            <div className="w-20 h-20 bg-neutral-100 rounded-full overflow-hidden relative flex-shrink-0">
+              <Image src="/assets/avatardesk.png" alt="Author" fill className="object-cover" />
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold text-neutral-900">Biniyam Belay</h3>
+              <p className="mt-1 text-neutral-600">UI/UX Designer & Brand Identity Specialist</p>
+              <p className="mt-3 text-neutral-700">
+                I write about design systems, brand identity, and the intersection of design and
+                development.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Share section */}
+        <div className="mt-12 flex flex-col items-center justify-center text-center">
+          <h3 className="text-lg font-medium text-neutral-900">Enjoyed this article?</h3>
+          <p className="mt-2 text-neutral-600">Share it with your network</p>
+          <div className="mt-4">
+            <ShareButtons url={canonical} title={blog.title} />
+          </div>
+        </div>
       </article>
 
       {/* Related */}
-      {related.length > 0 && (
-        <section className="mt-20 px-4 sm:px-8 lg:px-12 mx-auto max-w-6xl">
-          <h2 className="text-2xl font-bold text-neutral-900 mb-8">Related posts</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {related.map((b) => (
-              <Link key={b.slug} href={`/blog/${b.slug}`} className="group block">
-                <div className="relative w-full aspect-[16/10] overflow-hidden rounded-lg">
-                  <Image
-                    src={b.cover}
-                    alt={b.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <h3 className="mt-4 text-lg font-semibold text-neutral-900 group-hover:text-primary transition-colors">
-                  {b.title}
-                </h3>
-                <p className="mt-2 text-sm text-neutral-600 line-clamp-2">{b.excerpt}</p>
-              </Link>
-            ))}
+      <section className="mt-24 px-4 sm:px-8 lg:px-12 py-16 bg-neutral-50">
+        <div className="mx-auto max-w-6xl">
+          {related.length > 0 && (
+            <>
+              <h2 className="text-2xl font-bold text-neutral-900 mb-2">Continue Reading</h2>
+              <p className="text-neutral-600 mb-8">More insights on similar topics</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {related.map((b) => (
+                  <Link key={b.slug} href={`/blog/${b.slug}`} className="group block">
+                    <div className="relative w-full aspect-[16/10] overflow-hidden rounded-lg">
+                      <Image
+                        src={b.cover}
+                        alt={b.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                    <h3 className="mt-4 text-lg font-semibold text-neutral-900 group-hover:text-primary transition-colors">
+                      {b.title}
+                    </h3>
+                    <p className="mt-2 text-sm text-neutral-600 line-clamp-2">{b.excerpt}</p>
+                  </Link>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* Portfolio CTA section */}
+          <div className="mt-20">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8 p-8 bg-white rounded-xl shadow-sm">
+              <div>
+                <h2 className="text-2xl font-bold text-neutral-900">
+                  Interested in working together?
+                </h2>
+                <p className="mt-2 text-neutral-600 max-w-lg">
+                  Check out my portfolio to see more of my work or get in touch to discuss your
+                  project needs.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  href="/work"
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-neutral-900 text-white font-medium hover:bg-neutral-800 transition-colors"
+                >
+                  View Portfolio
+                </Link>
+                <Link
+                  href="https://calendar.app.google/1RTjShD5sgqBmm3K7"
+                  target="_blank"
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-neutral-300 text-neutral-900 font-medium hover:border-neutral-900 transition-colors"
+                >
+                  Schedule a Call
+                </Link>
+              </div>
+            </div>
           </div>
-        </section>
-      )}
+        </div>
+      </section>
     </main>
   );
 }

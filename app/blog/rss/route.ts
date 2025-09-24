@@ -29,7 +29,7 @@ export function GET() {
   const xml = `<?xml version="1.0" encoding="UTF-8" ?>
   <rss version="2.0">
     <channel>
-      <title>GR Design Blog</title>
+      <title>Bini Blog</title>
       <link>${base}/blog</link>
       <description>Thoughts on design, motion, and building for the web.</description>
       ${items}

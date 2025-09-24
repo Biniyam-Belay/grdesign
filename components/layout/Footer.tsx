@@ -12,10 +12,10 @@ export default function Footer() {
             <Link
               href="/"
               className="inline-flex items-baseline gap-1 font-serif text-2xl text-black"
-              aria-label="GR home"
+              aria-label="Bini.B home"
             >
-              <span className="font-medium">GR</span>
-              <span className="text-neutral-400">.</span>
+              <span className="font-medium">Bini</span>
+              <span className="text-neutral-400">.B</span>
             </Link>
             <p className="mt-4 max-w-md text-sm text-neutral-600">
               Independent designer crafting clear, effective brands and interfaces.
@@ -88,7 +88,7 @@ export default function Footer() {
 
         {/* Single, tidy bottom line */}
         <div className="mt-10 border-t border-neutral-200 pt-6 text-xs text-neutral-500">
-          © {year} GR Design
+          © {year} Bini.B
         </div>
       </div>
     </footer>

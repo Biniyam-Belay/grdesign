@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { generateMeta } from "@lib/meta";
-import { getAllBlogTags, getBlogs } from "@lib/data/blogs";
+import { getBlogs } from "@lib/data/blogs";
 
 export const metadata = generateMeta({
   title: "Blog",
@@ -11,18 +11,15 @@ export const metadata = generateMeta({
 export default async function BlogIndexPage({
   searchParams,
 }: {
-  searchParams?: Promise<{ q?: string; tag?: string }>;
+  searchParams?: Promise<{ q?: string }>;
 }) {
   const sp = (await searchParams) ?? {};
   const q = sp.q?.toLowerCase()?.trim() ?? "";
-  const activeTag = sp.tag ?? "";
   const blogs = getBlogs().filter((b) => {
     const matchText = `${b.title} ${b.excerpt} ${b.tags?.join(" ") ?? ""}`.toLowerCase();
     const matchesQuery = q ? matchText.includes(q) : true;
-    const matchesTag = activeTag ? b.tags?.includes(activeTag) : true;
-    return matchesQuery && matchesTag;
+    return matchesQuery;
   });
-  const tags = getAllBlogTags();
 
   return (
     <main className="bg-white pt-24 pb-16">
@@ -42,38 +39,10 @@ export default async function BlogIndexPage({
               placeholder="Search posts"
               className="w-full sm:w-80 rounded-md border border-neutral-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-900"
             />
-            {activeTag && <input type="hidden" name="tag" value={activeTag} />}
             <button className="rounded-md bg-neutral-900 text-white text-sm px-3 py-2">
               Search
             </button>
           </form>
-          {tags.length > 0 && (
-            <div className="mt-4 flex flex-wrap gap-2">
-              <Link
-                href="/blog"
-                className={`inline-flex items-center rounded-full border px-3 py-1 text-xs ${
-                  !activeTag
-                    ? "bg-neutral-900 text-white border-neutral-900"
-                    : "border-neutral-300 text-neutral-700"
-                }`}
-              >
-                All
-              </Link>
-              {tags.map((t) => (
-                <Link
-                  key={t}
-                  href={`/blog?tag=${encodeURIComponent(t)}${q ? `&q=${encodeURIComponent(q)}` : ""}`}
-                  className={`inline-flex items-center rounded-full border px-3 py-1 text-xs ${
-                    activeTag === t
-                      ? "bg-neutral-900 text-white border-neutral-900"
-                      : "border-neutral-300 text-neutral-700"
-                  }`}
-                >
-                  {t}
-                </Link>
-              ))}
-            </div>
-          )}
         </header>
         {blogs.length === 0 ? (
           <p className="text-neutral-500">No posts found.</p>

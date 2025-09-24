@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Copy, Check, Linkedin, Twitter } from "lucide-react";
 
 type Props = {
@@ -11,10 +11,21 @@ type Props = {
 
 export default function ShareButtons({ url, title = "", className }: Props) {
   const [copied, setCopied] = useState(false);
+  const [shareUrl, setShareUrl] = useState(url);
+
+  // Make sure we get the current URL when on the client
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // If no URL is provided or it's relative, use the current URL
+      if (!url || url.startsWith("/")) {
+        setShareUrl(window.location.href);
+      }
+    }
+  }, [url]);
 
   const onCopy = async () => {
     try {
-      await navigator.clipboard.writeText(url);
+      await navigator.clipboard.writeText(shareUrl);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000); // show feedback for 2 seconds
     } catch (e) {
@@ -22,8 +33,8 @@ export default function ShareButtons({ url, title = "", className }: Props) {
     }
   };
 
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`;
-  const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(shareUrl)}`;
+  const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
 
   const baseBtnStyles =
     "inline-flex items-center justify-center gap-2 rounded-full border border-neutral-200 px-3 h-9 text-xs text-neutral-700 hover:bg-neutral-100 transition-colors focus:outline-none focus:ring-2 focus:ring-neutral-400";

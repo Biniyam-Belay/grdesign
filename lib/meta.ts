@@ -7,12 +7,12 @@ type MetaProps = {
 };
 
 export function generateMeta({
-  title = "GR Design",
+  title = "Bini.B",
   description = "A modern graphic design portfolio showcasing brand identity, editorial, and packaging design.",
   image = "/og-image.jpg", // Default OG image
 }: MetaProps = {}): Metadata {
-  const siteName = "GR Design";
-  const formattedTitle = title === "GR Design" ? title : `${title} | ${siteName}`;
+  const siteName = "Bini.B";
+  const formattedTitle = title === "Bini.B" ? title : `${title} | ${siteName}`;
 
   return {
     title: formattedTitle,
