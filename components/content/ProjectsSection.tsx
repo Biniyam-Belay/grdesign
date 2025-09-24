@@ -2,10 +2,16 @@
 import Link from "next/link";
 import { getProjects } from "@/lib/data/projects";
 import ProjectCard from "@/components/content/ProjectCard";
+import { useState } from "react";
 
 export default function ProjectsSection() {
   // Exclude items deliberately marked as featured (shown in FeaturedWorks)
+  // Featured items are only for decoration and should not be treated as real projects
   const projects = getProjects().filter((p) => !p.featured);
+
+  // Show only a limited number of projects initially (2 rows)
+  // For lg screens: Row 1 = wide(8) + standard(4) = 12 cols, Row 2 = standard(4) + tall(4) + standard(4) = 12 cols
+  const initialProjectCount = 5; // This will give us exactly 2 rows
 
   // simple rhythm: 0, 5, 10... are "wide"; 2, 7, 12... are "tall"
   type Variant = "wide" | "tall" | "standard";
@@ -33,7 +39,7 @@ export default function ProjectsSection() {
 
       {/* full-bleed responsive grid with slim gutters */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-6">
-        {projects.map((project, i) => {
+        {projects.slice(0, initialProjectCount).map((project, i) => {
           // layout spans (wide items span 8/12; tall/standard span 4/12 on lg)
           const variant = variantFor(i);
           const span =
@@ -48,6 +54,18 @@ export default function ProjectsSection() {
           );
         })}
       </div>
+
+      {/* See more button - always show on mobile, show on desktop if there are more projects */}
+      {projects.length > initialProjectCount && (
+        <div className="mt-10 flex justify-center">
+          <Link
+            href="/work"
+            className="inline-flex items-center gap-2 rounded-full border border-neutral-200 px-6 py-3 text-sm text-neutral-900 hover:bg-neutral-900 hover:text-white transition-colors"
+          >
+            See more projects
+          </Link>
+        </div>
+      )}
     </section>
   );
 }

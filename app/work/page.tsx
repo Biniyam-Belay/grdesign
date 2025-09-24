@@ -11,7 +11,8 @@ export default function WorkPage() {
   const pageRef = useRef<HTMLElement>(null!);
   usePageTransition(pageRef);
 
-  const projects = getProjects();
+  // Exclude featured items as they are only for decoration and should not appear as real projects
+  const projects = getProjects().filter((p) => !p.featured);
 
   // Same rhythm as before: editorial cadence across 12 cols
   type Variant = "wide" | "standard" | "tall";

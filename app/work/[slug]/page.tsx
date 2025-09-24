@@ -9,7 +9,9 @@ export const dynamicParams = false;
 type Params = { slug: string };
 
 export async function generateStaticParams(): Promise<Params[]> {
-  const slugs = await getProjectSlugs();
+  // Only generate paths for non-featured projects as featured items are only for decoration
+  const projects = await getProjects().filter((p) => !p.featured);
+  const slugs = projects.map((p) => p.slug);
   return slugs.map((slug) => ({ slug }));
 }
 
@@ -33,7 +35,8 @@ export default async function ProjectPage(props: { params: Promise<Params> }) {
   const project = await getProjectBySlug(slug);
   if (!project) notFound();
 
-  const list = await getProjects();
+  // Get real projects, excluding featured items which are only for decoration
+  const list = await getProjects().filter((p) => !p.featured);
   const idx = list.findIndex((p) => p.slug === project.slug);
 
   const prev = idx > 0 ? { slug: list[idx - 1]!.slug, title: list[idx - 1]!.title } : undefined;
