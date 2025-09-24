@@ -41,13 +41,19 @@ export function getBlogBySlug(slug: string): Blog | undefined {
 /** Get a unique, sorted list of all tags across blogs */
 export function getAllBlogTags(): string[] {
   const set = new Set<string>();
+  const normalize = (t: string) => t.trim();
   for (const b of getBlogs()) {
-    b.tags?.forEach((t) => set.add(t));
+    b.tags?.forEach((t) => set.add(normalize(t)));
   }
   return Array.from(set).sort((a, b) => a.localeCompare(b));
 }
 
-/** Get blogs filtered by a given tag (case-sensitive match) */
+/** Normalize a tag for comparison */
+function norm(tag: string): string {
+  return tag.trim().toLowerCase();
+}
+
 export function getBlogsByTag(tag: string): Blog[] {
-  return getBlogs().filter((b) => b.tags?.includes(tag));
+  const n = norm(tag);
+  return getBlogs().filter((b) => b.tags?.some((t) => norm(t) === n));
 }

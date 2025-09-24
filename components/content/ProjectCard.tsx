@@ -98,7 +98,7 @@ export default function ProjectCard({
       <div className="mt-3">
         <h3 className="text-[0.95rem] leading-tight text-neutral-900">
           <span className="font-semibold">{project.title}</span>
-          <span className="text-neutral-500"> — {project.roles[0]}</span>
+          <span className="text-neutral-500"> - {project.roles[0]}</span>
         </h3>
       </div>
     </Link>

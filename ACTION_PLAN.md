@@ -1,4 +1,4 @@
-# Graphic Design Portfolio — Action Plan (GSAP, Next.js App Router)
+# Graphic Design Portfolio - Action Plan (GSAP, Next.js App Router)
 
 Status: 5% • Owner: you • Repo: grdesign • Aesthetic: white, sleek, modern, elegant • Motion: GSAP (smooth, subtle)
 
@@ -15,7 +15,7 @@ This plan is a living document. Use the checkboxes to track progress. Each task 
 
 ---
 
-## Phase 0 — Project Setup & Quality Rigging
+## Phase 0 - Project Setup & Quality Rigging
 
 - [ ] Verify Node, PNPM/NPM versions and lockfile consistency
 - [x] TypeScript strict mode on; aliases in `tsconfig.json`
@@ -33,7 +33,7 @@ Success criteria
 
 ---
 
-## Phase 1 — Design System (Tokens & Typography)
+## Phase 1 - Design System (Tokens & Typography)
 
 - [x] Choose type pair (serif headings + sans body)
   - Serif: Playfair Display via next/font (variable: `--font-serif`)
@@ -53,7 +53,7 @@ Success criteria
 
 ---
 
-## Phase 2 — Content & IA
+## Phase 2 - Content & IA
 
 - [x] Sitemap & navigation (Home, Work, Project, About, Services, Contact, 404)
   - Implemented: sitemap via `app/sitemap.ts`; nav in Header
@@ -69,7 +69,7 @@ Success criteria
 
 ---
 
-## Phase 3 — Core Layout & Navigation
+## Phase 3 - Core Layout & Navigation
 
 - [x] `app/layout.tsx` base structure with `Header` and `Footer`
 - [x] Header: active link state; sticky header (border/shadow on scroll implemented; transparency shift optional)
@@ -83,7 +83,7 @@ Success criteria
 
 ---
 
-## Phase 4 — Pages
+## Phase 4 - Pages
 
 Home (`/`)
 
@@ -128,7 +128,7 @@ Success criteria
 
 ---
 
-## Phase 5 — Components (Re-usable, Accessible)
+## Phase 5 - Components (Re-usable, Accessible)
 
 - [x] Layout primitives: `Container` (Section/Grid deferred)
 - [x] UI: `Button`, `NavLink` implemented; `Marquee`, `Badge`, `Divider` (deferred)
@@ -144,7 +144,7 @@ Success criteria
 
 ---
 
-## Phase 6 — Animation Architecture (GSAP)
+## Phase 6 - Animation Architecture (GSAP)
 
 - [x] Install gsap; selectively import core + `ScrollTrigger`
 - [x] Create `lib/gsap.ts` to register plugins once (client only)
@@ -161,7 +161,7 @@ Success criteria
 
 ---
 
-## Phase 7 — Data Layer
+## Phase 7 - Data Layer
 
 - [x] Start with local JSON/MDX for projects
 - [x] Utility to load and type projects (Zod schema)
@@ -173,7 +173,7 @@ Success criteria
 
 ---
 
-## Phase 8 — Performance
+## Phase 8 - Performance
 
 - [ ] `next/image` everywhere; modern formats; responsive sizes
 - [x] Font optimization with `next/font`; preload key fonts; avoid FOIT/FOUT
@@ -188,7 +188,7 @@ Success criteria
 
 ---
 
-## Phase 9 — Accessibility (A11y)
+## Phase 9 - Accessibility (A11y)
 
 - [ ] Semantic landmarks; headings in order
 - [ ] Labels/alt text; form errors announced via ARIA
@@ -202,7 +202,7 @@ Success criteria
 
 ---
 
-## Phase 10 — SEO & Social
+## Phase 10 - SEO & Social
 
 - [x] Next.js Metadata API per page; titles/descriptions unique (projects wired)
 - [x] Open Graph/Twitter images; dynamic OG for project pages
@@ -215,7 +215,7 @@ Success criteria
 
 ---
 
-## Phase 11 — Analytics & Monitoring
+## Phase 11 - Analytics & Monitoring
 
 - [ ] Vercel Analytics (or Plausible)
 - [ ] Error monitoring (Sentry) optional
@@ -227,7 +227,7 @@ Success criteria
 
 ---
 
-## Phase 12 — Testing & QA
+## Phase 12 - Testing & QA
 
 - [ ] Unit tests for utils/hooks (Vitest/Jest)
 - [ ] Playwright e2e: navigation, form submit, reduced motion
@@ -240,7 +240,7 @@ Success criteria
 
 ---
 
-## Phase 13 — Deployment
+## Phase 13 - Deployment
 
 - [ ] Vercel project; Preview deployments on PRs
 - [ ] Environment variables (if any) documented
@@ -252,7 +252,7 @@ Success criteria
 
 ---
 
-## Phase 14 — Polish & Launch
+## Phase 14 - Polish & Launch
 
 - [ ] Micro-interactions tuned (hover, tap, focus)
 - [ ] Copyediting pass; link audit; favicon/OG verification
@@ -310,18 +310,18 @@ public/assets/
 
 ## Working Checklist (quick view)
 
-- [x] Phase 0 — Setup ✅
-- [x] Phase 1 — Design System ✅
-- [x] Phase 2 — Content & IA ✅
-- [x] Phase 3 — Layout & Nav ✅
-- [x] Phase 4 — Pages (Home, Work, Project, About, Services, Contact) ✅
-- [x] Phase 5 — Components (Key components implemented) ✅
-- [x] Phase 6 — Animation (SplitText, PageTransition, ScrollTrigger) ✅
-- [x] Phase 7 — Data ✅
-- [ ] Phase 8 — Performance
-- [ ] Phase 9 — A11y
-- [x] Phase 10 — SEO ✅
-- [ ] Phase 11 — Analytics
-- [ ] Phase 12 — Testing
-- [ ] Phase 13 — Deployment
-- [ ] Phase 14 — Polish & Launch
+- [x] Phase 0 - Setup ✅
+- [x] Phase 1 - Design System ✅
+- [x] Phase 2 - Content & IA ✅
+- [x] Phase 3 - Layout & Nav ✅
+- [x] Phase 4 - Pages (Home, Work, Project, About, Services, Contact) ✅
+- [x] Phase 5 - Components (Key components implemented) ✅
+- [x] Phase 6 - Animation (SplitText, PageTransition, ScrollTrigger) ✅
+- [x] Phase 7 - Data ✅
+- [ ] Phase 8 - Performance
+- [ ] Phase 9 - A11y
+- [x] Phase 10 - SEO ✅
+- [ ] Phase 11 - Analytics
+- [ ] Phase 12 - Testing
+- [ ] Phase 13 - Deployment
+- [ ] Phase 14 - Polish & Launch

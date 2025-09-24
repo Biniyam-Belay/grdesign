@@ -39,7 +39,7 @@ export default function AboutPage() {
 
             <p className="mt-4 max-w-2xl text-base text-neutral-600 sm:text-lg">
               I build thoughtful identities and calm interfaces. My practice blends typographic
-              clarity with disciplined whitespace—work that feels simple, not simplistic.
+              clarity with disciplined whitespace-work that feels simple, not simplistic.
             </p>
 
             {/* Meta chips */}
@@ -131,22 +131,22 @@ export default function AboutPage() {
           <ol className="relative mt-8 space-y-10 before:absolute before:left-[0rem] before:top-0 before:h-full before:w-px before:bg-neutral-200 sm:before:left-[0rem]">
             {[
               {
-                period: "2020—Present",
+                period: "2020-Present",
                 title: "Independent Designer",
-                body: "Partnering with founders and teams to craft identities, systems, and product surfaces—from strategy to delivery.",
+                body: "Partnering with founders and teams to craft identities, systems, and product surfaces-from strategy to delivery.",
               },
               {
-                period: "2017—2020",
+                period: "2017-2020",
                 title: "Senior Designer, Studio Name",
                 body: "Led identity and packaging programs across fashion, tech, and consumer goods.",
               },
               {
-                period: "2015—2017",
+                period: "2015-2017",
                 title: "Designer, Agency Name",
                 body: "Developed visual systems for print and digital campaigns.",
               },
               {
-                period: "2013—2015",
+                period: "2013-2015",
                 title: "Designer, AWiB Ethiopia",
                 body: "Developed visual systems for print and digital campaigns.",
               },

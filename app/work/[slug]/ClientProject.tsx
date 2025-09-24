@@ -169,24 +169,24 @@ export default function ClientProject({
               <dl className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm">
                 <div>
                   <dt className="text-[11px] uppercase tracking-[0.18em] text-neutral-500">Year</dt>
-                  <dd className="mt-1 text-neutral-900">{project.year ?? "—"}</dd>
+                  <dd className="mt-1 text-neutral-900">{project.year ?? "-"}</dd>
                 </div>
                 <div>
                   <dt className="text-[11px] uppercase tracking-[0.18em] text-neutral-500">
                     Client
                   </dt>
-                  <dd className="mt-1 text-neutral-900">{project.client ?? "—"}</dd>
+                  <dd className="mt-1 text-neutral-900">{project.client ?? "-"}</dd>
                 </div>
                 <div>
                   <dt className="text-[11px] uppercase tracking-[0.18em] text-neutral-500">Role</dt>
-                  <dd className="mt-1 text-neutral-900">{project.roles?.[0] ?? "—"}</dd>
+                  <dd className="mt-1 text-neutral-900">{project.roles?.[0] ?? "-"}</dd>
                 </div>
                 <div>
                   <dt className="text-[11px] uppercase tracking-[0.18em] text-neutral-500">
                     Tools
                   </dt>
                   <dd className="mt-1 text-neutral-900">
-                    {(project.tools ?? []).slice(0, 2).join(", ") || "—"}
+                    {(project.tools ?? []).slice(0, 2).join(", ") || "-"}
                   </dd>
                 </div>
               </dl>

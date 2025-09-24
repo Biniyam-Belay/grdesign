@@ -19,7 +19,7 @@ export async function generateMetadata(props: { params: Promise<Params> }): Prom
   const { slug } = await props.params; // ✅ await params
   const project = await getProjectBySlug(slug);
 
-  const title = project ? `${project.title} — Work` : "Project — Work";
+  const title = project ? `${project.title} - Work` : "Project - Work";
   const description = project?.excerpt ?? "Project case study";
 
   return {

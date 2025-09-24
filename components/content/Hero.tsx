@@ -236,7 +236,7 @@ export default function Hero({ offsetTop = 80 }: Props) {
                 data-anim="kicker"
                 className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-4"
               >
-                Portfolio — {new Date().getFullYear()}
+                Portfolio - {new Date().getFullYear()}
               </p>
 
               <h1 className="text-3xl md:text-5xl font-semibold leading-[1.15] text-foreground">

@@ -9,26 +9,54 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ tag: string }> }) {
   const { tag } = await params;
+  const decoded = decodeURIComponent(tag);
   return generateMeta({
-    title: `Tag: ${tag}`,
-    description: `Posts tagged with ${tag}.`,
+    title: `Tag: ${decoded}`,
+    description: `Posts tagged with ${decoded}.`,
   });
 }
 
 export default async function BlogTagPage({ params }: { params: Promise<{ tag: string }> }) {
   const { tag } = await params;
-  const posts = getBlogsByTag(tag);
+  const decoded = decodeURIComponent(tag);
+  const posts = getBlogsByTag(decoded);
+  const all = getAllBlogTags();
+  const otherTags = all.filter((t) => t.toLowerCase() !== decoded.toLowerCase());
   return (
     <main className="bg-white pt-24 pb-16">
       <section className="px-4 sm:px-8 lg:px-12 mx-auto max-w-7xl">
         <header className="mb-6">
           <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-neutral-900">
-            Tag: {tag}
+            Tag: {decoded}
           </h1>
-          <p className="mt-2 text-neutral-500">Posts tagged with “{tag}”.</p>
+          <p className="mt-2 text-neutral-500">Posts tagged with “{decoded}”.</p>
         </header>
         {posts.length === 0 ? (
-          <p className="text-neutral-500">No posts found.</p>
+          <div className="text-neutral-600 space-y-4">
+            <p>No posts found for this tag.</p>
+            {otherTags.length > 0 && (
+              <div className="text-sm">
+                <p className="text-neutral-500 mb-2">Browse other tags:</p>
+                <div className="flex flex-wrap gap-2">
+                  {otherTags.map((t) => (
+                    <Link
+                      key={t}
+                      href={`/blog/tag/${encodeURIComponent(t)}`}
+                      className="inline-flex items-center rounded-full bg-neutral-100 text-neutral-700 px-3 py-1 text-xs font-medium hover:bg-neutral-200 transition-colors"
+                    >
+                      {t}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 rounded-full border border-neutral-200 px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors"
+            >
+              ← Back to Blog
+            </Link>
+          </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {posts.map((b) => (

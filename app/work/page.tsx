@@ -42,7 +42,7 @@ export default function WorkPage() {
           </div>
           <div className="mt-6 h-px w-24 bg-neutral-200" />
           <p className="mt-6 max-w-2xl text-sm text-neutral-600">
-            Identity, editorial, packaging, and digital projects—created from Addis Ababa and
+            Identity, editorial, packaging, and digital projects-created from Addis Ababa and
             shipped worldwide.
           </p>
         </header>
