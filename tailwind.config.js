@@ -8,7 +8,12 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-outfit)", "sans-serif"],
+        sans: ["var(--font-outfit)", "Outfit", "sans-serif"],
+        // Explicitly set all font categories to use Outfit
+        serif: ["var(--font-outfit)", "Outfit", "serif"],
+        mono: ["var(--font-outfit)", "Outfit", "monospace"],
+        display: ["var(--font-outfit)", "Outfit", "sans-serif"],
+        body: ["var(--font-outfit)", "Outfit", "sans-serif"],
       },
     },
   },

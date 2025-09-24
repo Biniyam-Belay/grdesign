@@ -7,6 +7,8 @@ import { VideoCacheProvider } from "@lib/hooks/useVideoCache";
 
 const outfit = Outfit({
   subsets: ["latin"],
+  display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
   variable: "--font-outfit",
 });
 
@@ -20,8 +22,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="bg-white" suppressHydrationWarning>
-      <body className={`${outfit.variable} font-sans antialiased bg-white text-neutral-900`}>
+    <html lang="en" className={`${outfit.variable} bg-white`} suppressHydrationWarning>
+      <body className="font-sans antialiased bg-white text-neutral-900">
         <VideoCacheProvider>
           <Header />
           {children}
