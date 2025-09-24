@@ -39,13 +39,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           {/* Left: Big image without rounded/border/shadow */}
-          <div className="lg:col-span-8">
+          <div className="lg:col-span-7">
             <div className="relative w-full aspect-[16/10] overflow-hidden">
               <Image src={blog.cover} alt={blog.title} fill className="object-cover" priority />
             </div>
           </div>
           {/* Right: Title + meta + tags + share */}
-          <div className="lg:col-span-4 lg:pt-4">
+          <div className="lg:col-span-5 lg:pt-4">
             <p className="text-neutral-500 text-sm font-medium">
               {new Date(blog.date).toLocaleDateString()}
             </p>
