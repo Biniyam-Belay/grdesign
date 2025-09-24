@@ -98,7 +98,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </div>
             <div>
               <h3 className="text-xl font-semibold text-neutral-900">Biniyam Belay</h3>
-              <p className="mt-1 text-neutral-600">UI/UX Designer & Brand Identity Specialist</p>
+              <p className="mt-1 text-neutral-600">Graphic and UI/UX Designer & Developer</p>
               <p className="mt-3 text-neutral-700">
                 I write about design systems, brand identity, and the intersection of design and
                 development.
