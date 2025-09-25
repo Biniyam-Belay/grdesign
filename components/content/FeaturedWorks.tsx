@@ -54,7 +54,7 @@ export default function FeaturedWorks({
         </div>
 
         {/* 3-column collage on larger screens, vertical stack on mobile; tighter gaps */}
-        <div className="relative grid grid-cols-1 sm:grid-cols-3 gap-1.5">
+        <div className="relative grid grid-cols-1 sm:grid-cols-3 gap-0">
           {featured.map((p, i) => {
             const variant =
               (p.featuredAspect as TileVariant) || (pattern[i % pattern.length] as TileVariant);

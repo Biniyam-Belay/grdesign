@@ -477,7 +477,7 @@
     "alt": "Example featured product thumbnail",
     "featuredAspect": "square",
     "featured": true,
-    "featuredSrc": "/assets/featured/astu2.png",
+    "featuredSrc": "/assets/featured/aster1.webp",
     "featuredAlt": "Tall TikTok/Reels crop used in Featured Works",
     "gallery": [{ "src": "/assets/featured/1.png", "alt": "Editorial layout asset" }]
   },
@@ -491,7 +491,7 @@
     "alt": "Example featured product thumbnail",
     "featuredAspect": "square",
     "featured": true,
-    "featuredSrc": "/assets/featured/One.png",
+    "featuredSrc": "/assets/featured/aster2.webp",
     "featuredAlt": "Tall TikTok/Reels crop used in Featured Works",
     "gallery": [{ "src": "/assets/featured/2.png", "alt": "Editorial layout asset" }]
   },
@@ -505,7 +505,7 @@
     "alt": "Example featured product thumbnail",
     "featuredAspect": "square",
     "featured": true,
-    "featuredSrc": "/assets/featured/astu1.png",
+    "featuredSrc": "/assets/featured/aster3.webp",
     "featuredAlt": "Tall TikTok/Reels crop used in Featured Works",
     "gallery": [{ "src": "/assets/featured/3.png", "alt": "Editorial layout asset" }]
   }
