@@ -28,6 +28,7 @@ export default function RootLayout({
         <VideoCacheProvider>
           <Header />
           {children}
+          <Analytics />
           <Footer />
         </VideoCacheProvider>
       </body>
