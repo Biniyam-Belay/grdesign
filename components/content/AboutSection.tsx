@@ -43,14 +43,18 @@ const AboutSection = () => {
         <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-normal text-slate-800 text-left leading-tight">
           Crafting unique{" "}
           <RotatingText
-            words={["design systems", "pattern libraries", "component systems"]}
+            words={["design languages", "interface systems", "brand ecosystems"]}
             intervalMs={6000}
             highlightClassName=""
             color="#351431"
           />{" "}
           and{" "}
           <RotatingText
-            words={["responsive websites", "accessible web apps", "progressive web apps"]}
+            words={[
+              "user-centered products",
+              "omnichannel experiences",
+              "conversion-optimized apps",
+            ]}
             intervalMs={6400}
             highlightClassName=""
             color="#351431"

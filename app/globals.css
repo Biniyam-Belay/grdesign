@@ -79,7 +79,7 @@ html {
   color: var(--primary-foreground);
 }
 .bg-accent {
-  background-color: var(--accent);
+  --accent: theme(colors.neutral.900);
 }
 .text-neutral-400 {
   color: #a3a3a3;
@@ -103,6 +103,27 @@ html {
 .desktop-nav {
   display: flex;
 }
+:root {
+  --accent: theme(colors.neutral.900);
+}
+
+main[data-type="web-dev"] {
+  --accent: #4f46e5;
+}
+main[data-type="ui-ux"] {
+  --accent: #0ea5e9;
+}
+main[data-type="branding"] {
+  --accent: #f59e0b;
+}
+main[data-type="social"] {
+  --accent: #ec4899;
+}
+main[data-type="print"] {
+  --accent: #16a34a;
+}
+
+/* You can hook accent in components via bg-[color:var(--accent)]/text-[color:var(--accent)] etc. */
 
 .hamburger-button {
   display: none;

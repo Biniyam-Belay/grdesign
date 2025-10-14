@@ -1,10 +1,10 @@
 "use client";
 
-import { useRef } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
 import { usePageTransition } from "@lib/gsapPageTransition";
 import ProjectCard from "@components/content/ProjectCard";
 import { getProjects } from "@lib/data/projects";
-import type { Project } from "@lib/types";
+import type { Project, ProjectType } from "@lib/types";
 import Link from "next/link";
 
 export default function WorkPage() {
@@ -12,7 +12,26 @@ export default function WorkPage() {
   usePageTransition(pageRef);
 
   // Exclude featured items as they are only for decoration and should not appear as real projects
-  const projects = getProjects().filter((p) => !p.featured);
+  const all = getProjects().filter((p) => !p.featured);
+  const [active, setActive] = useState<ProjectType | "all">(() => {
+    if (typeof window === "undefined") return "all";
+    const url = new URL(window.location.href);
+    const t = url.searchParams.get("type") as ProjectType | null;
+    return t ?? "all";
+  });
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (active === "all") url.searchParams.delete("type");
+    else url.searchParams.set("type", active);
+    window.history.replaceState(null, "", url.toString());
+  }, [active]);
+
+  const types: (ProjectType | "all")[] = ["all", "web-dev", "ui-ux", "branding", "social", "print"];
+  const projects = useMemo(
+    () => (active === "all" ? all : all.filter((p) => p.type === active)),
+    [all, active],
+  );
 
   // Same rhythm as before: editorial cadence across 12 cols
   type Variant = "wide" | "standard" | "tall";
@@ -41,6 +60,19 @@ export default function WorkPage() {
             </Link>
           </div>
           <div className="mt-6 h-px w-24 bg-neutral-200" />
+          {/* Type filter */}
+          <div className="mt-6 flex flex-wrap items-center gap-2">
+            {types.map((t) => (
+              <button
+                key={t}
+                onClick={() => setActive(t)}
+                className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs transition-colors ${active === t ? "border-neutral-900 bg-neutral-900 text-white" : "border-neutral-200 hover:bg-neutral-100"}`}
+                aria-pressed={active === t}
+              >
+                {t === "all" ? "All" : t.replace("-", " ")}
+              </button>
+            ))}
+          </div>
           <p className="mt-6 max-w-2xl text-sm text-neutral-600">
             Identity, editorial, packaging, and digital projects-created from Addis Ababa and
             shipped worldwide.

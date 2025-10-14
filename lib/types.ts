@@ -1,4 +1,8 @@
+export type ProjectType = "web-dev" | "ui-ux" | "branding" | "social" | "print";
+
 export type Project = {
+  /** Optional project type to drive template + theming. If omitted, we infer from roles. */
+  type?: ProjectType;
   slug: string;
   title: string;
   excerpt: string;

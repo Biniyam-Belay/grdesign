@@ -188,6 +188,7 @@
   {
     "slug": "awib",
     "title": "AWiB Ethiopia",
+    "type": "social",
     "roles": ["Social Media Design", "Brand Content Strategy"],
     "tools": ["Illustrator", "Photoshop", "Figma"],
     "thumb": "/assets/projects/awib/AWiBHero.webp",
@@ -241,6 +242,7 @@
   {
     "slug": "awib-meri",
     "title": "Meri (AWiB)",
+    "type": "social",
     "roles": ["Brand Content Design", "Programme Visual Identity"],
     "tools": ["Illustrator", "Figma", "Canva"],
     "thumb": "/assets/projects/meri/MeriHero.webp",
@@ -296,6 +298,7 @@
   {
     "slug": "awib-haset",
     "title": "Haset (AWiB)",
+    "type": "social",
     "roles": ["Visual Identity & Social Media Design", "Leadership Programme Branding"],
     "tools": ["Illustrator", "Photoshop", "Figma"],
     "thumb": "/assets/projects/haset/HasetHero.webp",
@@ -508,5 +511,111 @@
     "featuredSrc": "/assets/featured/aster3.webp",
     "featuredAlt": "Tall TikTok/Reels crop used in Featured Works",
     "gallery": [{ "src": "/assets/featured/3.png", "alt": "Editorial layout asset" }]
+  },
+  {
+    "slug": "ui-ux-test-project",
+    "title": "Mobile Banking App Redesign",
+    "type": "ui-ux",
+    "roles": ["UX Designer", "UI Designer", "User Researcher"],
+    "tools": ["Figma", "Principle", "Maze", "Hotjar"],
+    "thumb": "/assets/featured/aster1.webp",
+    "excerpt": "Redesigning a mobile banking experience to improve user onboarding and transaction flow, resulting in 40% faster task completion.",
+    "alt": "Mobile banking app interface mockups",
+    "credits": "Design: Bini.B | Research: Sarah Chen",
+    "problem": "Users were abandoning the mobile banking app during onboarding, with 60% drop-off rate at account verification. Transaction flows were confusing and required too many steps.",
+    "solution": "Streamlined onboarding with progressive disclosure, simplified transaction flows, and added contextual help. Introduced biometric authentication to reduce friction.",
+    "highlights": [
+      "40% faster task completion for money transfers",
+      "Reduced onboarding drop-off from 60% to 15%",
+      "Improved accessibility score from 2.1 to 4.5 stars",
+      "Enhanced security with biometric authentication"
+    ],
+    "approach": "User-centered design process starting with extensive user research, persona development, and journey mapping. Prototyped and tested multiple solutions before final implementation.",
+    "process": [
+      {
+        "title": "Discovery & Research",
+        "body": "Conducted user interviews, analyzed app analytics, and mapped current user journeys to identify pain points."
+      },
+      {
+        "title": "Ideation & Wireframing",
+        "body": "Created low-fidelity wireframes and user flows, testing different approaches to onboarding and transactions."
+      },
+      {
+        "title": "Prototyping & Testing",
+        "body": "Built interactive prototypes and conducted usability testing with 20+ users to validate design decisions."
+      },
+      {
+        "title": "Implementation & Handoff",
+        "body": "Created detailed design specs and worked closely with developers to ensure proper implementation."
+      }
+    ],
+    "year": 2024,
+    "client": "Ethiopian Commercial Bank",
+    "outcome": "The redesigned app saw a 40% improvement in task completion rates and 75% reduction in onboarding drop-offs. User satisfaction scores increased from 2.1 to 4.5 stars on app stores.",
+    "deliverables": [
+      "User research report",
+      "Personas and journey maps",
+      "Wireframes and prototypes",
+      "High-fidelity UI designs",
+      "Design system components",
+      "Usability testing report"
+    ],
+    "gallery": [
+      { "src": "/assets/featured/aster1.webp", "alt": "Mobile banking app onboarding flow" },
+      { "src": "/assets/featured/aster2.webp", "alt": "Transaction interface designs" },
+      { "src": "/assets/featured/aster3.webp", "alt": "User research insights and personas" }
+    ]
+  },
+  {
+    "slug": "grdesign-portfolio",
+    "title": "GR Design Portfolio",
+    "type": "web-dev",
+    "excerpt": "A modern, responsive portfolio website built with Next.js 15, featuring smooth animations and optimized performance.",
+    "thumb": "/assets/featured/aster1.webp",
+    "roles": ["Full Stack Developer", "UI Designer"],
+    "tools": ["Next.js", "TypeScript", "Tailwind CSS", "GSAP", "Vercel"],
+    "year": 2025,
+    "client": "Personal Project",
+    "problem": "Needed a fast, modern portfolio to showcase design and development work with smooth animations and excellent performance.",
+    "solution": "Built with Next.js 15 and Turbopack for optimal performance, featuring custom GSAP animations and a clean, minimal design.",
+    "highlights": [
+      "99+ Lighthouse performance score",
+      "Custom GSAP scroll animations",
+      "Responsive design with mobile-first approach",
+      "TypeScript for type safety",
+      "Optimized images and lazy loading"
+    ],
+    "approach": "Used Next.js 15 with Turbopack for lightning-fast builds, implemented custom animation system with GSAP, and focused on accessibility and performance optimization.",
+    "process": [
+      {
+        "title": "Planning & Architecture",
+        "body": "Planned component structure, routing strategy, and performance optimization approach."
+      },
+      {
+        "title": "Development Setup",
+        "body": "Set up Next.js 15 with TypeScript, Tailwind CSS, and GSAP for animations."
+      },
+      {
+        "title": "Component Development",
+        "body": "Built reusable components with consistent design patterns and smooth animations."
+      },
+      {
+        "title": "Performance Optimization",
+        "body": "Optimized images, implemented lazy loading, and achieved 99+ Lighthouse scores."
+      }
+    ],
+    "outcome": "Delivered a high-performance portfolio website with 99+ Lighthouse scores, smooth animations, and excellent user experience across all devices.",
+    "deliverables": [
+      "Responsive website",
+      "Performance optimization",
+      "Animation system",
+      "SEO optimization",
+      "Deployment setup"
+    ],
+    "gallery": [
+      { "src": "/assets/featured/aster1.webp", "alt": "Portfolio homepage design" },
+      { "src": "/assets/featured/aster2.webp", "alt": "Work showcase section" },
+      { "src": "/assets/featured/aster3.webp", "alt": "Project detail page" }
+    ]
   }
 ]

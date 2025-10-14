@@ -1,17 +1,13 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import type { Project } from "@lib/types";
 import { initGSAP } from "@lib/gsap";
 import { useReducedMotion } from "@lib/hooks/useReducedMotion";
-import type { Project, ProjectType } from "@lib/types";
-import type { CSSProperties } from "react";
 import Lightbox from "@components/media/Lightbox";
-import SocialCase from "@components/content/case/SocialCase";
-import UiUxCase from "@components/content/case/UiUxCase";
-import WebDevCase from "@components/content/case/WebDevCase";
-import Link from "next/link";
 
-export default function ClientProject({
+export default function UiUxCase({
   project,
   prev,
   next,
@@ -37,8 +33,6 @@ export default function ClientProject({
       gsap.context(() => {
         const q = container.querySelectorAll<HTMLElement>("[data-reveal]");
         const groups = container.querySelectorAll<HTMLElement>("[data-reveal-stagger]");
-
-        // ultra-smooth, low-distance motion
         gsap.set(q, { opacity: 0, y: 10 });
         q.forEach((el) => {
           gsap.to(el, {
@@ -49,7 +43,6 @@ export default function ClientProject({
             scrollTrigger: { trigger: el, start: "top 85%" },
           });
         });
-
         groups.forEach((group) => {
           const children = Array.from(group.children) as HTMLElement[];
           gsap.set(children, { opacity: 0, y: 12 });
@@ -68,18 +61,9 @@ export default function ClientProject({
     return () => contexts.forEach((c) => c.revert());
   }, [reduced]);
 
-  // Route to specialized components for different project types
-  if (project.type === "social") {
-    return <SocialCase project={project} prev={prev} next={next} />;
-  }
-
-  if (project.type === "ui-ux") {
-    return <UiUxCase project={project} prev={prev} next={next} />;
-  }
-
-  if (project.type === "web-dev") {
-    return <WebDevCase project={project} prev={prev} next={next} />;
-  }
+  // Static hero image: first from gallery if available, else fallback to thumb
+  const heroImg = project.gallery && project.gallery.length > 0 ? project.gallery[0] : null;
+  const heroAlt = heroImg?.alt ?? project.alt ?? project.title;
 
   // Flags
   const hasProblem = !!project.problem && project.problem.trim().length > 0;
@@ -90,35 +74,14 @@ export default function ClientProject({
   const hasOutcome = !!project.outcome && project.outcome.trim().length > 0;
   const hasDeliverables = Array.isArray(project.deliverables) && project.deliverables.length > 0;
 
-  // Static hero image: first from gallery if available, else fallback to thumb
-  const heroImg = project.gallery && project.gallery.length > 0 ? project.gallery[0] : null;
-  const heroAlt = heroImg?.alt ?? project.alt ?? project.title;
-  // Desktop uses the wide hero, mobile can use a separate crop if provided
-  const desktopHeroSrc = heroImg ? heroImg.src : project.thumb;
-  const mobileHeroSrc = project.mobileHeroSrc || desktopHeroSrc;
-
-  const type: ProjectType | undefined = project.type;
-  const accentByType: Partial<Record<ProjectType, string>> = {
-    "web-dev": "#4f46e5",
-    "ui-ux": "#0ea5e9",
-    branding: "#f59e0b",
-    social: "#ec4899",
-    print: "#16a34a",
-  };
-  const accent = type ? accentByType[type] : undefined;
-
-  const style: CSSProperties | undefined = accent
-    ? ({ ["--accent" as unknown as keyof CSSProperties]: accent } as CSSProperties)
-    : undefined;
-
   return (
-    <main className="bg-white" data-type={type} style={style}>
-      {/* ===== Hero (static, art-directed) ===== */}
+    <main className="bg-white" data-type="ui-ux">
+      {/* Hero - same design as other layouts */}
       <section className="relative isolate overflow-hidden h-screen flex items-end">
         <div className="absolute inset-0 -z-10">
           {/* Desktop (md+) */}
           <Image
-            src={desktopHeroSrc}
+            src={heroImg?.src || project.thumb}
             alt={heroAlt}
             fill
             priority
@@ -129,7 +92,7 @@ export default function ClientProject({
           />
           {/* Mobile */}
           <Image
-            src={mobileHeroSrc}
+            src={project.mobileHeroSrc || heroImg?.src || project.thumb}
             alt={heroAlt}
             fill
             priority
@@ -161,14 +124,9 @@ export default function ClientProject({
               <p className="mt-3 text-base md:text-lg text-white/80">{project.excerpt}</p>
             )}
             <div className="mt-5 flex flex-wrap items-center gap-2">
-              {type && (
-                <span
-                  className="rounded-full border border-white/30 bg-[color:var(--accent,_theme(colors.neutral.900))]/20 backdrop-blur px-3 py-1 text-[10px] uppercase tracking-wider text-white/90"
-                  title="Project type"
-                >
-                  {type.replace("-", " ")}
-                </span>
-              )}
+              <span className="rounded-full border border-white/30 bg-[color:var(--accent,_#0ea5e9)]/20 backdrop-blur px-3 py-1 text-[10px] uppercase tracking-wider text-white/90">
+                ui ux
+              </span>
               {project.roles?.slice(0, 3).map((r) => (
                 <span
                   key={r}
@@ -190,11 +148,11 @@ export default function ClientProject({
         </div>
       </section>
 
-      {/* ===== Body (two-column, distilled) ===== */}
+      {/* Body - UI/UX-specific flow */}
       <section ref={sectionsRef} className="relative z-10">
         <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-12 py-16 md:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
-            {/* Sticky Overview / Meta */}
+            {/* Enhanced sidebar for UI/UX */}
             <aside
               className="lg:col-span-4 space-y-8 lg:space-y-10 lg:sticky lg:top-24 self-start"
               data-reveal
@@ -202,30 +160,40 @@ export default function ClientProject({
               <div>
                 <p className="text-base md:text-lg text-neutral-800 leading-relaxed">
                   {project.excerpt ||
-                    "A concise overview describing the project’s purpose and success criteria."}
+                    "A user-centered design solution focused on improving user experience and interface design."}
                 </p>
               </div>
-              <dl className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm">
-                <div>
-                  <dt className="text-[11px] uppercase tracking-[0.18em] text-neutral-500">Year</dt>
-                  <dd className="mt-1 text-neutral-900">{project.year ?? "-"}</dd>
+
+              {/* UI/UX specific meta */}
+              <dl className="grid grid-cols-1 gap-4 text-sm">
+                <div className="grid grid-cols-2 gap-x-6">
+                  <div>
+                    <dt className="text-[11px] uppercase tracking-[0.18em] text-neutral-500">
+                      Year
+                    </dt>
+                    <dd className="mt-1 text-neutral-900">{project.year ?? "-"}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-[11px] uppercase tracking-[0.18em] text-neutral-500">
+                      Client
+                    </dt>
+                    <dd className="mt-1 text-neutral-900">{project.client ?? "-"}</dd>
+                  </div>
                 </div>
                 <div>
                   <dt className="text-[11px] uppercase tracking-[0.18em] text-neutral-500">
-                    Client
+                    My Role
                   </dt>
-                  <dd className="mt-1 text-neutral-900">{project.client ?? "-"}</dd>
-                </div>
-                <div>
-                  <dt className="text-[11px] uppercase tracking-[0.18em] text-neutral-500">Role</dt>
-                  <dd className="mt-1 text-neutral-900">{project.roles?.[0] ?? "-"}</dd>
+                  <dd className="mt-1 text-neutral-900 leading-relaxed">
+                    {project.roles?.join(", ") ?? "-"}
+                  </dd>
                 </div>
                 <div>
                   <dt className="text-[11px] uppercase tracking-[0.18em] text-neutral-500">
-                    Tools
+                    Tools & Methods
                   </dt>
-                  <dd className="mt-1 text-neutral-900">
-                    {(project.tools ?? []).slice(0, 2).join(", ") || "-"}
+                  <dd className="mt-1 text-neutral-900 leading-relaxed">
+                    {(project.tools ?? []).join(", ") || "-"}
                   </dd>
                 </div>
               </dl>
@@ -256,14 +224,15 @@ export default function ClientProject({
               )}
             </aside>
 
-            {/* Content Flow - vary blocks subtly per type */}
+            {/* Content Flow - UI/UX specific */}
             <div className="lg:col-span-8 space-y-12 md:space-y-16">
+              {/* Problem & Solution - prominent for UI/UX */}
               {(hasProblem || hasSolution) && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8" data-reveal-stagger>
                   {hasProblem && (
                     <div className="rounded-2xl border border-neutral-200 p-5" data-reveal>
                       <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
-                        Problem
+                        Problem Statement
                       </h3>
                       <p className="mt-2 text-neutral-800 leading-relaxed">{project.problem}</p>
                     </div>
@@ -271,7 +240,7 @@ export default function ClientProject({
                   {hasSolution && (
                     <div className="rounded-2xl border border-neutral-200 p-5" data-reveal>
                       <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
-                        Solution
+                        Design Solution
                       </h3>
                       <p className="mt-2 text-neutral-800 leading-relaxed">{project.solution}</p>
                     </div>
@@ -279,10 +248,44 @@ export default function ClientProject({
                 </div>
               )}
 
+              {/* Research & User Insights */}
+              {hasApproach && (
+                <div
+                  className="rounded-2xl bg-neutral-50 border border-neutral-200 p-6"
+                  data-reveal
+                >
+                  <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-600">
+                    Research & User Insights
+                  </h3>
+                  <p className="mt-2 text-neutral-800 leading-relaxed">{project.approach}</p>
+                </div>
+              )}
+
+              {/* Design Process */}
+              {hasProcess && (
+                <div data-reveal>
+                  <h3 className="text-base md:text-lg font-medium tracking-tight text-neutral-900">
+                    Design Process & Research
+                  </h3>
+                  <ol className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4" data-reveal-stagger>
+                    {project.process!.map((step, idx) => (
+                      <li key={idx} className="rounded-xl border border-neutral-200 p-4">
+                        <div className="text-xs uppercase tracking-[0.18em] text-neutral-500">
+                          Phase {idx + 1}
+                        </div>
+                        <div className="mt-1 font-medium text-neutral-900">{step.title}</div>
+                        <p className="mt-1 text-sm text-neutral-700">{step.body}</p>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              )}
+
+              {/* Key Design Decisions */}
               {hasHighlights && (
                 <div data-reveal>
                   <h3 className="text-base md:text-lg font-medium tracking-tight text-neutral-900">
-                    Highlights
+                    Key Design Decisions
                   </h3>
                   <ul
                     className="mt-3 list-disc pl-5 space-y-2 text-neutral-700"
@@ -295,59 +298,21 @@ export default function ClientProject({
                 </div>
               )}
 
-              {hasApproach && (
-                <div
-                  className="rounded-2xl bg-neutral-50 border border-neutral-200 p-6"
-                  data-reveal
-                >
-                  <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-600">
-                    {type === "branding"
-                      ? "Concept & Rationale"
-                      : type === "print"
-                        ? "Specs & Approach"
-                        : "Approach"}
-                  </h3>
-                  <p className="mt-2 text-neutral-800 leading-relaxed">{project.approach}</p>
-                </div>
-              )}
-
-              {hasProcess && (
-                <div data-reveal>
-                  <h3 className="text-base md:text-lg font-medium tracking-tight text-neutral-900">
-                    Process
-                  </h3>
-                  <ol className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4" data-reveal-stagger>
-                    {project.process!.map((step, idx) => (
-                      <li key={idx} className="rounded-xl border border-neutral-200 p-4">
-                        <div className="text-xs uppercase tracking-[0.18em] text-neutral-500">
-                          Step {idx + 1}
-                        </div>
-                        <div className="mt-1 font-medium text-neutral-900">{step.title}</div>
-                        <p className="mt-1 text-sm text-neutral-700">{step.body}</p>
-                      </li>
-                    ))}
-                  </ol>
-                </div>
-              )}
-
+              {/* Impact & Results */}
               {hasOutcome && (
                 <div className="rounded-2xl border border-neutral-200 p-6" data-reveal>
                   <h3 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-600">
-                    Outcome
+                    Impact & Results
                   </h3>
                   <p className="mt-2 text-neutral-800 leading-relaxed">{project.outcome}</p>
                 </div>
               )}
-
-              {/* Deliverables and Credits moved to left column */}
-
-              {/* Gallery moved to its own block below */}
             </div>
           </div>
         </div>
       </section>
 
-      {/* ===== Gallery (own block, larger visuals) ===== */}
+      {/* Gallery - same as default but with different aspect ratios */}
       {project.gallery && project.gallery.length > 0 && (
         <section ref={galleryRef} className="border-t border-neutral-200/70">
           <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-16 md:py-24">
@@ -355,7 +320,7 @@ export default function ClientProject({
               {project.gallery.map((g, i) => (
                 <button
                   key={g.src}
-                  className={`group relative overflow-hidden ${type === "print" ? "aspect-[3/2]" : "aspect-[4/3]"} will-change-transform`}
+                  className="group relative overflow-hidden aspect-[4/3] will-change-transform"
                   onClick={() => setLbIndex(i)}
                   aria-label={`Open image: ${g.alt || project.title}`}
                   data-reveal
@@ -364,7 +329,7 @@ export default function ClientProject({
                     src={g.src}
                     alt={g.alt || project.title}
                     fill
-                    className={`object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02] ${type === "branding" ? "object-top" : ""}`}
+                    className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]"
                     sizes="(min-width: 1024px) 50vw, 100vw"
                   />
                   <span className="pointer-events-none absolute inset-0 ring-0 ring-black/0 transition-[ring-color,ring-width] duration-300 group-hover:ring-2 group-hover:ring-black/10" />
@@ -375,7 +340,7 @@ export default function ClientProject({
         </section>
       )}
 
-      {/* ===== Prev / Next strip (unchanged) ===== */}
+      {/* Prev / Next navigation */}
       <section className="border-t border-neutral-200/70">
         <div className="px-4 sm:px-8 lg:px-12 py-10">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

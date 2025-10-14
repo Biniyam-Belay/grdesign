@@ -1,7 +1,7 @@
 // app/work/[slug]/page.tsx
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getProjectBySlug, getProjectSlugs, getProjects } from "@lib/data/projects";
+import { getProjectBySlug, getProjects } from "@lib/data/projects";
 import ClientProject from "./ClientProject";
 
 export const dynamicParams = false;

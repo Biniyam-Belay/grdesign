@@ -1,8 +1,9 @@
 import { z } from "zod";
 import raw from "@data/projects.json";
-import type { Project } from "@lib/types";
+import type { Project, ProjectType } from "@lib/types";
 
 const ProjectSchema = z.object({
+  type: z.enum(["web-dev", "ui-ux", "branding", "social", "print"]).optional(),
   slug: z.string().min(1),
   title: z.string().min(1),
   excerpt: z.string().min(1),
@@ -33,6 +34,22 @@ const ProjectsSchema = z.array(ProjectSchema);
 
 let cached: Project[] | null = null;
 
+function inferTypeFromRoles(roles: string[]): ProjectType | undefined {
+  const hay = roles.map((r) => r.toLowerCase());
+  // web-dev
+  if (hay.some((r) => /(web\s?dev|frontend|full\s?stack|developer|engineer)/.test(r)))
+    return "web-dev";
+  // ui-ux
+  if (hay.some((r) => /(ui|ux|product\s?design|interaction|experience)/.test(r))) return "ui-ux";
+  // branding
+  if (hay.some((r) => /(brand|branding|identity|art\s?direction)/.test(r))) return "branding";
+  // social
+  if (hay.some((r) => /(social|content\s?design|campaign)/.test(r))) return "social";
+  // print
+  if (hay.some((r) => /(print|editorial|packaging)/.test(r))) return "print";
+  return undefined;
+}
+
 export function getProjects(): Project[] {
   if (cached) return cached;
   const parsed = ProjectsSchema.safeParse(raw);
@@ -45,7 +62,14 @@ export function getProjects(): Project[] {
       .join("; ");
     throw new Error(`Invalid projects data: ${message}`);
   }
-  cached = parsed.data as Project[];
+  const normalized = (parsed.data as Project[]).map((p) => {
+    if (!p.type) {
+      const inferred = inferTypeFromRoles(p.roles ?? []);
+      return inferred ? { ...p, type: inferred } : p;
+    }
+    return p;
+  });
+  cached = normalized;
   return cached;
 }
 

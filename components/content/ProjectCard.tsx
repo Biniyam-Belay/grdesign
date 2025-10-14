@@ -52,7 +52,12 @@ export default function ProjectCard({
     variant === "wide" ? "aspect-[16/10]" : variant === "tall" ? "aspect-[3/4]" : "aspect-[4/3]";
 
   return (
-    <Link ref={cardRef} href={`/work/${project.slug}`} className="group block focus:outline-none">
+    <Link
+      ref={cardRef}
+      href={`/work/${project.slug}`}
+      className="group block focus:outline-none"
+      data-type={project.type}
+    >
       {/* media */}
       <div
         className={`relative ${ratio} w-full overflow-hidden border border-neutral-200 bg-white`}
@@ -67,6 +72,11 @@ export default function ProjectCard({
               sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
               priority={false}
             />
+            {project.type && (
+              <span className="absolute top-3 left-3 z-10 rounded-full bg-black/60 text-white text-[10px] uppercase tracking-wide px-2 py-0.5">
+                {project.type.replace("-", " ")}
+              </span>
+            )}
 
             {project.video && (
               <span

@@ -6,6 +6,7 @@ import AboutSection from "@/components/content/AboutSection";
 import ProjectsSection from "@/components/content/ProjectsSection";
 import AboutMeSection from "@/components/content/AboutMeSection";
 import FeaturedWorks from "@/components/content/FeaturedWorks";
+import RecentBlogTeaser from "@/components/content/RecentBlogTeaser";
 import { getProjects } from "@/lib/data/projects";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -59,6 +60,7 @@ export default function Home() {
         <div className="about-section">
           <AboutSection />
         </div>
+        <RecentBlogTeaser />
         <FeaturedWorks projects={projectsData} title="Featured Works" />
         <ProjectsSection />
         <AboutMeSection />
