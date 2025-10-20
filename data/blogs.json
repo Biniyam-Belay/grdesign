@@ -3,7 +3,7 @@
     "slug": "design-systems-that-scale",
     "title": "Design Systems that Scale",
     "excerpt": "Principles and patterns for building design systems that grow with your product.",
-    "cover": "/assets/projects/brand.svg",
+    "cover": "/assets/featured/aster1.webp",
     "date": "2025-08-01",
     "tags": ["design systems", "components", "tokens"]
   },
@@ -11,7 +11,7 @@
     "slug": "motion-for-meaning",
     "title": "Motion for Meaning",
     "excerpt": "Using motion to guide attention without adding noise.",
-    "cover": "/assets/projects/editorial-layout.svg",
+    "cover": "/assets/featured/aster2.webp",
     "date": "2025-07-15",
     "tags": ["motion", "ux", "a11y"]
   },
@@ -19,7 +19,7 @@
     "slug": "bridging-design-and-code",
     "title": "Bridging Design and Code",
     "excerpt": "Practical ways designers and developers can collaborate better.",
-    "cover": "/assets/projects/brand.svg",
+    "cover": "/assets/featured/aster3.webp",
     "date": "2025-06-20",
     "tags": ["hand-off", "tooling", "workflow"]
   },
@@ -27,7 +27,7 @@
     "slug": "the-power-of-negative-space",
     "title": "The Power of Negative Space",
     "excerpt": "How whitespace clarifies hierarchy and elevates brand perception.",
-    "cover": "/assets/blog/negative-space.webp",
+    "cover": "/assets/projects/sage/SAGEHero.webp",
     "date": "2025-09-24",
     "tags": ["visual design", "brand", "layout"],
     "content": "<p>Negative space isn’t empty-it’s a design tool. It guides attention, reveals hierarchy, and breathes life into composition.</p><h2>Why it matters</h2><p>Whitespace reduces noise, improves readability, and elevates a premium feel. Use it intentionally around typography, imagery, and key CTAs.</p><p>Want examples? See the <a href='/work'>work</a> section for applications in brand and editorial systems.</p><h2>The Psychology of Emptiness</h2><p>Our brains are wired to find patterns and make sense of visual information. When a design is cluttered, the cognitive load increases, making it harder for the user to process the message. Ample negative space acts as a visual palate cleanser, allowing the user's mind to rest and focus on what's important. It's the visual equivalent of taking a deep breath.</p><h2>The Two Types of Whitespace</h2><p>While often used interchangeably, there are two key types of whitespace to consider in your designs: <strong>Active Whitespace</strong> and <strong>Passive Whitespace</strong>. Active whitespace is the intentional, strategic use of empty space to give a layout structure and guide the user's eye. Think of the generous margins on a well-designed book or the space around a main heading. Passive whitespace is the space that exists naturally around elements, like the space between individual letters (kerning) or words. While it's not as deliberate, managing passive whitespace is crucial for readability and visual comfort.</p><h2>Putting It All Together: A Case Study</h2><p>Consider the homepage of a high-end fashion brand. Instead of showcasing every product at once, they might feature a single, high-quality image of a new collection with a clean, concise headline. The surrounding whitespace elevates the product, making it feel exclusive and desirable. The call-to-action button, 'Shop Now,' is given its own space, making it stand out and inviting the user to click. This isn't just a design choice; it's a strategic business decision that influences perception and drives conversions.</p>"
@@ -36,7 +36,7 @@
     "slug": "the-power-of-positive-space",
     "title": "The Power of Positive Space",
     "excerpt": "How whitespace clarifies hierarchy and elevates brand perception.",
-    "cover": "/assets/blog/negative-space.webp",
+    "cover": "/assets/projects/sirtona/SirtonaHero.webp",
     "date": "2025-10-14",
     "tags": ["visual design", "brand", "layout"],
     "content": "<p>Negative space isn’t empty-it’s a design tool. It guides attention, reveals hierarchy, and breathes life into composition.</p><h2>Why it matters</h2><p>Whitespace reduces noise, improves readability, and elevates a premium feel. Use it intentionally around typography, imagery, and key CTAs.</p><p>Want examples? See the <a href='/work'>work</a> section for applications in brand and editorial systems.</p><h2>The Psychology of Emptiness</h2><p>Our brains are wired to find patterns and make sense of visual information. When a design is cluttered, the cognitive load increases, making it harder for the user to process the message. Ample negative space acts as a visual palate cleanser, allowing the user's mind to rest and focus on what's important. It's the visual equivalent of taking a deep breath.</p><h2>The Two Types of Whitespace</h2><p>While often used interchangeably, there are two key types of whitespace to consider in your designs: <strong>Active Whitespace</strong> and <strong>Passive Whitespace</strong>. Active whitespace is the intentional, strategic use of empty space to give a layout structure and guide the user's eye. Think of the generous margins on a well-designed book or the space around a main heading. Passive whitespace is the space that exists naturally around elements, like the space between individual letters (kerning) or words. While it's not as deliberate, managing passive whitespace is crucial for readability and visual comfort.</p><h2>Putting It All Together: A Case Study</h2><p>Consider the homepage of a high-end fashion brand. Instead of showcasing every product at once, they might feature a single, high-quality image of a new collection with a clean, concise headline. The surrounding whitespace elevates the product, making it feel exclusive and desirable. The call-to-action button, 'Shop Now,' is given its own space, making it stand out and inviting the user to click. This isn't just a design choice; it's a strategic business decision that influences perception and drives conversions.</p>"
@@ -45,7 +45,7 @@
     "slug": "the-power-of-space",
     "title": "The Power of any Space",
     "excerpt": "How whitespace clarifies hierarchy and elevates brand perception.",
-    "cover": "/assets/blog/negative-space.webp",
+    "cover": "/assets/projects/biruh/BiruhHero.webp",
     "date": "2025-10-13",
     "tags": ["visual design", "brand", "layout"],
     "content": "<p>Negative space isn’t empty-it’s a design tool. It guides attention, reveals hierarchy, and breathes life into composition.</p><h2>Why it matters</h2><p>Whitespace reduces noise, improves readability, and elevates a premium feel. Use it intentionally around typography, imagery, and key CTAs.</p><p>Want examples? See the <a href='/work'>work</a> section for applications in brand and editorial systems.</p><h2>The Psychology of Emptiness</h2><p>Our brains are wired to find patterns and make sense of visual information. When a design is cluttered, the cognitive load increases, making it harder for the user to process the message. Ample negative space acts as a visual palate cleanser, allowing the user's mind to rest and focus on what's important. It's the visual equivalent of taking a deep breath.</p><h2>The Two Types of Whitespace</h2><p>While often used interchangeably, there are two key types of whitespace to consider in your designs: <strong>Active Whitespace</strong> and <strong>Passive Whitespace</strong>. Active whitespace is the intentional, strategic use of empty space to give a layout structure and guide the user's eye. Think of the generous margins on a well-designed book or the space around a main heading. Passive whitespace is the space that exists naturally around elements, like the space between individual letters (kerning) or words. While it's not as deliberate, managing passive whitespace is crucial for readability and visual comfort.</p><h2>Putting It All Together: A Case Study</h2><p>Consider the homepage of a high-end fashion brand. Instead of showcasing every product at once, they might feature a single, high-quality image of a new collection with a clean, concise headline. The surrounding whitespace elevates the product, making it feel exclusive and desirable. The call-to-action button, 'Shop Now,' is given its own space, making it stand out and inviting the user to click. This isn't just a design choice; it's a strategic business decision that influences perception and drives conversions.</p>"

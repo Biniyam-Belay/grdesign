@@ -34,3 +34,18 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Supabase (optional CMS)
+
+This project can read Blogs and Projects from Supabase instead of local JSON.
+
+1. Create a Supabase project and retrieve:
+   - NEXT_PUBLIC_SUPABASE_URL
+   - NEXT_PUBLIC_SUPABASE_ANON_KEY
+2. Copy `.env.example` to `.env.local` and fill the values.
+3. In the Supabase SQL editor, run: `supabase/migrations/0001_init.sql`.
+4. Seed data from the local JSON files:
+   - Prefer setting `SUPABASE_SERVICE_ROLE_KEY` in your environment for seeding (writes require auth by policy).
+   - Then run: `node scripts/seed-supabase.mjs`
+
+At runtime, the app will use async loaders (`getBlogsAsync`, `getProjectsAsync`) that try Supabase first and fall back to local JSON when env is missing or errors occur.

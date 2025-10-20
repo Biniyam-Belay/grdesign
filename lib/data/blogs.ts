@@ -1,48 +1,40 @@
-import { z } from "zod";
-import raw from "@data/blogs.json";
+import { getBlogsFromSupabase } from "@lib/data/blogsSupabase";
 import type { Blog } from "@lib/types";
-
-const BlogSchema = z.object({
-  slug: z.string().min(1),
-  title: z.string().min(1),
-  excerpt: z.string().min(1),
-  cover: z.string().min(1),
-  date: z.string().min(1), // ISO string
-  tags: z.array(z.string()).optional(),
-  content: z.string().optional(),
-});
-
-const BlogsSchema = z.array(BlogSchema);
 
 let cached: Blog[] | null = null;
 
-export function getBlogs(): Blog[] {
+// All data now comes from Supabase - no hardcoded fallbacks
+export async function getBlogs(): Promise<Blog[]> {
   if (cached) return cached;
-  const parsed = BlogsSchema.safeParse(raw);
-  if (!parsed.success) {
-    const message = parsed.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`).join("; ");
-    throw new Error(`Invalid blogs data: ${message}`);
+  const blogs = await getBlogsFromSupabase();
+  if (!blogs) {
+    throw new Error("Failed to fetch blogs from Supabase");
   }
-  // sort by date desc
-  cached = [...(parsed.data as Blog[])].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
-  );
+  cached = blogs;
   return cached;
 }
 
-export function getBlogSlugs(): string[] {
-  return getBlogs().map((b) => b.slug);
+// For backwards compatibility - now just calls getBlogs()
+export async function getBlogsAsync(): Promise<Blog[]> {
+  return await getBlogs();
 }
 
-export function getBlogBySlug(slug: string): Blog | undefined {
-  return getBlogs().find((b) => b.slug === slug);
+export async function getBlogSlugs(): Promise<string[]> {
+  const blogs = await getBlogs();
+  return blogs.map((b) => b.slug);
+}
+
+export async function getBlogBySlug(slug: string): Promise<Blog | undefined> {
+  const blogs = await getBlogs();
+  return blogs.find((b) => b.slug === slug);
 }
 
 /** Get a unique, sorted list of all tags across blogs */
-export function getAllBlogTags(): string[] {
+export async function getAllBlogTags(): Promise<string[]> {
+  const blogs = await getBlogs();
   const set = new Set<string>();
   const normalize = (t: string) => t.trim();
-  for (const b of getBlogs()) {
+  for (const b of blogs) {
     b.tags?.forEach((t) => set.add(normalize(t)));
   }
   return Array.from(set).sort((a, b) => a.localeCompare(b));
@@ -53,7 +45,8 @@ function norm(tag: string): string {
   return tag.trim().toLowerCase();
 }
 
-export function getBlogsByTag(tag: string): Blog[] {
+export async function getBlogsByTag(tag: string): Promise<Blog[]> {
+  const blogs = await getBlogs();
   const n = norm(tag);
-  return getBlogs().filter((b) => b.tags?.some((t) => norm(t) === n));
+  return blogs.filter((b) => b.tags?.some((t) => norm(t) === n));
 }

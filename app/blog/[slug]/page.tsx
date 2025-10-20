@@ -7,14 +7,15 @@ import ShareButtons from "@components/ui/ShareButtons";
 import ReadingProgress from "@components/content/ReadingProgress";
 
 export async function generateStaticParams() {
-  return getBlogSlugs().map((slug) => ({ slug }));
+  return (await getBlogSlugs()).map((slug) => ({ slug }));
 }
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const blog = getBlogBySlug(slug);
+  const blog = await getBlogBySlug(slug);
   if (!blog) return notFound();
-  const related = getBlogs()
+  const allBlogs = await getBlogs();
+  const related = allBlogs
     .filter((b) => b.slug !== blog.slug && b.tags?.some((t) => blog.tags?.includes(t)))
     .slice(0, 3);
   const base = "https://www.binidoes.tech";
@@ -182,7 +183,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const blog = getBlogBySlug(slug);
+  const blog = await getBlogBySlug(slug);
   if (!blog) return {};
   return generateMeta({ title: blog.title, description: blog.excerpt, image: blog.cover });
 }

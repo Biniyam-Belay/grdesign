@@ -1,13 +1,16 @@
 // app/components/sections/ProjectsSection.tsx
 import Link from "next/link";
-import { getProjects } from "@/lib/data/projects";
 import ProjectCard from "@/components/content/ProjectCard";
-import { useState } from "react";
+import type { Project } from "@/lib/types";
 
-export default function ProjectsSection() {
+interface ProjectsSectionProps {
+  projects: Project[];
+}
+
+export default function ProjectsSection({ projects: allProjects }: ProjectsSectionProps) {
   // Exclude items deliberately marked as featured (shown in FeaturedWorks)
   // Featured items are only for decoration and should not be treated as real projects
-  const projects = getProjects().filter((p) => !p.featured);
+  const projects = allProjects.filter((p) => !p.featured);
 
   // Show only a limited number of projects initially (2 rows)
   // For lg screens: Row 1 = wide(8) + standard(4) = 12 cols, Row 2 = standard(4) + tall(4) + standard(4) = 12 cols

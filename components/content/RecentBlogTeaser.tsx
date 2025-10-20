@@ -2,18 +2,30 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo } from "react";
-import { getBlogs } from "@lib/data/blogs";
+import { useEffect, useMemo, useState } from "react";
+import { getBlogsAsync } from "@lib/data/blogs";
+import type { Blog } from "@lib/types";
 
 export default function RecentBlogTeaser() {
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+  // hydrate with async Supabase data when available
+  useEffect(() => {
+    let mounted = true;
+    getBlogsAsync().then((b) => {
+      if (mounted && b && b.length > 0) setBlogs(b);
+    });
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   // compute most recent within last 7 days
   const { top, rest } = useMemo(() => {
-    const blogs = getBlogs();
     const now = Date.now();
     const sevenDays = 7 * 24 * 60 * 60 * 1000;
     const recent = blogs.filter((b) => now - new Date(b.date).getTime() <= sevenDays);
     return { top: recent[0], rest: recent.slice(1) } as const;
-  }, []);
+  }, [blogs]);
 
   if (!top) return null;
 

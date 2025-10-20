@@ -1,36 +1,5 @@
-import { z } from "zod";
-import raw from "@data/projects.json";
+import { getProjectsFromSupabase } from "@lib/data/projectsSupabase";
 import type { Project, ProjectType } from "@lib/types";
-
-const ProjectSchema = z.object({
-  type: z.enum(["web-dev", "ui-ux", "branding", "social", "print"]).optional(),
-  slug: z.string().min(1),
-  title: z.string().min(1),
-  excerpt: z.string().min(1),
-  thumb: z.string().min(1),
-  roles: z.array(z.string()).min(1),
-  tools: z.array(z.string()).optional(),
-  alt: z.string().optional(),
-  credits: z.string().optional(),
-  video: z.string().optional(),
-  mobileHeroSrc: z.string().optional(),
-  gallery: z.array(z.object({ src: z.string().min(1), alt: z.string().min(1) })).optional(),
-  problem: z.string().optional(),
-  solution: z.string().optional(),
-  highlights: z.array(z.string()).optional(),
-  approach: z.string().optional(),
-  process: z.array(z.object({ title: z.string(), body: z.string() })).optional(),
-  outcome: z.string().optional(),
-  deliverables: z.array(z.string()).optional(),
-  year: z.union([z.string(), z.number()]).optional(),
-  client: z.string().optional(),
-  featuredAspect: z.enum(["square", "portrait45", "portrait916"]).optional(),
-  featuredSrc: z.string().optional(),
-  featuredAlt: z.string().optional(),
-  featured: z.boolean().optional(),
-});
-
-const ProjectsSchema = z.array(ProjectSchema);
 
 let cached: Project[] | null = null;
 
@@ -50,33 +19,38 @@ function inferTypeFromRoles(roles: string[]): ProjectType | undefined {
   return undefined;
 }
 
-export function getProjects(): Project[] {
+// All data now comes from Supabase - no hardcoded fallbacks
+export async function getProjects(): Promise<Project[]> {
   if (cached) return cached;
-  const parsed = ProjectsSchema.safeParse(raw);
-  if (!parsed.success) {
-    const message = parsed.error.issues
-      .map((i) => {
-        const path = i.path.join(".");
-        return `${path}: ${i.message}`;
-      })
-      .join("; ");
-    throw new Error(`Invalid projects data: ${message}`);
+  const projects = await getProjectsFromSupabase();
+  if (!projects) {
+    throw new Error("Failed to fetch projects from Supabase");
   }
-  const normalized = (parsed.data as Project[]).map((p) => {
+
+  // Apply type inference to projects that don't have a type set
+  const normalized = projects.map((p) => {
     if (!p.type) {
       const inferred = inferTypeFromRoles(p.roles ?? []);
       return inferred ? { ...p, type: inferred } : p;
     }
     return p;
   });
-  cached = normalized;
+
+  cached = normalized as Project[];
   return cached;
 }
 
-export function getProjectSlugs(): string[] {
-  return getProjects().map((p) => p.slug);
+// For backwards compatibility - now just calls getProjects()
+export async function getProjectsAsync(): Promise<Project[]> {
+  return await getProjects();
 }
 
-export function getProjectBySlug(slug: string): Project | undefined {
-  return getProjects().find((p) => p.slug === slug);
+export async function getProjectSlugs(): Promise<string[]> {
+  const projects = await getProjects();
+  return projects.map((p) => p.slug);
+}
+
+export async function getProjectBySlug(slug: string): Promise<Project | undefined> {
+  const projects = await getProjects();
+  return projects.find((p) => p.slug === slug);
 }

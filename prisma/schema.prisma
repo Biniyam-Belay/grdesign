@@ -1,0 +1,57 @@
+// Prisma schema for grdesign
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model blogs {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slug       String   @unique
+  title      String
+  excerpt    String
+  cover      String
+  date       DateTime @db.Timestamptz
+  tags       String[] @db.Text
+  content    String?
+  created_at DateTime @default(now()) @db.Timestamptz
+  updated_at DateTime @default(now()) @db.Timestamptz
+
+  @@map("blogs")
+}
+
+model projects {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slug            String    @unique
+  title           String
+  excerpt         String
+  thumb           String
+  video           String?
+  roles           String[]  @db.Text
+  tools           String[]  @db.Text @default([])
+  alt             String?
+  credits         String?
+  gallery         Json?
+  mobile_hero_src String?
+  problem         String?
+  solution        String?
+  highlights      String[]  @db.Text @default([])
+  approach        String?
+  process         Json?
+  outcome         String?
+  deliverables    String[]  @db.Text @default([])
+  year            String?
+  client          String?
+  featured_aspect String?
+  featured_src    String?
+  featured_alt    String?
+  featured        Boolean?  @default(false)
+  type            String?
+
+  @@map("projects")
+}

@@ -4,7 +4,7 @@ import { getAllBlogTags, getBlogsByTag } from "@lib/data/blogs";
 import { generateMeta } from "@lib/meta";
 
 export async function generateStaticParams() {
-  return getAllBlogTags().map((tag) => ({ tag }));
+  return (await getAllBlogTags()).map((tag) => ({ tag }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ tag: string }> }) {
@@ -19,8 +19,8 @@ export async function generateMetadata({ params }: { params: Promise<{ tag: stri
 export default async function BlogTagPage({ params }: { params: Promise<{ tag: string }> }) {
   const { tag } = await params;
   const decoded = decodeURIComponent(tag);
-  const posts = getBlogsByTag(decoded);
-  const all = getAllBlogTags();
+  const posts = await getBlogsByTag(decoded);
+  const all = await getAllBlogTags();
   const otherTags = all.filter((t) => t.toLowerCase() !== decoded.toLowerCase());
   return (
     <main className="bg-white pt-24 pb-16">

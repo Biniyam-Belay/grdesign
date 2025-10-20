@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { generateMeta } from "@lib/meta";
-import { getBlogs } from "@lib/data/blogs";
+import { getBlogsAsync } from "@lib/data/blogs";
 
 export const metadata = generateMeta({
   title: "Blog",
@@ -15,7 +15,7 @@ export default async function BlogIndexPage({
 }) {
   const sp = (await searchParams) ?? {};
   const q = sp.q?.toLowerCase()?.trim() ?? "";
-  const blogs = getBlogs().filter((b) => {
+  const blogs = (await getBlogsAsync()).filter((b) => {
     const matchText = `${b.title} ${b.excerpt} ${b.tags?.join(" ") ?? ""}`.toLowerCase();
     const matchesQuery = q ? matchText.includes(q) : true;
     return matchesQuery;

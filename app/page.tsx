@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Hero from "@/components/content/Hero";
 import AboutSection from "@/components/content/AboutSection";
 import ProjectsSection from "@/components/content/ProjectsSection";
@@ -8,14 +8,19 @@ import AboutMeSection from "@/components/content/AboutMeSection";
 import FeaturedWorks from "@/components/content/FeaturedWorks";
 import RecentBlogTeaser from "@/components/content/RecentBlogTeaser";
 import { getProjects } from "@/lib/data/projects";
+import type { Project } from "@/lib/types";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
-  const projectsData = getProjects();
+  const [projectsData, setProjectsData] = useState<Project[]>([]);
   const containerRef = useRef(null);
+
+  useEffect(() => {
+    getProjects().then(setProjectsData);
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -62,7 +67,7 @@ export default function Home() {
         </div>
         <RecentBlogTeaser />
         <FeaturedWorks projects={projectsData} title="Featured Works" />
-        <ProjectsSection />
+        <ProjectsSection projects={projectsData} />
         <AboutMeSection />
       </div>
     </main>

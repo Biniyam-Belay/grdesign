@@ -10,9 +10,10 @@ function escape(str: string) {
     .replace(/'/g, "&apos;");
 }
 
-export function GET() {
+export async function GET() {
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.binidoes.tech";
-  const items = getBlogs()
+  const blogs = await getBlogs();
+  const items = blogs
     .map(
       (b) => `
       <item>

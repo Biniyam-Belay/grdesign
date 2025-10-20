@@ -3,7 +3,7 @@
 import { useMemo, useRef, useState, useEffect } from "react";
 import { usePageTransition } from "@lib/gsapPageTransition";
 import ProjectCard from "@components/content/ProjectCard";
-import { getProjects } from "@lib/data/projects";
+import { getProjectsAsync } from "@lib/data/projects";
 import type { Project, ProjectType } from "@lib/types";
 import Link from "next/link";
 
@@ -12,7 +12,16 @@ export default function WorkPage() {
   usePageTransition(pageRef);
 
   // Exclude featured items as they are only for decoration and should not appear as real projects
-  const all = getProjects().filter((p) => !p.featured);
+  const [all, setAll] = useState<Project[]>([]);
+  useEffect(() => {
+    let mounted = true;
+    getProjectsAsync().then((ps) => {
+      if (mounted && ps && ps.length > 0) setAll(ps.filter((p) => !p.featured));
+    });
+    return () => {
+      mounted = false;
+    };
+  }, []);
   const [active, setActive] = useState<ProjectType | "all">(() => {
     if (typeof window === "undefined") return "all";
     const url = new URL(window.location.href);

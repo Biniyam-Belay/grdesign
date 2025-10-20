@@ -1,6 +1,7 @@
 export type ProjectType = "web-dev" | "ui-ux" | "branding" | "social" | "print";
 
 export type Project = {
+  id?: string; // UUID from Supabase
   /** Optional project type to drive template + theming. If omitted, we infer from roles. */
   type?: ProjectType;
   slug: string;
@@ -41,6 +42,7 @@ export type Project = {
 };
 
 export type Blog = {
+  id?: string; // UUID from Supabase
   slug: string;
   title: string;
   excerpt: string;
