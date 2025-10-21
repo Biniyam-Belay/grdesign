@@ -2,6 +2,9 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { redirect, notFound } from "next/navigation";
 import BlogForm from "../../components/BlogForm";
 
+// Force dynamic rendering for admin pages
+export const dynamic = "force-dynamic";
+
 interface EditBlogPageProps {
   params: Promise<{
     id: string;

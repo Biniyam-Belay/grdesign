@@ -2,6 +2,9 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { redirect, notFound } from "next/navigation";
 import ProjectForm from "../../components/ProjectForm";
 
+// Force dynamic rendering for admin pages
+export const dynamic = "force-dynamic";
+
 interface EditProjectPageProps {
   params: Promise<{
     id: string;
