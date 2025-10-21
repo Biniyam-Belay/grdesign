@@ -1,19 +1,40 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createSupabaseClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import type { SupabaseClient } from "@supabase/supabase-js";
+
+// Force dynamic rendering for admin pages
+export const dynamic = "force-dynamic";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [supabase, setSupabase] = useState<SupabaseClient | null>(null);
   const router = useRouter();
-  const supabase = createSupabaseClient();
+
+  useEffect(() => {
+    // Initialize Supabase client only on the client side
+    try {
+      const client = createSupabaseClient();
+      setSupabase(client);
+    } catch (err) {
+      console.error("Failed to initialize Supabase client:", err);
+      setError("Unable to initialize authentication. Please try again later.");
+    }
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!supabase) {
+      setError("Authentication system not ready. Please try again.");
+      return;
+    }
+
     setLoading(true);
     setError("");
 
