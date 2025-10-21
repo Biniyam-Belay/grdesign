@@ -5,7 +5,7 @@ import { createSupabaseClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import ImageUpload from "@/components/ui/ImageUpload";
-import { Project } from "@/lib/types";
+import { Project, ProjectType } from "@/lib/types";
 
 interface ProjectFormProps {
   project?: Project;
@@ -585,7 +585,9 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                       name="type"
                       id="type"
                       value={formData.type}
-                      onChange={(e) => setFormData((prev) => ({ ...prev, type: e.target.value }))}
+                      onChange={(e) =>
+                        setFormData((prev) => ({ ...prev, type: e.target.value as ProjectType }))
+                      }
                       className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
                     >
                       <option value="web-dev">Web Development</option>

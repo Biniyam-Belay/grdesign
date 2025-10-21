@@ -13,5 +13,5 @@ export default async function BlogsPage() {
     redirect("/admin/login");
   }
 
-  return <BlogManagement user={user} />;
+  return <BlogManagement />;
 }

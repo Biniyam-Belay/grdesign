@@ -27,6 +27,11 @@ export async function GET() {
     return Response.json(result);
   } catch (error) {
     console.error("❌ Data source test error:", error);
-    return Response.json({ error: error.message }, { status: 500 });
+    return Response.json(
+      {
+        error: error instanceof Error ? error.message : "Unknown error occurred",
+      },
+      { status: 500 },
+    );
   }
 }
