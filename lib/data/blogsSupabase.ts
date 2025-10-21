@@ -3,6 +3,12 @@ import { createSupabaseClient } from "@lib/supabase/client";
 
 export async function getBlogsFromSupabase(): Promise<Blog[] | null> {
   try {
+    // Check if environment variables are available
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      console.warn("Supabase environment variables not available during build");
+      return null;
+    }
+
     const supabase = createSupabaseClient();
     const { data, error } = await supabase
       .from("blogs")

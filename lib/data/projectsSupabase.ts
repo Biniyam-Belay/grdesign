@@ -63,6 +63,12 @@ function mapDbProject(p: DbProject): Project {
 
 export async function getProjectsFromSupabase(): Promise<Project[] | null> {
   try {
+    // Check if environment variables are available
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      console.warn("Supabase environment variables not available during build");
+      return null;
+    }
+
     const supabase = createSupabaseClient();
     const { data, error } = await supabase
       .from("projects")

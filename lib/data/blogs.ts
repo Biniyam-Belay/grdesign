@@ -3,14 +3,22 @@ import type { Blog } from "@lib/types";
 
 let cached: Blog[] | null = null;
 
-// All data now comes from Supabase - no hardcoded fallbacks
+// All data now comes from Supabase - with fallbacks for build time
 export async function getBlogs(): Promise<Blog[]> {
   if (cached) return cached;
-  const blogs = await getBlogsFromSupabase();
-  if (!blogs) {
-    throw new Error("Failed to fetch blogs from Supabase");
+
+  try {
+    const blogs = await getBlogsFromSupabase();
+    if (blogs) {
+      cached = blogs;
+      return cached;
+    }
+  } catch (error) {
+    console.warn("Failed to fetch blogs from Supabase during build:", error);
   }
-  cached = blogs;
+
+  // Fallback to empty array during build time if Supabase is not available
+  cached = [];
   return cached;
 }
 

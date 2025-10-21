@@ -19,24 +19,31 @@ function inferTypeFromRoles(roles: string[]): ProjectType | undefined {
   return undefined;
 }
 
-// All data now comes from Supabase - no hardcoded fallbacks
+// All data now comes from Supabase - with fallbacks for build time
 export async function getProjects(): Promise<Project[]> {
   if (cached) return cached;
-  const projects = await getProjectsFromSupabase();
-  if (!projects) {
-    throw new Error("Failed to fetch projects from Supabase");
+
+  try {
+    const projects = await getProjectsFromSupabase();
+    if (projects) {
+      // Apply type inference to projects that don't have a type set
+      const normalized = projects.map((p) => {
+        if (!p.type) {
+          const inferred = inferTypeFromRoles(p.roles ?? []);
+          return inferred ? { ...p, type: inferred } : p;
+        }
+        return p;
+      });
+
+      cached = normalized as Project[];
+      return cached;
+    }
+  } catch (error) {
+    console.warn("Failed to fetch projects from Supabase during build:", error);
   }
 
-  // Apply type inference to projects that don't have a type set
-  const normalized = projects.map((p) => {
-    if (!p.type) {
-      const inferred = inferTypeFromRoles(p.roles ?? []);
-      return inferred ? { ...p, type: inferred } : p;
-    }
-    return p;
-  });
-
-  cached = normalized as Project[];
+  // Fallback to empty array during build time if Supabase is not available
+  cached = [];
   return cached;
 }
 
