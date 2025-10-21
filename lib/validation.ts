@@ -52,10 +52,20 @@ export function validateBlog(data: {
   if (!data.cover.trim()) {
     errors.push({ field: "cover", message: "Cover image is required" });
   } else {
+    const cover = data.cover.trim();
+    const isRootRelative = cover.startsWith("/");
+    const isDataUrl = cover.startsWith("data:image/");
+    let isAbsoluteUrl = false;
     try {
-      new URL(data.cover);
+      // new URL throws on relative paths; treat absolute URLs as valid
+      // e.g., https://xyz.supabase.co/storage/v1/object/public/bucket/key
+      new URL(cover);
+      isAbsoluteUrl = true;
     } catch {
-      errors.push({ field: "cover", message: "Cover image must be a valid URL" });
+      isAbsoluteUrl = false;
+    }
+    if (!isAbsoluteUrl && !isRootRelative && !isDataUrl) {
+      errors.push({ field: "cover", message: "Cover image must be a valid URL or /path" });
     }
   }
 
@@ -139,10 +149,18 @@ export function validateProject(data: {
   if (!data.thumb.trim()) {
     errors.push({ field: "thumb", message: "Thumbnail image is required" });
   } else {
+    const thumb = data.thumb.trim();
+    const isRootRelative = thumb.startsWith("/");
+    const isDataUrl = thumb.startsWith("data:image/");
+    let isAbsoluteUrl = false;
     try {
-      new URL(data.thumb);
+      new URL(thumb);
+      isAbsoluteUrl = true;
     } catch {
-      errors.push({ field: "thumb", message: "Thumbnail must be a valid URL" });
+      isAbsoluteUrl = false;
+    }
+    if (!isAbsoluteUrl && !isRootRelative && !isDataUrl) {
+      errors.push({ field: "thumb", message: "Thumbnail must be a valid URL or /path" });
     }
   }
 

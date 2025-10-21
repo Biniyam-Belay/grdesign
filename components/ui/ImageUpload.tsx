@@ -37,6 +37,7 @@ export default function ImageUpload({
         const { error: uploadError } = await supabase.storage.from(bucket).upload(filePath, file, {
           cacheControl: "3600",
           upsert: false,
+          contentType: file.type,
         });
 
         if (uploadError) {
@@ -53,7 +54,18 @@ export default function ImageUpload({
         onUpload(publicUrl);
       } catch (error) {
         console.error("Error uploading image:", error);
-        alert("Error uploading image. Please try again.");
+        const message =
+          (error as { message?: string })?.message ||
+          (typeof error === "string" ? error : "Error uploading image. Please try again.");
+
+        // Common RLS/auth hint
+        if (message.toLowerCase().includes("row-level security") || message.includes("401")) {
+          alert(
+            "Upload failed: You might not be signed in or lack permission. Please log in again and retry.",
+          );
+        } else {
+          alert(message);
+        }
       } finally {
         setUploading(false);
       }
@@ -92,7 +104,8 @@ export default function ImageUpload({
       {preview ? (
         <div className="relative">
           <div className="relative w-full h-48 bg-neutral-100 rounded-lg overflow-hidden">
-            <Image src={preview} alt="Preview" fill className="object-cover" />
+            {/* Use unoptimized to support external Supabase URLs without remotePatterns */}
+            <Image src={preview} alt="Preview" fill className="object-cover" unoptimized />
           </div>
           <button
             type="button"
