@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createSupabaseClient } from "@/lib/supabase/client";
 import Image from "next/image";
 
 interface ImageUploadProps {
@@ -21,7 +21,7 @@ export default function ImageUpload({
 }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState<string | null>(currentImage || null);
-  const supabase = createClientComponentClient();
+  const supabase = createSupabaseClient();
 
   const uploadImage = useCallback(
     async (file: File) => {
