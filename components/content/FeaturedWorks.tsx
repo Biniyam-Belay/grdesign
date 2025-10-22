@@ -1,47 +1,47 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
 import Image from "next/image";
-import type { Project } from "@lib/types";
+import Link from "next/link";
+import type { Work } from "@lib/types";
+import { getWorks } from "@lib/data/works";
 
 type TileVariant = "square" | "portrait45" | "portrait916"; // 1:1, 4:5, 9:16
 
 type FeaturedWorksProps = {
-  projects: Project[];
   title?: string;
-  layout?: TileVariant[]; // optional per-card layout control
-  secondaryTitle?: string; // e.g., "Selected Work"
-  subtitle?: string; // e.g., "A focused slice of recent projects."
+  subtitle?: string;
 };
 
-// A static, responsive grid that visually matches ProjectsSection.
-// No horizontal scrolling, no arrows – clean vertical flow and spacing.
+// A static, responsive grid for featured works
 export default function FeaturedWorks({
-  projects,
   title = "Featured Works",
-  layout,
   subtitle = "A focused slice of recent works.",
 }: FeaturedWorksProps) {
-  const featured = useMemo(() => {
-    // Only include explicitly featured items; cap to max two rows (6)
-    return projects.filter((p) => p.featured).slice(0, 6);
-  }, [projects]);
+  const [works, setWorks] = useState<Work[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // default layout pattern if none provided
-  const pattern: TileVariant[] = layout?.length
-    ? layout
-    : ["portrait45", "square", "portrait916", "square", "portrait45", "square"];
+  useEffect(() => {
+    getWorks()
+      .then((data) => {
+        setWorks(data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  }, []);
 
-  const aspectClass = (variant: TileVariant) =>
+  const aspectClass = (variant?: string) =>
     variant === "square"
       ? "aspect-[1/1]"
       : variant === "portrait45"
         ? "aspect-[4/5]"
-        : "aspect-[9/16]";
+        : variant === "portrait916"
+          ? "aspect-[9/16]"
+          : "aspect-[1/1]"; // default
 
-  // (old wide/standard/tall pattern removed in favor of explicit aspect variants)
-
-  if (featured.length === 0) return null;
+  if (loading || works.length === 0) return null;
 
   return (
     <section className="bg-white pt-14 pb-6 px-4 sm:px-8 lg:px-12">
@@ -55,26 +55,38 @@ export default function FeaturedWorks({
 
         {/* 3-column collage on larger screens, vertical stack on mobile; tighter gaps */}
         <div className="relative grid grid-cols-1 sm:grid-cols-3 gap-0">
-          {featured.map((p, i) => {
-            const variant =
-              (p.featuredAspect as TileVariant) || (pattern[i % pattern.length] as TileVariant);
-            const img = p.featuredSrc || p.gallery?.[0]?.src || p.thumb!;
-            const alt = p.featuredAlt || p.gallery?.[0]?.alt || p.alt || p.title;
+          {works.map((work, i) => {
+            const variant = work.aspect_ratio || "square";
             return (
-              <div key={`${p.slug}-${i}`} className="block relative">
+              <Link
+                key={`${work.slug}-${i}`}
+                href={work.link || "#"}
+                className="block relative group"
+              >
                 <div
-                  className={`group relative w-full ${aspectClass(variant)} overflow-hidden border border-neutral-200 bg-white rounded-md transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform hover:scale-[1.06] hover:z-30 shadow-sm hover:shadow-xl`}
+                  className={`relative w-full ${aspectClass(variant)} overflow-hidden border border-neutral-200 bg-white rounded-md transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform group-hover:scale-[1.06] group-hover:z-30 shadow-sm group-hover:shadow-xl`}
                 >
                   <Image
-                    src={img}
-                    alt={alt}
+                    src={work.image}
+                    alt={work.title}
                     fill
                     className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]"
                     sizes="(min-width: 1024px) 33vw, (min-width: 640px) 33vw, 100vw"
                     priority={false}
                   />
+                  {/* Overlay with title */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                      <h3 className="font-semibold text-lg">{work.title}</h3>
+                      {work.description && (
+                        <p className="text-sm text-white/80 mt-1 line-clamp-2">
+                          {work.description}
+                        </p>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>

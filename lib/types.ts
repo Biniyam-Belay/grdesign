@@ -51,3 +51,16 @@ export type Blog = {
   tags?: string[];
   content?: string; // optional full content (markdown/plain)
 };
+
+export type Work = {
+  id?: string; // UUID from Supabase
+  title: string;
+  slug: string;
+  description?: string;
+  image: string;
+  aspect_ratio?: "square" | "portrait45" | "portrait916";
+  link?: string;
+  featured_order?: number;
+  created_at?: string;
+  updated_at?: string;
+};

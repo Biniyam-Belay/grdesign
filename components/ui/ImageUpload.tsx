@@ -5,8 +5,10 @@ import { createSupabaseClient } from "@/lib/supabase/client";
 import Image from "next/image";
 
 interface ImageUploadProps {
-  bucket: "project-images" | "blog-images";
-  onUpload: (url: string) => void;
+  bucket: "project-images" | "blog-images" | "works";
+  onUpload?: (url: string) => void;
+  onChange?: (url: string) => void;
+  value?: string;
   currentImage?: string;
   className?: string;
   label?: string;
@@ -15,12 +17,14 @@ interface ImageUploadProps {
 export default function ImageUpload({
   bucket,
   onUpload,
+  onChange,
+  value,
   currentImage,
   className = "",
   label = "Upload Image",
 }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false);
-  const [preview, setPreview] = useState<string | null>(currentImage || null);
+  const [preview, setPreview] = useState<string | null>(value || currentImage || null);
   const supabase = createSupabaseClient();
 
   const uploadImage = useCallback(
@@ -51,7 +55,8 @@ export default function ImageUpload({
 
         // Set preview and notify parent
         setPreview(publicUrl);
-        onUpload(publicUrl);
+        if (onUpload) onUpload(publicUrl);
+        if (onChange) onChange(publicUrl);
       } catch (error) {
         console.error("Error uploading image:", error);
         const message =
@@ -70,7 +75,7 @@ export default function ImageUpload({
         setUploading(false);
       }
     },
-    [bucket, onUpload, supabase.storage],
+    [bucket, onUpload, onChange, supabase.storage],
   );
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,7 +99,8 @@ export default function ImageUpload({
 
   const removeImage = () => {
     setPreview(null);
-    onUpload("");
+    if (onUpload) onUpload("");
+    if (onChange) onChange("");
   };
 
   return (

@@ -64,6 +64,25 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
       iconBg: "bg-purple-50 group-hover:bg-purple-100",
       iconColor: "text-purple-600",
     },
+    {
+      href: "/admin/works",
+      title: "Featured Works",
+      description: "Manage your featured works showcase",
+      icon: (
+        <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+          />
+        </svg>
+      ),
+      color: "from-amber-500/10 to-orange-500/10",
+      borderColor: "border-amber-200/50 hover:border-amber-300",
+      iconBg: "bg-amber-50 group-hover:bg-amber-100",
+      iconColor: "text-amber-600",
+    },
   ];
 
   const quickActions = [
@@ -79,6 +98,15 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
     {
       href: "/admin/projects/new",
       label: "New project",
+      icon: (
+        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+        </svg>
+      ),
+    },
+    {
+      href: "/admin/works/new",
+      label: "New featured work",
       icon: (
         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -140,17 +168,43 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
 
       {/* Main Content */}
       <main className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        {/* Welcome Section with Animation */}
+        {/* Welcome Section with Quick Actions - Horizontal Layout */}
         <div
           className={`mb-12 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
         >
-          <div className="flex items-center gap-3 mb-3">
-            <div className="h-8 w-1 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full" />
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-neutral-900">
-              Welcome back
-            </h1>
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+            {/* Welcome Text */}
+            <div>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="h-8 w-1 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full" />
+                <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-neutral-900">
+                  Welcome back
+                </h1>
+              </div>
+              <p className="text-neutral-600 text-lg ml-7">
+                Ready to create something amazing today?
+              </p>
+            </div>
+
+            {/* Quick Actions - Horizontal */}
+            <div className="flex flex-wrap gap-3">
+              {quickActions.map((action, index) => (
+                <Link
+                  key={action.href}
+                  href={action.href}
+                  className={`group flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-neutral-50 border border-neutral-200 hover:border-neutral-300 transition-all duration-200 hover:shadow-md ${mounted ? "opacity-100" : "opacity-0"}`}
+                  style={{ transitionDelay: `${(index + 1) * 50}ms` }}
+                >
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-neutral-50 group-hover:bg-neutral-100 transition-colors">
+                    {action.icon}
+                  </div>
+                  <span className="text-sm font-medium text-neutral-700 group-hover:text-neutral-900 transition-colors whitespace-nowrap">
+                    {action.label}
+                  </span>
+                </Link>
+              ))}
+            </div>
           </div>
-          <p className="text-neutral-600 text-lg ml-7">Ready to create something amazing today?</p>
         </div>
 
         {/* Main Grid */}
@@ -202,61 +256,6 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
               </div>
             </Link>
           ))}
-
-          {/* Quick Actions Card */}
-          <div
-            className={`relative overflow-hidden border border-neutral-200/50 rounded-2xl bg-white backdrop-blur-sm p-6 shadow-sm transition-all duration-500 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
-            style={{ transitionDelay: "300ms" }}
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-neutral-100 to-neutral-200 flex items-center justify-center">
-                <svg
-                  className="h-5 w-5 text-neutral-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold text-neutral-900">Quick Actions</h3>
-            </div>
-
-            <div className="space-y-2">
-              {quickActions.map((action) => (
-                <Link
-                  key={action.href}
-                  href={action.href}
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl bg-neutral-50 hover:bg-neutral-100 transition-all duration-200 group"
-                >
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white shadow-sm group-hover:shadow transition-shadow">
-                    {action.icon}
-                  </div>
-                  <span className="text-sm font-medium text-neutral-700 group-hover:text-neutral-900 transition-colors">
-                    {action.label}
-                  </span>
-                  <svg
-                    className="ml-auto h-4 w-4 text-neutral-400 opacity-0 group-hover:opacity-100 transition-all duration-200 group-hover:translate-x-1"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </Link>
-              ))}
-            </div>
-          </div>
         </div>
 
         {/* Account Section */}

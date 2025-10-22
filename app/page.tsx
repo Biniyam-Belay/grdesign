@@ -67,7 +67,7 @@ export default function Home() {
           <AboutSection />
         </div>
         <RecentBlogTeaser />
-        <FeaturedWorks projects={projectsData} title="Featured Works" />
+        <FeaturedWorks title="Featured Works" />
         <ProjectsSection projects={projectsData} />
         <AboutMeSection />
       </div>
