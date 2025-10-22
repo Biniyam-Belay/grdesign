@@ -3,6 +3,11 @@ import type { Project, ProjectType } from "@lib/types";
 
 let cached: Project[] | null = null;
 
+// Function to clear the cache (useful after updates)
+export function clearProjectsCache() {
+  cached = null;
+}
+
 function inferTypeFromRoles(roles: string[]): ProjectType | undefined {
   const hay = roles.map((r) => r.toLowerCase());
   // web-dev

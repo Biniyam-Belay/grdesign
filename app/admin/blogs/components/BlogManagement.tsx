@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { createSupabaseClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import { Blog } from "@/lib/types";
+import { clearBlogsCache } from "@/lib/data/blogs";
 
 export default function BlogManagement() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -70,6 +71,10 @@ export default function BlogManagement() {
         },
       });
       if (error) throw error;
+
+      // Clear the cache after deletion
+      clearBlogsCache();
+
       const deletedId = (data?.id as string) || id;
       setBlogs((prev) => prev.filter((blog) => blog.id !== deletedId));
       fetchBlogs();

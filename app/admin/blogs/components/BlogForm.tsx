@@ -9,6 +9,7 @@ import ImageUpload from "@/components/ui/ImageUpload";
 import { FormField, SuccessMessage, ErrorMessage } from "@/components/ui/FormComponents";
 import { validateBlog, getFieldError } from "@/lib/validation";
 import { Blog } from "@/lib/types";
+import { clearBlogsCache } from "@/lib/data/blogs";
 
 interface BlogFormProps {
   blog?: Blog;
@@ -106,6 +107,9 @@ export default function BlogForm({ blog, isEditing = false }: BlogFormProps) {
         },
       });
       if (error) throw error;
+
+      // Clear the cache so new slug is reflected immediately
+      clearBlogsCache();
 
       setSuccess(isEditing ? "Blog updated successfully!" : "Blog created successfully!");
       setTimeout(() => {

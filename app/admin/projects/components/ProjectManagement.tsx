@@ -5,6 +5,7 @@ import { createSupabaseClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import Image from "next/image";
 import { Project } from "@/lib/types";
+import { clearProjectsCache } from "@/lib/data/projects";
 
 export default function ProjectManagement() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -72,6 +73,10 @@ export default function ProjectManagement() {
         },
       });
       if (error) throw error;
+
+      // Clear the cache after deletion
+      clearProjectsCache();
+
       const deletedId = (data?.id as string) || id;
       setProjects((prev) => prev.filter((project) => project.id !== deletedId));
       fetchProjects();

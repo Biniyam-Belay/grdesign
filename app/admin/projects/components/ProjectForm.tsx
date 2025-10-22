@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import ImageUpload from "@/components/ui/ImageUpload";
 import { Project, ProjectType } from "@/lib/types";
+import { clearProjectsCache } from "@/lib/data/projects";
 
 interface ProjectFormProps {
   project?: Project;
@@ -261,6 +262,9 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
         console.error("Update/Insert project failed:", error, projectData);
         throw error;
       }
+
+      // Clear the cache so new slug is reflected immediately
+      clearProjectsCache();
 
       router.push("/admin/projects");
     } catch (err) {

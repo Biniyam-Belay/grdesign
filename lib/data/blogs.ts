@@ -3,6 +3,11 @@ import type { Blog } from "@lib/types";
 
 let cached: Blog[] | null = null;
 
+// Function to clear the cache (useful after updates)
+export function clearBlogsCache() {
+  cached = null;
+}
+
 // All data now comes from Supabase - with fallbacks for build time
 export async function getBlogs(): Promise<Blog[]> {
   if (cached) return cached;
