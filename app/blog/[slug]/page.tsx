@@ -42,7 +42,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           {/* Left: Big image without rounded/border/shadow */}
           <div className="lg:col-span-7">
             <div className="relative w-full aspect-[16/10] overflow-hidden">
-              <Image src={blog.cover} alt={blog.title} fill className="object-cover" priority />
+              <Image
+                src={blog.cover}
+                alt={blog.title}
+                fill
+                sizes="(max-width: 1024px) 100vw, 60vw"
+                className="object-cover"
+                priority
+              />
             </div>
           </div>
           {/* Right: Title + meta + tags + share */}
@@ -95,7 +102,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         <div className="mt-16 pt-8 border-t border-neutral-200">
           <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
             <div className="w-20 h-20 bg-neutral-100 rounded-full overflow-hidden relative flex-shrink-0">
-              <Image src="/assets/avatardesk.png" alt="Author" fill className="object-cover" />
+              <Image
+                src="/assets/avatardesk.png"
+                alt="Author"
+                fill
+                sizes="80px"
+                className="object-cover"
+              />
             </div>
             <div>
               <h3 className="text-xl font-semibold text-neutral-900">Biniyam Belay</h3>
@@ -133,6 +146,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                         src={b.cover}
                         alt={b.title}
                         fill
+                        sizes="(max-width: 1024px) 100vw, 33vw"
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     </div>

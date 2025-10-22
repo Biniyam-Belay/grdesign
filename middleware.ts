@@ -33,6 +33,9 @@ export async function middleware(request: NextRequest) {
         );
       },
     },
+    auth: {
+      storageKey: "binidoes-auth",
+    },
   });
 
   // IMPORTANT: Avoid writing any logic between createServerClient and

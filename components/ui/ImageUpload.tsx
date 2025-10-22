@@ -105,7 +105,14 @@ export default function ImageUpload({
         <div className="relative">
           <div className="relative w-full h-48 bg-neutral-100 rounded-lg overflow-hidden">
             {/* Use unoptimized to support external Supabase URLs without remotePatterns */}
-            <Image src={preview} alt="Preview" fill className="object-cover" unoptimized />
+            <Image
+              src={preview}
+              alt="Preview"
+              fill
+              sizes="160px"
+              className="object-cover"
+              unoptimized
+            />
           </div>
           <button
             type="button"

@@ -13,6 +13,8 @@ export const supabase =
     : (null as unknown as ReturnType<typeof createClient>);
 
 // Auth client with session persistence
+let browserClient: ReturnType<typeof createBrowserClient> | null = null;
+
 export function createSupabaseClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -21,5 +23,13 @@ export function createSupabaseClient() {
     throw new Error("Missing Supabase environment variables");
   }
 
-  return createBrowserClient(url, key);
+  if (!browserClient) {
+    browserClient = createBrowserClient(url, key, {
+      auth: {
+        // Use a consistent storage key to avoid multiple GoTrue clients warnings
+        storageKey: "binidoes-auth",
+      },
+    });
+  }
+  return browserClient;
 }

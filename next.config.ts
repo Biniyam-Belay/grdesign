@@ -9,6 +9,8 @@ const nextConfig: NextConfig = {
         pathname: "/storage/v1/object/public/**",
       },
     ],
+    // Allow local images in development
+    unoptimized: process.env.NODE_ENV === "development",
   },
 };
 

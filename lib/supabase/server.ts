@@ -26,5 +26,8 @@ export async function createSupabaseServerClient() {
         }
       },
     },
+    auth: {
+      storageKey: "binidoes-auth",
+    },
   });
 }

@@ -175,93 +175,177 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
         .map((item) => item.trim())
         .filter((item) => item.length > 0);
 
-      // Parse process array if provided
-      let processArray = null;
+      // Parse process array if provided: must be valid JSON or null
+      let processArray: unknown = null;
       if (formData.process.trim()) {
         try {
-          processArray = JSON.parse(formData.process);
+          const parsed = JSON.parse(formData.process);
+          processArray = parsed;
         } catch {
-          // If JSON parsing fails, treat as plain text
-          processArray = formData.process;
+          // If JSON parsing fails, do not send an invalid value
+          processArray = null;
         }
       }
 
-      const projectData = {
+      // Basic validation before hitting the DB
+      if (rolesArray.length === 0) {
+        throw new Error("Please add at least one role (e.g., Frontend, UI Design)");
+      }
+
+      // Ensure slug is unique (excluding the current project when editing)
+      const slugCheckQuery = supabase
+        .from("projects")
+        .select("id")
+        .eq("slug", formData.slug)
+        .limit(1);
+      const slugCheck =
+        isEditing && project?.id
+          ? await slugCheckQuery.neq("id", project.id)
+          : await slugCheckQuery;
+      if (slugCheck.error) {
+        throw slugCheck.error;
+      }
+      if (slugCheck.data && slugCheck.data.length > 0) {
+        throw new Error(
+          "This slug is already used by another project. Please choose a different slug.",
+        );
+      }
+
+      const projectData: Record<string, unknown> = {
         title: formData.title,
         slug: formData.slug,
         excerpt: formData.excerpt,
         thumb: formData.thumb,
-        video: formData.video || null,
+        video: formData.video?.trim() ? formData.video : null,
         roles: rolesArray,
-        tools: toolsArray,
+        tools: toolsArray.length > 0 ? toolsArray : null,
         type: formData.type,
         featured: formData.featured,
-        alt: formData.alt || null,
-        credits: formData.credits || null,
-        problem: formData.problem || null,
-        solution: formData.solution || null,
-        approach: formData.approach || null,
-        outcome: formData.outcome || null,
-        year: formData.year || null,
-        client: formData.client || null,
+        alt: formData.alt?.trim() ? formData.alt : null,
+        credits: formData.credits?.trim() ? formData.credits : null,
+        problem: formData.problem?.trim() ? formData.problem : null,
+        solution: formData.solution?.trim() ? formData.solution : null,
+        approach: formData.approach?.trim() ? formData.approach : null,
+        outcome: formData.outcome?.trim() ? formData.outcome : null,
+        year: formData.year?.trim() ? formData.year : null,
+        client: formData.client?.trim() ? formData.client : null,
         // Add new fields based on project type
         highlights: highlightsArray.length > 0 ? highlightsArray : null,
         deliverables: deliverablesArray.length > 0 ? deliverablesArray : null,
-        process: processArray,
       };
 
-      let result;
-      if (isEditing && project?.id) {
-        result = await supabase.from("projects").update(projectData).eq("id", project.id);
-      } else {
-        result = await supabase.from("projects").insert([projectData]);
+      // Only include process if it's valid JSON (object/array) or explicitly null
+      projectData.process = processArray === null ? null : processArray;
+
+      const action = isEditing && project?.id ? "update" : "create";
+      const payload =
+        isEditing && project?.id
+          ? { action, id: project.id, data: projectData }
+          : { action, data: projectData };
+
+      // Get session for auth
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) {
+        throw new Error("You are not signed in. Please log in again.");
       }
 
-      if (result.error) throw result.error;
+      const { error } = await supabase.functions.invoke("projects", {
+        body: payload,
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
+      if (error) {
+        console.error("Update/Insert project failed:", error, projectData);
+        throw error;
+      }
 
       router.push("/admin/projects");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to save project");
+      console.error("Project save error:", err);
+      const e = err as { message?: string; details?: string; hint?: string; code?: string };
+      const msg = e.message || e.details || e.hint || e.code || "Failed to save project";
+      setError(msg);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-neutral-50">
+      {/* Animated Background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-purple-400/5 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-pink-400/5 rounded-full blur-3xl animate-pulse delay-1000" />
+      </div>
+
       {/* Header */}
-      <header className="border-b border-neutral-200 bg-white">
+      <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-neutral-200/50 shadow-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            <div className="flex items-center gap-6">
+          <div className="flex h-16 items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
               <Link
                 href="/admin/projects"
-                className="flex items-center gap-2 text-neutral-600 hover:text-black transition-colors text-sm"
+                className="flex items-center gap-2 text-neutral-600 hover:text-neutral-900 transition-all hover:scale-105"
               >
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M15 19l-7-7 7-7"
+                    strokeWidth={2}
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
                   />
                 </svg>
-                Portfolio Projects
+                <span className="font-medium text-sm">Back to Projects</span>
               </Link>
-              <div className="h-4 w-px bg-neutral-300" />
-              <h1 className="text-lg font-medium text-neutral-900">
-                {isEditing ? "Edit Project" : "New Project"}
-              </h1>
+              <div className="h-6 w-px bg-neutral-300" />
+              <div className="flex items-center gap-2">
+                <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                  <svg
+                    className="h-5 w-5 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                    />
+                  </svg>
+                </div>
+                <h1 className="text-lg font-semibold text-neutral-900">
+                  {isEditing ? "Edit Project" : "Create New Project"}
+                </h1>
+              </div>
             </div>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="mx-auto max-w-8xl px-4 sm:px-6 lg:px-8 py-8">
+      <main className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
         {error && (
-          <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-            {error}
+          <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 animate-shake">
+            <div className="flex items-start gap-3">
+              <svg
+                className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <p className="text-sm text-red-800 font-medium">{error}</p>
+            </div>
           </div>
         )}
 
@@ -271,12 +355,29 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
             {/* Left Column - Main Content */}
             <div className="lg:col-span-2 space-y-8">
               {/* Basic Project Information */}
-              <div className="border border-neutral-200 rounded-lg bg-white p-8">
-                <div className="mb-6">
-                  <h2 className="text-lg font-medium text-neutral-900">Project Overview</h2>
-                  <p className="text-sm text-neutral-600 mt-1">
-                    Core information about your project.
-                  </p>
+              <div className="border border-neutral-200/50 rounded-2xl bg-white shadow-sm p-8">
+                <div className="mb-6 flex items-start gap-3">
+                  <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 flex items-center justify-center flex-shrink-0">
+                    <svg
+                      className="h-5 w-5 text-purple-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M13 10V3L4 14h7v7l9-11h-7z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-semibold text-neutral-900">Project Overview</h2>
+                    <p className="text-sm text-neutral-600 mt-1">
+                      Core information about your project
+                    </p>
+                  </div>
                 </div>
 
                 <div className="space-y-6">
@@ -661,136 +762,185 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
               </div>
 
               {/* Project Type Info */}
-              <div className="border border-blue-200 rounded-lg bg-blue-50 p-4">
-                <div className="mb-3">
-                  <h4 className="text-sm font-medium text-blue-900">
-                    Active Fields for "{formData.type}"
-                  </h4>
-                </div>
-                <div className="space-y-2 text-xs text-blue-700">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`w-2 h-2 rounded-full ${relevantFields.showHighlights ? "bg-green-500" : "bg-gray-300"}`}
-                    ></span>
-                    <span>Key Highlights</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`w-2 h-2 rounded-full ${relevantFields.showDeliverables ? "bg-green-500" : "bg-gray-300"}`}
-                    ></span>
-                    <span>Deliverables</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`w-2 h-2 rounded-full ${relevantFields.showProcess ? "bg-green-500" : "bg-gray-300"}`}
-                    ></span>
-                    <span>Process Steps</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`w-2 h-2 rounded-full ${relevantFields.showApproach ? "bg-green-500" : "bg-gray-300"}`}
-                    ></span>
-                    <span>Approach & Outcome</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Project Media */}
-              <div className="border border-neutral-200 rounded-lg bg-white p-6">
-                <div className="mb-6">
-                  <h3 className="text-lg font-medium text-neutral-900">Media</h3>
-                  <p className="text-sm text-neutral-600 mt-1">Visual assets for your project.</p>
-                </div>
-
-                <div className="space-y-4">
-                  <ImageUpload
-                    bucket="project-images"
-                    currentImage={formData.thumb}
-                    onUpload={(url) => setFormData((prev) => ({ ...prev, thumb: url }))}
-                    label="Thumbnail Image"
-                  />
-
-                  <div>
-                    <label
-                      htmlFor="video"
-                      className="block text-sm font-medium text-neutral-700 mb-2"
+              <div className="border border-blue-200/50 rounded-2xl bg-gradient-to-br from-blue-50 to-cyan-50 p-5 shadow-sm">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="h-8 w-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                    <svg
+                      className="h-4 w-4 text-blue-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
                     >
-                      Video URL (optional)
-                    </label>
-                    <input
-                      type="url"
-                      name="video"
-                      id="video"
-                      value={formData.video}
-                      onChange={(e) => setFormData((prev) => ({ ...prev, video: e.target.value }))}
-                      className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
-                      placeholder="https://example.com/video.mp4"
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-sm font-semibold text-blue-900">
+                    {relevantFields.caseStudyTitle}
+                  </h3>
+                </div>
+
+                {/* Project Media */}
+                <div className="border border-neutral-200/50 rounded-2xl bg-white shadow-sm p-6">
+                  <div className="mb-6 flex items-start gap-3">
+                    <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 flex items-center justify-center flex-shrink-0">
+                      <svg
+                        className="h-5 w-5 text-purple-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1.5}
+                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-neutral-900">Media</h3>
+                      <p className="text-sm text-neutral-600 mt-1">
+                        Visual assets for your project
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <ImageUpload
+                      bucket="project-images"
+                      currentImage={formData.thumb}
+                      onUpload={(url) => setFormData((prev) => ({ ...prev, thumb: url }))}
+                      label="Thumbnail Image"
                     />
-                  </div>
 
-                  <div>
-                    <label
-                      htmlFor="alt"
-                      className="block text-sm font-medium text-neutral-700 mb-2"
-                    >
-                      Alt Text
-                    </label>
-                    <input
-                      type="text"
-                      name="alt"
-                      id="alt"
-                      value={formData.alt}
-                      onChange={(e) => setFormData((prev) => ({ ...prev, alt: e.target.value }))}
-                      className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
-                      placeholder="Descriptive alt text for accessibility"
-                    />
-                  </div>
+                    <div>
+                      <label
+                        htmlFor="video"
+                        className="block text-sm font-medium text-neutral-700 mb-2"
+                      >
+                        Video URL (optional)
+                      </label>
+                      <input
+                        type="url"
+                        name="video"
+                        id="video"
+                        value={formData.video}
+                        onChange={(e) =>
+                          setFormData((prev) => ({ ...prev, video: e.target.value }))
+                        }
+                        className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                        placeholder="https://example.com/video.mp4"
+                      />
+                    </div>
 
-                  <div>
-                    <label
-                      htmlFor="credits"
-                      className="block text-sm font-medium text-neutral-700 mb-2"
-                    >
-                      Credits (optional)
-                    </label>
-                    <textarea
-                      name="credits"
-                      id="credits"
-                      rows={2}
-                      value={formData.credits}
-                      onChange={(e) =>
-                        setFormData((prev) => ({ ...prev, credits: e.target.value }))
-                      }
-                      className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
-                      placeholder="Photo credits, attributions..."
-                    />
+                    <div>
+                      <label
+                        htmlFor="alt"
+                        className="block text-sm font-medium text-neutral-700 mb-2"
+                      >
+                        Alt Text
+                      </label>
+                      <input
+                        type="text"
+                        name="alt"
+                        id="alt"
+                        value={formData.alt}
+                        onChange={(e) => setFormData((prev) => ({ ...prev, alt: e.target.value }))}
+                        className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                        placeholder="Descriptive alt text for accessibility"
+                      />
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="credits"
+                        className="block text-sm font-medium text-neutral-700 mb-2"
+                      >
+                        Credits (optional)
+                      </label>
+                      <textarea
+                        name="credits"
+                        id="credits"
+                        rows={2}
+                        value={formData.credits}
+                        onChange={(e) =>
+                          setFormData((prev) => ({ ...prev, credits: e.target.value }))
+                        }
+                        className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
+                        placeholder="Photo credits, attributions..."
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Actions */}
-              <div className="border border-neutral-200 rounded-lg bg-white p-6">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-neutral-700">Status</span>
-                    <span className="text-green-600 font-medium">Ready to publish</span>
-                  </div>
+                {/* Actions */}
+                <div className="border border-neutral-200 rounded-lg bg-white p-6">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-neutral-700">Status</span>
+                      <span className="text-green-600 font-medium">Ready to publish</span>
+                    </div>
 
-                  <div className="flex flex-col gap-3">
-                    <button
-                      type="submit"
-                      disabled={loading}
-                      className="w-full bg-black text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-neutral-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {loading ? "Saving..." : isEditing ? "Update Project" : "Create Project"}
-                    </button>
+                    <div className="flex flex-col gap-3">
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className="group relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                      >
+                        <span className="relative z-10 flex items-center justify-center gap-2">
+                          {loading ? (
+                            <>
+                              <svg className="h-5 w-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                                <circle
+                                  className="opacity-25"
+                                  cx="12"
+                                  cy="12"
+                                  r="10"
+                                  stroke="currentColor"
+                                  strokeWidth="4"
+                                />
+                                <path
+                                  className="opacity-75"
+                                  fill="currentColor"
+                                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                />
+                              </svg>
+                              <span>Saving...</span>
+                            </>
+                          ) : (
+                            <>
+                              <span>{isEditing ? "Update Project" : "Create Project"}</span>
+                              <svg
+                                className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M5 13l4 4L19 7"
+                                />
+                              </svg>
+                            </>
+                          )}
+                        </span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+                      </button>
 
-                    <Link
-                      href="/admin/projects"
-                      className="w-full text-center px-4 py-2 text-sm font-medium text-neutral-700 hover:text-black transition-colors border border-neutral-300 rounded-lg hover:border-neutral-400"
-                    >
-                      Cancel
-                    </Link>
+                      <Link
+                        href="/admin/projects"
+                        className="w-full text-center px-4 py-2.5 text-sm font-medium text-neutral-700 hover:text-neutral-900 transition-all border border-neutral-300 rounded-xl hover:border-neutral-400 bg-white hover:bg-neutral-50 hover:shadow-sm"
+                      >
+                        Cancel
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>

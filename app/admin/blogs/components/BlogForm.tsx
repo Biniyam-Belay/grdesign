@@ -85,19 +85,27 @@ export default function BlogForm({ blog, isEditing = false }: BlogFormProps) {
         updated_at: new Date().toISOString(),
       };
 
-      let result;
-      if (isEditing && blog?.id) {
-        result = await supabase.from("blogs").update(blogData).eq("id", blog.id);
-      } else {
-        result = await supabase.from("blogs").insert([
-          {
-            ...blogData,
-            created_at: new Date().toISOString(),
-          },
-        ]);
+      const action = isEditing && blog?.id ? "update" : "create";
+      const payload =
+        isEditing && blog?.id
+          ? { action, id: blog.id, data: blogData }
+          : { action, data: blogData };
+
+      // Get session for auth
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) {
+        throw new Error("You are not signed in. Please log in again.");
       }
 
-      if (result.error) throw result.error;
+      const { error } = await supabase.functions.invoke("blogs", {
+        body: payload,
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
+      if (error) throw error;
 
       setSuccess(isEditing ? "Blog updated successfully!" : "Blog created successfully!");
       setTimeout(() => {
@@ -111,37 +119,60 @@ export default function BlogForm({ blog, isEditing = false }: BlogFormProps) {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-neutral-50">
+      {/* Animated Background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-blue-400/5 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-cyan-400/5 rounded-full blur-3xl animate-pulse delay-1000" />
+      </div>
+
       {/* Header */}
-      <header className="border-b border-neutral-200 bg-white">
+      <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-neutral-200/50 shadow-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            <div className="flex items-center gap-6">
+          <div className="flex h-16 items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
               <Link
                 href="/admin/blogs"
-                className="flex items-center gap-2 text-neutral-600 hover:text-black transition-colors text-sm"
+                className="flex items-center gap-2 text-neutral-600 hover:text-neutral-900 transition-all hover:scale-105"
               >
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M15 19l-7-7 7-7"
+                    strokeWidth={2}
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
                   />
                 </svg>
-                Blog Posts
+                <span className="font-medium text-sm">Back to Blog Posts</span>
               </Link>
-              <div className="h-4 w-px bg-neutral-300" />
-              <h1 className="text-lg font-medium text-neutral-900">
-                {isEditing ? "Edit Post" : "New Post"}
-              </h1>
+              <div className="h-6 w-px bg-neutral-300" />
+              <div className="flex items-center gap-2">
+                <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+                  <svg
+                    className="h-5 w-5 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                    />
+                  </svg>
+                </div>
+                <h1 className="text-lg font-semibold text-neutral-900">
+                  {isEditing ? "Edit Blog Post" : "Create New Post"}
+                </h1>
+              </div>
             </div>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="mx-auto max-w-8xl px-4 sm:px-6 lg:px-8 py-8">
+      <main className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
         {/* Success Message */}
         {success && <SuccessMessage message={success} onClose={() => setSuccess("")} />}
 
@@ -307,25 +338,67 @@ export default function BlogForm({ blog, isEditing = false }: BlogFormProps) {
               </div>
 
               {/* Actions */}
-              <div className="border border-neutral-200 rounded-lg bg-white p-6">
+              <div className="border border-neutral-200/50 rounded-2xl bg-white shadow-sm p-6">
                 <div className="space-y-4">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-neutral-700">Status</span>
-                    <span className="text-green-600 font-medium">Ready to publish</span>
+                    <span className="text-neutral-700 font-medium">Status</span>
+                    <span className="flex items-center gap-1.5 text-green-600 font-medium">
+                      <div className="h-2 w-2 rounded-full bg-green-500"></div>
+                      Ready to publish
+                    </span>
                   </div>
 
                   <div className="flex flex-col gap-3">
                     <button
                       type="submit"
                       disabled={loading}
-                      className="w-full bg-black text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-neutral-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="group relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 px-4 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                     >
-                      {loading ? "Saving..." : isEditing ? "Update Post" : "Publish Post"}
+                      <span className="relative z-10 flex items-center justify-center gap-2">
+                        {loading ? (
+                          <>
+                            <svg className="h-5 w-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                              <circle
+                                className="opacity-25"
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                strokeWidth="4"
+                              />
+                              <path
+                                className="opacity-75"
+                                fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                              />
+                            </svg>
+                            <span>Saving...</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>{isEditing ? "Update Post" : "Publish Post"}</span>
+                            <svg
+                              className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M5 13l4 4L19 7"
+                              />
+                            </svg>
+                          </>
+                        )}
+                      </span>
+                      <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-600 opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
                     </button>
 
                     <Link
                       href="/admin/blogs"
-                      className="w-full text-center px-4 py-2 text-sm font-medium text-neutral-700 hover:text-black transition-colors border border-neutral-300 rounded-lg hover:border-neutral-400"
+                      className="w-full text-center px-4 py-2.5 text-sm font-medium text-neutral-700 hover:text-neutral-900 transition-all border border-neutral-300 rounded-xl hover:border-neutral-400 bg-white hover:bg-neutral-50 hover:shadow-sm"
                     >
                       Cancel
                     </Link>
