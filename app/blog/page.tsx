@@ -3,6 +3,9 @@ import Link from "next/link";
 import { generateMeta } from "@lib/meta";
 import { getBlogsAsync } from "@lib/data/blogs";
 
+// Enable static generation with revalidation
+export const revalidate = 300; // Revalidate every 5 minutes
+
 export const metadata = generateMeta({
   title: "Blog",
   description: "Thoughts on design, motion, and building for the web.",

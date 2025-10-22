@@ -6,6 +6,9 @@ import { generateMeta } from "@lib/meta";
 import ShareButtons from "@components/ui/ShareButtons";
 import ReadingProgress from "@components/content/ReadingProgress";
 
+// Enable static generation with revalidation
+export const revalidate = 300; // Revalidate every 5 minutes
+
 export async function generateStaticParams() {
   return (await getBlogSlugs()).map((slug) => ({ slug }));
 }

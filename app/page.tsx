@@ -19,6 +19,7 @@ export default function Home() {
   const containerRef = useRef(null);
 
   useEffect(() => {
+    // Prefetch critical routes
     getProjects().then(setProjectsData);
   }, []);
 

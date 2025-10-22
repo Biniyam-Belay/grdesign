@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { getProjectsAsync } from "@lib/data/projects";
 import ClientProject from "./ClientProject";
 
+// Enable static generation with revalidation
+export const revalidate = 300; // Revalidate every 5 minutes
 export const dynamicParams = false;
 
 type Params = { slug: string };

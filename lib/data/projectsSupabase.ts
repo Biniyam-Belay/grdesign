@@ -1,5 +1,6 @@
 import type { Project } from "@lib/types";
 import { createSupabaseClient } from "@lib/supabase/client";
+import { getCachedData, CACHE_TIMES } from "@lib/cache";
 
 type DbProject = {
   id: string;
@@ -69,19 +70,25 @@ export async function getProjectsFromSupabase(): Promise<Project[] | null> {
       return null;
     }
 
-    const supabase = createSupabaseClient();
-    const { data, error } = await supabase
-      .from("projects")
-      .select("*")
-      .order("title", { ascending: true });
+    return await getCachedData(
+      "projects:all",
+      async () => {
+        const supabase = createSupabaseClient();
+        const { data, error } = await supabase
+          .from("projects")
+          .select("*")
+          .order("title", { ascending: true });
 
-    if (error) {
-      console.warn("Supabase projects error:", error.message);
-      return null;
-    }
+        if (error) {
+          console.warn("Supabase projects error:", error.message);
+          return null;
+        }
 
-    const rows = (data ?? []) as DbProject[];
-    return rows.map(mapDbProject);
+        const rows = (data ?? []) as DbProject[];
+        return rows.map(mapDbProject);
+      },
+      { ttl: CACHE_TIMES.PROJECTS },
+    );
   } catch (err) {
     console.warn("Failed to fetch projects from Supabase:", err);
     return null;
