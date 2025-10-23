@@ -2,9 +2,9 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { createSupabaseClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Blog } from "@/lib/types";
-import { clearBlogsCache } from "@/lib/data/blogs";
 
 export default function BlogManagement() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -14,6 +14,7 @@ export default function BlogManagement() {
   const [filterTag, setFilterTag] = useState<string>("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const supabase = createSupabaseClient();
+  const router = useRouter();
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -72,8 +73,12 @@ export default function BlogManagement() {
       });
       if (error) throw error;
 
-      // Clear the cache after deletion
-      clearBlogsCache();
+      // Revalidate blog paths to clear Next.js cache
+      await fetch("/api/revalidate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path: "/blog", type: "layout" }),
+      });
 
       const deletedId = (data?.id as string) || id;
       setBlogs((prev) => prev.filter((blog) => blog.id !== deletedId));

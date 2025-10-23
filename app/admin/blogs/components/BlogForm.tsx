@@ -9,7 +9,6 @@ import ImageUpload from "@/components/ui/ImageUpload";
 import { FormField, SuccessMessage, ErrorMessage } from "@/components/ui/FormComponents";
 import { validateBlog, getFieldError } from "@/lib/validation";
 import { Blog } from "@/lib/types";
-import { clearBlogsCache } from "@/lib/data/blogs";
 
 interface BlogFormProps {
   blog?: Blog;
@@ -108,10 +107,15 @@ export default function BlogForm({ blog, isEditing = false }: BlogFormProps) {
       });
       if (error) throw error;
 
-      // Clear the cache so new slug is reflected immediately
-      clearBlogsCache();
+      // Revalidate blog paths to clear Next.js cache
+      await fetch("/api/revalidate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path: "/blog", type: "layout" }),
+      });
 
       setSuccess(isEditing ? "Blog updated successfully!" : "Blog created successfully!");
+
       setTimeout(() => {
         router.push("/admin/blogs");
       }, 1500);

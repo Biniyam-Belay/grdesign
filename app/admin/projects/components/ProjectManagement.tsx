@@ -2,10 +2,10 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { createSupabaseClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Project } from "@/lib/types";
-import { clearProjectsCache } from "@/lib/data/projects";
 
 export default function ProjectManagement() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -16,6 +16,7 @@ export default function ProjectManagement() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [brokenThumbs, setBrokenThumbs] = useState<Record<string, boolean>>({});
   const supabase = createSupabaseClient();
+  const router = useRouter();
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -74,8 +75,12 @@ export default function ProjectManagement() {
       });
       if (error) throw error;
 
-      // Clear the cache after deletion
-      clearProjectsCache();
+      // Revalidate project paths to clear Next.js cache
+      await fetch("/api/revalidate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path: "/work", type: "layout" }),
+      });
 
       const deletedId = (data?.id as string) || id;
       setProjects((prev) => prev.filter((project) => project.id !== deletedId));

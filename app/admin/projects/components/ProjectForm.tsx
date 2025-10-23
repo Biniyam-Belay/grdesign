@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import ImageUpload from "@/components/ui/ImageUpload";
 import { Project, ProjectType } from "@/lib/types";
-import { clearProjectsCache } from "@/lib/data/projects";
 
 interface ProjectFormProps {
   project?: Project;
@@ -263,8 +262,12 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
         throw error;
       }
 
-      // Clear the cache so new slug is reflected immediately
-      clearProjectsCache();
+      // Revalidate project paths to clear Next.js cache
+      await fetch("/api/revalidate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path: "/work", type: "layout" }),
+      });
 
       router.push("/admin/projects");
     } catch (err) {

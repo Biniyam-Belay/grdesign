@@ -1,13 +1,6 @@
 import { getProjectsFromSupabase } from "@lib/data/projectsSupabase";
 import type { Project, ProjectType } from "@lib/types";
 
-let cached: Project[] | null = null;
-
-// Function to clear the cache (useful after updates)
-export function clearProjectsCache() {
-  cached = null;
-}
-
 function inferTypeFromRoles(roles: string[]): ProjectType | undefined {
   const hay = roles.map((r) => r.toLowerCase());
   // web-dev
@@ -26,8 +19,6 @@ function inferTypeFromRoles(roles: string[]): ProjectType | undefined {
 
 // All data now comes from Supabase - with fallbacks for build time
 export async function getProjects(): Promise<Project[]> {
-  if (cached) return cached;
-
   try {
     const projects = await getProjectsFromSupabase();
     if (projects) {
@@ -40,16 +31,14 @@ export async function getProjects(): Promise<Project[]> {
         return p;
       });
 
-      cached = normalized as Project[];
-      return cached;
+      return normalized as Project[];
     }
   } catch (error) {
     console.warn("Failed to fetch projects from Supabase during build:", error);
   }
 
   // Fallback to empty array during build time if Supabase is not available
-  cached = [];
-  return cached;
+  return [];
 }
 
 // For backwards compatibility - now just calls getProjects()

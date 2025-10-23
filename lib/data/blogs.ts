@@ -1,30 +1,19 @@
 import { getBlogsFromSupabase } from "@lib/data/blogsSupabase";
 import type { Blog } from "@lib/types";
 
-let cached: Blog[] | null = null;
-
-// Function to clear the cache (useful after updates)
-export function clearBlogsCache() {
-  cached = null;
-}
-
 // All data now comes from Supabase - with fallbacks for build time
 export async function getBlogs(): Promise<Blog[]> {
-  if (cached) return cached;
-
   try {
     const blogs = await getBlogsFromSupabase();
     if (blogs) {
-      cached = blogs;
-      return cached;
+      return blogs;
     }
   } catch (error) {
     console.warn("Failed to fetch blogs from Supabase during build:", error);
   }
 
   // Fallback to empty array during build time if Supabase is not available
-  cached = [];
-  return cached;
+  return [];
 }
 
 // For backwards compatibility - now just calls getBlogs()
