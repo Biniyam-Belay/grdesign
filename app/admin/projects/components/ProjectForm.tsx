@@ -263,11 +263,18 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
       }
 
       // Revalidate project paths to clear Next.js cache
-      await fetch("/api/revalidate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ path: "/work", type: "layout" }),
-      });
+      await Promise.all([
+        fetch("/api/revalidate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ path: "/work", type: "layout" }),
+        }),
+        fetch("/api/revalidate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ path: `/work/${formData.slug}`, type: "page" }),
+        }),
+      ]);
 
       router.push("/admin/projects");
     } catch (err) {

@@ -108,11 +108,18 @@ export default function BlogForm({ blog, isEditing = false }: BlogFormProps) {
       if (error) throw error;
 
       // Revalidate blog paths to clear Next.js cache
-      await fetch("/api/revalidate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ path: "/blog", type: "layout" }),
-      });
+      await Promise.all([
+        fetch("/api/revalidate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ path: "/blog", type: "layout" }),
+        }),
+        fetch("/api/revalidate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ path: `/blog/${formData.slug}`, type: "page" }),
+        }),
+      ]);
 
       setSuccess(isEditing ? "Blog updated successfully!" : "Blog created successfully!");
 

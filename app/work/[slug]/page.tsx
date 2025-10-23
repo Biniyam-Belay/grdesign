@@ -6,7 +6,7 @@ import ClientProject from "./ClientProject";
 
 // Enable static generation with revalidation
 export const revalidate = 300; // Revalidate every 5 minutes
-export const dynamicParams = false;
+export const dynamicParams = true; // Allow new slugs at runtime
 
 type Params = { slug: string };
 
