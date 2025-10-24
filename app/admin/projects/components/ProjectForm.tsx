@@ -31,6 +31,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
     outcome: project?.outcome || "",
     year: project?.year?.toString() || "",
     client: project?.client || "",
+    mobileHeroSrc: project?.mobileHeroSrc || "",
     // New fields for different project types
     highlights: project?.highlights?.join("\n") || "",
     deliverables: project?.deliverables?.join("\n") || "",
@@ -40,6 +41,12 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
         : JSON.stringify(project.process, null, 2)
       : "",
   });
+
+  // Separate state for gallery images (array of { src, alt })
+  const [gallery, setGallery] = useState<Array<{ src: string; alt: string }>>(
+    project?.gallery || [],
+  );
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
@@ -229,6 +236,8 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
         outcome: formData.outcome?.trim() ? formData.outcome : null,
         year: formData.year?.trim() ? formData.year : null,
         client: formData.client?.trim() ? formData.client : null,
+        mobileHeroSrc: formData.mobileHeroSrc?.trim() ? formData.mobileHeroSrc : null,
+        gallery: gallery.length > 0 ? gallery : null,
         // Add new fields based on project type
         highlights: highlightsArray.length > 0 ? highlightsArray : null,
         deliverables: deliverablesArray.length > 0 ? deliverablesArray : null,
@@ -236,6 +245,10 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
 
       // Only include process if it's valid JSON (object/array) or explicitly null
       projectData.process = processArray === null ? null : processArray;
+
+      // Debug logging
+      console.log("Submitting project with gallery:", gallery);
+      console.log("Full project data:", projectData);
 
       const action = isEditing && project?.id ? "update" : "create";
       const payload =
@@ -850,6 +863,93 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                         className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
                         placeholder="https://example.com/video.mp4"
                       />
+                    </div>
+
+                    <div>
+                      <ImageUpload
+                        bucket="project-images"
+                        currentImage={formData.mobileHeroSrc}
+                        onUpload={(url) => setFormData((prev) => ({ ...prev, mobileHeroSrc: url }))}
+                        label="Mobile Hero Image (optional)"
+                      />
+                      <p className="text-xs text-neutral-500 mt-1">
+                        Alternative hero image optimized for mobile devices
+                      </p>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-neutral-700 mb-2">
+                        Gallery Images (optional)
+                      </label>
+                      <p className="text-xs text-neutral-500 mb-3">
+                        Add multiple images to showcase the project in detail
+                      </p>
+
+                      {/* Display existing gallery images */}
+                      {gallery.length > 0 && (
+                        <div className="mb-4 space-y-3">
+                          {gallery.map((img, idx) => (
+                            <div
+                              key={idx}
+                              className="flex items-start gap-3 p-3 border border-neutral-200 rounded-lg bg-neutral-50"
+                            >
+                              <img
+                                src={img.src}
+                                alt={img.alt || `Gallery image ${idx + 1}`}
+                                className="w-20 h-20 object-cover rounded"
+                              />
+                              <div className="flex-1 min-w-0">
+                                <input
+                                  type="text"
+                                  value={img.alt}
+                                  onChange={(e) => {
+                                    const updated = [...gallery];
+                                    updated[idx] = { ...updated[idx], alt: e.target.value };
+                                    setGallery(updated);
+                                  }}
+                                  placeholder="Image alt text"
+                                  className="w-full px-2 py-1 text-sm border border-neutral-300 rounded focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900"
+                                />
+                                <p className="text-xs text-neutral-500 mt-1 truncate">{img.src}</p>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => setGallery(gallery.filter((_, i) => i !== idx))}
+                                className="text-red-600 hover:text-red-700 p-1"
+                                title="Remove image"
+                              >
+                                <svg
+                                  className="w-5 h-5"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M6 18L18 6M6 6l12 12"
+                                  />
+                                </svg>
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Add new gallery image */}
+                      <div className="border-2 border-dashed border-neutral-300 rounded-lg p-4 bg-neutral-50">
+                        <ImageUpload
+                          bucket="project-images"
+                          currentImage=""
+                          onUpload={(url) => {
+                            if (url) {
+                              setGallery([...gallery, { src: url, alt: "" }]);
+                            }
+                          }}
+                          label="Add New Gallery Image"
+                        />
+                      </div>
                     </div>
 
                     <div>

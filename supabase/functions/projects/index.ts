@@ -20,6 +20,8 @@ interface ProjectPayload {
   featured?: boolean;
   alt?: string | null;
   credits?: string | null;
+  gallery?: Array<{ src: string; alt: string }> | null;
+  mobile_hero_src?: string | null;
   problem?: string | null;
   solution?: string | null;
   approach?: string | null;
@@ -58,6 +60,25 @@ function normalizeProjectData(raw: Record<string, unknown>): ProjectPayload {
 
   const tools = arr(raw.tools);
 
+  // Handle gallery (array of {src, alt} objects)
+  let gallery: Array<{ src: string; alt: string }> | null = null;
+  if (Array.isArray(raw.gallery) && raw.gallery.length > 0) {
+    gallery = raw.gallery
+      .map((item: unknown) => {
+        if (typeof item === "object" && item !== null) {
+          const obj = item as Record<string, unknown>;
+          return {
+            src: String(obj.src || ""),
+            alt: String(obj.alt || ""),
+          };
+        }
+        return null;
+      })
+      .filter((item): item is { src: string; alt: string } => item !== null && Boolean(item.src));
+
+    if (gallery.length === 0) gallery = null;
+  }
+
   return {
     title: String(raw.title || ""),
     slug: String(raw.slug || ""),
@@ -70,6 +91,8 @@ function normalizeProjectData(raw: Record<string, unknown>): ProjectPayload {
     featured: bool(raw.featured),
     alt: text(raw.alt),
     credits: text(raw.credits),
+    gallery,
+    mobile_hero_src: text(raw.mobileHeroSrc),
     problem: text(raw.problem),
     solution: text(raw.solution),
     approach: text(raw.approach),
