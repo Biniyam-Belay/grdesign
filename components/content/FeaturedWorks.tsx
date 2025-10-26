@@ -1,12 +1,9 @@
 "use client";
 
-import { useMemo, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import type { Work } from "@lib/types";
 import { getWorks } from "@lib/data/works";
-
-type TileVariant = "square" | "portrait45" | "portrait916"; // 1:1, 4:5, 9:16
 
 type FeaturedWorksProps = {
   title?: string;
@@ -58,35 +55,20 @@ export default function FeaturedWorks({
           {works.map((work, i) => {
             const variant = work.aspect_ratio || "square";
             return (
-              <Link
-                key={`${work.slug}-${i}`}
-                href={work.link || "#"}
-                className="block relative group"
-              >
+              <div key={`${work.slug}-${i}`} className="block relative group">
                 <div
-                  className={`relative w-full ${aspectClass(variant)} overflow-hidden border border-neutral-200 bg-white rounded-md transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform group-hover:scale-[1.06] group-hover:z-30 shadow-sm group-hover:shadow-xl`}
+                  className={`relative w-full ${aspectClass(variant)} overflow-hidden border border-neutral-200 bg-white transition-transform duration-300 ease-out group-hover:scale-[1.02]`}
                 >
                   <Image
                     src={work.image}
                     alt={work.title}
                     fill
-                    className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]"
+                    className="object-cover"
                     sizes="(min-width: 1024px) 33vw, (min-width: 640px) 33vw, 100vw"
                     priority={false}
                   />
-                  {/* Overlay with title */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                      <h3 className="font-semibold text-lg">{work.title}</h3>
-                      {work.description && (
-                        <p className="text-sm text-white/80 mt-1 line-clamp-2">
-                          {work.description}
-                        </p>
-                      )}
-                    </div>
-                  </div>
                 </div>
-              </Link>
+              </div>
             );
           })}
         </div>

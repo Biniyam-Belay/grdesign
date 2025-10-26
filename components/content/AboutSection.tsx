@@ -40,7 +40,7 @@ const AboutSection = () => {
       style={{ marginTop: "-1px" }}
     >
       <div className="w-[80%] px-4 sm:px-8 lg:px-12">
-        <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-normal text-slate-800 text-left leading-tight">
+        <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-normal text-slate-800 text-left leading-tight all-small-caps">
           Crafting unique{" "}
           <RotatingText
             words={["design languages", "interface systems", "brand ecosystems"]}

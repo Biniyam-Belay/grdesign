@@ -70,10 +70,9 @@ export default function WebDevCase({
   const hasOutcome = !!project.outcome && project.outcome.trim().length > 0;
   const hasDeliverables = Array.isArray(project.deliverables) && project.deliverables.length > 0;
 
-  // Hero image setup
-  const heroImg = project.gallery && project.gallery.length > 0 ? project.gallery[0] : null;
-  const heroAlt = heroImg?.alt ?? project.alt ?? project.title;
-  const desktopHeroSrc = heroImg ? heroImg.src : project.thumb;
+  // Use thumb for hero, with optional mobile-specific hero
+  const heroAlt = project.alt ?? project.title;
+  const desktopHeroSrc = project.thumb;
   const mobileHeroSrc = project.mobileHeroSrc || desktopHeroSrc;
 
   return (

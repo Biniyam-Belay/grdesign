@@ -61,9 +61,8 @@ export default function UiUxCase({
     return () => contexts.forEach((c) => c.revert());
   }, [reduced]);
 
-  // Static hero image: first from gallery if available, else fallback to thumb
-  const heroImg = project.gallery && project.gallery.length > 0 ? project.gallery[0] : null;
-  const heroAlt = heroImg?.alt ?? project.alt ?? project.title;
+  // Use thumb for hero, with optional mobile-specific hero
+  const heroAlt = project.alt ?? project.title;
 
   // Flags
   const hasProblem = !!project.problem && project.problem.trim().length > 0;
@@ -81,7 +80,7 @@ export default function UiUxCase({
         <div className="absolute inset-0 -z-10">
           {/* Desktop (md+) */}
           <Image
-            src={heroImg?.src || project.thumb}
+            src={project.thumb}
             alt={heroAlt}
             fill
             priority
@@ -92,7 +91,7 @@ export default function UiUxCase({
           />
           {/* Mobile */}
           <Image
-            src={project.mobileHeroSrc || heroImg?.src || project.thumb}
+            src={project.mobileHeroSrc || project.thumb}
             alt={heroAlt}
             fill
             priority

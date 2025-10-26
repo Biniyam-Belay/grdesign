@@ -61,8 +61,8 @@ export default function SocialCase({
     return () => contexts.forEach((c) => c.revert());
   }, [reduced]);
 
-  const images = project.gallery ?? [];
-  const heroAlt = images[0]?.alt ?? project.alt ?? project.title;
+  // Use thumb for hero, with optional mobile-specific hero
+  const heroAlt = project.alt ?? project.title;
 
   const hasHighlights = Array.isArray(project.highlights) && project.highlights.length > 0;
   const hasProcess = Array.isArray(project.process) && project.process.length > 0;
@@ -76,7 +76,7 @@ export default function SocialCase({
         <div className="absolute inset-0 -z-10">
           {/* Desktop (md+) */}
           <Image
-            src={images[0]?.src || project.thumb}
+            src={project.thumb}
             alt={heroAlt}
             fill
             priority
@@ -87,7 +87,7 @@ export default function SocialCase({
           />
           {/* Mobile */}
           <Image
-            src={project.mobileHeroSrc || images[0]?.src || project.thumb}
+            src={project.mobileHeroSrc || project.thumb}
             alt={heroAlt}
             fill
             priority

@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { createSupabaseClient } from "@/lib/supabase/client";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Blog } from "@/lib/types";
 
@@ -14,7 +13,6 @@ export default function BlogManagement() {
   const [filterTag, setFilterTag] = useState<string>("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const supabase = createSupabaseClient();
-  const router = useRouter();
 
   const handleLogout = async () => {
     await supabase.auth.signOut();

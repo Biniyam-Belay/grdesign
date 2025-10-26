@@ -11,8 +11,8 @@ export const dynamicParams = true; // Allow new slugs at runtime
 type Params = { slug: string };
 
 export async function generateStaticParams(): Promise<Params[]> {
-  // Only generate paths for non-featured projects as featured items are only for decoration
-  const projects = (await getProjectsAsync()).filter((p) => !p.featured);
+  // Generate paths for all projects (both featured and non-featured)
+  const projects = await getProjectsAsync();
   const slugs = projects.map((p) => p.slug);
   return slugs.map((slug) => ({ slug }));
 }
@@ -39,8 +39,8 @@ export default async function ProjectPage(props: { params: Promise<Params> }) {
   const project = all.find((p) => p.slug === slug);
   if (!project) notFound();
 
-  // Get real projects, excluding featured items which are only for decoration
-  const list = all.filter((p) => !p.featured);
+  // Use all projects for navigation (both featured and non-featured)
+  const list = all;
   const idx = list.findIndex((p) => p.slug === project.slug);
 
   const prev = idx > 0 ? { slug: list[idx - 1]!.slug, title: list[idx - 1]!.title } : undefined;

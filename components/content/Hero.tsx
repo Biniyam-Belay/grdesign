@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import GridHoverSquares from "@components/motion/GridHoverSquares";
+import { getHeroSettings, type HeroSettings } from "@/lib/data/settings";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,6 +17,20 @@ type Props = {
 
 export default function Hero({ offsetTop = 80 }: Props) {
   const rootRef = useRef<HTMLElement | null>(null);
+  const [settings, setSettings] = useState<HeroSettings>({
+    availability: { status: "available", label: "Available for 1 project" },
+    experienceYears: 3,
+    heroText: {
+      kicker: "Portfolio",
+      title1: "Graphic Designer",
+      title2: "Web Developer",
+      subtitle: "Thoughtful identities & calm interfaces. Available for select work.",
+    },
+  });
+
+  useEffect(() => {
+    getHeroSettings().then(setSettings).catch(console.error);
+  }, []);
 
   useEffect(() => {
     const el = rootRef.current;
@@ -72,7 +87,13 @@ export default function Hero({ offsetTop = 80 }: Props) {
             "-=0.8",
           )
           // Scene 2: Content reveal
-          .from("[data-anim='cta-contact']", { y: 20, opacity: 0, duration: 0.6 }, "-=0.5")
+          .fromTo(
+            "[data-anim='cta-contact']",
+            { y: 20, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.6 },
+            "-=0.5",
+          )
+          .from("[data-anim='availability']", { y: 20, opacity: 0, duration: 0.6 }, "-=0.4")
           .from("[data-anim='kicker']", { y: 16, opacity: 0, duration: 0.6 }, "-=0.2")
           .fromTo(
             "[data-anim='title-line']",
@@ -228,56 +249,90 @@ export default function Hero({ offsetTop = 80 }: Props) {
 
         {/* Desktop Layout */}
         <div className="hidden md:block mt-20">
-          {/* Top row: left spacer, center stack, right contact on md+ */}
-          <div className="relative flex items-end justify-between">
-            <div className="hidden w-[140px] md:block" />
-            <div className="text-left">
-              <p
-                data-anim="kicker"
-                className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-4"
-              >
-                Portfolio - {new Date().getFullYear()}
-              </p>
+          {/* Top row with left-aligned content and right contact button */}
+          <div className="relative flex items-center justify-between">
+            {/* Left Content */}
+            <div className="text-left max-w-2xl">
+              {/* Kicker and Availability Badge on same line */}
+              <div className="flex items-center gap-4 mb-4">
+                <p
+                  data-anim="kicker"
+                  className="text-xs tracking-[0.2em] uppercase text-muted-foreground"
+                >
+                  {settings.heroText.kicker} - {new Date().getFullYear()}
+                </p>
+
+                {/* Availability Badge - To the right of kicker */}
+                <div data-anim="availability" className="flex items-center gap-2 text-sm">
+                  {/* Status Indicator with Pulse Animation */}
+                  <div className="relative flex items-center justify-center">
+                    {/* Outer pulse ring */}
+                    <span
+                      className={`absolute inline-flex h-3 w-3 rounded-full ${
+                        settings.availability.status === "available"
+                          ? "bg-green-400"
+                          : settings.availability.status === "limited"
+                            ? "bg-amber-400"
+                            : "bg-red-400"
+                      } opacity-75 animate-ping`}
+                    />
+                    {/* Inner dot */}
+                    <span
+                      className={`relative inline-flex h-2 w-2 rounded-full ${
+                        settings.availability.status === "available"
+                          ? "bg-green-500"
+                          : settings.availability.status === "limited"
+                            ? "bg-amber-500"
+                            : "bg-red-500"
+                      }`}
+                    />
+                  </div>
+
+                  <span className="text-muted-foreground">{settings.availability.label}</span>
+                </div>
+              </div>
 
               <h1 className="text-3xl md:text-5xl font-semibold leading-[1.15] text-foreground">
                 <span data-anim="title-line" className="block">
-                  Graphic Designer
+                  {settings.heroText.title1}
                 </span>
                 <span data-anim="title-line" className="block">
-                  Web Developer
+                  {settings.heroText.title2}
                 </span>
               </h1>
 
-              <p data-anim="subcopy" className="mt-4 text-base md:text-lg text-neutral-400">
-                Thoughtful identities & calm interfaces. Available for select work.
+              <p
+                data-anim="subcopy"
+                className="mt-4 text-base md:text-lg text-neutral-400 max-w-md"
+              >
+                {settings.heroText.subtitle}
               </p>
             </div>
 
-            <div className="hidden md:block">
-              <Link
-                data-anim="cta-contact"
-                href="https://calendar.app.google/1RTjShD5sgqBmm3K7"
-                className="group inline-flex items-center gap-3 rounded-full border border-border px-5 py-2 text-sm transition-colors hover:bg-foreground hover:text-background"
-                target="_blank"
-                rel="noopener noreferrer"
+            {/* Right - Contact Button (vertically centered) */}
+            <Link
+              data-anim="cta-contact"
+              href="https://calendar.app.google/1RTjShD5sgqBmm3K7"
+              className="opacity-100 group inline-flex items-center gap-3 rounded-full border border-border px-6 py-2.5 text-sm transition-all duration-300 hover:bg-foreground hover:text-background hover:scale-105"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className="font-medium">Contact</span>
+              <svg
+                className="transition-transform group-hover:translate-x-1"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
               >
-                <span>Contact</span>
-                <svg
-                  className="transition-transform group-hover:translate-x-1"
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <path
-                    d="M5 12h14M12 5l7 7-7 7"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </Link>
-            </div>
+                <path
+                  d="M5 12h14M12 5l7 7-7 7"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </Link>
           </div>
 
           {/* "Bini" Section - Bottom Aligned */}

@@ -3,8 +3,31 @@
 import { FaInstagram, FaLinkedin, FaArrowRight } from "react-icons/fa";
 import { SiDribbble, SiBehance } from "react-icons/si";
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { getHeroSettings } from "@/lib/data/settings";
 
 export default function AboutMeSection() {
+  const [availabilityText, setAvailabilityText] = useState<string>(
+    "Currently available for projects",
+  );
+
+  useEffect(() => {
+    getHeroSettings().then((settings) => {
+      if (settings?.availability) {
+        const { status, label } = settings.availability;
+
+        // Generate text based on availability status
+        if (status === "unavailable") {
+          setAvailabilityText("Currently unavailable");
+        } else if (status === "limited") {
+          setAvailabilityText(`Currently ${label.toLowerCase()}`);
+        } else {
+          // available
+          setAvailabilityText(`Currently ${label.toLowerCase()}`);
+        }
+      }
+    });
+  }, []);
   return (
     <section className="relative py-24 px-4 sm:px-8 lg:px-12">
       {/* Full width grid with only side gutters */}
@@ -69,7 +92,7 @@ export default function AboutMeSection() {
             <div className="mt-10 flex items-center gap-4">
               <span className="h-px w-24 bg-border" />
               <p className="text-xs uppercase tracking-widest text-neutral-500">
-                Currently open for one project
+                {availabilityText}
               </p>
             </div>
           </div>

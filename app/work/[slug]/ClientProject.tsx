@@ -90,11 +90,9 @@ export default function ClientProject({
   const hasOutcome = !!project.outcome && project.outcome.trim().length > 0;
   const hasDeliverables = Array.isArray(project.deliverables) && project.deliverables.length > 0;
 
-  // Static hero image: first from gallery if available, else fallback to thumb
-  const heroImg = project.gallery && project.gallery.length > 0 ? project.gallery[0] : null;
-  const heroAlt = heroImg?.alt ?? project.alt ?? project.title;
-  // Desktop uses the wide hero, mobile can use a separate crop if provided
-  const desktopHeroSrc = heroImg ? heroImg.src : project.thumb;
+  // Use thumb for hero, with optional mobile-specific hero
+  const heroAlt = project.alt ?? project.title;
+  const desktopHeroSrc = project.thumb;
   const mobileHeroSrc = project.mobileHeroSrc || desktopHeroSrc;
 
   const type: ProjectType | undefined = project.type;

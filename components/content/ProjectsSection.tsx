@@ -8,13 +8,13 @@ interface ProjectsSectionProps {
 }
 
 export default function ProjectsSection({ projects: allProjects }: ProjectsSectionProps) {
-  // Exclude items deliberately marked as featured (shown in FeaturedWorks)
-  // Featured items are only for decoration and should not be treated as real projects
-  const projects = allProjects.filter((p) => !p.featured);
+  // Show only projects marked as featured for homepage display
+  // Projects can be marked as featured in the admin panel
+  const projects = allProjects.filter((p) => p.featured);
 
-  // Show only a limited number of projects initially (2 rows)
+  // Show up to 6 featured projects on the homepage
   // For lg screens: Row 1 = wide(8) + standard(4) = 12 cols, Row 2 = standard(4) + tall(4) + standard(4) = 12 cols
-  const initialProjectCount = 5; // This will give us exactly 2 rows
+  const maxProjectCount = 6;
 
   // simple rhythm: 0, 5, 10... are "wide"; 2, 7, 12... are "tall"
   type Variant = "wide" | "tall" | "standard";
@@ -42,7 +42,7 @@ export default function ProjectsSection({ projects: allProjects }: ProjectsSecti
 
       {/* full-bleed responsive grid with slim gutters */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-6">
-        {projects.slice(0, initialProjectCount).map((project, i) => {
+        {projects.slice(0, maxProjectCount).map((project, i) => {
           // layout spans (wide items span 8/12; tall/standard span 4/12 on lg)
           const variant = variantFor(i);
           const span =
@@ -58,8 +58,8 @@ export default function ProjectsSection({ projects: allProjects }: ProjectsSecti
         })}
       </div>
 
-      {/* See more button - always show on mobile, show on desktop if there are more projects */}
-      {projects.length > initialProjectCount && (
+      {/* See more button - show if there are more than max featured projects */}
+      {projects.length > maxProjectCount && (
         <div className="mt-10 flex justify-center">
           <Link
             href="/work"

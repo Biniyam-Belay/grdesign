@@ -11,12 +11,12 @@ export default function WorkPage() {
   const pageRef = useRef<HTMLElement>(null!);
   usePageTransition(pageRef);
 
-  // Exclude featured items as they are only for decoration and should not appear as real projects
+  // Show all projects on the work page (both featured and non-featured)
   const [all, setAll] = useState<Project[]>([]);
   useEffect(() => {
     let mounted = true;
     getProjectsAsync().then((ps) => {
-      if (mounted && ps && ps.length > 0) setAll(ps.filter((p) => !p.featured));
+      if (mounted && ps && ps.length > 0) setAll(ps);
     });
     return () => {
       mounted = false;

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { createSupabaseClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import ImageUpload from "@/components/ui/ImageUpload";
 import { Project, ProjectType } from "@/lib/types";
 
@@ -246,10 +247,6 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
       // Only include process if it's valid JSON (object/array) or explicitly null
       projectData.process = processArray === null ? null : processArray;
 
-      // Debug logging
-      console.log("Submitting project with gallery:", gallery);
-      console.log("Full project data:", projectData);
-
       const action = isEditing && project?.id ? "update" : "create";
       const payload =
         isEditing && project?.id
@@ -271,7 +268,6 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
         },
       });
       if (error) {
-        console.error("Update/Insert project failed:", error, projectData);
         throw error;
       }
 
@@ -291,7 +287,6 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
 
       router.push("/admin/projects");
     } catch (err) {
-      console.error("Project save error:", err);
       const e = err as { message?: string; details?: string; hint?: string; code?: string };
       const msg = e.message || e.details || e.hint || e.code || "Failed to save project";
       setError(msg);
@@ -494,6 +489,235 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                 </div>
               </div>
 
+              {/* Project Media - Moved from sidebar */}
+              <div className="border border-neutral-200/50 rounded-2xl bg-white shadow-sm p-8">
+                <div className="mb-6 flex items-start gap-3">
+                  <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 flex items-center justify-center flex-shrink-0">
+                    <svg
+                      className="h-5 w-5 text-purple-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-semibold text-neutral-900">Media & Assets</h2>
+                    <p className="text-sm text-neutral-600 mt-1">
+                      Visual content for your project showcase
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {/* Thumbnail */}
+                  <div>
+                    <ImageUpload
+                      bucket="project-images"
+                      currentImage={formData.thumb}
+                      onUpload={(url) => setFormData((prev) => ({ ...prev, thumb: url }))}
+                      label="Thumbnail Image"
+                    />
+                    <p className="text-xs text-neutral-500 mt-2">
+                      Main project thumbnail for cards and listings
+                    </p>
+                  </div>
+
+                  {/* Mobile Hero */}
+                  <div>
+                    <ImageUpload
+                      bucket="project-images"
+                      currentImage={formData.mobileHeroSrc}
+                      onUpload={(url) => setFormData((prev) => ({ ...prev, mobileHeroSrc: url }))}
+                      label="Mobile Hero (optional)"
+                    />
+                    <p className="text-xs text-neutral-500 mt-2">
+                      Alternative hero image optimized for mobile
+                    </p>
+                  </div>
+                </div>
+
+                {/* Video URL */}
+                <div className="mt-6">
+                  <label
+                    htmlFor="video"
+                    className="block text-sm font-medium text-neutral-700 mb-2"
+                  >
+                    Video URL (optional)
+                  </label>
+                  <input
+                    type="url"
+                    name="video"
+                    id="video"
+                    value={formData.video}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, video: e.target.value }))}
+                    className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                    placeholder="https://example.com/video.mp4"
+                  />
+                </div>
+
+                {/* Gallery Section */}
+                <div className="mt-6 pt-6 border-t border-neutral-200">
+                  <div className="flex items-center justify-between mb-3">
+                    <div>
+                      <h3 className="text-sm font-semibold text-neutral-900">Project Gallery</h3>
+                      <p className="text-xs text-neutral-500 mt-0.5">
+                        Add multiple images for detailed project showcase
+                      </p>
+                    </div>
+                    {gallery.length > 0 && (
+                      <span className="text-xs font-medium text-neutral-500 bg-neutral-100 px-3 py-1.5 rounded-full">
+                        {gallery.length} {gallery.length === 1 ? "image" : "images"}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Gallery Grid - SCROLLABLE */}
+                  {gallery.length > 0 && (
+                    <div className="mb-4 max-h-[500px] overflow-y-auto rounded-xl border border-neutral-200 bg-neutral-50/50">
+                      <div className="p-4 space-y-3">
+                        {gallery.map((img, idx) => (
+                          <div
+                            key={idx}
+                            className="flex items-start gap-4 p-4 border border-neutral-200 rounded-xl bg-white hover:shadow-md transition-all group"
+                          >
+                            {/* Image Preview with Number */}
+                            <div className="relative flex-shrink-0">
+                              <Image
+                                src={img.src}
+                                alt={img.alt || `Gallery image ${idx + 1}`}
+                                width={96}
+                                height={96}
+                                className="w-24 h-24 object-cover rounded-lg border-2 border-neutral-200 group-hover:border-purple-300 transition-colors"
+                              />
+                              <div className="absolute -top-2 -left-2 w-7 h-7 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 text-white text-xs flex items-center justify-center font-bold shadow-lg">
+                                {idx + 1}
+                              </div>
+                            </div>
+
+                            {/* Input Fields */}
+                            <div className="flex-1 min-w-0 space-y-2">
+                              <input
+                                type="text"
+                                value={img.alt}
+                                onChange={(e) => {
+                                  const updated = [...gallery];
+                                  updated[idx] = { ...updated[idx], alt: e.target.value };
+                                  setGallery(updated);
+                                }}
+                                placeholder="Image description (recommended for accessibility)"
+                                className="w-full px-3 py-2.5 text-sm border border-neutral-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
+                              />
+                              <div className="flex items-center gap-2 text-xs text-neutral-500">
+                                <svg
+                                  className="w-3.5 h-3.5 flex-shrink-0"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                                  />
+                                </svg>
+                                <span className="truncate">{img.src}</span>
+                              </div>
+                            </div>
+
+                            {/* Remove Button */}
+                            <button
+                              type="button"
+                              onClick={() => setGallery(gallery.filter((_, i) => i !== idx))}
+                              className="flex-shrink-0 text-red-500 hover:text-white hover:bg-red-500 p-2.5 rounded-lg transition-all opacity-0 group-hover:opacity-100"
+                              title="Remove image"
+                            >
+                              <svg
+                                className="w-5 h-5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Add New Gallery Image */}
+                  <div className="border-2 border-dashed border-neutral-300 rounded-xl p-5 bg-gradient-to-br from-neutral-50 to-neutral-100/50 hover:border-purple-300 hover:bg-purple-50/30 transition-all">
+                    <ImageUpload
+                      bucket="project-images"
+                      currentImage=""
+                      onUpload={(url) => {
+                        if (url) {
+                          setGallery([...gallery, { src: url, alt: "" }]);
+                        }
+                      }}
+                      label="Add Gallery Image"
+                    />
+                  </div>
+                </div>
+
+                {/* Additional Fields */}
+                <div className="mt-6 pt-6 border-t border-neutral-200 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div>
+                    <label
+                      htmlFor="alt"
+                      className="block text-sm font-medium text-neutral-700 mb-2"
+                    >
+                      Default Alt Text
+                    </label>
+                    <input
+                      type="text"
+                      name="alt"
+                      id="alt"
+                      value={formData.alt}
+                      onChange={(e) => setFormData((prev) => ({ ...prev, alt: e.target.value }))}
+                      className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                      placeholder="General image description"
+                    />
+                    <p className="text-xs text-neutral-500 mt-1">Fallback for accessibility</p>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="credits"
+                      className="block text-sm font-medium text-neutral-700 mb-2"
+                    >
+                      Image Credits
+                    </label>
+                    <input
+                      type="text"
+                      name="credits"
+                      id="credits"
+                      value={formData.credits}
+                      onChange={(e) =>
+                        setFormData((prev) => ({ ...prev, credits: e.target.value }))
+                      }
+                      className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                      placeholder="Photo credits, attributions..."
+                    />
+                    <p className="text-xs text-neutral-500 mt-1">Attribution for images</p>
+                  </div>
+                </div>
+              </div>
+
               {/* Case Study Details */}
               <div className="border border-neutral-200 rounded-lg bg-white p-8">
                 <div className="mb-6">
@@ -670,153 +894,136 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
               </div>
             </div>
 
-            {/* Right Column - Settings & Media */}
+            {/* Right Column - Settings & Media - STICKY */}
             <div className="space-y-8">
-              {/* Project Settings */}
-              <div className="border border-neutral-200 rounded-lg bg-white p-6">
-                <div className="mb-6">
-                  <h3 className="text-lg font-medium text-neutral-900">Settings</h3>
-                  <p className="text-sm text-neutral-600 mt-1">
-                    Project configuration and metadata.
-                  </p>
-                </div>
-
-                <div className="space-y-4">
-                  <div>
-                    <label
-                      htmlFor="slug"
-                      className="block text-sm font-medium text-neutral-700 mb-2"
-                    >
-                      URL Slug
-                    </label>
-                    <input
-                      type="text"
-                      name="slug"
-                      id="slug"
-                      required
-                      value={formData.slug}
-                      onChange={(e) => setFormData((prev) => ({ ...prev, slug: e.target.value }))}
-                      className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
-                      placeholder="url-friendly-slug"
-                    />
-                    <p className="text-xs text-neutral-500 mt-1">Used in the project URL</p>
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="type"
-                      className="block text-sm font-medium text-neutral-700 mb-2"
-                    >
-                      Project Type
-                    </label>
-                    <select
-                      name="type"
-                      id="type"
-                      value={formData.type}
-                      onChange={(e) =>
-                        setFormData((prev) => ({ ...prev, type: e.target.value as ProjectType }))
-                      }
-                      className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
-                    >
-                      <option value="web-dev">Web Development</option>
-                      <option value="ui-ux">UI/UX Design</option>
-                      <option value="branding">Branding</option>
-                      <option value="social">Social Media</option>
-                      <option value="print">Print Design</option>
-                    </select>
-                    <p className="text-xs text-neutral-500 mt-1">
-                      This affects which fields are shown below
+              <div className="lg:sticky lg:top-24 space-y-6">
+                {/* Project Settings */}
+                <div className="border border-neutral-200 rounded-lg bg-white p-6 shadow-sm">
+                  <div className="mb-6">
+                    <h3 className="text-lg font-medium text-neutral-900">Settings</h3>
+                    <p className="text-sm text-neutral-600 mt-1">
+                      Project configuration and metadata.
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-4">
                     <div>
                       <label
-                        htmlFor="year"
+                        htmlFor="slug"
                         className="block text-sm font-medium text-neutral-700 mb-2"
                       >
-                        Year
+                        URL Slug
                       </label>
                       <input
                         type="text"
-                        name="year"
-                        id="year"
-                        value={formData.year}
-                        onChange={(e) => setFormData((prev) => ({ ...prev, year: e.target.value }))}
+                        name="slug"
+                        id="slug"
+                        required
+                        value={formData.slug}
+                        onChange={(e) => setFormData((prev) => ({ ...prev, slug: e.target.value }))}
                         className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
-                        placeholder="2024"
+                        placeholder="url-friendly-slug"
                       />
+                      <p className="text-xs text-neutral-500 mt-1">Used in the project URL</p>
                     </div>
 
                     <div>
                       <label
-                        htmlFor="client"
+                        htmlFor="type"
                         className="block text-sm font-medium text-neutral-700 mb-2"
                       >
-                        Client
+                        Project Type
                       </label>
-                      <input
-                        type="text"
-                        name="client"
-                        id="client"
-                        value={formData.client}
+                      <select
+                        name="type"
+                        id="type"
+                        value={formData.type}
                         onChange={(e) =>
-                          setFormData((prev) => ({ ...prev, client: e.target.value }))
+                          setFormData((prev) => ({ ...prev, type: e.target.value as ProjectType }))
                         }
                         className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
-                        placeholder="Client name"
-                      />
+                      >
+                        <option value="web-dev">Web Development</option>
+                        <option value="ui-ux">UI/UX Design</option>
+                        <option value="branding">Branding</option>
+                        <option value="social">Social Media</option>
+                        <option value="print">Print Design</option>
+                      </select>
+                      <p className="text-xs text-neutral-500 mt-1">
+                        This affects which fields are shown below
+                      </p>
                     </div>
-                  </div>
 
-                  <div className="flex items-center gap-3 pt-2">
-                    <input
-                      id="featured"
-                      name="featured"
-                      type="checkbox"
-                      checked={formData.featured}
-                      onChange={(e) =>
-                        setFormData((prev) => ({ ...prev, featured: e.target.checked }))
-                      }
-                      className="h-4 w-4 text-neutral-900 focus:ring-neutral-900 border-neutral-300 rounded"
-                    />
-                    <label htmlFor="featured" className="text-sm font-medium text-neutral-700">
-                      Featured Project
-                    </label>
-                  </div>
-                  <p className="text-xs text-neutral-500">Display prominently on homepage</p>
-                </div>
-              </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label
+                          htmlFor="year"
+                          className="block text-sm font-medium text-neutral-700 mb-2"
+                        >
+                          Year
+                        </label>
+                        <input
+                          type="text"
+                          name="year"
+                          id="year"
+                          value={formData.year}
+                          onChange={(e) =>
+                            setFormData((prev) => ({ ...prev, year: e.target.value }))
+                          }
+                          className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                          placeholder="2024"
+                        />
+                      </div>
 
-              {/* Project Type Info */}
-              <div className="border border-blue-200/50 rounded-2xl bg-gradient-to-br from-blue-50 to-cyan-50 p-5 shadow-sm">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="h-8 w-8 rounded-lg bg-blue-100 flex items-center justify-center">
-                    <svg
-                      className="h-4 w-4 text-blue-600"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      <div>
+                        <label
+                          htmlFor="client"
+                          className="block text-sm font-medium text-neutral-700 mb-2"
+                        >
+                          Client
+                        </label>
+                        <input
+                          type="text"
+                          name="client"
+                          id="client"
+                          value={formData.client}
+                          onChange={(e) =>
+                            setFormData((prev) => ({ ...prev, client: e.target.value }))
+                          }
+                          className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                          placeholder="Client name"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 pt-2">
+                      <input
+                        id="featured"
+                        name="featured"
+                        type="checkbox"
+                        checked={formData.featured}
+                        onChange={(e) =>
+                          setFormData((prev) => ({ ...prev, featured: e.target.checked }))
+                        }
+                        className="h-4 w-4 text-neutral-900 focus:ring-neutral-900 border-neutral-300 rounded"
                       />
-                    </svg>
+                      <label htmlFor="featured" className="text-sm font-medium text-neutral-700">
+                        Show on Homepage
+                      </label>
+                    </div>
+                    <p className="text-xs text-neutral-500">
+                      Display this project in the "Selected Work" section on the homepage (max 6
+                      projects recommended)
+                    </p>
                   </div>
-                  <h3 className="text-sm font-semibold text-blue-900">
-                    {relevantFields.caseStudyTitle}
-                  </h3>
                 </div>
 
-                {/* Project Media */}
-                <div className="border border-neutral-200/50 rounded-2xl bg-white shadow-sm p-6">
-                  <div className="mb-6 flex items-start gap-3">
-                    <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 flex items-center justify-center flex-shrink-0">
+                {/* Project Type Info */}
+                <div className="border border-blue-200/50 rounded-2xl bg-gradient-to-br from-blue-50 to-cyan-50 p-5 shadow-sm">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="h-8 w-8 rounded-lg bg-blue-100 flex items-center justify-center">
                       <svg
-                        className="h-5 w-5 text-purple-600"
+                        className="h-4 w-4 text-blue-600"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -824,102 +1031,59 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          strokeWidth={1.5}
-                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                          strokeWidth={2}
+                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                         />
                       </svg>
                     </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-neutral-900">Media</h3>
-                      <p className="text-sm text-neutral-600 mt-1">
-                        Visual assets for your project
-                      </p>
-                    </div>
+                    <h3 className="text-sm font-semibold text-blue-900">
+                      {relevantFields.caseStudyTitle}
+                    </h3>
                   </div>
 
-                  <div className="space-y-4">
-                    <ImageUpload
-                      bucket="project-images"
-                      currentImage={formData.thumb}
-                      onUpload={(url) => setFormData((prev) => ({ ...prev, thumb: url }))}
-                      label="Thumbnail Image"
-                    />
+                  {/* Actions */}
+                  <div className="border border-neutral-200 rounded-lg bg-white p-6">
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-neutral-700">Status</span>
+                        <span className="text-green-600 font-medium">Ready to publish</span>
+                      </div>
 
-                    <div>
-                      <label
-                        htmlFor="video"
-                        className="block text-sm font-medium text-neutral-700 mb-2"
-                      >
-                        Video URL (optional)
-                      </label>
-                      <input
-                        type="url"
-                        name="video"
-                        id="video"
-                        value={formData.video}
-                        onChange={(e) =>
-                          setFormData((prev) => ({ ...prev, video: e.target.value }))
-                        }
-                        className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
-                        placeholder="https://example.com/video.mp4"
-                      />
-                    </div>
-
-                    <div>
-                      <ImageUpload
-                        bucket="project-images"
-                        currentImage={formData.mobileHeroSrc}
-                        onUpload={(url) => setFormData((prev) => ({ ...prev, mobileHeroSrc: url }))}
-                        label="Mobile Hero Image (optional)"
-                      />
-                      <p className="text-xs text-neutral-500 mt-1">
-                        Alternative hero image optimized for mobile devices
-                      </p>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-neutral-700 mb-2">
-                        Gallery Images (optional)
-                      </label>
-                      <p className="text-xs text-neutral-500 mb-3">
-                        Add multiple images to showcase the project in detail
-                      </p>
-
-                      {/* Display existing gallery images */}
-                      {gallery.length > 0 && (
-                        <div className="mb-4 space-y-3">
-                          {gallery.map((img, idx) => (
-                            <div
-                              key={idx}
-                              className="flex items-start gap-3 p-3 border border-neutral-200 rounded-lg bg-neutral-50"
-                            >
-                              <img
-                                src={img.src}
-                                alt={img.alt || `Gallery image ${idx + 1}`}
-                                className="w-20 h-20 object-cover rounded"
-                              />
-                              <div className="flex-1 min-w-0">
-                                <input
-                                  type="text"
-                                  value={img.alt}
-                                  onChange={(e) => {
-                                    const updated = [...gallery];
-                                    updated[idx] = { ...updated[idx], alt: e.target.value };
-                                    setGallery(updated);
-                                  }}
-                                  placeholder="Image alt text"
-                                  className="w-full px-2 py-1 text-sm border border-neutral-300 rounded focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900"
-                                />
-                                <p className="text-xs text-neutral-500 mt-1 truncate">{img.src}</p>
-                              </div>
-                              <button
-                                type="button"
-                                onClick={() => setGallery(gallery.filter((_, i) => i !== idx))}
-                                className="text-red-600 hover:text-red-700 p-1"
-                                title="Remove image"
-                              >
+                      <div className="flex flex-col gap-3">
+                        <button
+                          type="submit"
+                          disabled={loading}
+                          className="group relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                        >
+                          <span className="relative z-10 flex items-center justify-center gap-2">
+                            {loading ? (
+                              <>
                                 <svg
-                                  className="w-5 h-5"
+                                  className="h-5 w-5 animate-spin"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <circle
+                                    className="opacity-25"
+                                    cx="12"
+                                    cy="12"
+                                    r="10"
+                                    stroke="currentColor"
+                                    strokeWidth="4"
+                                  />
+                                  <path
+                                    className="opacity-75"
+                                    fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                  />
+                                </svg>
+                                <span>Saving...</span>
+                              </>
+                            ) : (
+                              <>
+                                <span>{isEditing ? "Update Project" : "Create Project"}</span>
+                                <svg
+                                  className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1"
                                   fill="none"
                                   viewBox="0 0 24 24"
                                   stroke="currentColor"
@@ -928,132 +1092,22 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                     strokeWidth={2}
-                                    d="M6 18L18 6M6 6l12 12"
+                                    d="M5 13l4 4L19 7"
                                   />
                                 </svg>
-                              </button>
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                              </>
+                            )}
+                          </span>
+                          <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+                        </button>
 
-                      {/* Add new gallery image */}
-                      <div className="border-2 border-dashed border-neutral-300 rounded-lg p-4 bg-neutral-50">
-                        <ImageUpload
-                          bucket="project-images"
-                          currentImage=""
-                          onUpload={(url) => {
-                            if (url) {
-                              setGallery([...gallery, { src: url, alt: "" }]);
-                            }
-                          }}
-                          label="Add New Gallery Image"
-                        />
+                        <Link
+                          href="/admin/projects"
+                          className="w-full text-center px-4 py-2.5 text-sm font-medium text-neutral-700 hover:text-neutral-900 transition-all border border-neutral-300 rounded-xl hover:border-neutral-400 bg-white hover:bg-neutral-50 hover:shadow-sm"
+                        >
+                          Cancel
+                        </Link>
                       </div>
-                    </div>
-
-                    <div>
-                      <label
-                        htmlFor="alt"
-                        className="block text-sm font-medium text-neutral-700 mb-2"
-                      >
-                        Alt Text
-                      </label>
-                      <input
-                        type="text"
-                        name="alt"
-                        id="alt"
-                        value={formData.alt}
-                        onChange={(e) => setFormData((prev) => ({ ...prev, alt: e.target.value }))}
-                        className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
-                        placeholder="Descriptive alt text for accessibility"
-                      />
-                    </div>
-
-                    <div>
-                      <label
-                        htmlFor="credits"
-                        className="block text-sm font-medium text-neutral-700 mb-2"
-                      >
-                        Credits (optional)
-                      </label>
-                      <textarea
-                        name="credits"
-                        id="credits"
-                        rows={2}
-                        value={formData.credits}
-                        onChange={(e) =>
-                          setFormData((prev) => ({ ...prev, credits: e.target.value }))
-                        }
-                        className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
-                        placeholder="Photo credits, attributions..."
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Actions */}
-                <div className="border border-neutral-200 rounded-lg bg-white p-6">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-neutral-700">Status</span>
-                      <span className="text-green-600 font-medium">Ready to publish</span>
-                    </div>
-
-                    <div className="flex flex-col gap-3">
-                      <button
-                        type="submit"
-                        disabled={loading}
-                        className="group relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                      >
-                        <span className="relative z-10 flex items-center justify-center gap-2">
-                          {loading ? (
-                            <>
-                              <svg className="h-5 w-5 animate-spin" fill="none" viewBox="0 0 24 24">
-                                <circle
-                                  className="opacity-25"
-                                  cx="12"
-                                  cy="12"
-                                  r="10"
-                                  stroke="currentColor"
-                                  strokeWidth="4"
-                                />
-                                <path
-                                  className="opacity-75"
-                                  fill="currentColor"
-                                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                                />
-                              </svg>
-                              <span>Saving...</span>
-                            </>
-                          ) : (
-                            <>
-                              <span>{isEditing ? "Update Project" : "Create Project"}</span>
-                              <svg
-                                className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M5 13l4 4L19 7"
-                                />
-                              </svg>
-                            </>
-                          )}
-                        </span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
-                      </button>
-
-                      <Link
-                        href="/admin/projects"
-                        className="w-full text-center px-4 py-2.5 text-sm font-medium text-neutral-700 hover:text-neutral-900 transition-all border border-neutral-300 rounded-xl hover:border-neutral-400 bg-white hover:bg-neutral-50 hover:shadow-sm"
-                      >
-                        Cancel
-                      </Link>
                     </div>
                   </div>
                 </div>
