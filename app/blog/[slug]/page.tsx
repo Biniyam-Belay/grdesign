@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import DOMPurify from "isomorphic-dompurify";
 import { getBlogBySlug, getBlogSlugs, getBlogs } from "@lib/data/blogs";
 import { generateMeta } from "@lib/meta";
 import ShareButtons from "@components/ui/ShareButtons";
@@ -94,7 +95,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         {blog.content && (
           <div
             className="prose prose-neutral prose-lg max-w-none mt-12 prose-headings:font-bold prose-headings:text-neutral-900 prose-headings:font-outfit prose-p:text-neutral-700 prose-p:leading-relaxed prose-p:font-outfit prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-neutral-900 prose-code:bg-neutral-100 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-pre:bg-neutral-900 prose-pre:text-neutral-100 prose-code:font-outfit prose-pre:font-outfit"
-            dangerouslySetInnerHTML={{ __html: blog.content }}
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(blog.content) }}
           />
         )}
         {!blog.content && (

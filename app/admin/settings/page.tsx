@@ -4,13 +4,16 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { getHeroSettings, updateHeroSettings, type HeroSettings } from "@/lib/data/settings";
 import { createSupabaseClient } from "@/lib/supabase/client";
+import { useToast } from "@/components/ui/ToastProvider";
+import { Save, Key, Settings as SettingsIcon } from "lucide-react";
 
 export default function SettingsPage() {
   const supabase = createSupabaseClient();
+  const toast = useToast();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [changingPassword, setChangingPassword] = useState(false);
+  const [showPasswordSection, setShowPasswordSection] = useState(false);
 
   const [settings, setSettings] = useState<HeroSettings>({
     availability: { status: "available", label: "Available for 1 project" },
@@ -23,6 +26,12 @@ export default function SettingsPage() {
     },
   });
 
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+
   useEffect(() => {
     loadSettings();
   }, []);
@@ -32,8 +41,7 @@ export default function SettingsPage() {
       const data = await getHeroSettings();
       setSettings(data);
     } catch (err) {
-      setError("Failed to load settings");
-      console.error(err);
+      toast.error("Failed to load settings");
     } finally {
       setLoading(false);
     }
@@ -42,17 +50,67 @@ export default function SettingsPage() {
   async function handleSave() {
     try {
       setSaving(true);
-      setError("");
-      setSuccess("");
-
       await updateHeroSettings(settings);
-
-      setSuccess("Settings saved successfully!");
-      setTimeout(() => setSuccess(""), 3000);
+      toast.success("Settings saved successfully");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to save settings");
+      toast.error(err instanceof Error ? err.message : "Failed to save settings");
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function handlePasswordChange(e: React.FormEvent) {
+    e.preventDefault();
+
+    try {
+      setChangingPassword(true);
+
+      if (passwordData.newPassword.length < 8) {
+        toast.error("New password must be at least 8 characters long");
+        return;
+      }
+
+      if (passwordData.newPassword !== passwordData.confirmPassword) {
+        toast.error("Passwords do not match");
+        return;
+      }
+
+      const user = (await supabase.auth.getUser()).data.user;
+      if (!user?.email) {
+        toast.error("User not found");
+        return;
+      }
+
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: user.email,
+        password: passwordData.currentPassword,
+      });
+
+      if (signInError) {
+        toast.error("Current password is incorrect");
+        return;
+      }
+
+      const { error: updateError } = await supabase.auth.updateUser({
+        password: passwordData.newPassword,
+      });
+
+      if (updateError) {
+        toast.error(updateError.message);
+        return;
+      }
+
+      toast.success("Password changed successfully");
+      setPasswordData({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+      setShowPasswordSection(false);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to change password");
+    } finally {
+      setChangingPassword(false);
     }
   }
 
@@ -63,296 +121,331 @@ export default function SettingsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-neutral-900"></div>
+      <div className="min-h-screen flex items-center justify-center bg-neutral-50">
+        <div className="animate-spin rounded-full h-8 w-8 border-2 border-neutral-900 border-t-transparent"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50">
-      {/* Sticky Header */}
-      <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white/80 backdrop-blur-xl">
+    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-neutral-50">
+      {/* Animated Background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-purple-400/5 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-blue-400/5 rounded-full blur-3xl animate-pulse delay-1000" />
+      </div>
+
+      {/* Header */}
+      <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-neutral-200/50 shadow-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            <Link
-              href="/admin"
-              className="flex items-center gap-2 text-neutral-600 hover:text-neutral-900 transition-colors"
+          <div className="flex h-16 items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <Link
+                href="/admin"
+                className="flex items-center gap-2 text-neutral-600 hover:text-neutral-900 transition-all hover:scale-105"
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                  />
+                </svg>
+                <span className="font-medium text-sm">Dashboard</span>
+              </Link>
+              <div className="h-6 w-px bg-neutral-300" />
+              <div className="flex items-center gap-2">
+                <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                  <SettingsIcon className="h-5 w-5 text-white" strokeWidth={1.5} />
+                </div>
+                <h1 className="text-lg font-semibold text-neutral-900">Settings</h1>
+              </div>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-neutral-700 hover:text-neutral-900 border border-neutral-300 rounded-xl hover:border-neutral-400 bg-white hover:bg-neutral-50 transition-all duration-200 hover:shadow-sm"
             >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                  strokeWidth={1.5}
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                 />
               </svg>
-              <span className="text-sm font-medium">Back to Admin</span>
-            </Link>
-
-            <button
-              onClick={handleLogout}
-              className="text-sm text-neutral-600 hover:text-neutral-900 transition-colors"
-            >
-              Logout
+              <span className="hidden sm:inline">Sign Out</span>
             </button>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-12">
-        {error && (
-          <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4">
-            <p className="text-sm text-red-800 font-medium">{error}</p>
-          </div>
-        )}
-
-        {success && (
-          <div className="mb-6 rounded-xl border border-green-200 bg-green-50 p-4">
-            <p className="text-sm text-green-800 font-medium">{success}</p>
-          </div>
-        )}
-
-        <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm p-8">
-          <div className="mb-8">
-            <h1 className="text-2xl font-semibold text-neutral-900">Hero Settings</h1>
-            <p className="text-sm text-neutral-600 mt-2">
-              Manage your homepage hero section settings
-            </p>
-          </div>
-
-          <div className="space-y-8">
-            {/* Hero Text Section */}
-            <div className="space-y-6 pb-8 border-b border-neutral-200">
-              <h2 className="text-lg font-semibold text-neutral-900">Hero Text Content</h2>
-
-              {/* Kicker Text */}
+      <main className="relative mx-auto max-w-4xl px-6 py-12">
+        <div className="space-y-8">
+          {/* Hero Settings */}
+          <section className="bg-white rounded-2xl border border-neutral-200 p-8">
+            <div className="flex items-center justify-between mb-8">
               <div>
-                <label htmlFor="kicker" className="block text-sm font-medium text-neutral-700 mb-2">
-                  Kicker Text
-                </label>
-                <input
-                  type="text"
-                  id="kicker"
-                  value={settings.heroText.kicker}
-                  onChange={(e) =>
-                    setSettings({
-                      ...settings,
-                      heroText: { ...settings.heroText, kicker: e.target.value },
-                    })
-                  }
-                  className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
-                  placeholder="Portfolio"
-                />
-                <p className="text-xs text-neutral-500 mt-1">
-                  Small uppercase text at the top (e.g., "Portfolio - 2025")
+                <h2 className="text-lg font-semibold text-neutral-900">Homepage Settings</h2>
+                <p className="text-sm text-neutral-500 mt-1">
+                  Control hero section content and availability status
                 </p>
               </div>
-
-              {/* Title Line 1 */}
-              <div>
-                <label htmlFor="title1" className="block text-sm font-medium text-neutral-700 mb-2">
-                  Title Line 1
-                </label>
-                <input
-                  type="text"
-                  id="title1"
-                  value={settings.heroText.title1}
-                  onChange={(e) =>
-                    setSettings({
-                      ...settings,
-                      heroText: { ...settings.heroText, title1: e.target.value },
-                    })
-                  }
-                  className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
-                  placeholder="Graphic Designer"
-                />
-              </div>
-
-              {/* Title Line 2 */}
-              <div>
-                <label htmlFor="title2" className="block text-sm font-medium text-neutral-700 mb-2">
-                  Title Line 2
-                </label>
-                <input
-                  type="text"
-                  id="title2"
-                  value={settings.heroText.title2}
-                  onChange={(e) =>
-                    setSettings({
-                      ...settings,
-                      heroText: { ...settings.heroText, title2: e.target.value },
-                    })
-                  }
-                  className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
-                  placeholder="Web Developer"
-                />
-              </div>
-
-              {/* Subtitle */}
-              <div>
-                <label
-                  htmlFor="subtitle"
-                  className="block text-sm font-medium text-neutral-700 mb-2"
-                >
-                  Subtitle
-                </label>
-                <textarea
-                  id="subtitle"
-                  rows={3}
-                  value={settings.heroText.subtitle}
-                  onChange={(e) =>
-                    setSettings({
-                      ...settings,
-                      heroText: { ...settings.heroText, subtitle: e.target.value },
-                    })
-                  }
-                  className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
-                  placeholder="Thoughtful identities & calm interfaces. Available for select work."
-                />
-              </div>
             </div>
 
-            {/* Experience Years */}
-            <div>
-              <label htmlFor="years" className="block text-sm font-medium text-neutral-700 mb-2">
-                Years of Experience
-              </label>
-              <input
-                type="number"
-                id="years"
-                min="0"
-                max="50"
-                value={settings.experienceYears}
-                onChange={(e) =>
-                  setSettings({ ...settings, experienceYears: parseInt(e.target.value) || 0 })
-                }
-                className="w-full max-w-xs px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
-                placeholder="3"
-              />
-              <p className="text-xs text-neutral-500 mt-1">Displays in the circular stamp badge</p>
-            </div>
-
-            {/* Availability Status */}
-            <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-2">
-                Availability Status
-              </label>
-              <div className="flex gap-3">
-                {[
-                  { value: "available", label: "Available", color: "green" },
-                  { value: "limited", label: "Limited", color: "amber" },
-                  { value: "unavailable", label: "Unavailable", color: "red" },
-                ].map((option) => (
-                  <button
-                    key={option.value}
-                    onClick={() =>
+            <div className="space-y-8">
+              {/* Hero Text */}
+              <div className="space-y-4">
+                <label className="text-sm font-medium text-neutral-700">Hero Text</label>
+                <div className="grid gap-4">
+                  <input
+                    type="text"
+                    value={settings.heroText.title1}
+                    onChange={(e) =>
                       setSettings({
                         ...settings,
-                        availability: {
-                          ...settings.availability,
-                          status: option.value as "available" | "limited" | "unavailable",
-                        },
+                        heroText: { ...settings.heroText, title1: e.target.value },
                       })
                     }
-                    className={`px-4 py-2 rounded-lg border-2 transition-colors ${
-                      settings.availability.status === option.value
-                        ? "border-neutral-900 bg-neutral-900 text-white"
-                        : "border-neutral-200 hover:border-neutral-300"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`inline-block w-2 h-2 rounded-full ${
-                          option.color === "green"
-                            ? "bg-green-500"
-                            : option.color === "amber"
-                              ? "bg-amber-500"
-                              : "bg-red-500"
-                        }`}
-                      />
-                      {option.label}
-                    </div>
-                  </button>
-                ))}
+                    className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                    placeholder="Primary title"
+                  />
+                  <input
+                    type="text"
+                    value={settings.heroText.title2}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        heroText: { ...settings.heroText, title2: e.target.value },
+                      })
+                    }
+                    className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                    placeholder="Secondary title"
+                  />
+                  <textarea
+                    value={settings.heroText.subtitle}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        heroText: { ...settings.heroText, subtitle: e.target.value },
+                      })
+                    }
+                    rows={2}
+                    className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all resize-none text-neutral-900"
+                    placeholder="Subtitle"
+                  />
+                </div>
               </div>
-            </div>
 
-            {/* Availability Label */}
-            <div>
-              <label htmlFor="label" className="block text-sm font-medium text-neutral-700 mb-2">
-                Availability Label
-              </label>
-              <input
-                type="text"
-                id="label"
-                value={settings.availability.label}
-                onChange={(e) =>
-                  setSettings({
-                    ...settings,
-                    availability: { ...settings.availability, label: e.target.value },
-                  })
-                }
-                className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
-                placeholder="Available for 1 project"
-              />
-              <p className="text-xs text-neutral-500 mt-1">
-                Custom message displayed in the availability badge
-              </p>
-            </div>
+              {/* Experience Years */}
+              <div>
+                <label className="text-sm font-medium text-neutral-700 block mb-2">
+                  Years of Experience
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  max="50"
+                  value={settings.experienceYears}
+                  onChange={(e) =>
+                    setSettings({ ...settings, experienceYears: parseInt(e.target.value) || 0 })
+                  }
+                  className="w-32 px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                />
+              </div>
 
-            {/* Preview */}
-            <div className="pt-6 border-t border-neutral-200">
-              <h3 className="text-sm font-medium text-neutral-700 mb-4">Preview</h3>
-              <div className="flex items-start gap-8 p-6 bg-neutral-50 rounded-lg">
-                {/* Experience Badge Preview */}
-                <div className="relative">
-                  <div className="relative w-28 h-28 flex items-center justify-center">
-                    <div className="absolute inset-0 rounded-full border-2 border-dashed border-neutral-300" />
-                    <div className="absolute inset-2 rounded-full border border-neutral-200 bg-white" />
-                    <div className="relative z-10 text-center">
-                      <div className="text-3xl font-bold text-neutral-900 leading-none">
-                        {settings.experienceYears}
+              {/* Availability Status */}
+              <div>
+                <label className="text-sm font-medium text-neutral-700 block mb-3">
+                  Availability Status
+                </label>
+                <div className="grid grid-cols-3 gap-3">
+                  {[
+                    { value: "available", label: "Available", color: "green" },
+                    { value: "limited", label: "Limited", color: "amber" },
+                    { value: "unavailable", label: "Unavailable", color: "red" },
+                  ].map((option) => (
+                    <button
+                      key={option.value}
+                      type="button"
+                      onClick={() =>
+                        setSettings({
+                          ...settings,
+                          availability: {
+                            ...settings.availability,
+                            status: option.value as "available" | "limited" | "unavailable",
+                          },
+                        })
+                      }
+                      className={`
+                        px-4 py-3 rounded-lg border-2 transition-all text-sm font-medium
+                        ${
+                          settings.availability.status === option.value
+                            ? "border-neutral-900 bg-neutral-900 text-white"
+                            : "border-neutral-200 hover:border-neutral-300 text-neutral-700"
+                        }
+                      `}
+                    >
+                      <div className="flex items-center justify-center gap-2">
+                        <span
+                          className={`inline-block w-2 h-2 rounded-full ${
+                            option.color === "green"
+                              ? "bg-green-500"
+                              : option.color === "amber"
+                                ? "bg-amber-500"
+                                : "bg-red-500"
+                          }`}
+                        />
+                        {option.label}
                       </div>
-                      <div className="text-[9px] uppercase tracking-wider text-neutral-500 mt-1">
-                        Years
-                      </div>
-                    </div>
-                  </div>
+                    </button>
+                  ))}
                 </div>
+              </div>
 
-                {/* Availability Badge Preview */}
-                <div className="px-4 py-2.5 rounded-full border border-neutral-200 bg-white">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`inline-flex h-2 w-2 rounded-full ${
-                        settings.availability.status === "available"
-                          ? "bg-green-500"
-                          : settings.availability.status === "limited"
-                            ? "bg-amber-500"
-                            : "bg-red-500"
-                      }`}
-                    />
-                    <span className="text-sm font-medium whitespace-nowrap">
-                      {settings.availability.label}
-                    </span>
-                  </div>
-                </div>
+              {/* Availability Label */}
+              <div>
+                <label className="text-sm font-medium text-neutral-700 block mb-2">
+                  Availability Label
+                </label>
+                <input
+                  type="text"
+                  value={settings.availability.label}
+                  onChange={(e) =>
+                    setSettings({
+                      ...settings,
+                      availability: { ...settings.availability, label: e.target.value },
+                    })
+                  }
+                  className="w-full px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                  placeholder="e.g., Available for 1 project"
+                />
               </div>
             </div>
 
             {/* Save Button */}
-            <div className="flex justify-end pt-6 border-t border-neutral-200">
+            <div className="flex justify-end mt-8 pt-6 border-t border-neutral-100">
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="px-6 py-2.5 bg-neutral-900 text-white rounded-lg hover:bg-neutral-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                className="flex items-center gap-2 px-6 py-2.5 bg-neutral-900 text-white rounded-lg hover:bg-neutral-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
               >
+                <Save className="w-4 h-4" />
                 {saving ? "Saving..." : "Save Changes"}
               </button>
             </div>
-          </div>
+          </section>
+
+          {/* Security Settings */}
+          <section className="bg-white rounded-2xl border border-neutral-200 p-8">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-lg font-semibold text-neutral-900">Security</h2>
+                <p className="text-sm text-neutral-500 mt-1">Manage your account password</p>
+              </div>
+              {!showPasswordSection && (
+                <button
+                  onClick={() => setShowPasswordSection(true)}
+                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-neutral-700 hover:text-neutral-900 border border-neutral-200 rounded-lg hover:bg-neutral-50 transition-colors"
+                >
+                  <Key className="w-4 h-4" />
+                  Change Password
+                </button>
+              )}
+            </div>
+
+            {showPasswordSection && (
+              <form onSubmit={handlePasswordChange} className="space-y-4">
+                <div>
+                  <label
+                    htmlFor="currentPassword"
+                    className="text-sm font-medium text-neutral-700 block mb-2"
+                  >
+                    Current Password
+                  </label>
+                  <input
+                    type="password"
+                    id="currentPassword"
+                    value={passwordData.currentPassword}
+                    onChange={(e) =>
+                      setPasswordData({ ...passwordData, currentPassword: e.target.value })
+                    }
+                    className="w-full px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all"
+                    required
+                    autoComplete="current-password"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="newPassword"
+                    className="text-sm font-medium text-neutral-700 block mb-2"
+                  >
+                    New Password
+                  </label>
+                  <input
+                    type="password"
+                    id="newPassword"
+                    value={passwordData.newPassword}
+                    onChange={(e) =>
+                      setPasswordData({ ...passwordData, newPassword: e.target.value })
+                    }
+                    className="w-full px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all"
+                    required
+                    minLength={8}
+                    autoComplete="new-password"
+                  />
+                  <p className="text-xs text-neutral-500 mt-1.5">Minimum 8 characters</p>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="confirmPassword"
+                    className="text-sm font-medium text-neutral-700 block mb-2"
+                  >
+                    Confirm New Password
+                  </label>
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    value={passwordData.confirmPassword}
+                    onChange={(e) =>
+                      setPasswordData({ ...passwordData, confirmPassword: e.target.value })
+                    }
+                    className="w-full px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all"
+                    required
+                    minLength={8}
+                    autoComplete="new-password"
+                  />
+                </div>
+
+                <div className="flex gap-3 pt-4">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowPasswordSection(false);
+                      setPasswordData({
+                        currentPassword: "",
+                        newPassword: "",
+                        confirmPassword: "",
+                      });
+                    }}
+                    className="px-4 py-2.5 text-sm font-medium text-neutral-700 border border-neutral-200 rounded-lg hover:bg-neutral-50 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={changingPassword}
+                    className="flex items-center gap-2 px-6 py-2.5 bg-neutral-900 text-white rounded-lg hover:bg-neutral-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                  >
+                    <Key className="w-4 h-4" />
+                    {changingPassword ? "Updating..." : "Update Password"}
+                  </button>
+                </div>
+              </form>
+            )}
+          </section>
         </div>
       </main>
     </div>

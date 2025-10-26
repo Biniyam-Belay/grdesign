@@ -2,6 +2,7 @@
 
 import { createClient } from '@supabase/supabase-js';
 import { config } from 'dotenv';
+import { randomBytes } from 'crypto';
 
 // Load environment variables
 config({ path: '.env.local' });
@@ -23,16 +24,37 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
   }
 });
 
+// Generate secure random password if not provided
+function generateSecurePassword() {
+  return randomBytes(16).toString('base64').slice(0, 22) + '!A1';
+}
+
 async function createAdminUser() {
-  const email = 'admin@grdesign.com';
-  const password = 'Admin123!';
+  // Use environment variables or generate secure defaults
+  const email = process.env.ADMIN_EMAIL || 'admin@grdesign.com';
+  const password = process.env.ADMIN_PASSWORD || generateSecurePassword();
 
   console.log('🚀 Creating admin user...');
   console.log(`📧 Email: ${email}`);
   console.log(`🔑 Password: ${password}`);
   console.log('');
+  console.log('⚠️  IMPORTANT: Save these credentials securely!');
+  console.log('');
 
   try {
+    // First, try to delete existing user
+    const { data: { users }, error: listError } = await supabase.auth.admin.listUsers();
+    
+    if (!listError) {
+      const existingUser = users.find(u => u.email === email);
+      if (existingUser) {
+        console.log('🗑️  Found existing admin user, deleting...');
+        await supabase.auth.admin.deleteUser(existingUser.id);
+        console.log('✅ Old admin user deleted');
+        console.log('');
+      }
+    }
+
     // Create user using admin API
     const { data, error } = await supabase.auth.admin.createUser({
       email,
@@ -45,16 +67,6 @@ async function createAdminUser() {
     });
 
     if (error) {
-      if (error.message.includes('already registered')) {
-        console.log('✅ Admin user already exists!');
-        console.log('');
-        console.log('📝 Login credentials:');
-        console.log(`   Email: ${email}`);
-        console.log(`   Password: ${password}`);
-        console.log('');
-        console.log('🌐 Access your CMS at: http://localhost:3000/admin');
-        return;
-      }
       throw error;
     }
 

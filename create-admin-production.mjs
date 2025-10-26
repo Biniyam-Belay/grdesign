@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import { config } from 'dotenv'
+import { randomBytes } from 'crypto'
 
 // Load environment variables
 config({ path: '.env.local' })
@@ -20,13 +21,22 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
   }
 })
 
+// Generate secure random password if not provided
+function generateSecurePassword() {
+  return randomBytes(20).toString('base64').slice(0, 24) + '!A1x'
+}
+
 async function createAdminUser() {
-  const email = 'admin@grdesign.com'
-  const password = 'Admin123!Secure'
+  // IMPORTANT: Use environment variables for production credentials
+  const email = process.env.ADMIN_EMAIL || 'admin@grdesign.com'
+  const password = process.env.ADMIN_PASSWORD || generateSecurePassword()
 
   console.log('🚀 Creating admin user for production Supabase...')
   console.log(`📧 Email: ${email}`)
   console.log(`🔑 Password: ${password}`)
+  console.log('')
+  console.log('⚠️  CRITICAL: Save these credentials in your password manager NOW!')
+  console.log('⚠️  Set ADMIN_EMAIL and ADMIN_PASSWORD in .env.local for production deploys')
   console.log('')
 
   try {
