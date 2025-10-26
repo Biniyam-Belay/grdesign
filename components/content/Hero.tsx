@@ -306,10 +306,10 @@ export default function Hero({ offsetTop = 80 }: Props) {
             style={{ minHeight: "calc(100dvh - 64px)", paddingTop: "1rem", paddingBottom: "1rem" }}
           >
             {/* Top: Simple Header with Kicker */}
-            <div className="pt-4 pb-2">
+            <div className="pt-4 pb-2 flex items-center justify-center">
               <p
                 data-anim="kicker"
-                className="text-xs tracking-[0.2em] uppercase text-muted-foreground"
+                className="text-xs tracking-[0.2em] uppercase text-muted-foreground text-center"
               >
                 {settings.heroText.kicker} - {new Date().getFullYear()}
               </p>
