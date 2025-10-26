@@ -226,7 +226,7 @@ export default function Hero({ offsetTop = 80 }: Props) {
         <div className="hero-content relative z-20 mx-auto w-full max-w-7xl">
           {/* Mobile Skeleton */}
           <div
-            className="md:hidden flex flex-col animate-pulse"
+            className="md:hidden flex flex-col animate-pulse -mt-12"
             style={{ minHeight: "calc(100dvh - 64px)", paddingTop: "1rem", paddingBottom: "1rem" }}
           >
             {/* Top */}
@@ -302,7 +302,7 @@ export default function Hero({ offsetTop = 80 }: Props) {
         <div className="hero-content relative z-20 mx-auto w-full max-w-7xl">
           {/* Mobile Layout - Completely New Design */}
           <div
-            className="md:hidden flex flex-col"
+            className="md:hidden flex flex-col -mt-12"
             style={{ minHeight: "calc(100dvh - 64px)", paddingTop: "1rem", paddingBottom: "1rem" }}
           >
             {/* Top: Simple Header with Kicker */}
