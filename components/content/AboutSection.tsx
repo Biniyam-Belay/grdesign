@@ -36,11 +36,11 @@ const AboutSection = () => {
   return (
     <section
       ref={rootRef}
-      className="sticky top-0 z-10 bg-white py-8 sm:py-12 md:py-16"
+      className="sticky top-0 z-10 bg-white py-8 sm:py-12 md:py-16 px-4 sm:px-8 lg:px-12"
       style={{ marginTop: "-1px" }}
     >
-      <div className="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-        <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-semibold tracking-normal text-slate-800 text-left leading-tight sm:leading-tight md:leading-tight all-small-caps">
+      <div className="mx-auto max-w-8xl">
+        <p className="text-xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-semibold tracking-normal text-slate-800 text-left leading-tight sm:leading-tight md:leading-tight all-small-caps">
           Crafting unique{" "}
           <span className="inline-block min-w-[200px] sm:min-w-0">
             <RotatingText
