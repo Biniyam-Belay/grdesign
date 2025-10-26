@@ -226,17 +226,17 @@ export default function Hero({ offsetTop = 80 }: Props) {
         <div className="hero-content relative z-20 mx-auto w-full max-w-7xl">
           {/* Mobile Skeleton */}
           <div
-            className="md:hidden flex flex-col justify-between animate-pulse"
-            style={{ minHeight: "calc(100svh - 80px)" }}
+            className="md:hidden flex flex-col animate-pulse"
+            style={{ minHeight: "calc(100dvh - 64px)", paddingTop: "1rem", paddingBottom: "1rem" }}
           >
             {/* Top */}
-            <div className="pt-6">
+            <div className="pt-4 pb-2">
               <div className="h-3 bg-neutral-200 rounded w-32"></div>
             </div>
 
             {/* Center */}
-            <div className="flex-1 flex items-center justify-center px-4 py-8">
-              <div className="w-full max-w-sm space-y-8">
+            <div className="flex-1 flex items-center justify-center px-4 py-6">
+              <div className="w-full max-w-sm space-y-6">
                 {/* Avatar */}
                 <div className="flex flex-col items-center text-center space-y-4">
                   <div className="w-24 h-24 rounded-full bg-neutral-200"></div>
@@ -256,14 +256,14 @@ export default function Hero({ offsetTop = 80 }: Props) {
                 </div>
 
                 {/* CTA Button */}
-                <div className="pt-4">
+                <div className="pt-2">
                   <div className="h-12 bg-neutral-200 rounded-full"></div>
                 </div>
               </div>
             </div>
 
             {/* Bottom */}
-            <div className="pb-6 text-center">
+            <div className="pt-4 pb-6 text-center flex-shrink-0">
               <div className="h-3 bg-neutral-200 rounded w-40 mx-auto"></div>
             </div>
           </div>
@@ -302,11 +302,11 @@ export default function Hero({ offsetTop = 80 }: Props) {
         <div className="hero-content relative z-20 mx-auto w-full max-w-7xl">
           {/* Mobile Layout - Completely New Design */}
           <div
-            className="md:hidden flex flex-col justify-between"
-            style={{ minHeight: "calc(100svh - 80px)" }}
+            className="md:hidden flex flex-col"
+            style={{ minHeight: "calc(100dvh - 64px)", paddingTop: "1rem", paddingBottom: "1rem" }}
           >
             {/* Top: Simple Header with Kicker */}
-            <div className="pt-6">
+            <div className="pt-4 pb-2">
               <p
                 data-anim="kicker"
                 className="text-xs tracking-[0.2em] uppercase text-muted-foreground"
@@ -316,8 +316,8 @@ export default function Hero({ offsetTop = 80 }: Props) {
             </div>
 
             {/* Center: Main Content Card */}
-            <div className="flex-1 flex items-center justify-center px-4 py-8">
-              <div className="w-full max-w-sm space-y-8">
+            <div className="flex-1 flex items-center justify-center px-4 py-6">
+              <div className="w-full max-w-sm space-y-6">
                 {/* Profile Section */}
                 <div className="flex flex-col items-center text-center space-y-4">
                   <Image
@@ -403,7 +403,7 @@ export default function Hero({ offsetTop = 80 }: Props) {
                 </div>
 
                 {/* CTA Button */}
-                <div className="pt-4">
+                <div className="pt-2">
                   <Link
                     data-anim="cta"
                     href="https://calendar.app.google/1RTjShD5sgqBmm3K7"
@@ -433,8 +433,10 @@ export default function Hero({ offsetTop = 80 }: Props) {
             </div>
 
             {/* Bottom: Footer info */}
-            <div data-anim="footer" className="pb-6 text-center">
-              <p className="text-xs text-neutral-400">Based in Ethiopia, working worldwide</p>
+            <div data-anim="footer" className="pt-4 pb-6 text-center flex-shrink-0">
+              <p className="text-xs text-neutral-500 font-medium">
+                Based in Ethiopia, working worldwide
+              </p>
             </div>
           </div>
 
