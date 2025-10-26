@@ -39,26 +39,30 @@ const AboutSection = () => {
       className="sticky top-0 z-10 bg-white py-16"
       style={{ marginTop: "-1px" }}
     >
-      <div className="w-[80%] px-4 sm:px-8 lg:px-12">
-        <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-normal text-slate-800 text-left leading-tight all-small-caps">
+      <div className="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-semibold tracking-normal text-slate-800 text-left leading-tight sm:leading-tight md:leading-tight all-small-caps">
           Crafting unique{" "}
-          <RotatingText
-            words={["design languages", "interface systems", "brand ecosystems"]}
-            intervalMs={6000}
-            highlightClassName=""
-            color="#351431"
-          />{" "}
+          <span className="inline-block">
+            <RotatingText
+              words={["design languages", "interface systems", "brand ecosystems"]}
+              intervalMs={6000}
+              highlightClassName=""
+              color="#351431"
+            />
+          </span>{" "}
           and{" "}
-          <RotatingText
-            words={[
-              "user-centered products",
-              "omnichannel experiences",
-              "conversion-optimized apps",
-            ]}
-            intervalMs={6400}
-            highlightClassName=""
-            color="#351431"
-          />{" "}
+          <span className="inline-block">
+            <RotatingText
+              words={[
+                "user-centered products",
+                "omnichannel experiences",
+                "conversion-optimized apps",
+              ]}
+              intervalMs={6400}
+              highlightClassName=""
+              color="#351431"
+            />
+          </span>{" "}
           that stand the test of time.
         </p>
       </div>
