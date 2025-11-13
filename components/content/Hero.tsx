@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import GridHoverSquares from "@components/motion/GridHoverSquares";
@@ -300,119 +299,83 @@ export default function Hero({ offsetTop = 80 }: Props) {
         </div>
       ) : (
         <div className="hero-content relative z-20 mx-auto w-full max-w-7xl">
-          {/* Mobile Layout - Completely New Design */}
+          {/* Mobile Layout - Clean & Confident */}
           <div
-            className="md:hidden flex flex-col -mt-25"
-            style={{ minHeight: "calc(100dvh - 64px)", paddingTop: "1rem", paddingBottom: "1rem" }}
+            className="md:hidden flex flex-col justify-center"
+            style={{ minHeight: "calc(100dvh - 64px)", paddingTop: "2rem", paddingBottom: "2rem" }}
           >
-            {/* Top: Simple Header with Kicker */}
-            <div className="pt-4 pb-2 flex items-center justify-center">
-              <p
-                data-anim="kicker"
-                className="text-xs tracking-[0.2em] uppercase text-muted-foreground text-center"
-              >
-                {settings.heroText.kicker} - {new Date().getFullYear()}
-              </p>
-            </div>
-
-            {/* Center: Main Content Card */}
+            {/* Main Content */}
             <div className="flex-1 flex items-center justify-center px-4 py-6">
-              <div className="w-full max-w-sm space-y-6">
-                {/* Profile Section */}
-                <div className="flex flex-col items-center text-center space-y-4">
-                  <Image
-                    data-anim="avatar"
-                    src="/assets/avatarmob.png"
-                    alt="Profile photo"
-                    width={120}
-                    height={120}
-                    className="w-24 h-24 rounded-full object-cover border-2 border-neutral-200 shadow-sm"
-                    style={{ opacity: 1 }}
-                    priority
-                  />
-
-                  <div className="space-y-2">
-                    <h2
-                      className="text-4xl sm:text-5xl font-bold text-foreground leading-none tracking-tight"
-                      style={{ opacity: 1 }}
-                      aria-label="Bini"
-                    >
-                      {Array.from("Bini").map((char, idx) => (
-                        <span key={idx} aria-hidden="true" data-anim-brand className="inline-block">
-                          {char}
-                        </span>
-                      ))}
-                      <span className="text-neutral-400">.B</span>
-                    </h2>
-
-                    {/* Availability Badge */}
-                    <div
-                      data-anim="availability-mobile"
-                      className="inline-flex items-center gap-2 text-sm px-3 py-1.5 rounded-full bg-neutral-100/80 backdrop-blur-sm"
-                      style={{ opacity: 1 }}
-                    >
-                      <div className="relative flex items-center justify-center">
-                        <span
-                          className={`absolute inline-flex h-3 w-3 rounded-full ${
-                            settings.availability.status === "available"
-                              ? "bg-green-400"
-                              : settings.availability.status === "limited"
-                                ? "bg-amber-400"
-                                : "bg-red-400"
-                          } opacity-75 animate-ping`}
-                        />
-                        <span
-                          className={`relative inline-flex h-2 w-2 rounded-full ${
-                            settings.availability.status === "available"
-                              ? "bg-green-500"
-                              : settings.availability.status === "limited"
-                                ? "bg-amber-500"
-                                : "bg-red-500"
-                          }`}
-                        />
+              <div className="w-full max-w-md space-y-8">
+                {/* Status & Credentials */}
+                <div className="text-center space-y-3">
+                  <div className="inline-flex items-center gap-3 text-xs text-neutral-600">
+                    <div className="flex items-center gap-1">
+                      <div className="relative">
+                        {/* Outer blinking ring */}
+                        <div className="absolute inset-0 w-2 h-2 bg-emerald-500 rounded-full animate-ping opacity-75"></div>
+                        {/* Inner pulsing dot */}
+                        <div className="relative w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
                       </div>
-                      <span className="text-neutral-700 font-medium">
-                        {settings.availability.label}
-                      </span>
+                      <span className="font-medium">Available on Upwork</span>
                     </div>
+                    <span className="w-px h-3 bg-neutral-300"></span>
+                    <span className="font-medium">Top Rated • Fast Delivery</span>
                   </div>
                 </div>
 
-                {/* Titles */}
-                <div className="space-y-3 text-center">
+                {/* Headlines - Confident & Direct */}
+                <div className="space-y-6 text-center">
                   <h1
-                    className="text-2xl sm:text-3xl font-semibold leading-tight text-foreground"
+                    className="text-3xl sm:text-4xl font-bold leading-tight text-neutral-900"
                     style={{ opacity: 1 }}
                   >
                     <span data-anim="title-line" className="block">
-                      {settings.heroText.title1}
+                      Design That Wins
                     </span>
-                    <span className="text-neutral-400">&</span>
-                    <span data-anim="title-line" className="block">
-                      {settings.heroText.title2}
+                    <span data-anim="title-line" className="block text-neutral-700">
+                      Clients & Projects
                     </span>
                   </h1>
 
                   <p
                     data-anim="subcopy"
-                    className="text-sm sm:text-base text-neutral-500 leading-relaxed max-w-xs mx-auto"
+                    className="text-base text-neutral-600 leading-relaxed max-w-sm mx-auto"
                     style={{ opacity: 1 }}
                   >
-                    {settings.heroText.subtitle}
+                    Professional designer delivering{" "}
+                    <span className="text-neutral-900 font-medium">graphic design</span>,{" "}
+                    <span className="text-neutral-900 font-medium">branding</span>,{" "}
+                    <span className="text-neutral-900 font-medium">social media content</span>, and{" "}
+                    <span className="text-neutral-900 font-medium">web solutions</span> — perfect
+                    for agencies, startups, and HR teams hiring top talent.
                   </p>
+
+                  {/* Value Propositions - Services Focused */}
+                  <div className="grid grid-cols-1 gap-4 mt-8" data-anim="value-props">
+                    <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-neutral-600">
+                      <span className="font-medium">Graphic & Visual Design</span>
+                      <span className="w-px h-4 bg-neutral-300"></span>
+                      <span className="font-medium">Brand Systems & Identity</span>
+                      <span className="w-px h-4 bg-neutral-300"></span>
+                      <span className="font-medium">Social Media Design & Growth</span>
+                      <span className="w-px h-4 bg-neutral-300"></span>
+                      <span className="font-medium">Web Development & Platforms</span>
+                    </div>
+                  </div>
                 </div>
 
-                {/* CTA Button */}
-                <div className="pt-2">
+                {/* Action Buttons */}
+                <div className="pt-6 space-y-4">
                   <Link
-                    data-anim="cta"
+                    data-anim="cta-primary"
                     href="https://calendar.app.google/1RTjShD5sgqBmm3K7"
-                    className="group w-full flex items-center justify-center gap-2 rounded-full bg-neutral-900 text-white px-8 py-3.5 text-sm font-medium transition-all hover:bg-neutral-800 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
+                    className="group w-full flex items-center justify-center gap-3 rounded-lg bg-neutral-900 text-white px-6 py-4 text-sm font-medium transition-all hover:bg-neutral-800"
                     style={{ opacity: 1 }}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <span>Let's work together</span>
+                    <span>Book Free Consultation</span>
                     <svg
                       className="transition-transform group-hover:translate-x-1"
                       width="16"
@@ -423,142 +386,169 @@ export default function Hero({ offsetTop = 80 }: Props) {
                       <path
                         d="M5 12h14M12 5l7 7-7 7"
                         stroke="currentColor"
-                        strokeWidth="2"
+                        strokeWidth="1.5"
                         strokeLinecap="round"
                       />
                     </svg>
                   </Link>
+
+                  <Link
+                    data-anim="cta-secondary"
+                    href="/work"
+                    className="w-full flex items-center justify-center gap-2 rounded-lg border border-neutral-300 bg-white text-neutral-700 px-6 py-4 text-sm font-medium transition-all hover:border-neutral-400"
+                    style={{ opacity: 1 }}
+                  >
+                    <span>View Portfolio</span>
+                  </Link>
+
+                  <p className="text-xs text-center text-neutral-500 mt-3" data-anim="urgency">
+                    Perfect for agencies & startups •{" "}
+                    <span className="text-neutral-700 font-medium">Same-day response</span>
+                  </p>
                 </div>
               </div>
-            </div>
-
-            {/* Bottom: Footer info */}
-            <div data-anim="footer" className="pt-4 pb-6 text-center flex-shrink-0">
-              <p className="text-xs text-neutral-500 font-medium">
-                Based in Ethiopia, working worldwide
-              </p>
             </div>
           </div>
 
-          {/* Desktop Layout */}
-          <div className="hidden md:block mt-20">
-            {/* Top row with left-aligned content and right contact button */}
-            <div className="relative flex items-center justify-between">
-              {/* Left Content */}
-              <div className="text-left max-w-2xl">
-                {/* Kicker and Availability Badge on same line */}
-                <div className="flex items-center gap-4 mb-4">
-                  <p
-                    data-anim="kicker"
-                    className="text-xs tracking-[0.2em] uppercase text-muted-foreground"
-                  >
-                    {settings.heroText.kicker} - {new Date().getFullYear()}
-                  </p>
-
-                  {/* Availability Badge - To the right of kicker */}
-                  <div
-                    data-anim="availability-desktop"
-                    className="flex items-center gap-2 text-sm"
-                    style={{ opacity: 1 }}
-                  >
-                    {/* Status Indicator with Pulse Animation */}
-                    <div className="relative flex items-center justify-center">
-                      {/* Outer pulse ring */}
-                      <span
-                        className={`absolute inline-flex h-3 w-3 rounded-full ${
-                          settings.availability.status === "available"
-                            ? "bg-green-400"
-                            : settings.availability.status === "limited"
-                              ? "bg-amber-400"
-                              : "bg-red-400"
-                        } opacity-75 animate-ping`}
-                      />
-                      {/* Inner dot */}
-                      <span
-                        className={`relative inline-flex h-2 w-2 rounded-full ${
-                          settings.availability.status === "available"
-                            ? "bg-green-500"
-                            : settings.availability.status === "limited"
-                              ? "bg-amber-500"
-                              : "bg-red-500"
-                        }`}
-                      />
+          {/* Desktop Layout - Elite & Clean */}
+          <div className="hidden md:block pt-24 pb-16">
+            <div className="flex items-center justify-between min-h-[60vh]">
+              {/* Main Content - Full Width Elegance */}
+              <div className="flex-1">
+                {/* Status & Social Proof */}
+                <div className="flex items-center gap-8 mb-8">
+                  <div className="flex items-center gap-2 text-sm text-neutral-600">
+                    <div className="relative">
+                      {/* Outer blinking ring */}
+                      <div className="absolute inset-0 w-2 h-2 bg-emerald-500 rounded-full animate-ping opacity-75"></div>
+                      {/* Inner pulsing dot */}
+                      <div className="relative w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
                     </div>
+                    <span className="font-medium">Available Now</span>
+                  </div>
 
-                    <span className="text-muted-foreground">{settings.availability.label}</span>
+                  <div className="flex items-center gap-4 text-sm text-neutral-500">
+                    <span className="font-medium">Rated Designer</span>
+                    <div className="w-px h-4 bg-neutral-300"></div>
+                    <span>Fast 7-14 Day Turnaround</span>
                   </div>
                 </div>
 
-                <h1 className="text-3xl md:text-5xl font-semibold leading-[1.15] text-foreground">
-                  <span data-anim="title-line" className="block">
-                    {settings.heroText.title1}
-                  </span>
-                  <span data-anim="title-line" className="block">
-                    {settings.heroText.title2}
-                  </span>
-                </h1>
+                {/* Headlines - Confident */}
+                <div className="mb-10">
+                  <h1 className="text-5xl md:text-7xl font-bold leading-[0.9] text-neutral-900 mb-8">
+                    <span data-anim="title-line" className="block">
+                      Hire Expert Design
+                    </span>
+                    <span data-anim="title-line" className="block text-neutral-600">
+                      That Delivers Results
+                    </span>
+                  </h1>
 
-                <p
-                  data-anim="subcopy"
-                  className="mt-4 text-base md:text-lg text-neutral-400 max-w-md"
+                  <p
+                    data-anim="subcopy"
+                    className="text-xl md:text-2xl text-neutral-600 leading-relaxed font-light"
+                  >
+                    Professional{" "}
+                    <span className="text-neutral-900 font-medium">graphic designer</span>{" "}
+                    specializing in <span className="text-neutral-900 font-medium">branding</span>,{" "}
+                    <span className="text-neutral-900 font-medium">social media</span>, and{" "}
+                    <span className="text-neutral-900 font-medium">web design</span> — trusted by
+                    agencies, startups, and organizations for fast, quality delivery.
+                  </p>
+                </div>
+
+                {/* Core Capabilities - Refined */}
+                <div
+                  className="flex flex-wrap items-center gap-8 mb-12 text-sm text-neutral-600"
+                  data-anim="capabilities"
                 >
-                  {settings.heroText.subtitle}
-                </p>
+                  <div className="flex items-center gap-2">
+                    <span className="w-1 h-1 bg-neutral-400 rounded-full"></span>
+                    <span className="font-medium">Graphic Design</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-1 h-1 bg-neutral-400 rounded-full"></span>
+                    <span className="font-medium">Brand Systems</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-1 h-1 bg-neutral-400 rounded-full"></span>
+                    <span className="font-medium">Social Media Design</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-1 h-1 bg-neutral-400 rounded-full"></span>
+                    <span className="font-medium">Web Development</span>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex items-center gap-6" data-anim="cta-buttons">
+                  <Link
+                    href="https://calendar.app.google/1RTjShD5sgqBmm3K7"
+                    className="group inline-flex items-center gap-3 rounded-lg bg-neutral-900 text-white px-8 py-4 text-base font-medium transition-all duration-300 hover:bg-neutral-800"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span>Book Free Consultation</span>
+                    <svg
+                      className="transition-transform group-hover:translate-x-1"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <path
+                        d="M5 12h14M12 5l7 7-7 7"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  </Link>
+
+                  <Link
+                    href="/work"
+                    className="group inline-flex items-center gap-3 rounded-lg border border-neutral-300 bg-white text-neutral-700 px-8 py-4 text-base font-medium transition-all duration-300 hover:border-neutral-400"
+                  >
+                    <span>View Portfolio</span>
+                  </Link>
+                </div>
+
+                {/* Trust Elements */}
+                <div
+                  className="mt-8 flex items-center gap-8 text-sm text-neutral-500"
+                  data-anim="trust-signals"
+                >
+                  <div className="flex items-center gap-2">
+                    <span>—</span>
+                    <span>Quality guarantee</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span>—</span>
+                    <span>Same-day response</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span>—</span>
+                    <span>Revision-friendly</span>
+                  </div>
+                </div>
               </div>
 
-              {/* Right - Contact Button (vertically centered) */}
-              <Link
-                data-anim="cta-contact"
-                href="https://calendar.app.google/1RTjShD5sgqBmm3K7"
-                className="opacity-100 group inline-flex items-center gap-3 rounded-full border border-border px-6 py-2.5 text-sm transition-all duration-300 hover:bg-foreground hover:text-background hover:scale-105"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span className="font-medium">Contact</span>
-                <svg
-                  className="transition-transform group-hover:translate-x-1"
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <path
-                    d="M5 12h14M12 5l7 7-7 7"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </Link>
-            </div>
-
-            {/* "Bini" Section - Bottom Aligned */}
-            <div className="absolute bottom-8 left-[-140] right-[-120] px-6 pointer-events-none">
-              <div className="w-full flex items-end justify-between">
-                <div data-anim="brand-text">
-                  <h2
-                    className="text-[50px] md:text-[350px] font-bold text-left text-foreground leading-none -mb-4 md:-mb-12 uppercase"
-                    aria-label="Bini"
+              {/* Right Side - Minimal Status */}
+              <div className="text-right" data-anim="cta-contact">
+                <div className="border border-neutral-200 rounded-lg p-6 bg-neutral-50 max-w-xs">
+                  <div className="text-sm font-medium text-neutral-800 mb-3">Limited Capacity</div>
+                  <div className="text-xs text-neutral-600 mb-4">
+                    <span className="font-medium">3 project slots</span> available this month
+                  </div>
+                  <Link
+                    href="https://calendar.app.google/1RTjShD5sgqBmm3K7"
+                    className="inline-flex items-center gap-2 bg-neutral-800 text-white px-4 py-2 rounded text-sm font-medium hover:bg-neutral-900 transition-colors"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
-                    {Array.from("Bini").map((char, idx) => (
-                      <span key={idx} aria-hidden="true" data-anim-brand className="inline-block">
-                        {char}
-                      </span>
-                    ))}
-                  </h2>
-                </div>
-                <div
-                  className="pointer-events-none border border-1 border-neutral-200 rounded-full"
-                  data-anim="brand-avatar"
-                >
-                  <Image
-                    src="/assets/avatardesk.png"
-                    alt="Profile photo"
-                    width={192}
-                    height={192}
-                    className="w-40 h-40 md:w-48 md:h-48 rounded-full object-cover transform transition-transform duration-300 ease-out will-change-transform hover:scale-[1.08] hover:-translate-x-2"
-                    priority
-                  />
+                    Reserve Consultation
+                  </Link>
                 </div>
               </div>
             </div>

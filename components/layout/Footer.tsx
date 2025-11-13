@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 
 export default function Footer() {
@@ -11,10 +13,16 @@ export default function Footer() {
           <div className="md:col-span-6">
             <Link
               href="/"
-              className="inline-flex items-baseline gap-1 font-serif text-2xl text-black"
+              className="inline-flex items-baseline gap-1 font-serif text-2xl text-black group"
               aria-label="Bini.B home"
             >
-              <span className="font-medium">Bini</span>
+              <span
+                className="font-medium transition-colors"
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#EDFF00")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "")}
+              >
+                Bini
+              </span>
               <span className="text-neutral-400">.B</span>
             </Link>
             <p className="mt-4 max-w-md text-sm text-neutral-600">
@@ -38,7 +46,9 @@ export default function Footer() {
                   aria-label={label}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-neutral-500 hover:text-neutral-900 transition-colors"
+                  className="text-sm text-neutral-500 transition-colors"
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#FC703C")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "")}
                 >
                   {label}
                 </a>

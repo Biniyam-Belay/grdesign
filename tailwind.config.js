@@ -15,6 +15,12 @@ module.exports = {
         display: ["var(--font-outfit)", "Outfit", "sans-serif"],
         body: ["var(--font-outfit)", "Outfit", "sans-serif"],
       },
+      colors: {
+        brand: {
+          yellow: "#EDFF00",
+          orange: "#FC703C",
+        },
+      },
     },
   },
   // Tailwind v4: plugins are registered via `@plugin` in CSS (see app/globals.css)

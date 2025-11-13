@@ -18,7 +18,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantStyles = {
   primary:
-    "bg-neutral-900 text-white hover:bg-neutral-800 border-transparent focus-visible:ring-neutral-900/70",
+    "bg-[#FC703C] text-black hover:opacity-90 border-transparent focus-visible:ring-[#FC703C]/70 font-semibold",
   secondary:
     "bg-neutral-100 text-neutral-900 hover:bg-neutral-200 border-transparent focus-visible:ring-neutral-900/70",
   outline:
