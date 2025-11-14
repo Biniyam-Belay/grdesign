@@ -44,7 +44,14 @@ export default function AboutPage() {
 
             {/* Meta chips */}
             <ul className="mt-6 flex flex-wrap items-center gap-2" aria-label="Capabilities">
-              {["Brand Identity", "Editorial", "Packaging", "Digital"].map((t) => (
+              {[
+                "Brand Identity",
+                "Editorial",
+                "Packaging",
+                "Social Media Design",
+                "Web Design",
+                "Website Development",
+              ].map((t) => (
                 <li key={t}>
                   <span className="inline-flex items-center rounded-full border border-neutral-200 px-3 py-1 text-xs text-neutral-700 transition-colors hover:border-neutral-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900/10">
                     {t}
@@ -131,24 +138,49 @@ export default function AboutPage() {
           <ol className="relative mt-8 space-y-10 before:absolute before:left-[0rem] before:top-0 before:h-full before:w-px before:bg-neutral-200 sm:before:left-[0rem]">
             {[
               {
-                period: "2020-Present",
+                period: "2023-Present",
                 title: "Independent Designer",
                 body: "Partnering with founders and teams to craft identities, systems, and product surfaces-from strategy to delivery.",
               },
               {
-                period: "2017-2020",
-                title: "Senior Designer, Studio Name",
-                body: "Led identity and packaging programs across fashion, tech, and consumer goods.",
+                period: "2025 - Present",
+                title: "Graphic Designer, AMCO Furniture, Design and Interiors",
+                body: "Creating cohesive brand experiences through print and digital media, enhancing AMCO's market presence and customer engagement.",
               },
               {
-                period: "2015-2017",
-                title: "Designer, Agency Name",
-                body: "Developed visual systems for print and digital campaigns.",
+                period: "2025",
+                title: "Branding, Sage Barbershop",
+                body: "A sharp and confident identity system for a modern barbershop, blending timeless craft with contemporary style.",
               },
               {
-                period: "2013-2015",
-                title: "Designer, AWiB Ethiopia",
-                body: "Developed visual systems for print and digital campaigns.",
+                period: "2025",
+                title: "Branding, Sirtona Ventures",
+                body: "A bold yet disciplined identity system for a digital-creative agency, balancing premium feel with accessibility.",
+              },
+              {
+                period: "2024",
+                title: "Branding, Biruh Tutors",
+                body: "A bright and trustworthy identity system designed for an online tutoring platform, balancing professionalism with warmth.",
+              },
+              {
+                period: "2023-2025",
+                title: "Social Media Designer, AWiB Ethiopia",
+                body: "Unified social media presence and content design for AWiB Ethiopia, enhancing storytelling across leadership, mentorship, and community.",
+              },
+              {
+                period: "2023-2025",
+                title: "Social Media Designer, Meri",
+                body: "Social Media Content design for Meri - a youth, employability, and life-skills focused programme under AWiB.",
+              },
+              {
+                period: "2023-2025",
+                title: "Social Media Designer, Haset",
+                body: "Social Media content design for Haset - AWiB’s women leadership programme, focusing on building leadership capacity, community, and networks.",
+              },
+              {
+                period: "2024",
+                title: "Print Design, Addis Ababa University, AAU Alumni Homecoming",
+                body: "Led the merchandise design for Addis Ababa University’s first-ever Alumni Homecoming, bringing together legacy, school pride, and community through wearable and print assets.",
               },
             ].map(({ period, title, body }) => (
               <li key={title} className="grid grid-cols-1 gap-3 sm:grid-cols-12" data-reveal>

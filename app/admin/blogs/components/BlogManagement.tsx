@@ -51,38 +51,47 @@ export default function BlogManagement() {
     fetchBlogs();
   }, [fetchBlogs]);
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this blog post? This action cannot be undone."))
+  const handleDelete = async (blog: Blog) => {
+    if (
+      !confirm(
+        `Are you sure you want to delete the blog post "${blog.title}"? This will also permanently delete the cover image.`,
+      )
+    )
       return;
 
     try {
       const {
         data: { session },
       } = await supabase.auth.getSession();
-      if (!session) {
-        throw new Error("You are not signed in. Please log in again.");
+      if (!session) throw new Error("You are not signed in. Please log in again.");
+
+      // 1. Delete cover image from storage
+      if (blog.cover) {
+        const filePath = blog.cover.substring(blog.cover.lastIndexOf("/") + 1);
+        if (filePath) {
+          const { error: storageError } = await supabase.storage
+            .from("blog-images")
+            .remove([filePath]);
+          if (storageError) {
+            console.error("Failed to delete cover image from storage:", storageError.message);
+          }
+        }
       }
 
-      const { data, error } = await supabase.functions.invoke("blogs", {
-        body: { action: "delete", id },
-        headers: {
-          Authorization: `Bearer ${session.access_token}`,
-        },
-      });
-      if (error) throw error;
+      // 2. Delete the record from the database
+      const { error: dbError } = await supabase.from("blogs").delete().eq("id", blog.id);
+      if (dbError) throw dbError;
 
-      // Revalidate blog paths to clear Next.js cache
+      // 3. Revalidate and update UI
       await fetch("/api/revalidate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ path: "/blog", type: "layout" }),
       });
 
-      const deletedId = (data?.id as string) || id;
-      setBlogs((prev) => prev.filter((blog) => blog.id !== deletedId));
-      fetchBlogs();
+      setBlogs((prev) => prev.filter((b) => b.id !== blog.id));
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to delete blog");
+      setError(err instanceof Error ? err.message : "Failed to delete blog post");
     }
   };
 
@@ -427,7 +436,7 @@ export default function BlogManagement() {
                       Edit
                     </Link>
                     <button
-                      onClick={() => blog.id && handleDelete(blog.id)}
+                      onClick={() => handleDelete(blog)}
                       disabled={!blog.id}
                       className="flex items-center justify-center rounded-lg bg-red-50 p-2 text-red-600 hover:bg-red-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                       title="Delete blog post"
@@ -499,7 +508,7 @@ export default function BlogManagement() {
                     Edit
                   </Link>
                   <button
-                    onClick={() => blog.id && handleDelete(blog.id)}
+                    onClick={() => handleDelete(blog)}
                     disabled={!blog.id}
                     className="flex items-center justify-center rounded-lg bg-red-50 p-2 text-red-600 hover:bg-red-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     title="Delete blog post"

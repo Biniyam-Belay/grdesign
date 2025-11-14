@@ -387,12 +387,12 @@ export default function Hero({ offsetTop = 80 }: Props) {
                     className="text-base text-neutral-600 leading-relaxed max-w-sm mx-auto"
                     style={{ opacity: 1 }}
                   >
-                    Professional designer delivering{" "}
-                    <span className="text-neutral-900 font-medium">graphic design</span>,{" "}
-                    <span className="text-neutral-900 font-medium">branding</span>,{" "}
-                    <span className="text-neutral-900 font-medium">social media content</span>, and{" "}
-                    <span className="text-neutral-900 font-medium">web solutions</span> — perfect
-                    for agencies, startups, and HR teams hiring top talent.
+                    Professional{" "}
+                    <span className="text-neutral-900 font-medium">graphic designer</span>{" "}
+                    specializing in <span className="text-neutral-900 font-medium">branding</span>,{" "}
+                    <span className="text-neutral-900 font-medium">social media</span>, and{" "}
+                    <span className="text-neutral-900 font-medium">web design</span> — trusted by
+                    agencies, startups, and organizations for fast, quality delivery.
                   </p>
 
                   {/* Value Propositions - Services Focused */}
@@ -474,9 +474,7 @@ export default function Hero({ offsetTop = 80 }: Props) {
                   </div>
 
                   <div className="flex items-center gap-4 text-sm text-neutral-500">
-                    <span className="font-medium">{settings.credentials.secondary}</span>
-                    <div className="w-px h-4 bg-neutral-300"></div>
-                    <span>{settings.credentials.turnaround}</span>
+                    <span className="font-medium">{settings.credentials.primary}</span>
                   </div>
                 </div>
 

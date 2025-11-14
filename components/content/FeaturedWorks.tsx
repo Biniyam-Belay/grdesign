@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Work } from "@lib/types";
 import { getWorks } from "@lib/data/works";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -41,26 +42,22 @@ export default function FeaturedWorks({
       const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (prefersReduced) return;
 
-      // Animate each work card on scroll with ultra-smooth morphing effect
+      // Animate each work card on scroll with a fade-in and slide-up effect
       gsap.utils.toArray<HTMLElement>(".work-card").forEach((card) => {
-        // Initial state - more subtle
         gsap.set(card, {
           opacity: 0,
-          y: 60,
-          scale: 0.9,
+          y: 100, // Start lower
         });
 
-        // Scroll-triggered smooth fade-in animation
         gsap.to(card, {
           opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 1.2,
-          ease: "power1.out",
+          y: 0, // Move to original position
+          ease: "power3.out",
+          duration: 1.2, // Keep duration similar for smooth transition
           scrollTrigger: {
             trigger: card,
-            start: "top 85%",
-            end: "top 50%",
+            start: "top 90%", // Start animation earlier
+            end: "top 60%", // End animation when card is higher up
             scrub: 1,
           },
         });
@@ -92,18 +89,11 @@ export default function FeaturedWorks({
         </div>
 
         {/* 3-column collage on larger screens, vertical stack on mobile; tighter gaps */}
-        <div
-          className="relative grid grid-cols-1 sm:grid-cols-3 gap-0"
-          style={{ perspective: "1000px" }}
-        >
+        <div className="relative grid grid-cols-1 sm:grid-cols-3 gap-0">
           {works.map((work, i) => {
             const variant = work.aspect_ratio || "square";
             return (
-              <div
-                key={`${work.slug}-${i}`}
-                className="work-card block relative"
-                style={{ transformStyle: "preserve-3d" }}
-              >
+              <div key={`${work.slug}-${i}`} className="work-card block relative">
                 <div
                   className={`relative w-full ${aspectClass(variant)} overflow-hidden border border-neutral-200 bg-white`}
                 >
@@ -119,6 +109,30 @@ export default function FeaturedWorks({
               </div>
             );
           })}
+        </div>
+
+        {/* "View full case study" button */}
+        <div className="text-right mt-12">
+          <Link
+            href="/work"
+            className="inline-flex items-center justify-center px-6 py-3 text-base font-medium text-neutral-700 bg-transparent rounded-lg hover:bg-neutral-100 hover:text-neutral-900 transition-colors duration-200"
+          >
+            View full case study{" "}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-4 h-4 ml-2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
+              />
+            </svg>
+          </Link>
         </div>
       </div>
     </section>
