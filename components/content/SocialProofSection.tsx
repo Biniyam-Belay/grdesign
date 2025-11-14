@@ -3,8 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { createSupabaseClient } from "@/lib/supabase/client";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -54,24 +56,73 @@ const metrics = [
   { number: "7-14", label: "Days Delivery", icon: "⚡" },
 ];
 
-const clientLogos = [
-  { name: "AWiB Ethiopia", logo: "/assets/clients/awib.png" },
-  { name: "AAU", logo: "/assets/clients/aau.png" },
-  { name: "Sirtona Agency", logo: "/assets/clients/sirtona.png" },
-  { name: "Biruh Tutors", logo: "/assets/clients/biruh.png" },
-  { name: "Sage Barbershop", logo: "/assets/clients/sage.png" },
-];
+interface ClientLogo {
+  name: string;
+  url: string;
+}
 
 export default function SocialProofSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
+  const [clientLogos, setClientLogos] = useState<ClientLogo[]>([]);
   const [counts, setCounts] = useState({
     clients: 0,
     projects: 0,
     engagement: 0,
     delivery: 0,
   });
+
+  // Fetch client logos from Supabase storage
+  useEffect(() => {
+    const fetchClientLogos = async () => {
+      try {
+        const supabase = createSupabaseClient();
+        const { data: files, error } = await supabase.storage.from("works").list("", {
+          limit: 100,
+          sortBy: { column: "name", order: "asc" },
+        });
+
+        if (error) {
+          console.error("Error fetching client logos:", error);
+          return;
+        }
+
+        if (files) {
+          const logos: ClientLogo[] = files
+            .filter(
+              (file: { name: string }) =>
+                file.name.toLowerCase().startsWith("client-logo") &&
+                file.name.match(/\.(jpg|jpeg|png|svg|webp)$/i),
+            )
+            .map((file: { name: string }) => {
+              const { data } = supabase.storage.from("works").getPublicUrl(file.name);
+
+              // Extract name from filename (remove extension and prefix)
+              const name =
+                file.name
+                  .replace(/^client-logo[-_]?/i, "")
+                  .replace(/\.(jpg|jpeg|png|svg|webp)$/i, "")
+                  .replace(/[-_]/g, " ")
+                  .split(" ")
+                  .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join(" ") || "Client";
+
+              return {
+                name,
+                url: data.publicUrl,
+              };
+            });
+
+          setClientLogos(logos);
+        }
+      } catch (error) {
+        console.error("Error loading client logos:", error);
+      }
+    };
+
+    fetchClientLogos();
+  }, []);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -319,16 +370,15 @@ export default function SocialProofSection() {
               {clientLogos.map((client, index) => (
                 <div
                   key={`logo-1-${index}`}
-                  className="flex-shrink-0 text-center min-w-[120px] group-hover:[animation-play-state:paused]"
+                  className="flex-shrink-0 flex items-center justify-center min-w-[140px] h-12 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
                 >
-                  <div className="font-serif text-xl font-medium text-neutral-400 tracking-tight transition-colors duration-300 hover:text-neutral-900">
-                    {client.name.split(" ")[0]}
-                  </div>
-                  {client.name.split(" ")[1] && (
-                    <div className="text-xs text-neutral-300 font-light tracking-wider uppercase">
-                      {client.name.split(" ")[1]}
-                    </div>
-                  )}
+                  <Image
+                    src={client.url}
+                    alt={client.name}
+                    width={140}
+                    height={48}
+                    className="object-contain w-auto h-full"
+                  />
                 </div>
               ))}
 
@@ -336,16 +386,15 @@ export default function SocialProofSection() {
               {clientLogos.map((client, index) => (
                 <div
                   key={`logo-2-${index}`}
-                  className="flex-shrink-0 text-center min-w-[120px] group-hover:[animation-play-state:paused]"
+                  className="flex-shrink-0 flex items-center justify-center min-w-[140px] h-12 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
                 >
-                  <div className="font-serif text-xl font-medium text-neutral-400 tracking-tight transition-colors duration-300 hover:text-neutral-900">
-                    {client.name.split(" ")[0]}
-                  </div>
-                  {client.name.split(" ")[1] && (
-                    <div className="text-xs text-neutral-300 font-light tracking-wider uppercase">
-                      {client.name.split(" ")[1]}
-                    </div>
-                  )}
+                  <Image
+                    src={client.url}
+                    alt={client.name}
+                    width={140}
+                    height={48}
+                    className="object-contain w-auto h-full"
+                  />
                 </div>
               ))}
             </div>

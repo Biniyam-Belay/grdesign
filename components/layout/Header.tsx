@@ -574,232 +574,10 @@ export default function Header() {
               />
             </div>
           </button>
-
-          {/* Mobile Menu */}
-          <AnimatePresence>
-            {isMenuOpen && (
-              <>
-                {/* Backdrop */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-md md:hidden"
-                  onClick={() => setIsMenuOpen(false)}
-                />
-
-                {/* Slide-in Menu from Left */}
-                <motion.div
-                  initial={{ x: "-100%" }}
-                  animate={{ x: 0 }}
-                  exit={{ x: "-100%" }}
-                  transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                  className="fixed top-0 left-0 bottom-0 z-[101] w-[80%] bg-white md:hidden overflow-y-auto shadow-2xl"
-                >
-                  {/* Close Button - Top Right Corner */}
-                  <button
-                    onClick={() => setIsMenuOpen(false)}
-                    className="absolute top-6 right-6 z-1000 w-12 h-12 rounded-full bg-neutral-900 hover:bg-neutral-800 flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-xl group"
-                    aria-label="Close menu"
-                  >
-                    <X
-                      className="w-5 h-5 text-white transition-transform duration-300 group-hover:rotate-90"
-                      strokeWidth={2.5}
-                    />
-                  </button>
-
-                  {/* Menu Content */}
-                  <div className="flex flex-col min-h-full">
-                    {/* Header */}
-                    <div className="px-6 py-6 border-b border-neutral-100 bg-gradient-to-br from-neutral-50 to-white">
-                      <div className="flex items-center mb-4">
-                        <Link
-                          href="/"
-                          onClick={() => setIsMenuOpen(false)}
-                          className="inline-flex items-baseline gap-1 font-serif text-2xl text-neutral-900"
-                        >
-                          <span className="font-medium">Bini</span>
-                          <span className="text-neutral-400">.B</span>
-                        </Link>
-                      </div>
-
-                      <p className="text-xs text-neutral-500 leading-relaxed">
-                        Independent designer crafting brands that resonate
-                      </p>
-                    </div>
-
-                    {/* Navigation */}
-                    <div className="flex-1 overflow-y-auto py-4 px-4">
-                      <nav className="space-y-1">
-                        {NAV_ITEMS.map((item, idx) => {
-                          const isActive = pathname === item.href;
-                          const hasSubmenu = item.submenu && item.submenu.length > 0;
-
-                          if (hasSubmenu) {
-                            return (
-                              <motion.div
-                                key={item.label}
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: 0.05 + idx * 0.04, duration: 0.4 }}
-                                className="space-y-1"
-                              >
-                                {/* Services Header */}
-                                <div className="px-3 py-2.5 text-sm font-bold text-neutral-900 flex items-center gap-2">
-                                  <div className="w-6 h-6 rounded-lg bg-neutral-900 flex items-center justify-center flex-shrink-0">
-                                    <svg
-                                      width="12"
-                                      height="12"
-                                      viewBox="0 0 24 24"
-                                      fill="none"
-                                      stroke="white"
-                                      strokeWidth="2.5"
-                                      strokeLinecap="round"
-                                    >
-                                      <rect x="3" y="3" width="7" height="7" rx="1" />
-                                      <rect x="14" y="3" width="7" height="7" rx="1" />
-                                      <rect x="14" y="14" width="7" height="7" rx="1" />
-                                      <rect x="3" y="14" width="7" height="7" rx="1" />
-                                    </svg>
-                                  </div>
-                                  {item.label}
-                                </div>
-
-                                {/* Services List */}
-                                <div className="ml-3 pl-3 border-l-2 border-neutral-100 space-y-0.5">
-                                  {item.submenu?.map((subItem) => (
-                                    <a
-                                      key={subItem.href}
-                                      href="https://calendar.app.google/1RTjShD5sgqBmm3K7"
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      onClick={() => setIsMenuOpen(false)}
-                                      className="group flex items-start gap-2 px-3 py-2.5 rounded-lg hover:bg-neutral-50 transition-all duration-300"
-                                    >
-                                      <div className="flex-1">
-                                        <div className="flex items-center gap-2 mb-0.5">
-                                          <span className="text-sm font-semibold text-neutral-900 group-hover:text-neutral-900">
-                                            {subItem.label}
-                                          </span>
-                                          {subItem.badge && (
-                                            <span
-                                              className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${
-                                                subItem.badge === "Popular"
-                                                  ? "bg-blue-100 text-blue-700"
-                                                  : "bg-amber-100 text-amber-700"
-                                              }`}
-                                            >
-                                              {subItem.badge}
-                                            </span>
-                                          )}
-                                        </div>
-                                        <p className="text-xs text-neutral-500 leading-relaxed">
-                                          {subItem.description}
-                                        </p>
-                                      </div>
-                                      <svg
-                                        width="14"
-                                        height="14"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2.5"
-                                        strokeLinecap="round"
-                                        className="mt-1 text-neutral-400 group-hover:text-neutral-900 group-hover:translate-x-0.5 transition-all duration-300 flex-shrink-0"
-                                      >
-                                        <path d="M7 17L17 7M17 7H7M17 7V17" />
-                                      </svg>
-                                    </a>
-                                  ))}
-                                </div>
-                              </motion.div>
-                            );
-                          }
-
-                          return (
-                            <motion.div
-                              key={item.href}
-                              initial={{ opacity: 0, x: -20 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: 0.05 + idx * 0.04, duration: 0.4 }}
-                            >
-                              <Link
-                                href={item.href}
-                                onClick={() => setIsMenuOpen(false)}
-                                className={`flex items-center justify-between px-3 py-3 rounded-lg transition-all duration-300 ${
-                                  isActive
-                                    ? "bg-neutral-900 text-white"
-                                    : "text-neutral-900 hover:bg-neutral-50"
-                                }`}
-                              >
-                                <span className="text-sm font-semibold">{item.label}</span>
-                                {isActive && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
-                              </Link>
-                            </motion.div>
-                          );
-                        })}
-                      </nav>
-                    </div>
-
-                    {/* Footer */}
-                    <div className="px-6 py-6 border-t border-neutral-100 bg-gradient-to-br from-white to-neutral-50 space-y-4">
-                      {/* CTA Button */}
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3, duration: 0.4 }}
-                      >
-                        <a
-                          href="https://calendar.app.google/1RTjShD5sgqBmm3K7"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={() => setIsMenuOpen(false)}
-                          className="flex items-center justify-center gap-2 w-full px-5 py-3.5 bg-neutral-900 text-white font-semibold rounded-xl hover:bg-neutral-800 transition-all duration-300 group text-sm"
-                        >
-                          <span>Book a Meeting</span>
-                          <svg
-                            width="16"
-                            height="16"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2.5"
-                            strokeLinecap="round"
-                            className="group-hover:translate-x-0.5 transition-transform duration-300"
-                          >
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                          </svg>
-                        </a>
-                      </motion.div>
-
-                      {/* Contact Info */}
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.4, duration: 0.4 }}
-                        className="space-y-2"
-                      >
-                        <a
-                          href="mailto:biniyam.be.go@gmail.com"
-                          className="block text-xs text-neutral-600 hover:text-neutral-900 transition-colors duration-300"
-                        >
-                          biniyam.be.go@gmail.com
-                        </a>
-                        <p className="text-xs text-neutral-400">
-                          Based in Addis Ababa · Working worldwide
-                        </p>
-                      </motion.div>
-                    </div>
-                  </div>
-                </motion.div>
-              </>
-            )}
-          </AnimatePresence>
         </div>
       </header>
 
-      {/* Mobile Menu - Outside header for full screen height */}
+      {/* Mobile Menu - Outside header for full screen */}
       <AnimatePresence>
         {isMenuOpen && (
           <>
@@ -819,29 +597,35 @@ export default function Header() {
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 left-0 bottom-0 z-[101] w-[80%] bg-white md:hidden overflow-y-auto shadow-2xl"
+              className="fixed top-0 left-0 bottom-0 z-[101] w-[80%] bg-white md:hidden overflow-hidden shadow-2xl flex flex-col"
             >
-              {/* Menu Content */}
-              <div className="flex flex-col min-h-full">
-                {/* Header */}
-                <div className="px-6 py-6 border-b border-neutral-100 bg-gradient-to-br from-neutral-50 to-white">
-                  <div className="flex items-center justify-between mb-4">
-                    <Link
-                      href="/"
-                      onClick={() => setIsMenuOpen(false)}
-                      className="inline-flex items-baseline gap-1 font-serif text-2xl text-neutral-900"
-                    >
-                      <span className="font-medium">Bini</span>
-                      <span className="text-neutral-400">.B</span>
-                    </Link>
-                  </div>
+              {/* Close Button - Top Right Corner */}
+              <button
+                onClick={() => setIsMenuOpen(false)}
+                className="absolute top-4 right-4 z-1000 w-10 h-10 rounded-full bg-neutral-900 hover:bg-neutral-800 flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-xl group"
+                aria-label="Close menu"
+              >
+                <X
+                  className="w-4 h-4 text-white transition-transform duration-300 group-hover:rotate-90"
+                  strokeWidth={2.5}
+                />
+              </button>
 
-                  <p className="text-xs text-neutral-500 leading-relaxed">
-                    Independent designer crafting brands that resonate
-                  </p>
+              {/* Menu Content */}
+              <div className="flex flex-col h-full">
+                {/* Header */}
+                <div className="px-6 py-5 border-b border-neutral-100 bg-gradient-to-br from-neutral-50 to-white flex-shrink-0">
+                  <Link
+                    href="/"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="inline-flex items-baseline gap-1 font-serif text-2xl text-neutral-900"
+                  >
+                    <span className="font-medium">Bini</span>
+                    <span className="text-neutral-400">.B</span>
+                  </Link>
                 </div>
 
-                {/* Navigation */}
+                {/* Navigation - Scrollable if needed */}
                 <div className="flex-1 overflow-y-auto py-4 px-4">
                   <nav className="space-y-1">
                     {NAV_ITEMS.map((item, idx) => {
@@ -855,14 +639,14 @@ export default function Header() {
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.05 + idx * 0.04, duration: 0.4 }}
-                            className="space-y-2"
+                            className="space-y-1"
                           >
                             {/* Services Header */}
-                            <div className="px-4 py-3 text-sm font-bold text-neutral-900 flex items-center gap-3 bg-neutral-50 rounded-xl">
-                              <div className="w-7 h-7 rounded-lg bg-neutral-900 flex items-center justify-center flex-shrink-0">
+                            <div className="px-3 py-2.5 text-sm font-bold text-neutral-900 flex items-center gap-2">
+                              <div className="w-6 h-6 rounded-lg bg-neutral-900 flex items-center justify-center flex-shrink-0">
                                 <svg
-                                  width="14"
-                                  height="14"
+                                  width="12"
+                                  height="12"
                                   viewBox="0 0 24 24"
                                   fill="none"
                                   stroke="white"
@@ -879,7 +663,7 @@ export default function Header() {
                             </div>
 
                             {/* Services List */}
-                            <div className="ml-4 pl-4 border-l-2 border-neutral-100 space-y-1">
+                            <div className="ml-3 pl-3 border-l-2 border-neutral-100 space-y-0.5">
                               {item.submenu?.map((subItem) => (
                                 <a
                                   key={subItem.href}
@@ -887,16 +671,16 @@ export default function Header() {
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   onClick={() => setIsMenuOpen(false)}
-                                  className="group flex items-start gap-3 px-4 py-3 rounded-xl hover:bg-neutral-50 transition-all duration-300"
+                                  className="group flex items-start gap-2 px-3 py-2.5 rounded-lg hover:bg-neutral-50 transition-all duration-300"
                                 >
                                   <div className="flex-1">
-                                    <div className="flex items-center gap-2 mb-1">
-                                      <span className="text-sm font-semibold text-neutral-900">
+                                    <div className="flex items-center gap-2 mb-0.5">
+                                      <span className="text-sm font-semibold text-neutral-900 group-hover:text-neutral-900">
                                         {subItem.label}
                                       </span>
                                       {subItem.badge && (
                                         <span
-                                          className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${
+                                          className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${
                                             subItem.badge === "Popular"
                                               ? "bg-blue-100 text-blue-700"
                                               : "bg-amber-100 text-amber-700"
@@ -911,14 +695,14 @@ export default function Header() {
                                     </p>
                                   </div>
                                   <svg
-                                    width="16"
-                                    height="16"
+                                    width="14"
+                                    height="14"
                                     viewBox="0 0 24 24"
                                     fill="none"
                                     stroke="currentColor"
                                     strokeWidth="2.5"
                                     strokeLinecap="round"
-                                    className="mt-1 text-neutral-300 group-hover:text-neutral-900 group-hover:translate-x-0.5 transition-all duration-300 flex-shrink-0"
+                                    className="mt-1 text-neutral-400 group-hover:text-neutral-900 group-hover:translate-x-0.5 transition-all duration-300 flex-shrink-0"
                                   >
                                     <path d="M7 17L17 7M17 7H7M17 7V17" />
                                   </svg>
@@ -939,20 +723,14 @@ export default function Header() {
                           <Link
                             href={item.href}
                             onClick={() => setIsMenuOpen(false)}
-                            className={`flex items-center justify-between px-4 py-3.5 rounded-xl transition-all duration-300 ${
+                            className={`flex items-center justify-between px-3 py-3 rounded-lg transition-all duration-300 ${
                               isActive
-                                ? "bg-gradient-to-r from-neutral-100 to-neutral-50 text-neutral-900 shadow-sm"
-                                : "text-neutral-700 hover:bg-neutral-50"
+                                ? "bg-neutral-900 text-white"
+                                : "text-neutral-900 hover:bg-neutral-50"
                             }`}
                           >
                             <span className="text-sm font-semibold">{item.label}</span>
-                            {isActive && (
-                              <motion.div
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                                className="w-2 h-2 rounded-full bg-neutral-900"
-                              />
-                            )}
+                            {isActive && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                           </Link>
                         </motion.div>
                       );
@@ -960,21 +738,20 @@ export default function Header() {
                   </nav>
                 </div>
 
-                {/* Footer */}
-                <div className="px-6 py-6 border-t border-neutral-100 bg-gradient-to-br from-white to-neutral-50">
+                {/* Footer - Fixed at bottom */}
+                <div className="px-6 py-5 border-t border-neutral-100 bg-gradient-to-br from-white to-neutral-50 flex-shrink-0 space-y-4">
                   {/* CTA Button */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3, duration: 0.4 }}
-                    className="mb-6"
                   >
                     <a
                       href="https://calendar.app.google/1RTjShD5sgqBmm3K7"
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => setIsMenuOpen(false)}
-                      className="flex items-center justify-center gap-2 w-full px-6 py-4 bg-neutral-900 text-white font-bold rounded-xl hover:bg-neutral-800 transition-all duration-300 group shadow-lg hover:shadow-xl"
+                      className="flex items-center justify-center gap-2 w-full px-5 py-3.5 bg-neutral-900 text-white font-semibold rounded-xl hover:bg-neutral-800 transition-all duration-300 group text-sm"
                     >
                       <span>Book a Meeting</span>
                       <svg
@@ -997,42 +774,17 @@ export default function Header() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.4, duration: 0.4 }}
-                    className="space-y-3"
+                    className="space-y-2"
                   >
                     <a
                       href="mailto:biniyam.be.go@gmail.com"
-                      className="flex items-center gap-2 text-xs text-neutral-600 hover:text-neutral-900 transition-colors duration-300"
+                      className="block text-xs text-neutral-600 hover:text-neutral-900 transition-colors duration-300"
                     >
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                      >
-                        <rect x="2" y="4" width="20" height="16" rx="2" />
-                        <path d="M22 7l-10 7L2 7" />
-                      </svg>
                       biniyam.be.go@gmail.com
                     </a>
-                    <div className="flex items-center gap-2 text-xs text-neutral-500">
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                      >
-                        <circle cx="12" cy="12" r="10" />
-                        <path d="M2 12h20" />
-                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                      </svg>
-                      Addis Ababa · Working worldwide
-                    </div>
+                    <p className="text-xs text-neutral-400">
+                      Based in Addis Ababa · Working worldwide
+                    </p>
                   </motion.div>
                 </div>
               </div>

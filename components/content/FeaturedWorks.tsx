@@ -46,64 +46,22 @@ export default function FeaturedWorks({
         // Initial state - more subtle
         gsap.set(card, {
           opacity: 0,
-          scale: 0.85,
-          rotateY: -10,
-          z: -50,
+          y: 60,
+          scale: 0.9,
         });
 
-        // Scroll-triggered morph animation with smoother settings
+        // Scroll-triggered smooth fade-in animation
         gsap.to(card, {
           opacity: 1,
+          y: 0,
           scale: 1,
-          rotateY: 0,
-          z: 0,
-          duration: 1.8,
-          ease: "power2.inOut",
+          duration: 1.2,
+          ease: "power1.out",
           scrollTrigger: {
             trigger: card,
-            start: "top 90%",
-            end: "top 40%",
-            scrub: 2,
-            toggleActions: "play none none reverse",
-          },
-        });
-
-        // Smoother focus effect on center card when in viewport
-        ScrollTrigger.create({
-          trigger: card,
-          start: "top 65%",
-          end: "bottom 35%",
-          onEnter: () => {
-            gsap.to(card, {
-              scale: 1.03,
-              zIndex: 10,
-              duration: 0.8,
-              ease: "power1.inOut",
-            });
-          },
-          onLeave: () => {
-            gsap.to(card, {
-              scale: 1,
-              zIndex: 1,
-              duration: 0.8,
-              ease: "power1.inOut",
-            });
-          },
-          onEnterBack: () => {
-            gsap.to(card, {
-              scale: 1.03,
-              zIndex: 10,
-              duration: 0.8,
-              ease: "power1.inOut",
-            });
-          },
-          onLeaveBack: () => {
-            gsap.to(card, {
-              scale: 1,
-              zIndex: 1,
-              duration: 0.8,
-              ease: "power1.inOut",
-            });
+            start: "top 85%",
+            end: "top 50%",
+            scrub: 1,
           },
         });
       });

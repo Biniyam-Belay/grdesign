@@ -8,10 +8,10 @@ CREATE TABLE IF NOT EXISTS site_settings (
 
 -- Insert default values
 INSERT INTO site_settings (key, value) VALUES
-  ('hero_availability', '{"status": "available", "label": "Available for 1 project"}'),
+  ('hero_availability', '{"status": "available", "label": "Available"}'),
   ('hero_experience_years', '{"years": 3}'),
-  ('hero_text', '{"kicker": "Portfolio", "title1": "Graphic Designer", "title2": "Web Developer", "subtitle": "Thoughtful identities & calm interfaces. Available for select work."}')
-ON CONFLICT (key) DO NOTHING;
+  ('hero_text', '{"kicker": "Portfolio", "title1": "Hire Expert Design", "title2": "That Delivers Results", "subtitle": "Professional designer delivering graphic design, branding, social media content, and web solutions — perfect for agencies, startups, and HR teams hiring top talent."}')
+ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
 
 -- Enable RLS
 ALTER TABLE site_settings ENABLE ROW LEVEL SECURITY;

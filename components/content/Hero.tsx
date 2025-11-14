@@ -225,74 +225,118 @@ export default function Hero({ offsetTop = 80 }: Props) {
         <div className="hero-content relative z-20 mx-auto w-full max-w-7xl">
           {/* Mobile Skeleton */}
           <div
-            className="md:hidden flex flex-col animate-pulse -mt-25"
-            style={{ minHeight: "calc(100dvh - 64px)", paddingTop: "1rem", paddingBottom: "1rem" }}
+            className="md:hidden flex flex-col justify-center animate-pulse"
+            style={{ minHeight: "calc(100dvh - 64px)", paddingTop: "2rem", paddingBottom: "2rem" }}
           >
-            {/* Top */}
-            <div className="pt-4 pb-2">
-              <div className="h-3 bg-neutral-200 rounded w-32"></div>
-            </div>
-
-            {/* Center */}
-            <div className="flex-1 flex items-center justify-center px-4 py-6">
-              <div className="w-full max-w-sm space-y-6">
-                {/* Avatar */}
-                <div className="flex flex-col items-center text-center space-y-4">
-                  <div className="w-24 h-24 rounded-full bg-neutral-200"></div>
-                  <div className="space-y-2 w-full">
-                    <div className="h-10 bg-neutral-200 rounded w-32 mx-auto"></div>
-                    <div className="h-6 bg-neutral-200 rounded-full w-40 mx-auto"></div>
+            {/* Main Content */}
+            <div className="flex-1 flex items-center justify-center px-4 py-6 -mt-[100px]">
+              <div className="w-full max-w-md space-y-8">
+                {/* Status & Credentials */}
+                <div className="text-center space-y-3">
+                  <div className="flex items-center justify-center gap-3">
+                    <div className="h-4 bg-neutral-200 rounded w-32"></div>
+                    <div className="w-px h-3 bg-neutral-200"></div>
+                    <div className="h-4 bg-neutral-200 rounded w-28"></div>
                   </div>
                 </div>
 
-                {/* Titles */}
-                <div className="space-y-3 text-center">
+                {/* Headlines */}
+                <div className="space-y-6 text-center">
+                  <div className="space-y-3">
+                    <div className="h-9 bg-neutral-200 rounded w-64 mx-auto"></div>
+                    <div className="h-9 bg-neutral-200 rounded w-56 mx-auto"></div>
+                  </div>
                   <div className="space-y-2">
-                    <div className="h-8 bg-neutral-200 rounded w-48 mx-auto"></div>
-                    <div className="h-8 bg-neutral-200 rounded w-40 mx-auto"></div>
+                    <div className="h-5 bg-neutral-200 rounded w-full max-w-sm mx-auto"></div>
+                    <div className="h-5 bg-neutral-200 rounded w-5/6 mx-auto"></div>
+                    <div className="h-5 bg-neutral-200 rounded w-4/5 mx-auto"></div>
                   </div>
-                  <div className="h-4 bg-neutral-200 rounded w-56 mx-auto"></div>
+
+                  {/* Value Propositions - Services Grid */}
+                  <div className="grid grid-cols-1 gap-4 mt-8">
+                    <div className="flex flex-wrap items-center justify-center gap-4">
+                      <div className="h-5 bg-neutral-200 rounded w-32"></div>
+                      <div className="w-px h-4 bg-neutral-200"></div>
+                      <div className="h-5 bg-neutral-200 rounded w-36"></div>
+                      <div className="w-px h-4 bg-neutral-200"></div>
+                      <div className="h-5 bg-neutral-200 rounded w-40"></div>
+                      <div className="w-px h-4 bg-neutral-200"></div>
+                      <div className="h-5 bg-neutral-200 rounded w-44"></div>
+                    </div>
+                  </div>
                 </div>
 
-                {/* CTA Button */}
-                <div className="pt-2">
-                  <div className="h-12 bg-neutral-200 rounded-full"></div>
+                {/* Action Buttons */}
+                <div className="pt-6 space-y-4">
+                  <div className="h-14 bg-neutral-200 rounded-lg w-full"></div>
+                  <div className="h-14 bg-neutral-200 rounded-lg w-full"></div>
+                </div>
+
+                {/* Trust Signals */}
+                <div className="space-y-4 text-center pt-4">
+                  <div className="flex items-center justify-center gap-3">
+                    <div className="h-5 bg-neutral-200 rounded w-24"></div>
+                    <div className="w-px h-4 bg-neutral-200"></div>
+                    <div className="h-5 bg-neutral-200 rounded w-28"></div>
+                    <div className="w-px h-4 bg-neutral-200"></div>
+                    <div className="h-5 bg-neutral-200 rounded w-20"></div>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            {/* Bottom */}
-            <div className="pt-4 pb-6 text-center flex-shrink-0">
-              <div className="h-3 bg-neutral-200 rounded w-40 mx-auto"></div>
             </div>
           </div>
 
           {/* Desktop Skeleton */}
           <div className="hidden md:block mt-20 animate-pulse">
             {/* Top row */}
-            <div className="relative flex items-center justify-between mb-20">
+            <div className="relative flex items-start justify-between mb-20">
               {/* Left Content */}
-              <div className="text-left max-w-2xl space-y-4">
+              <div className="text-left max-w-2xl space-y-8">
+                {/* Status & Credentials */}
                 <div className="flex items-center gap-4">
-                  <div className="h-3 bg-neutral-200 rounded w-32"></div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-neutral-200"></div>
+                    <div className="h-4 bg-neutral-200 rounded w-32"></div>
+                  </div>
+                  <div className="w-px h-4 bg-neutral-200"></div>
                   <div className="h-6 bg-neutral-200 rounded-full w-40"></div>
                 </div>
-                <div className="space-y-3">
-                  <div className="h-12 bg-neutral-200 rounded w-96"></div>
-                  <div className="h-12 bg-neutral-200 rounded w-80"></div>
+
+                {/* Headlines */}
+                <div className="space-y-4">
+                  <div className="space-y-3">
+                    <div className="h-14 bg-neutral-200 rounded w-full"></div>
+                    <div className="h-14 bg-neutral-200 rounded w-5/6"></div>
+                  </div>
+                  <div className="space-y-2 max-w-3xl">
+                    <div className="h-7 bg-neutral-200 rounded w-full"></div>
+                    <div className="h-7 bg-neutral-200 rounded w-4/5"></div>
+                  </div>
                 </div>
-                <div className="h-5 bg-neutral-200 rounded w-72"></div>
+
+                {/* CTAs */}
+                <div className="flex items-center gap-4 pt-4">
+                  <div className="h-12 bg-neutral-200 rounded-lg w-56"></div>
+                  <div className="h-12 bg-neutral-200 rounded-lg w-40"></div>
+                </div>
+
+                {/* Trust Signals */}
+                <div className="flex items-center gap-6 pt-6">
+                  <div className="h-5 bg-neutral-200 rounded w-32"></div>
+                  <div className="w-px h-4 bg-neutral-200"></div>
+                  <div className="h-5 bg-neutral-200 rounded w-36"></div>
+                  <div className="w-px h-4 bg-neutral-200"></div>
+                  <div className="h-5 bg-neutral-200 rounded w-28"></div>
+                </div>
               </div>
 
-              {/* Right - Contact Button */}
-              <div className="h-10 bg-neutral-200 rounded-full w-32"></div>
-            </div>
-
-            {/* "Bini" Section */}
-            <div className="absolute bottom-8 left-[-140] right-[-120] px-6">
-              <div className="w-full flex items-end justify-between">
-                <div className="h-32 md:h-64 bg-neutral-200 rounded w-96"></div>
-                <div className="w-40 h-40 md:w-48 md:h-48 rounded-full bg-neutral-200"></div>
+              {/* Right - Contact CTA */}
+              <div className="flex flex-col items-end gap-4">
+                <div className="h-11 bg-neutral-200 rounded-lg w-40"></div>
+                <div className="space-y-2 text-right">
+                  <div className="h-4 bg-neutral-200 rounded w-32 ml-auto"></div>
+                  <div className="h-4 bg-neutral-200 rounded w-28 ml-auto"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -305,7 +349,7 @@ export default function Hero({ offsetTop = 80 }: Props) {
             style={{ minHeight: "calc(100dvh - 64px)", paddingTop: "2rem", paddingBottom: "2rem" }}
           >
             {/* Main Content */}
-            <div className="flex-1 flex items-center justify-center px-4 py-6">
+            <div className="flex-1 flex items-center justify-center px-4 py-6 -mt-[100px]">
               <div className="w-full max-w-md space-y-8">
                 {/* Status & Credentials */}
                 <div className="text-center space-y-3">
@@ -317,10 +361,10 @@ export default function Hero({ offsetTop = 80 }: Props) {
                         {/* Inner pulsing dot */}
                         <div className="relative w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
                       </div>
-                      <span className="font-medium">Available on Upwork</span>
+                      <span className="font-medium">{settings.availability.label}</span>
                     </div>
                     <span className="w-px h-3 bg-neutral-300"></span>
-                    <span className="font-medium">Top Rated • Fast Delivery</span>
+                    <span className="font-medium">{settings.credentials.primary}</span>
                   </div>
                 </div>
 
@@ -331,10 +375,10 @@ export default function Hero({ offsetTop = 80 }: Props) {
                     style={{ opacity: 1 }}
                   >
                     <span data-anim="title-line" className="block">
-                      Design That Wins
+                      {settings.heroText.title1}
                     </span>
                     <span data-anim="title-line" className="block text-neutral-700">
-                      Clients & Projects
+                      {settings.heroText.title2}
                     </span>
                   </h1>
 
@@ -402,8 +446,10 @@ export default function Hero({ offsetTop = 80 }: Props) {
                   </Link>
 
                   <p className="text-xs text-center text-neutral-500 mt-3" data-anim="urgency">
-                    Perfect for agencies & startups •{" "}
-                    <span className="text-neutral-700 font-medium">Same-day response</span>
+                    {settings.urgency.text} •{" "}
+                    <span className="text-neutral-700 font-medium">
+                      {settings.urgency.highlight}
+                    </span>
                   </p>
                 </div>
               </div>
@@ -424,30 +470,30 @@ export default function Hero({ offsetTop = 80 }: Props) {
                       {/* Inner pulsing dot */}
                       <div className="relative w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
                     </div>
-                    <span className="font-medium">Available Now</span>
+                    <span className="font-medium">{settings.availability.label}</span>
                   </div>
 
                   <div className="flex items-center gap-4 text-sm text-neutral-500">
-                    <span className="font-medium">Rated Designer</span>
+                    <span className="font-medium">{settings.credentials.secondary}</span>
                     <div className="w-px h-4 bg-neutral-300"></div>
-                    <span>Fast 7-14 Day Turnaround</span>
+                    <span>{settings.credentials.turnaround}</span>
                   </div>
                 </div>
 
                 {/* Headlines - Confident */}
                 <div className="mb-10">
                   <h1 className="text-5xl md:text-7xl font-bold leading-[0.9] text-neutral-900 mb-8">
-                    <span data-anim="title-line" className="block">
-                      Hire Expert Design
+                    <span data-anim="title-line" className="block py-5">
+                      {settings.heroText.title1}
                     </span>
                     <span data-anim="title-line" className="block text-neutral-600">
-                      That Delivers Results
+                      {settings.heroText.title2}
                     </span>
                   </h1>
 
                   <p
                     data-anim="subcopy"
-                    className="text-xl md:text-2xl text-neutral-600 leading-relaxed font-light"
+                    className="text-xl md:text-2xl text-neutral-600 leading-relaxed font-light max-w-3xl"
                   >
                     Professional{" "}
                     <span className="text-neutral-900 font-medium">graphic designer</span>{" "}
@@ -519,27 +565,24 @@ export default function Hero({ offsetTop = 80 }: Props) {
                   className="mt-8 flex items-center gap-8 text-sm text-neutral-500"
                   data-anim="trust-signals"
                 >
-                  <div className="flex items-center gap-2">
-                    <span>—</span>
-                    <span>Quality guarantee</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span>—</span>
-                    <span>Same-day response</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span>—</span>
-                    <span>Revision-friendly</span>
-                  </div>
+                  {settings.trustSignals.map((signal, idx) => (
+                    <div key={idx} className="flex items-center gap-2">
+                      <span>—</span>
+                      <span>{signal}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
 
               {/* Right Side - Minimal Status */}
               <div className="text-right" data-anim="cta-contact">
                 <div className="border border-neutral-200 rounded-lg p-6 bg-neutral-50 max-w-xs">
-                  <div className="text-sm font-medium text-neutral-800 mb-3">Limited Capacity</div>
+                  <div className="text-sm font-medium text-neutral-800 mb-3">
+                    {settings.limitedCapacity.title}
+                  </div>
                   <div className="text-xs text-neutral-600 mb-4">
-                    <span className="font-medium">3 project slots</span> available this month
+                    <span className="font-medium">{settings.limitedCapacity.slots}</span> available{" "}
+                    {settings.limitedCapacity.period}
                   </div>
                   <Link
                     href="https://calendar.app.google/1RTjShD5sgqBmm3K7"

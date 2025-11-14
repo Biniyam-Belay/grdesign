@@ -155,11 +155,11 @@ const ServicesAndProcessSection = () => {
           </div>
 
           {/* Services Grid - Minimal */}
-          <div className="services-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <div className="services-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 px-6 md:px-0">
             {services.map((service) => (
               <div
                 key={service.id}
-                className="service-card relative bg-neutral-50 rounded-lg p-6 transition-all duration-200 hover:bg-neutral-100"
+                className="service-card relative bg-neutral-50 rounded-lg p-6 transition-all duration-200 hover:bg-neutral-100 max-w-sm mx-auto md:max-w-none"
                 style={{ opacity: 1, transform: "translateY(0px)" }}
               >
                 {service.popular && (
