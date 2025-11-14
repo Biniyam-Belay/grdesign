@@ -82,7 +82,7 @@ export default function BatchImageUpload({
             upsert: false,
             contentType: file.type,
           })
-          .then(({ error: uploadError }) => {
+          .then(({ error: uploadError }: { error: Error | null }) => {
             clearInterval(progressInterval);
             if (uploadError) {
               setFiles((prev) =>

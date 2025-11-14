@@ -6,7 +6,7 @@ import type { FileObject } from "@supabase/storage-js";
 import Image from "next/image";
 
 interface MediaLibraryModalProps {
-  bucket: "project-images" | "blog-images" | "works";
+  bucket: "project-images" | "blog-images" | "works" | "testimonials";
   isOpen: boolean;
   onClose: () => void;
   onSelect: (url: string | string[]) => void;

@@ -6,7 +6,7 @@ import Image from "next/image";
 import MediaLibraryModal from "@/components/admin/MediaLibraryModal";
 
 interface ImageUploadProps {
-  bucket: "project-images" | "blog-images" | "works";
+  bucket: "project-images" | "blog-images" | "works" | "testimonials";
   onUpload?: (url: string) => void;
   onChange?: (url: string) => void;
   value?: string;
@@ -100,9 +100,10 @@ export default function ImageUpload({
     if (onChange) onChange("");
   };
 
-  const handleSelectFromLibrary = (url: string) => {
-    setPreview(url);
-    if (onChange) onChange(url);
+  const handleSelectFromLibrary = (url: string | string[]) => {
+    const firstUrl = Array.isArray(url) ? (url[0] ?? "") : url;
+    setPreview(firstUrl || null);
+    if (onChange) onChange(firstUrl);
     setIsModalOpen(false);
   };
 

@@ -81,8 +81,7 @@ export default function Header() {
             transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
             className="hidden md:flex items-center gap-1 flex-1 ml-12"
           >
-            {NAV_ITEMS.map((item, index) => {
-              const isActive = pathname === item.href;
+            {NAV_ITEMS.map((item) => {
               const hasSubmenu = item.submenu && item.submenu.length > 0;
 
               if (hasSubmenu) {

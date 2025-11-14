@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+// Note: framer-motion is imported elsewhere for potential future animation; currently unused.
 import { Star } from "lucide-react";
 import Image from "next/image";
 import gsap from "gsap";
@@ -51,11 +51,11 @@ export default function SocialProofSection() {
 
         const logos: ClientLogo[] = files
           .filter(
-            (file) =>
+            (file: { name: string }) =>
               file.name.toLowerCase().startsWith("client-logo") &&
               file.name.match(/\.(jpg|jpeg|png|svg|webp)$/i),
           )
-          .map((file) => {
+          .map((file: { name: string }) => {
             const { data } = supabase.storage.from("works").getPublicUrl(file.name);
             const name =
               file.name
