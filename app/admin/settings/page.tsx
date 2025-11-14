@@ -24,6 +24,23 @@ export default function SettingsPage() {
       title2: "Web Developer",
       subtitle: "Thoughtful identities & calm interfaces. Available for select work.",
     },
+    mobileSubtitle:
+      "Professional designer delivering graphic design, branding, social media content, and web solutions — perfect for agencies, startups, and HR teams hiring top talent.",
+    credentials: {
+      primary: "Top Rated • Fast Delivery",
+      secondary: "Rated Designer",
+      turnaround: "Fast 7-14 Day Turnaround",
+    },
+    trustSignals: ["Quality guarantee", "Same-day response", "Revision-friendly"],
+    urgency: {
+      text: "Perfect for agencies & startups",
+      highlight: "Same-day response",
+    },
+    limitedCapacity: {
+      title: "Limited Capacity",
+      slots: "3 project slots",
+      period: "this month",
+    },
   });
 
   const [passwordData, setPasswordData] = useState({
