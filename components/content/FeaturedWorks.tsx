@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Work } from "@lib/types";
 import { getWorks } from "@lib/data/works";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -46,7 +47,19 @@ export default function FeaturedWorks({
 }: FeaturedWorksProps) {
   const [works, setWorks] = useState<Work[]>([]);
   const [loading, setLoading] = useState(true);
+  const [visibleWorksCount, setVisibleWorksCount] = useState(6); // Changed from showAllWorks
+  const [isMobile, setIsMobile] = useState(false); // New state for mobile detection
   const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768); // Assuming 768px as mobile breakpoint
+    };
+
+    handleResize(); // Set initial value
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     getWorks()
@@ -80,8 +93,9 @@ export default function FeaturedWorks({
           duration: 1.2, // Keep duration similar for smooth transition
           scrollTrigger: {
             trigger: card,
-            start: "top 90%", // Start animation earlier
-            end: "top 60%", // End animation when card is higher up
+            start: "top bottom", // Animation starts when the top of the card enters the bottom of the viewport
+            end: "top 50%", // Animation ends when the top of the card reaches 50% of the viewport height
+            toggleActions: "play none none reverse",
             scrub: 1,
           },
         });
@@ -115,7 +129,7 @@ export default function FeaturedWorks({
         </div>
 
         {/* Render works grouped by category */}
-        {groupedWorks.map((group, groupIndex) => (
+        {groupedWorks.map((group) => (
           <div key={group.category} className="mb-8 last:mb-0">
             {/* Category separator with minimal design */}
             <div className="mb-4 flex items-center gap-3">
@@ -131,7 +145,7 @@ export default function FeaturedWorks({
               className="relative grid grid-cols-1 sm:grid-cols-3 gap-0"
               style={{ perspective: "1000px" }}
             >
-              {group.works.map((work, i) => {
+              {(isMobile ? group.works.slice(0, visibleWorksCount) : group.works).map((work, i) => {
                 const variant = work.aspect_ratio || "square";
                 return (
                   <div
@@ -154,6 +168,25 @@ export default function FeaturedWorks({
                   </div>
                 );
               })}
+            </div>
+
+            {/* Conditional buttons section */}
+            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center sm:justify-end gap-4">
+              {isMobile && visibleWorksCount < group.works.length && (
+                <button
+                  onClick={() => setVisibleWorksCount((prevCount) => prevCount + 6)}
+                  className="text-neutral-600 hover:text-neutral-900 font-medium text-sm px-4 py-2"
+                >
+                  See More
+                </button>
+              )}
+              <Link
+                href="/works" // Assuming a generic link for now
+                className="group flex items-center gap-1 text-neutral-600 hover:text-neutral-900 font-medium text-sm px-4 py-2 transition-all"
+              >
+                See Full Case Study
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>{" "}
             </div>
           </div>
         ))}
