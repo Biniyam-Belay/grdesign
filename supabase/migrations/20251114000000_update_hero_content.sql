@@ -6,7 +6,7 @@ WHERE key = 'hero_availability';
 UPDATE site_settings 
 SET value = '{
   "kicker": "Professional Design Services",
-  "title1": "Hire Expert Design",
+  "title1": "Hire Expert Designer",
   "title2": "That Delivers Results",
   "subtitle": "Professional graphic designer specializing in branding, social media, and web design — trusted by agencies, startups, and organizations for fast, quality delivery."
 }'
