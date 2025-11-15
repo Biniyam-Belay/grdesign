@@ -14,6 +14,30 @@ type FeaturedWorksProps = {
   subtitle?: string;
 };
 
+// Group works by category
+function groupWorksByCategory(works: Work[]): { category: string; works: Work[] }[] {
+  const grouped = works.reduce(
+    (acc, work) => {
+      const category = work.category || "Uncategorized";
+      if (!acc[category]) {
+        acc[category] = [];
+      }
+      acc[category].push(work);
+      return acc;
+    },
+    {} as Record<string, Work[]>,
+  );
+
+  return Object.entries(grouped)
+    .map(([category, works]) => ({ category, works }))
+    .sort((a, b) => {
+      // Sort categories: put "Uncategorized" last
+      if (a.category === "Uncategorized") return 1;
+      if (b.category === "Uncategorized") return -1;
+      return a.category.localeCompare(b.category);
+    });
+}
+
 // A static, responsive grid for featured works
 export default function FeaturedWorks({
   title = "Featured Works",
@@ -81,6 +105,8 @@ export default function FeaturedWorks({
 
   if (loading || works.length === 0) return null;
 
+  const groupedWorks = groupWorksByCategory(works);
+
   return (
     <section ref={sectionRef} className="bg-white pt-14 pb-6 px-4 sm:px-8 lg:px-12">
       <div className="mx-auto max-w-8xl">
@@ -91,35 +117,49 @@ export default function FeaturedWorks({
           {subtitle && <p className="mt-2 text-sm text-neutral-500">{subtitle}</p>}
         </div>
 
-        {/* 3-column collage on larger screens, vertical stack on mobile; tighter gaps */}
-        <div
-          className="relative grid grid-cols-1 sm:grid-cols-3 gap-0"
-          style={{ perspective: "1000px" }}
-        >
-          {works.map((work, i) => {
-            const variant = work.aspect_ratio || "square";
-            return (
-              <div
-                key={`${work.slug}-${i}`}
-                className="work-card block relative"
-                style={{ transformStyle: "preserve-3d" }}
-              >
-                <div
-                  className={`relative w-full ${aspectClass(variant)} overflow-hidden border border-neutral-200 bg-white`}
-                >
-                  <Image
-                    src={work.image}
-                    alt={work.title}
-                    fill
-                    className="object-cover"
-                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 33vw, 100vw"
-                    priority={false}
-                  />
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        {/* Render works grouped by category */}
+        {groupedWorks.map((group, groupIndex) => (
+          <div key={group.category} className="mb-8 last:mb-0">
+            {/* Category separator with minimal design */}
+            <div className="mb-4 flex items-center gap-3">
+              <div className="h-px flex-grow bg-neutral-200"></div>
+              <h3 className="text-xs uppercase tracking-widest text-neutral-400 font-medium">
+                {group.category}
+              </h3>
+              <div className="h-px flex-grow bg-neutral-200"></div>
+            </div>
+
+            {/* 3-column collage on larger screens, vertical stack on mobile; tighter gaps */}
+            <div
+              className="relative grid grid-cols-1 sm:grid-cols-3 gap-0"
+              style={{ perspective: "1000px" }}
+            >
+              {group.works.map((work, i) => {
+                const variant = work.aspect_ratio || "square";
+                return (
+                  <div
+                    key={`${work.slug}-${i}`}
+                    className="work-card block relative"
+                    style={{ transformStyle: "preserve-3d" }}
+                  >
+                    <div
+                      className={`relative w-full ${aspectClass(variant)} overflow-hidden border border-neutral-200 bg-white`}
+                    >
+                      <Image
+                        src={work.image}
+                        alt={work.title}
+                        fill
+                        className="object-cover"
+                        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 33vw, 100vw"
+                        priority={false}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

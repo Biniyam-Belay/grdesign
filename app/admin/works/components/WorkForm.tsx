@@ -22,6 +22,7 @@ export default function WorkForm({ work, isEditing = false }: WorkFormProps) {
     description: work?.description || "",
     image: work?.image || "",
     aspect_ratio: work?.aspect_ratio || "square",
+    category: work?.category || "",
     featured_order: work?.featured_order || 0,
   });
 
@@ -66,6 +67,7 @@ export default function WorkForm({ work, isEditing = false }: WorkFormProps) {
         description: formData.description || null,
         image: formData.image,
         aspect_ratio: formData.aspect_ratio || "square",
+        category: formData.category || null,
         link: null,
         featured_order: Number(formData.featured_order) || 0,
       };
@@ -214,6 +216,35 @@ export default function WorkForm({ work, isEditing = false }: WorkFormProps) {
                     className="w-full rounded-xl border border-neutral-300 px-4 py-3 text-neutral-900 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all"
                     placeholder="Brief description..."
                   />
+                </div>
+
+                {/* Category */}
+                <div>
+                  <label className="block text-sm font-semibold text-neutral-900 mb-2">
+                    Category
+                  </label>
+                  <input
+                    type="text"
+                    name="category"
+                    value={formData.category}
+                    onChange={handleChange}
+                    className="w-full rounded-xl border border-neutral-300 px-4 py-3 text-neutral-900 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all"
+                    placeholder="e.g., UI/UX, Web Design, Web Development, Social Media Design, Branding"
+                    list="category-suggestions"
+                  />
+                  <datalist id="category-suggestions">
+                    <option value="UI/UX" />
+                    <option value="Web Design" />
+                    <option value="Web Development" />
+                    <option value="Social Media Design" />
+                    <option value="Branding" />
+                    <option value="Mobile App Design" />
+                    <option value="Graphic Design" />
+                    <option value="Illustration" />
+                  </datalist>
+                  <p className="text-xs text-neutral-500 mt-1">
+                    Group related works together by category
+                  </p>
                 </div>
 
                 {/* Image Upload */}

@@ -60,6 +60,7 @@ export type Work = {
   image: string;
   aspect_ratio?: "square" | "portrait45" | "portrait916";
   link?: string;
+  category?: string; // Category for grouping (UI/UX, Web Design, Web Development, Social Media Design, etc.)
   featured_order?: number;
   created_at?: string;
   updated_at?: string;
