@@ -181,7 +181,7 @@ export default function FeaturedWorks({
                 </button>
               )}
               <Link
-                href="/works" // Assuming a generic link for now
+                href="/work" // Assuming a generic link for now
                 className="group flex items-center gap-1 text-neutral-600 hover:text-neutral-900 font-medium text-sm px-4 py-2 transition-all"
               >
                 See Full Case Study
