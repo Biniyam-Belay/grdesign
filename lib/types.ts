@@ -65,3 +65,16 @@ export type Work = {
   created_at?: string;
   updated_at?: string;
 };
+
+export type Testimonial = {
+  id: string;
+  name: string;
+  role: string;
+  company: string;
+  image: string;
+  content: string;
+  result: string;
+  project: string;
+  rating: number;
+  created_at: string;
+};

@@ -83,6 +83,25 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
       iconBg: "bg-amber-50 group-hover:bg-amber-100",
       iconColor: "text-amber-600",
     },
+    {
+      href: "/admin/testimonials",
+      title: "Testimonials",
+      description: "Manage client feedback and reviews",
+      icon: (
+        <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+          />
+        </svg>
+      ),
+      color: "from-green-500/10 to-emerald-500/10",
+      borderColor: "border-green-200/50 hover:border-green-300",
+      iconBg: "bg-green-50 group-hover:bg-green-100",
+      iconColor: "text-green-600",
+    },
   ];
 
   const quickActions = [

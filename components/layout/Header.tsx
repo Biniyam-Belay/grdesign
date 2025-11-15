@@ -5,41 +5,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
-
-const NAV_ITEMS = [
-  { href: "/", label: "Home" },
-  { href: "/work", label: "Work" },
-  {
-    href: "#",
-    label: "Services",
-    submenu: [
-      {
-        href: "/services/graphic-design",
-        label: "Graphic Design",
-        description: "Visual storytelling that captivates",
-        badge: "Popular",
-      },
-      {
-        href: "/services/branding",
-        label: "Branding",
-        description: "Identity systems that resonate",
-        badge: "Featured",
-      },
-      {
-        href: "/services/social-media",
-        label: "Social Media Design",
-        description: "Content that drives engagement",
-      },
-      {
-        href: "/services/web-development",
-        label: "Web Development",
-        description: "Digital experiences that convert",
-      },
-    ],
-  },
-  { href: "/about", label: "About" },
-  { href: "/blog", label: "Blog" },
-];
+import NavLink from "../ui/NavLink";
+import Button from "../ui/Button";
+import { NAV_ITEMS } from "@lib/data/services";
 
 export default function Header() {
   const pathname = usePathname();
@@ -114,7 +82,6 @@ export default function Header() {
             className="hidden md:flex items-center gap-1 flex-1 ml-12"
           >
             {NAV_ITEMS.map((item) => {
-              const isActive = pathname === item.href;
               const hasSubmenu = item.submenu && item.submenu.length > 0;
 
               if (hasSubmenu) {
@@ -501,22 +468,9 @@ export default function Header() {
               }
 
               return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 ${
-                    isActive ? "text-neutral-900" : "text-neutral-600 hover:text-neutral-900"
-                  }`}
-                >
+                <NavLink key={item.href} href={item.href}>
                   {item.label}
-                  {isActive && (
-                    <motion.span
-                      layoutId="navbar-indicator"
-                      className="absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 w-5 bg-neutral-900 rounded-full"
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                    />
-                  )}
-                </Link>
+                </NavLink>
               );
             })}
           </motion.nav>
@@ -528,11 +482,11 @@ export default function Header() {
             transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="hidden md:block"
           >
-            <a
+            <Button
               href="https://calendar.app.google/1RTjShD5sgqBmm3K7"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-2.5 bg-neutral-900 text-white text-sm font-medium rounded-full hover:bg-neutral-800 transition-all duration-300 hover:scale-105 active:scale-95"
+              isExternal
+              variant="outline"
+              size="sm"
             >
               Let's Talk
               <svg
@@ -546,7 +500,7 @@ export default function Header() {
               >
                 <path d="M7 17L17 7M17 7H7M17 7V17" />
               </svg>
-            </a>
+            </Button>
           </motion.div>
 
           {/* Mobile Menu Button */}

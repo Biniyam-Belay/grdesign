@@ -17,6 +17,7 @@ const services = [
       "Logo design, brand guidelines, and complete visual identity systems that make you memorable.",
     features: ["Logo & Mark Design", "Brand Guidelines", "Color Palette", "Typography System"],
     deliveryTime: "5-7 days",
+    badge: "Trending",
     popular: false,
   },
   {
@@ -27,7 +28,7 @@ const services = [
       "User-centered interfaces that convert visitors into customers and increase engagement.",
     features: ["User Research", "Wireframing", "UI Design", "Prototyping"],
     deliveryTime: "7-10 days",
-    popular: true,
+    popular: false,
   },
   {
     id: "web-dev",
@@ -47,7 +48,7 @@ const services = [
       "Scroll-stopping social content and campaigns that build your audience and drive engagement.",
     features: ["Social Templates", "Campaign Design", "Content Strategy", "Brand Consistency"],
     deliveryTime: "3-5 days",
-    popular: false,
+    popular: true,
   },
 ];
 
@@ -162,6 +163,13 @@ const ServicesAndProcessSection = () => {
                 className="service-card relative bg-neutral-50 rounded-lg p-6 transition-all duration-200 hover:bg-neutral-100 max-w-sm mx-auto md:max-w-none"
                 style={{ opacity: 1, transform: "translateY(0px)" }}
               >
+                {service.badge && (
+                  <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
+                    <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-medium">
+                      {service.badge}
+                    </span>
+                  </div>
+                )}
                 {service.popular && (
                   <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
                     <span className="bg-neutral-900 text-white px-3 py-1 rounded-full text-xs font-medium">

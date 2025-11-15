@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Work } from "@lib/types";
 import { getWorks } from "@lib/data/works";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -65,26 +66,22 @@ export default function FeaturedWorks({
       const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (prefersReduced) return;
 
-      // Animate each work card on scroll with ultra-smooth morphing effect
+      // Animate each work card on scroll with a fade-in and slide-up effect
       gsap.utils.toArray<HTMLElement>(".work-card").forEach((card) => {
-        // Initial state - more subtle
         gsap.set(card, {
           opacity: 0,
-          y: 60,
-          scale: 0.9,
+          y: 100, // Start lower
         });
 
-        // Scroll-triggered smooth fade-in animation
         gsap.to(card, {
           opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 1.2,
-          ease: "power1.out",
+          y: 0, // Move to original position
+          ease: "power3.out",
+          duration: 1.2, // Keep duration similar for smooth transition
           scrollTrigger: {
             trigger: card,
-            start: "top 85%",
-            end: "top 50%",
+            start: "top 90%", // Start animation earlier
+            end: "top 60%", // End animation when card is higher up
             scrub: 1,
           },
         });

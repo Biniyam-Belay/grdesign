@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { getHeroSettings, updateHeroSettings, type HeroSettings } from "@/lib/data/settings";
 import { createSupabaseClient } from "@/lib/supabase/client";
@@ -49,20 +49,20 @@ export default function SettingsPage() {
     confirmPassword: "",
   });
 
-  useEffect(() => {
-    loadSettings();
-  }, []);
-
-  async function loadSettings() {
+  const loadSettings = useCallback(async () => {
     try {
       const data = await getHeroSettings();
       setSettings(data);
-    } catch (err) {
+    } catch {
       toast.error("Failed to load settings");
     } finally {
       setLoading(false);
     }
-  }
+  }, [toast]);
+
+  useEffect(() => {
+    loadSettings();
+  }, [loadSettings]);
 
   async function handleSave() {
     try {

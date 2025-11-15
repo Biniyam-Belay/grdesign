@@ -1,53 +1,15 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+// Note: framer-motion is imported elsewhere for potential future animation; currently unused.
 import { Star } from "lucide-react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { createSupabaseClient } from "@/lib/supabase/client";
 
+import { Testimonial } from "@/lib/types";
 gsap.registerPlugin(ScrollTrigger);
-
-const testimonials = [
-  {
-    id: 1,
-    name: "Sarah Chen",
-    role: "Startup Founder",
-    company: "TechStart",
-    image: "/assets/testimonials/sarah.jpg", // You'll need to add these
-    content:
-      "Biniyam transformed our startup's brand from generic to premium. We saw a 340% increase in lead generation and closed 2 major clients within a month of launch.",
-    result: "340% increase in leads",
-    project: "Complete brand identity + landing page",
-    rating: 5,
-  },
-  {
-    id: 2,
-    name: "Michael Rodriguez",
-    role: "Marketing Director",
-    company: "AWiB Ethiopia",
-    image: "/assets/testimonials/michael.jpg",
-    content:
-      "The social media designs Biniyam created increased our engagement by 280% and helped us reach 15,000+ young women across Ethiopia. Exceptional quality and fast delivery.",
-    result: "280% engagement boost",
-    project: "Social media design system",
-    rating: 5,
-  },
-  {
-    id: 3,
-    name: "Dr. Alemayehu Teshome",
-    role: "Director",
-    company: "AAU Alumni Office",
-    image: "/assets/testimonials/alemayehu.jpg",
-    content:
-      "Biniyam delivered our first-ever homecoming event branding on time and budget. The merchandise sold out completely and alumni loved the professional look.",
-    result: "100% merchandise sold out",
-    project: "Event branding & merchandise",
-    rating: 5,
-  },
-];
 
 const metrics = [
   { number: "15+", label: "Happy Clients", icon: "😊" },
@@ -63,6 +25,8 @@ interface ClientLogo {
 
 export default function SocialProofSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
   const [clientLogos, setClientLogos] = useState<ClientLogo[]>([]);
@@ -73,55 +37,59 @@ export default function SocialProofSection() {
     delivery: 0,
   });
 
-  // Fetch client logos from Supabase storage
+  // Fetch data from Supabase
   useEffect(() => {
+    const supabase = createSupabaseClient();
+
     const fetchClientLogos = async () => {
       try {
-        const supabase = createSupabaseClient();
         const { data: files, error } = await supabase.storage.from("works").list("", {
           limit: 100,
           sortBy: { column: "name", order: "asc" },
         });
+        if (error) throw error;
 
-        if (error) {
-          console.error("Error fetching client logos:", error);
-          return;
-        }
-
-        if (files) {
-          const logos: ClientLogo[] = files
-            .filter(
-              (file: { name: string }) =>
-                file.name.toLowerCase().startsWith("client-logo") &&
-                file.name.match(/\.(jpg|jpeg|png|svg|webp)$/i),
-            )
-            .map((file: { name: string }) => {
-              const { data } = supabase.storage.from("works").getPublicUrl(file.name);
-
-              // Extract name from filename (remove extension and prefix)
-              const name =
-                file.name
-                  .replace(/^client-logo[-_]?/i, "")
-                  .replace(/\.(jpg|jpeg|png|svg|webp)$/i, "")
-                  .replace(/[-_]/g, " ")
-                  .split(" ")
-                  .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(" ") || "Client";
-
-              return {
-                name,
-                url: data.publicUrl,
-              };
-            });
-
-          setClientLogos(logos);
-        }
+        const logos: ClientLogo[] = files
+          .filter(
+            (file: { name: string }) =>
+              file.name.toLowerCase().startsWith("client-logo") &&
+              file.name.match(/\.(jpg|jpeg|png|svg|webp)$/i),
+          )
+          .map((file: { name: string }) => {
+            const { data } = supabase.storage.from("works").getPublicUrl(file.name);
+            const name =
+              file.name
+                .replace(/^client-logo[-_]?/i, "")
+                .replace(/\.(jpg|jpeg|png|svg|webp)$/i, "")
+                .replace(/[-_]/g, " ")
+                .split(" ")
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(" ") || "Client";
+            return { name, url: data.publicUrl };
+          });
+        setClientLogos(logos);
       } catch (error) {
         console.error("Error loading client logos:", error);
       }
     };
 
+    const fetchTestimonials = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("testimonials")
+          .select("*")
+          .order("created_at", { ascending: false });
+        if (error) throw error;
+        setTestimonials(data || []);
+      } catch (error) {
+        console.error("Error fetching testimonials:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     fetchClientLogos();
+    fetchTestimonials();
   }, []);
 
   useEffect(() => {
@@ -217,12 +185,14 @@ export default function SocialProofSection() {
 
   // Auto-rotate testimonials
   useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
+    if (testimonials.length > 1) {
+      const interval = setInterval(() => {
+        setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
+      }, 5000);
 
-    return () => clearInterval(interval);
-  }, []);
+      return () => clearInterval(interval);
+    }
+  }, [testimonials]);
 
   return (
     <section ref={sectionRef} className="py-16 md:py-24 bg-white px-6">
@@ -247,71 +217,81 @@ export default function SocialProofSection() {
         {/* Two Column Layout: Testimonial + Metrics */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           {/* Left Column: Testimonial */}
-          <div className="testimonials-container" style={{ opacity: 1 }}>
-            <div className="bg-neutral-50 rounded-xl p-8 h-full flex flex-col justify-center min-h-[480px]">
-              {/* Rating with Star Icons */}
-              <div className="flex justify-center lg:justify-start mb-6">
-                <div className="flex items-center gap-0.5">
-                  {[...Array(testimonials[activeTestimonial].rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-neutral-900 text-neutral-900" />
+          {isLoading ? (
+            <div className="flex items-center justify-center min-h-[480px]">
+              <p>Loading testimonials...</p>
+            </div>
+          ) : testimonials.length > 0 ? (
+            <div className="testimonials-container" style={{ opacity: 1 }}>
+              <div className="bg-neutral-50 rounded-xl p-8 h-full flex flex-col justify-center min-h-[480px]">
+                {/* Rating with Star Icons */}
+                <div className="flex justify-center lg:justify-start mb-6">
+                  <div className="flex items-center gap-0.5">
+                    {[...Array(testimonials[activeTestimonial].rating)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-neutral-900 text-neutral-900" />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Quote */}
+                <blockquote className="text-base md:text-lg text-neutral-700 mb-8 leading-relaxed text-center lg:text-left">
+                  "{testimonials[activeTestimonial].content}"
+                </blockquote>
+
+                {/* Author & Results */}
+                <div className="flex flex-col gap-4 mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-neutral-200 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-neutral-700 font-medium text-sm">
+                        {testimonials[activeTestimonial].name
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")}
+                      </span>
+                    </div>
+                    <div className="text-left">
+                      <div className="font-medium text-neutral-900 text-sm">
+                        {testimonials[activeTestimonial].name}
+                      </div>
+                      <div className="text-xs text-neutral-500">
+                        {testimonials[activeTestimonial].role},{" "}
+                        {testimonials[activeTestimonial].company}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white border border-neutral-200 rounded-lg px-4 py-2 self-start">
+                    <div className="text-neutral-800 font-medium text-sm">
+                      {testimonials[activeTestimonial].result}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="text-xs text-neutral-500 mb-6 text-center lg:text-left">
+                  {testimonials[activeTestimonial].project}
+                </div>
+
+                {/* Navigation */}
+                <div className="flex justify-center lg:justify-start gap-2">
+                  {testimonials.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setActiveTestimonial(index)}
+                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                        index === activeTestimonial
+                          ? "bg-neutral-900 w-6"
+                          : "bg-neutral-300 hover:bg-neutral-400"
+                      }`}
+                    />
                   ))}
                 </div>
               </div>
-
-              {/* Quote */}
-              <blockquote className="text-base md:text-lg text-neutral-700 mb-8 leading-relaxed text-center lg:text-left">
-                "{testimonials[activeTestimonial].content}"
-              </blockquote>
-
-              {/* Author & Results */}
-              <div className="flex flex-col gap-4 mb-6">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-neutral-200 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-neutral-700 font-medium text-sm">
-                      {testimonials[activeTestimonial].name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")}
-                    </span>
-                  </div>
-                  <div className="text-left">
-                    <div className="font-medium text-neutral-900 text-sm">
-                      {testimonials[activeTestimonial].name}
-                    </div>
-                    <div className="text-xs text-neutral-500">
-                      {testimonials[activeTestimonial].role},{" "}
-                      {testimonials[activeTestimonial].company}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white border border-neutral-200 rounded-lg px-4 py-2 self-start">
-                  <div className="text-neutral-800 font-medium text-sm">
-                    {testimonials[activeTestimonial].result}
-                  </div>
-                </div>
-              </div>
-
-              <div className="text-xs text-neutral-500 mb-6 text-center lg:text-left">
-                {testimonials[activeTestimonial].project}
-              </div>
-
-              {/* Navigation */}
-              <div className="flex justify-center lg:justify-start gap-2">
-                {testimonials.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setActiveTestimonial(index)}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      index === activeTestimonial
-                        ? "bg-neutral-900 w-6"
-                        : "bg-neutral-300 hover:bg-neutral-400"
-                    }`}
-                  />
-                ))}
-              </div>
             </div>
-          </div>
+          ) : (
+            <div className="flex items-center justify-center min-h-[480px]">
+              <p>No testimonials found.</p>
+            </div>
+          )}
 
           {/* Right Column: Metrics Grid */}
           <div className="metrics-grid grid grid-cols-2 lg:grid-cols-2 gap-4 lg:h-full">
@@ -326,28 +306,18 @@ export default function SocialProofSection() {
               };
 
               return (
-                <motion.div
+                <div
                   key={metric.label}
-                  className="metric-card group relative overflow-hidden bg-white border border-neutral-200 rounded-xl p-4 lg:p-6 hover:border-neutral-900 transition-all duration-300 flex flex-col items-center justify-center"
-                  initial={{ opacity: 1, y: 0 }}
-                  whileHover={{ y: -2, transition: { duration: 0.2 } }}
+                  className="metric-card bg-neutral-50/50 rounded-2xl p-6 flex items-center gap-4"
                 >
-                  {/* Subtle gradient background on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-neutral-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-                  {/* Content */}
-                  <div className="relative z-10 text-center">
-                    <div className="text-2xl lg:text-4xl font-bold text-neutral-900 mb-1 lg:mb-3 tracking-tight">
+                  <div className="text-3xl">{metric.icon}</div>
+                  <div>
+                    <div className="text-3xl font-semibold text-neutral-900 tracking-tight">
                       {hasAnimated ? getCountValue() : "0"}
                     </div>
-                    <div className="text-[10px] lg:text-xs text-neutral-600 font-medium uppercase tracking-wider">
-                      {metric.label}
-                    </div>
+                    <div className="text-sm text-neutral-600">{metric.label}</div>
                   </div>
-
-                  {/* Minimal bottom accent line */}
-                  <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-neutral-900 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </motion.div>
+                </div>
               );
             })}
           </div>

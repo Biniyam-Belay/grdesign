@@ -53,36 +53,63 @@ export default function ProjectManagement() {
     fetchProjects();
   }, [fetchProjects]);
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this project? This action cannot be undone."))
+  const handleDelete = async (project: Project) => {
+    if (
+      !confirm(
+        `Are you sure you want to delete "${project.title}"? This will also permanently delete all associated images and cannot be undone.`,
+      )
+    )
       return;
 
     try {
       const {
         data: { session },
       } = await supabase.auth.getSession();
-      if (!session) {
-        throw new Error("You are not signed in. Please log in again.");
+      if (!session) throw new Error("You are not signed in. Please log in again.");
+
+      // 1. Collect all file paths to delete from storage
+      const pathsToDelete: string[] = [];
+      if (project.thumb)
+        pathsToDelete.push(project.thumb.substring(project.thumb.lastIndexOf("/") + 1));
+      if (project.video)
+        pathsToDelete.push(project.video.substring(project.video.lastIndexOf("/") + 1));
+      if (project.mobileHeroSrc)
+        pathsToDelete.push(
+          project.mobileHeroSrc.substring(project.mobileHeroSrc.lastIndexOf("/") + 1),
+        );
+      if (project.featuredSrc)
+        pathsToDelete.push(project.featuredSrc.substring(project.featuredSrc.lastIndexOf("/") + 1));
+      if (project.gallery) {
+        project.gallery.forEach((item) => {
+          if (item.src) pathsToDelete.push(item.src.substring(item.src.lastIndexOf("/") + 1));
+        });
       }
 
-      const { data, error } = await supabase.functions.invoke("projects", {
-        body: { action: "delete", id },
-        headers: {
-          Authorization: `Bearer ${session.access_token}`,
-        },
-      });
-      if (error) throw error;
+      const uniquePaths = [...new Set(pathsToDelete.filter((p) => p))];
 
-      // Revalidate project paths to clear Next.js cache
+      // 2. Delete files from storage
+      if (uniquePaths.length > 0) {
+        const { error: storageError } = await supabase.storage
+          .from("project-images")
+          .remove(uniquePaths);
+        if (storageError) {
+          console.error("Failed to delete some images from storage:", storageError.message);
+          // Decide if you want to proceed despite storage error. For now, we will.
+        }
+      }
+
+      // 3. Delete the record from the database
+      const { error: dbError } = await supabase.from("projects").delete().eq("id", project.id);
+      if (dbError) throw dbError;
+
+      // 4. Revalidate paths and update UI
       await fetch("/api/revalidate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ path: "/work", type: "layout" }),
       });
 
-      const deletedId = (data?.id as string) || id;
-      setProjects((prev) => prev.filter((project) => project.id !== deletedId));
-      fetchProjects();
+      setProjects((prev) => prev.filter((p) => p.id !== project.id));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to delete project");
     }
@@ -435,7 +462,7 @@ export default function ProjectManagement() {
                       Edit
                     </Link>
                     <button
-                      onClick={() => project.id && handleDelete(project.id)}
+                      onClick={() => handleDelete(project)}
                       disabled={!project.id}
                       className="flex items-center justify-center rounded-lg bg-red-50 p-2 text-red-600 hover:bg-red-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                       title="Delete project"
@@ -538,7 +565,7 @@ export default function ProjectManagement() {
                     Edit
                   </Link>
                   <button
-                    onClick={() => project.id && handleDelete(project.id)}
+                    onClick={() => handleDelete(project)}
                     disabled={!project.id}
                     className="flex items-center justify-center rounded-lg bg-red-50 p-2 text-red-600 hover:bg-red-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     title="Delete project"
