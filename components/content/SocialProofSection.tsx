@@ -6,7 +6,6 @@ import { Star } from "lucide-react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import InteractiveMetrics from "./InteractiveMetrics";
 import HappyClientsIcon from "./icons/HappyClientsIcon";
 import ProjectsDeliveredIcon from "./icons/ProjectsDeliveredIcon";
 import EngagementBoostIcon from "./icons/EngagementBoostIcon";
