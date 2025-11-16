@@ -103,6 +103,7 @@ export default function ImageUpload({
   const handleSelectFromLibrary = (url: string | string[]) => {
     const firstUrl = Array.isArray(url) ? (url[0] ?? "") : url;
     setPreview(firstUrl || null);
+    if (onUpload) onUpload(firstUrl);
     if (onChange) onChange(firstUrl);
     setIsModalOpen(false);
   };
