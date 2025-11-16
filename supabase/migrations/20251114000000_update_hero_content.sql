@@ -15,7 +15,7 @@ WHERE key = 'hero_text';
 -- Add additional hero settings for the full content
 INSERT INTO site_settings (key, value) VALUES
   ('hero_mobile_subtitle', '{"text": "Professional designer delivering graphic design, branding, social media content, and web solutions — perfect for agencies, startups, and HR teams hiring top talent."}'),
-  ('hero_credentials', '{"primary": "Top Rated • Fast Delivery", "secondary": "Rated Designer", "turnaround": "Fast 7-14 Day Turnaround"}'),
+  ('hero_credentials', '{"primary": "Rated • Fast Delivery", "secondary": "Rated Designer", "turnaround": "Fast 7-14 Day Turnaround"}'),
   ('hero_trust_signals', '{"items": ["Quality guarantee", "Same-day response", "Revision-friendly"]}'),
   ('hero_urgency', '{"text": "Perfect for agencies & startups", "highlight": "Same-day response"}'),
   ('hero_limited_capacity', '{"title": "Limited Capacity", "slots": "3 project slots", "period": "this month"}')

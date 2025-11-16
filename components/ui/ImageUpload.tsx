@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useId } from "react";
 import { createSupabaseClient } from "@/lib/supabase/client";
 import Image from "next/image";
 import MediaLibraryModal from "@/components/admin/MediaLibraryModal";
@@ -29,6 +29,7 @@ export default function ImageUpload({
   const [preview, setPreview] = useState<string | null>(value || currentImage || null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const supabase = createSupabaseClient();
+  const id = useId();
 
   useEffect(() => {
     setPreview(value || currentImage || null);
@@ -171,13 +172,13 @@ export default function ImageUpload({
 
         <div className="flex items-center gap-4">
           <label
-            htmlFor="file-upload"
+            htmlFor={id}
             className="flex-1 cursor-pointer text-center px-4 py-2 text-sm font-medium text-neutral-700 bg-white border border-neutral-300 rounded-lg hover:bg-neutral-50"
           >
             Upload New Image
           </label>
           <input
-            id="file-upload"
+            id={id}
             name="file-upload"
             type="file"
             className="sr-only"

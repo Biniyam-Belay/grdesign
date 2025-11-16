@@ -70,9 +70,9 @@ export async function getHeroSettings(): Promise<HeroSettings> {
       mobileSubtitleRes.data?.value?.text ||
       "Professional designer delivering graphic design, branding, social media content, and web solutions — perfect for agencies, startups, and HR teams hiring top talent.",
     credentials: credentialsRes.data?.value || {
-      primary: "Top Rated • Fast Delivery",
+      primary: "Rated • Fast Delivery",
       secondary: "Rated Designer",
-      turnaround: "Fast 7-14 Day Turnaround",
+      turnaround: "Fast 7-14 Day Turnaround for Long Term Projects",
     },
     trustSignals: trustSignalsRes.data?.value?.items || [
       "Quality guarantee",

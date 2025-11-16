@@ -27,9 +27,9 @@ export default function SettingsPage() {
     mobileSubtitle:
       "Professional designer delivering graphic design, branding, social media content, and web solutions — perfect for agencies, startups, and HR teams hiring top talent.",
     credentials: {
-      primary: "Top Rated • Fast Delivery",
+      primary: "Rated Designer • Fast Delivery",
       secondary: "Rated Designer",
-      turnaround: "Fast 7-14 Day Turnaround",
+      turnaround: "Fast 7-14 Day Turnaround For Long Term Projects",
     },
     trustSignals: ["Quality guarantee", "Same-day response", "Revision-friendly"],
     urgency: {
