@@ -17,16 +17,17 @@ type Variant = "wide" | "standard" | "tall";
 export default function ProjectCard({
   project,
   variant = "standard",
+  className,
 }: {
   project: Project;
   variant?: Variant;
+  className?: string;
 }) {
   const reduced = useReducedMotion();
   const cardRef = useRef<HTMLAnchorElement>(null!);
 
   useEffect(() => {
     if (reduced || !cardRef.current) {
-      // Set initial visible state for reduced motion
       if (cardRef.current) {
         const gsap = initGSAP();
         gsap.set(cardRef.current, { opacity: 1, y: 0 });
@@ -38,10 +39,6 @@ export default function ProjectCard({
     const el = cardRef.current;
 
     const ctx = gsap.context(() => {
-      // Set initial state
-      gsap.set(el, { opacity: 1, y: 0 });
-
-      // Simple reveal animation
       gsap.from(el, {
         opacity: 0,
         y: 20,
@@ -65,44 +62,41 @@ export default function ProjectCard({
     <Link
       ref={cardRef}
       href={`/work/${project.slug}`}
-      className="group block focus:outline-none"
+      className={`group relative block w-full overflow-hidden rounded-lg bg-neutral-100 focus:outline-none ${ratio} ${className}`}
       data-type={project.type}
     >
-      {/* Clean card container */}
-      <div className="bg-white border border-neutral-200 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-        {/* Media container */}
-        <div className={`relative ${ratio} w-full overflow-hidden bg-neutral-100`}>
-          <Image
-            src={project.thumb}
-            alt={project.alt ?? project.title}
-            fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
-            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-          />
+      <Image
+        src={project.thumb}
+        alt={project.alt ?? project.title}
+        fill
+        className="object-cover transition-transform duration-300 group-hover:scale-105"
+        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+      />
 
-          {/* Type badge */}
-          {project.type && (
-            <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-neutral-700 text-xs px-2 py-1 rounded-md font-medium">
-              {project.type.replace("-", " ")}
-            </span>
-          )}
+      {/* Type badge */}
+      {project.type && (
+        <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-neutral-700 text-xs px-2 py-1 rounded-md font-medium">
+          {project.type.replace("-", " ")}
+        </span>
+      )}
 
-          {/* Video indicator */}
-          {project.video && (
-            <span className="absolute bottom-3 right-3 bg-neutral-900/80 text-white text-xs px-2 py-1 rounded-md font-medium flex items-center gap-1">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M8 5v14l11-7z" />
-              </svg>
-              Video
-            </span>
-          )}
-        </div>
+      {/* Video indicator */}
+      {/* {project.video && (
+        <span className="absolute top-3 right-3 bg-neutral-900/80 text-white text-xs px-2 py-1 rounded-md font-medium flex items-center gap-1">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+          Video
+        </span>
+      )} */}
 
-        {/* Content */}
-        <div className="p-4">
-          <h3 className="font-semibold text-neutral-900 text-sm mb-1">{project.title}</h3>
-          <p className="text-xs text-neutral-600">{project.roles[0]}</p>
-        </div>
+      {/* Gradient overlay for text */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+      {/* Content */}
+      <div className="absolute inset-0 flex flex-col justify-end p-4 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        <h3 className="font-semibold text-sm mb-1">{project.title}</h3>
+        <p className="text-xs">{project.roles[0]}</p>
       </div>
     </Link>
   );

@@ -98,10 +98,7 @@ export default function WorkPage() {
                 : "lg:col-span-4 sm:col-span-1 col-span-1";
 
             return (
-              <div key={`${p.slug}-${i}`} className={span}>
-                {/* If your ProjectCard supports variant, pass it; otherwise it will ignore the prop */}
-                <ProjectCard project={p} variant={variant} />
-              </div>
+              <ProjectCard key={`${p.slug}-${i}`} project={p} variant={variant} className={span} />
             );
           })}
         </section>

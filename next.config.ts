@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
       },
     ],
     // Allow local images in development
-    unoptimized: process.env.NODE_ENV === "development",
+    quality: 90,
     // Enable image optimization caching
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
   },
