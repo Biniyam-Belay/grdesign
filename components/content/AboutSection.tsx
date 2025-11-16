@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Link from "next/link";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { AnimatePresence, motion } from "framer-motion";
 import useIsomorphicLayoutEffect from "@lib/useIsomorphicLayoutEffect";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -16,28 +17,8 @@ const services = [
     description:
       "Logo design, brand guidelines, and complete visual identity systems that make you memorable.",
     features: ["Logo & Mark Design", "Brand Guidelines", "Color Palette", "Typography System"],
-    deliveryTime: "5-7 days",
+    deliveryTime: "Starting at 1-2 weeks",
     badge: "Trending",
-    popular: false,
-  },
-  {
-    id: "ui-ux",
-    icon: "📱",
-    title: "UI/UX Design",
-    description:
-      "User-centered interfaces that convert visitors into customers and increase engagement.",
-    features: ["User Research", "Wireframing", "UI Design", "Prototyping"],
-    deliveryTime: "7-10 days",
-    popular: false,
-  },
-  {
-    id: "web-dev",
-    icon: "💻",
-    title: "Web Development",
-    description:
-      "Fast, responsive websites built with modern tech that rank well and convert visitors.",
-    features: ["Responsive Design", "SEO Optimized", "Fast Loading", "CMS Integration"],
-    deliveryTime: "10-14 days",
     popular: false,
   },
   {
@@ -47,8 +28,28 @@ const services = [
     description:
       "Scroll-stopping social content and campaigns that build your audience and drive engagement.",
     features: ["Social Templates", "Campaign Design", "Content Strategy", "Brand Consistency"],
-    deliveryTime: "3-5 days",
+    deliveryTime: "Starting at 5-10 days",
     popular: true,
+  },
+  {
+    id: "ui-ux",
+    icon: "📱",
+    title: "UI/UX Design",
+    description:
+      "User-centered interfaces that convert visitors into customers and increase engagement.",
+    features: ["Competitor Analysis", "Wireframing", "UI Design", "Prototyping"],
+    deliveryTime: "Starting at 7-10 days",
+    popular: false,
+  },
+  {
+    id: "web-dev",
+    icon: "💻",
+    title: "Web Development",
+    description:
+      "Fast, responsive websites built with modern tech that rank well and convert visitors.",
+    features: ["Responsive Design", "SEO Optimized", "Fast Loading", "CMS Integration"],
+    deliveryTime: "Starting at 2-4 weeks",
+    popular: false,
   },
 ];
 
@@ -79,8 +80,30 @@ const process = [
   },
 ];
 
+const smallGigsProcess = [
+  {
+    step: "01",
+    title: "Briefing",
+    description: "A quick chat to understand your needs.",
+    duration: "15-30 min",
+  },
+  {
+    step: "02",
+    title: "Design",
+    description: "I'll get to work on your design.",
+    duration: "1-3 days",
+  },
+  {
+    step: "03",
+    title: "Delivery",
+    description: "You'll receive your files, ready to use.",
+    duration: "Within 24h",
+  },
+];
+
 const ServicesAndProcessSection = () => {
   const rootRef = useRef<HTMLElement>(null!);
+  const [processType, setProcessType] = useState<"long-term" | "small-gigs">("small-gigs");
 
   useIsomorphicLayoutEffect(() => {
     if (!rootRef.current) return;
@@ -130,6 +153,8 @@ const ServicesAndProcessSection = () => {
     }, rootRef);
     return () => ctx.revert();
   }, []);
+
+  const currentProcess = processType === "long-term" ? process : smallGigsProcess;
 
   return (
     <section
@@ -252,38 +277,75 @@ const ServicesAndProcessSection = () => {
             </p>
           </div>
 
+          {/* Toggle */}
+          <div className="flex justify-center mb-8">
+            <div className="flex items-center gap-2 rounded-full bg-neutral-100 p-1">
+              <button
+                onClick={() => setProcessType("small-gigs")}
+                className={`px-4 py-1 text-sm font-medium rounded-full transition-colors ${
+                  processType === "small-gigs" ? "bg-white text-neutral-900" : "text-neutral-600"
+                }`}
+              >
+                Small Gigs
+              </button>
+              <button
+                onClick={() => setProcessType("long-term")}
+                className={`px-4 py-1 text-sm font-medium rounded-full transition-colors ${
+                  processType === "long-term" ? "bg-white text-neutral-900" : "text-neutral-600"
+                }`}
+              >
+                Long-term Projects
+              </button>
+            </div>
+          </div>
+
           {/* Process Timeline - Horizontal with Connecting Line */}
-          <div className="relative">
+          <div className="relative min-h-[200px]">
             {/* Connecting Line */}
             <div
               className="hidden lg:block absolute top-4 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-neutral-200 to-transparent"
               style={{ top: "16px" }}
             ></div>
 
-            <div className="process-timeline grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {process.map((step) => (
-                <div
-                  key={step.step}
-                  className="process-step relative"
-                  style={{ opacity: 1, transform: "translateY(0px)" }}
-                >
-                  {/* Step Number Circle */}
-                  <div className="relative z-10 w-8 h-8 border-2 border-neutral-900 bg-white text-neutral-900 rounded-full flex items-center justify-center text-sm font-bold mb-4 mx-auto">
-                    {step.step}
-                  </div>
+            <div className="flex justify-center">
+              <div
+                className={`process-timeline grid ${
+                  processType === "long-term"
+                    ? "grid-cols-1 md:grid-cols-4 gap-8"
+                    : "grid-cols-1 md:grid-cols-3 gap-8"
+                }`}
+              >
+                <AnimatePresence mode="wait">
+                  {currentProcess.map((step) => (
+                    <motion.div
+                      key={step.step}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="process-step relative"
+                    >
+                      {/* Step Number Circle */}
+                      <div className="relative z-10 w-8 h-8 border-2 border-neutral-900 bg-white text-neutral-900 rounded-full flex items-center justify-center text-sm font-bold mb-4 mx-auto">
+                        {step.step}
+                      </div>
 
-                  {/* Content */}
-                  <div className="text-center">
-                    <h3 className="text-base font-semibold text-neutral-900 mb-2">{step.title}</h3>
-                    <p className="text-neutral-600 text-sm mb-3 leading-relaxed">
-                      {step.description}
-                    </p>
-                    <div className="text-xs text-neutral-500 bg-neutral-100 px-2 py-1 rounded-full inline-block">
-                      {step.duration}
-                    </div>
-                  </div>
-                </div>
-              ))}
+                      {/* Content */}
+                      <div className="text-center">
+                        <h3 className="text-base font-semibold text-neutral-900 mb-2">
+                          {step.title}
+                        </h3>
+                        <p className="text-neutral-600 text-sm mb-3 leading-relaxed">
+                          {step.description}
+                        </p>
+                        <div className="text-xs text-neutral-500 bg-neutral-100 px-2 py-1 rounded-full inline-block">
+                          {step.duration}
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </div>
             </div>
           </div>
 

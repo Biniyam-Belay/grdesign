@@ -6,16 +6,31 @@ import { Star } from "lucide-react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import InteractiveMetrics from "./InteractiveMetrics";
+import HappyClientsIcon from "./icons/HappyClientsIcon";
+import ProjectsDeliveredIcon from "./icons/ProjectsDeliveredIcon";
+import EngagementBoostIcon from "./icons/EngagementBoostIcon";
 import { createSupabaseClient } from "@/lib/supabase/client";
 
 import { Testimonial } from "@/lib/types";
 gsap.registerPlugin(ScrollTrigger);
 
 const metrics = [
-  { number: "15+", label: "Happy Clients", icon: "😊" },
-  { number: "32", label: "Projects Delivered", icon: "🚀" },
-  { number: "280%", label: "Avg. Engagement Boost", icon: "📈" },
-  { number: "7-14", label: "Days Delivery", icon: "⚡" },
+  {
+    number: "15+",
+    label: "Happy Clients",
+    icon: <HappyClientsIcon />,
+  },
+  {
+    number: "32",
+    label: "Projects Delivered",
+    icon: <ProjectsDeliveredIcon />,
+  },
+  {
+    number: "280%",
+    label: "Avg. Engagement Boost",
+    icon: <EngagementBoostIcon />,
+  },
 ];
 
 interface ClientLogo {
@@ -34,7 +49,6 @@ export default function SocialProofSection() {
     clients: 0,
     projects: 0,
     engagement: 0,
-    delivery: 0,
   });
 
   // Fetch data from Supabase
@@ -167,7 +181,6 @@ export default function SocialProofSection() {
         clients: Math.floor(15 * easeOut),
         projects: Math.floor(32 * easeOut),
         engagement: Math.floor(280 * easeOut),
-        delivery: Math.floor(14 * easeOut),
       });
 
       if (currentStep >= steps) {
@@ -177,7 +190,6 @@ export default function SocialProofSection() {
           clients: 15,
           projects: 32,
           engagement: 280,
-          delivery: 14,
         });
       }
     }, stepDuration);
@@ -294,23 +306,26 @@ export default function SocialProofSection() {
           )}
 
           {/* Right Column: Metrics Grid */}
-          <div className="metrics-grid grid grid-cols-2 lg:grid-cols-2 gap-4 lg:h-full">
-            {metrics.map((metric) => {
+          <div className="metrics-grid grid grid-cols-2 grid-rows-2 gap-4 lg:h-full">
+            {metrics.map((metric, index) => {
               // Map metric to count value
               const getCountValue = () => {
                 if (metric.label === "Happy Clients") return `${counts.clients}+`;
                 if (metric.label === "Projects Delivered") return counts.projects;
                 if (metric.label === "Avg. Engagement Boost") return `${counts.engagement}%`;
-                if (metric.label === "Days Delivery") return `7-${counts.delivery}`;
                 return metric.number;
               };
 
               return (
                 <div
                   key={metric.label}
-                  className="metric-card bg-neutral-50/50 rounded-2xl p-6 flex items-center gap-4"
+                  className={`metric-card bg-neutral-50/50 rounded-2xl p-6 flex items-center gap-4 group ${
+                    index === 2 ? "col-span-2" : ""
+                  }`}
                 >
-                  <div className="text-3xl">{metric.icon}</div>
+                  <div className="transform transition-transform duration-300 group-hover:scale-110">
+                    {metric.icon}
+                  </div>
                   <div>
                     <div className="text-3xl font-semibold text-neutral-900 tracking-tight">
                       {hasAnimated ? getCountValue() : "0"}

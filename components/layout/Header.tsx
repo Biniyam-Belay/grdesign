@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import NavLink from "../ui/NavLink";
 import Button from "../ui/Button";
-import { NAV_ITEMS } from "@lib/data/services";
+import { NAV_ITEMS, SERVICES } from "@lib/data/services";
 
 export default function Header() {
   const pathname = usePathname();
@@ -420,10 +420,8 @@ export default function Header() {
                                           <path d="M12 6v6l4 2" />
                                         </svg>
                                         <span className="text-neutral-600">
-                                          {hoveredService === 0 && "Typical delivery: 2-3 weeks"}
-                                          {hoveredService === 1 && "Typical delivery: 3-4 weeks"}
-                                          {hoveredService === 2 && "Typical delivery: 1-2 weeks"}
-                                          {hoveredService === 3 && "Typical delivery: 4-6 weeks"}
+                                          {hoveredService !== null &&
+                                            `Delivery: Starting at ${SERVICES[hoveredService].delivery.min}-${SERVICES[hoveredService].delivery.max} ${SERVICES[hoveredService].delivery.unit}`}
                                         </span>
                                       </div>
                                     </div>

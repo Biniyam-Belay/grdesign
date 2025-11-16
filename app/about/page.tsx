@@ -135,72 +135,65 @@ export default function AboutPage() {
             Experience
           </h2>
 
-          <ol className="relative mt-8 space-y-10 before:absolute before:left-[0rem] before:top-0 before:h-full before:w-px before:bg-neutral-200 sm:before:left-[0rem]">
-            {[
-              {
-                period: "2023-Present",
-                title: "Independent Designer",
-                body: "Partnering with founders and teams to craft identities, systems, and product surfaces-from strategy to delivery.",
-              },
-              {
-                period: "2025 - Present",
-                title: "Graphic Designer, AMCO Furniture, Design and Interiors",
-                body: "Creating cohesive brand experiences through print and digital media, enhancing AMCO's market presence and customer engagement.",
-              },
-              {
-                period: "2025",
-                title: "Branding, Sage Barbershop",
-                body: "A sharp and confident identity system for a modern barbershop, blending timeless craft with contemporary style.",
-              },
-              {
-                period: "2025",
-                title: "Branding, Sirtona Ventures",
-                body: "A bold yet disciplined identity system for a digital-creative agency, balancing premium feel with accessibility.",
-              },
-              {
-                period: "2024",
-                title: "Branding, Biruh Tutors",
-                body: "A bright and trustworthy identity system designed for an online tutoring platform, balancing professionalism with warmth.",
-              },
-              {
-                period: "2023-2025",
-                title: "Social Media Designer, AWiB Ethiopia",
-                body: "Unified social media presence and content design for AWiB Ethiopia, enhancing storytelling across leadership, mentorship, and community.",
-              },
-              {
-                period: "2023-2025",
-                title: "Social Media Designer, Meri",
-                body: "Social Media Content design for Meri - a youth, employability, and life-skills focused programme under AWiB.",
-              },
-              {
-                period: "2023-2025",
-                title: "Social Media Designer, Haset",
-                body: "Social Media content design for Haset - AWiB’s women leadership programme, focusing on building leadership capacity, community, and networks.",
-              },
-              {
-                period: "2024",
-                title: "Print Design, Addis Ababa University, AAU Alumni Homecoming",
-                body: "Led the merchandise design for Addis Ababa University’s first-ever Alumni Homecoming, bringing together legacy, school pride, and community through wearable and print assets.",
-              },
-            ].map(({ period, title, body }) => (
-              <li key={title} className="grid grid-cols-1 gap-3 sm:grid-cols-12" data-reveal>
-                {/* Bullet */}
-                <span
-                  aria-hidden
-                  className="absolute h-2.5 w-2.5 rounded-full bg-neutral-900 -translate-x-[0.3125rem] mt-[0.6875rem] sm:mt-[0.1875rem]"
-                />
-                {/* Period */}
-                <div className="text-[11px] uppercase tracking-[0.22em] text-neutral-500 pl-4 sm:col-span-3 sm:pl-6">
-                  {period}
-                </div>
-                {/* Content */}
-                <div className="rounded-xl sm:col-span-8 pl-4 sm:pl-0">
-                  <h3 className="text-lg font-medium text-neutral-900">{title}</h3>
-                  <p className="mt-2 text-neutral-600">{body}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
+          <div className="relative mt-8">
+            <div className="absolute left-0 top-0 h-full w-px bg-neutral-200" data-reveal />
+            <ol className="relative space-y-8">
+              {[
+                {
+                  period: "2023-Present",
+                  title: "Independent Designer",
+                  body: "Partnering with founders and teams to craft identities, systems, and product surfaces-from strategy to delivery.",
+                },
+                {
+                  period: "2025 - Present",
+                  title: "Graphic Designer, AMCO Furniture, Design and Interiors",
+                  body: "Creating cohesive brand experiences through print and digital media, enhancing AMCO's market presence and customer engagement.",
+                },
+                {
+                  period: "2025",
+                  title: "Branding, Sage Barbershop",
+                  body: "A sharp and confident identity system for a modern barbershop, blending timeless craft with contemporary style.",
+                },
+                {
+                  period: "2025",
+                  title: "Branding, Sirtona Ventures",
+                  body: "A bold yet disciplined identity system for a digital-creative agency, balancing premium feel with accessibility.",
+                },
+                {
+                  period: "2024",
+                  title: "Branding, Biruh Tutors",
+                  body: "A bright and trustworthy identity system designed for an online tutoring platform, balancing professionalism with warmth.",
+                },
+                {
+                  period: "2023-2025",
+                  title: "Social Media Designer, AWiB Ethiopia",
+                  body: "Unified social media presence and content design for AWiB Ethiopia, enhancing storytelling across leadership, mentorship, and community.",
+                },
+                {
+                  period: "2023-2025",
+                  title: "Social Media Designer, Meri",
+                  body: "Social Media Content design for Meri - a youth, employability, and life-skills focused programme under AWiB.",
+                },
+                {
+                  period: "2023-2025",
+                  title: "Social Media Designer, Haset",
+                  body: "Social Media content design for Haset - AWiB’s women leadership programme, focusing on building leadership capacity, community, and networks.",
+                },
+                {
+                  period: "2024",
+                  title: "Print Design, Addis Ababa University, AAU Alumni Homecoming",
+                  body: "Led the merchandise design for Addis Ababa University’s first-ever Alumni Homecoming, bringing together legacy, school pride, and community through wearable and print assets.",
+                },
+              ].map(({ period, title, body }) => (
+                <li key={title} className="relative pl-8" data-reveal>
+                  <div className="absolute left-0 top-1 h-2 w-2 rounded-full bg-neutral-400 ring-4 ring-white" />
+                  <div className="text-sm font-medium text-neutral-600">{period}</div>
+                  <h3 className="mt-2 text-lg font-semibold text-neutral-900">{title}</h3>
+                  <p className="mt-1 text-base text-neutral-600">{body}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
         </section>
 
         {/* ===== CTA row ===== */}
