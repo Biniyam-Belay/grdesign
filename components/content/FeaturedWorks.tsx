@@ -160,6 +160,7 @@ export default function FeaturedWorks({
                         src={work.image}
                         alt={work.title}
                         fill
+                        quality={90}
                         className="object-cover"
                         sizes="(min-width: 1024px) 33vw, (min-width: 640px) 33vw, 100vw"
                         priority={false}
