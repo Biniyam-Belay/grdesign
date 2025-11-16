@@ -58,6 +58,11 @@ export default function ProjectCard({
   const ratio =
     variant === "wide" ? "aspect-[16/10]" : variant === "tall" ? "aspect-[3/4]" : "aspect-[4/3]";
 
+  const sizes =
+    variant === "wide"
+      ? "(min-width: 1024px) 67vw, 100vw"
+      : "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw";
+
   return (
     <Link
       ref={cardRef}
@@ -71,7 +76,7 @@ export default function ProjectCard({
         fill
         quality={90}
         className="object-cover transition-transform duration-300 group-hover:scale-105"
-        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+        sizes={sizes}
       />
 
       {/* Type badge */}
