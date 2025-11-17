@@ -43,9 +43,9 @@ export default function WorkPage() {
   );
 
   // Same rhythm as before: editorial cadence across 12 cols
-  type Variant = "wide" | "standard" | "tall";
-  const variantFor = (i: number): Variant =>
-    i % 5 === 0 ? "wide" : i % 5 === 2 ? "tall" : "standard";
+  // Sequence: wide, standard, standard, repeat
+  type Variant = "wide" | "standard";
+  const variantFor = (i: number): Variant => (i % 3 === 0 ? "wide" : "standard");
 
   return (
     <main ref={pageRef} className="min-h-[70svh] bg-white">

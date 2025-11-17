@@ -12,7 +12,7 @@ import type { Project } from "@lib/types";
 
 // import VideoPlayer from "@components/media/VideoPlayer"; // Removed from thumbnail usage
 
-type Variant = "wide" | "standard" | "tall";
+type Variant = "wide" | "standard";
 
 export default function ProjectCard({
   project,
@@ -55,8 +55,7 @@ export default function ProjectCard({
     return () => ctx.revert();
   }, [reduced]);
 
-  const ratio =
-    variant === "wide" ? "aspect-[16/10]" : variant === "tall" ? "aspect-[3/4]" : "aspect-[4/3]";
+  const ratio = variant === "wide" ? "aspect-[16/10]" : "aspect-[4/3]";
 
   const sizes =
     variant === "wide"
