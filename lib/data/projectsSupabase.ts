@@ -77,7 +77,7 @@ export async function getProjectsFromSupabase(): Promise<Project[] | null> {
         const { data, error } = await supabase
           .from("projects")
           .select("*")
-          .order("title", { ascending: true });
+          .order("position", { ascending: true });
 
         if (error) {
           console.warn("Supabase projects error:", error.message);

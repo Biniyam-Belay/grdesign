@@ -213,7 +213,7 @@ const ServicesAndProcessSection = () => {
                   <ul className="text-xs text-neutral-500 mb-4 space-y-1.5 inline-block text-left">
                     {service.features.slice(0, 3).map((feature, idx) => (
                       <li key={idx} className="flex items-center gap-2">
-                        <span className="w-1 h-1 bg-neutral-400 rounded-full flex-shrink-0"></span>
+                        <span className="w-1 h-1 bg-neutral-400 rounded-full shrink-0"></span>
                         <span>{feature}</span>
                       </li>
                     ))}
@@ -303,7 +303,7 @@ const ServicesAndProcessSection = () => {
           <div className="relative min-h-[200px]">
             {/* Connecting Line */}
             <div
-              className="hidden lg:block absolute top-4 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-neutral-200 to-transparent"
+              className="hidden lg:block absolute top-4 left-0 right-0 h-0.5 bg-linear-to-r from-transparent via-neutral-200 to-transparent"
               style={{ top: "16px" }}
             ></div>
 

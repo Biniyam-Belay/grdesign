@@ -43,8 +43,8 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
     },
     {
       href: "/admin/projects",
-      title: "Portfolio Projects",
-      description: "Showcase your best creative work.",
+      title: "Projects Management",
+      description: "Manage your portfolio projects and their order.",
       icon: (
         <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path

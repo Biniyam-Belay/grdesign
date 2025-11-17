@@ -28,6 +28,12 @@ export interface HeroSettings {
     slots: string;
     period: string;
   };
+  banner: {
+    text: string;
+    cta_text: string;
+    cta_link: string;
+    enabled: boolean;
+  };
 }
 
 export async function getHeroSettings(): Promise<HeroSettings> {
@@ -42,6 +48,7 @@ export async function getHeroSettings(): Promise<HeroSettings> {
     trustSignalsRes,
     urgencyRes,
     limitedCapacityRes,
+    bannerRes,
   ] = await Promise.all([
     supabase.from("site_settings").select("value").eq("key", "hero_availability").single(),
     supabase.from("site_settings").select("value").eq("key", "hero_experience_years").single(),
@@ -51,6 +58,7 @@ export async function getHeroSettings(): Promise<HeroSettings> {
     supabase.from("site_settings").select("value").eq("key", "hero_trust_signals").single(),
     supabase.from("site_settings").select("value").eq("key", "hero_urgency").single(),
     supabase.from("site_settings").select("value").eq("key", "hero_limited_capacity").single(),
+    supabase.from("site_settings").select("value").eq("key", "banner").single(),
   ]);
 
   return {
@@ -87,23 +95,25 @@ export async function getHeroSettings(): Promise<HeroSettings> {
       slots: "3 project slots",
       period: "this month",
     },
+    banner: bannerRes.data?.value || {
+      text: "",
+      cta_text: "",
+      cta_link: "",
+      enabled: false,
+    },
   };
 }
 
 export async function updateHeroSettings(settings: Partial<HeroSettings>): Promise<void> {
   const supabase = createSupabaseClient();
 
-  const updates: Promise<{
-    data: unknown;
-    error: unknown;
-  }>[] = [];
+  const updates: Promise<{ error?: unknown; data?: unknown }>[] = [];
 
   if (settings.availability) {
     updates.push(
       supabase
         .from("site_settings")
-        .update({ value: settings.availability })
-        .eq("key", "hero_availability"),
+        .upsert({ key: "hero_availability", value: settings.availability }, { onConflict: "key" }),
     );
   }
 
@@ -111,16 +121,83 @@ export async function updateHeroSettings(settings: Partial<HeroSettings>): Promi
     updates.push(
       supabase
         .from("site_settings")
-        .update({ value: { years: settings.experienceYears } })
-        .eq("key", "hero_experience_years"),
+        .upsert(
+          { key: "hero_experience_years", value: { years: settings.experienceYears } },
+          { onConflict: "key" },
+        ),
     );
   }
 
   if (settings.heroText) {
     updates.push(
-      supabase.from("site_settings").update({ value: settings.heroText }).eq("key", "hero_text"),
+      supabase
+        .from("site_settings")
+        .upsert({ key: "hero_text", value: settings.heroText }, { onConflict: "key" }),
     );
   }
 
-  await Promise.all(updates);
+  if (settings.mobileSubtitle) {
+    updates.push(
+      supabase
+        .from("site_settings")
+        .upsert(
+          { key: "hero_mobile_subtitle", value: { text: settings.mobileSubtitle } },
+          { onConflict: "key" },
+        ),
+    );
+  }
+
+  if (settings.credentials) {
+    updates.push(
+      supabase
+        .from("site_settings")
+        .upsert({ key: "hero_credentials", value: settings.credentials }, { onConflict: "key" }),
+    );
+  }
+
+  if (settings.trustSignals) {
+    updates.push(
+      supabase
+        .from("site_settings")
+        .upsert(
+          { key: "hero_trust_signals", value: { items: settings.trustSignals } },
+          { onConflict: "key" },
+        ),
+    );
+  }
+
+  if (settings.urgency) {
+    updates.push(
+      supabase
+        .from("site_settings")
+        .upsert({ key: "hero_urgency", value: settings.urgency }, { onConflict: "key" }),
+    );
+  }
+
+  if (settings.limitedCapacity) {
+    updates.push(
+      supabase
+        .from("site_settings")
+        .upsert(
+          { key: "hero_limited_capacity", value: settings.limitedCapacity },
+          { onConflict: "key" },
+        ),
+    );
+  }
+
+  if (settings.banner) {
+    updates.push(
+      supabase
+        .from("site_settings")
+        .upsert({ key: "banner", value: settings.banner }, { onConflict: "key" }),
+    );
+  }
+
+  const results = await Promise.all(updates);
+  results.forEach(({ error }) => {
+    if (error) {
+      console.error("Error updating settings:", error);
+      throw new Error("Failed to update one or more settings.");
+    }
+  });
 }

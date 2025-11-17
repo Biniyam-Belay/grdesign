@@ -41,6 +41,12 @@ export default function SettingsPage() {
       slots: "3 project slots",
       period: "this month",
     },
+    banner: {
+      text: "",
+      cta_text: "",
+      cta_link: "",
+      enabled: false,
+    },
   });
 
   const [passwordData, setPasswordData] = useState({
@@ -217,6 +223,18 @@ export default function SettingsPage() {
                 <div className="grid gap-4">
                   <input
                     type="text"
+                    value={settings.heroText.kicker}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        heroText: { ...settings.heroText, kicker: e.target.value },
+                      })
+                    }
+                    className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                    placeholder="Kicker text"
+                  />
+                  <input
+                    type="text"
                     value={settings.heroText.title1}
                     onChange={(e) =>
                       setSettings({
@@ -250,6 +268,156 @@ export default function SettingsPage() {
                     rows={2}
                     className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all resize-none text-neutral-900"
                     placeholder="Subtitle"
+                  />
+                </div>
+              </div>
+
+              {/* Mobile Subtitle */}
+              <div>
+                <label className="text-sm font-medium text-neutral-700 block mb-2">
+                  Mobile Subtitle
+                </label>
+                <textarea
+                  value={settings.mobileSubtitle}
+                  onChange={(e) => setSettings({ ...settings, mobileSubtitle: e.target.value })}
+                  rows={3}
+                  className="w-full px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all resize-none text-neutral-900"
+                  placeholder="Subtitle for mobile view"
+                />
+              </div>
+
+              {/* Credentials */}
+              <div className="space-y-4">
+                <label className="text-sm font-medium text-neutral-700">Credentials</label>
+                <div className="grid gap-4">
+                  <input
+                    type="text"
+                    value={settings.credentials.primary}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        credentials: { ...settings.credentials, primary: e.target.value },
+                      })
+                    }
+                    className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                    placeholder="Primary credential"
+                  />
+                  <input
+                    type="text"
+                    value={settings.credentials.secondary}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        credentials: { ...settings.credentials, secondary: e.target.value },
+                      })
+                    }
+                    className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                    placeholder="Secondary credential"
+                  />
+                  <input
+                    type="text"
+                    value={settings.credentials.turnaround}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        credentials: { ...settings.credentials, turnaround: e.target.value },
+                      })
+                    }
+                    className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                    placeholder="Turnaround time"
+                  />
+                </div>
+              </div>
+
+              {/* Trust Signals */}
+              <div>
+                <label className="text-sm font-medium text-neutral-700 block mb-2">
+                  Trust Signals (one per line)
+                </label>
+                <textarea
+                  value={settings.trustSignals.join("\n")}
+                  onChange={(e) =>
+                    setSettings({
+                      ...settings,
+                      trustSignals: e.target.value.split("\n").map((s) => s.trim()),
+                    })
+                  }
+                  rows={3}
+                  className="w-full px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all resize-none text-neutral-900"
+                  placeholder="Quality guarantee&#10;Same-day response&#10;Revision-friendly"
+                />
+              </div>
+
+              {/* Urgency */}
+              <div className="space-y-4">
+                <label className="text-sm font-medium text-neutral-700">Urgency</label>
+                <div className="grid gap-4">
+                  <input
+                    type="text"
+                    value={settings.urgency.text}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        urgency: { ...settings.urgency, text: e.target.value },
+                      })
+                    }
+                    className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                    placeholder="Urgency text"
+                  />
+                  <input
+                    type="text"
+                    value={settings.urgency.highlight}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        urgency: { ...settings.urgency, highlight: e.target.value },
+                      })
+                    }
+                    className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                    placeholder="Urgency highlight"
+                  />
+                </div>
+              </div>
+
+              {/* Limited Capacity */}
+              <div className="space-y-4">
+                <label className="text-sm font-medium text-neutral-700">Limited Capacity</label>
+                <div className="grid gap-4">
+                  <input
+                    type="text"
+                    value={settings.limitedCapacity.title}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        limitedCapacity: { ...settings.limitedCapacity, title: e.target.value },
+                      })
+                    }
+                    className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                    placeholder="Limited capacity title"
+                  />
+                  <input
+                    type="text"
+                    value={settings.limitedCapacity.slots}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        limitedCapacity: { ...settings.limitedCapacity, slots: e.target.value },
+                      })
+                    }
+                    className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                    placeholder="Number of slots"
+                  />
+                  <input
+                    type="text"
+                    value={settings.limitedCapacity.period}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        limitedCapacity: { ...settings.limitedCapacity, period: e.target.value },
+                      })
+                    }
+                    className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                    placeholder="Period (e.g., this month)"
                   />
                 </div>
               </div>
@@ -350,6 +518,89 @@ export default function SettingsPage() {
                 <Save className="w-4 h-4" />
                 {saving ? "Saving..." : "Save Changes"}
               </button>
+            </div>
+          </section>
+
+          {/* Promotional Banner Settings */}
+          <section className="bg-white rounded-2xl border border-neutral-200 p-8">
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h2 className="text-lg font-semibold text-neutral-900">Promotional Banner</h2>
+                <p className="text-sm text-neutral-500 mt-1">
+                  Control the promotional banner at the top of the site.
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-8">
+              {/* Banner Text */}
+              <div className="space-y-4">
+                <label className="text-sm font-medium text-neutral-700">Banner Text</label>
+                <input
+                  type="text"
+                  value={settings.banner.text}
+                  onChange={(e) =>
+                    setSettings({
+                      ...settings,
+                      banner: { ...settings.banner, text: e.target.value },
+                    })
+                  }
+                  className="w-full px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                  placeholder="e.g., Now available for new projects!"
+                />
+              </div>
+
+              {/* Banner CTA */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium text-neutral-700">CTA Text</label>
+                  <input
+                    type="text"
+                    value={settings.banner.cta_text}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        banner: { ...settings.banner, cta_text: e.target.value },
+                      })
+                    }
+                    className="w-full px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                    placeholder="e.g., Book a call"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-neutral-700">CTA Link</label>
+                  <input
+                    type="text"
+                    value={settings.banner.cta_link}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        banner: { ...settings.banner, cta_link: e.target.value },
+                      })
+                    }
+                    className="w-full px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                    placeholder="e.g., /contact"
+                  />
+                </div>
+              </div>
+
+              {/* Banner Enabled */}
+              <div>
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={settings.banner.enabled}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        banner: { ...settings.banner, enabled: e.target.checked },
+                      })
+                    }
+                    className="h-4 w-4 text-neutral-900 focus:ring-neutral-900 border-neutral-300 rounded"
+                  />
+                  <span className="text-sm font-medium text-neutral-700">Enable Banner</span>
+                </label>
+              </div>
             </div>
           </section>
 

@@ -62,6 +62,7 @@ function SortableItem({ work, handleDelete, viewMode }: SortableItemProps) {
           </Link>
           <button
             onClick={() => handleDelete(work)}
+            onPointerDown={(e) => e.stopPropagation()}
             className="p-2 bg-red-500/90 rounded-lg shadow-lg"
           >
             <svg
@@ -114,7 +115,11 @@ function SortableItem({ work, handleDelete, viewMode }: SortableItemProps) {
             />
           </svg>
         </Link>
-        <button onClick={() => handleDelete(work)} className="p-3 bg-red-100 rounded-xl">
+        <button
+          onClick={() => handleDelete(work)}
+          onPointerDown={(e) => e.stopPropagation()}
+          className="p-3 bg-red-100 rounded-xl"
+        >
           <svg
             className="h-5 w-5 text-red-600"
             fill="none"
@@ -218,7 +223,8 @@ export default function WorkManagement() {
 
       // 1. Delete image from storage
       if (work.image) {
-        const filePath = work.image.substring(work.image.lastIndexOf("/") + 1);
+        const baseUrl = work.image.split("?")[0];
+        const filePath = baseUrl.substring(baseUrl.lastIndexOf("/") + 1);
         if (filePath) {
           const { error: storageError } = await supabase.storage.from("works").remove([filePath]);
           if (storageError) {

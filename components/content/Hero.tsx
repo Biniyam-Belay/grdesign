@@ -14,6 +14,12 @@ type Props = {
   offsetTop?: number; // e.g., 96 -> 96px top padding
 };
 
+const availabilityColors = {
+  available: "bg-emerald-500",
+  limited: "bg-amber-500",
+  unavailable: "bg-red-500",
+};
+
 export default function Hero({ offsetTop = 80 }: Props) {
   const rootRef = useRef<HTMLElement | null>(null);
   const [settings, setSettings] = useState<HeroSettings | null>(null);
@@ -357,9 +363,13 @@ export default function Hero({ offsetTop = 80 }: Props) {
                     <div className="flex items-center gap-1">
                       <div className="relative">
                         {/* Outer blinking ring */}
-                        <div className="absolute inset-0 w-2 h-2 bg-emerald-500 rounded-full animate-ping opacity-75"></div>
+                        <div
+                          className={`absolute inset-0 w-2 h-2 ${availabilityColors[settings.availability.status]} rounded-full animate-ping opacity-75`}
+                        ></div>
                         {/* Inner pulsing dot */}
-                        <div className="relative w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                        <div
+                          className={`relative w-2 h-2 ${availabilityColors[settings.availability.status]} rounded-full animate-pulse`}
+                        ></div>
                       </div>
                       <span className="font-medium">{settings.availability.label}</span>
                     </div>
@@ -466,9 +476,13 @@ export default function Hero({ offsetTop = 80 }: Props) {
                   <div className="flex items-center gap-2 text-sm text-neutral-600">
                     <div className="relative">
                       {/* Outer blinking ring */}
-                      <div className="absolute inset-0 w-2 h-2 bg-emerald-500 rounded-full animate-ping opacity-75"></div>
+                      <div
+                        className={`absolute inset-0 w-2 h-2 ${availabilityColors[settings.availability.status]} rounded-full animate-ping opacity-75`}
+                      ></div>
                       {/* Inner pulsing dot */}
-                      <div className="relative w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                      <div
+                        className={`relative w-2 h-2 ${availabilityColors[settings.availability.status]} rounded-full animate-pulse`}
+                      ></div>
                     </div>
                     <span className="font-medium">{settings.availability.label}</span>
                   </div>

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import ImageUpload from "@/components/ui/ImageUpload";
+import BatchImageUpload from "@/components/ui/BatchImageUpload";
 import { Project, ProjectType } from "@/lib/types";
 
 interface ProjectFormProps {
@@ -580,29 +581,28 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
 
                   {/* Gallery Grid - SCROLLABLE */}
                   {gallery.length > 0 && (
-                    <div className="mb-4 max-h-[500px] overflow-y-auto rounded-xl border border-neutral-200 bg-neutral-50/50">
-                      <div className="p-4 space-y-3">
+                    <div className="mb-4 max-h-[500px] overflow-y-auto rounded-xl border border-neutral-200 bg-neutral-50/50 p-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                         {gallery.map((img, idx) => (
                           <div
                             key={idx}
-                            className="flex items-start gap-4 p-4 border border-neutral-200 rounded-xl bg-white hover:shadow-md transition-all group"
+                            className="relative group bg-white rounded-xl shadow-sm border border-neutral-200 overflow-hidden hover:shadow-md transition-all"
                           >
-                            {/* Image Preview with Number */}
-                            <div className="relative flex-shrink-0">
+                            {/* Image Preview */}
+                            <div className="relative w-full aspect-square bg-neutral-100">
                               <Image
                                 src={img.src}
                                 alt={img.alt || `Gallery image ${idx + 1}`}
-                                width={96}
-                                height={96}
-                                className="w-24 h-24 object-cover rounded-lg border-2 border-neutral-200 group-hover:border-purple-300 transition-colors"
+                                fill
+                                className="object-cover"
                               />
-                              <div className="absolute -top-2 -left-2 w-7 h-7 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 text-white text-xs flex items-center justify-center font-bold shadow-lg">
+                              <div className="absolute top-2 left-2 w-6 h-6 rounded-full bg-black text-white text-xs flex items-center justify-center font-bold shadow-lg">
                                 {idx + 1}
                               </div>
                             </div>
 
-                            {/* Input Fields */}
-                            <div className="flex-1 min-w-0 space-y-2">
+                            {/* Input Fields & Remove Button */}
+                            <div className="p-3 space-y-2">
                               <input
                                 type="text"
                                 value={img.alt}
@@ -611,12 +611,17 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                                   updated[idx] = { ...updated[idx], alt: e.target.value };
                                   setGallery(updated);
                                 }}
-                                placeholder="Image description (recommended for accessibility)"
-                                className="w-full px-3 py-2.5 text-sm border border-neutral-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
+                                placeholder="Alt text"
+                                className="w-full px-2 py-1.5 text-sm border border-neutral-300 rounded-lg focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition-colors"
                               />
-                              <div className="flex items-center gap-2 text-xs text-neutral-500">
+                              <button
+                                type="button"
+                                onClick={() => setGallery(gallery.filter((_, i) => i !== idx))}
+                                className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                                title="Remove image"
+                              >
                                 <svg
-                                  className="w-3.5 h-3.5 flex-shrink-0"
+                                  className="w-4 h-4"
                                   fill="none"
                                   viewBox="0 0 24 24"
                                   stroke="currentColor"
@@ -625,34 +630,11 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                     strokeWidth={2}
-                                    d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                                    d="M6 18L18 6M6 6l12 12"
                                   />
                                 </svg>
-                                <span className="truncate">{img.src}</span>
-                              </div>
+                              </button>
                             </div>
-
-                            {/* Remove Button */}
-                            <button
-                              type="button"
-                              onClick={() => setGallery(gallery.filter((_, i) => i !== idx))}
-                              className="flex-shrink-0 text-red-500 hover:text-white hover:bg-red-500 p-2.5 rounded-lg transition-all opacity-0 group-hover:opacity-100"
-                              title="Remove image"
-                            >
-                              <svg
-                                className="w-5 h-5"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                />
-                              </svg>
-                            </button>
                           </div>
                         ))}
                       </div>
@@ -661,15 +643,15 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
 
                   {/* Add New Gallery Image */}
                   <div className="border-2 border-dashed border-neutral-300 rounded-xl p-5 bg-gradient-to-br from-neutral-50 to-neutral-100/50 hover:border-purple-300 hover:bg-purple-50/30 transition-all">
-                    <ImageUpload
+                    <BatchImageUpload
                       bucket="project-images"
-                      currentImage=""
-                      onUpload={(url) => {
-                        if (url) {
-                          setGallery([...gallery, { src: url, alt: "" }]);
-                        }
+                      onChange={(uploads) => {
+                        const newImages = uploads.map((upload) => ({
+                          src: upload.url,
+                          alt: upload.name,
+                        }));
+                        setGallery([...gallery, ...newImages]);
                       }}
-                      label="Add Gallery Image"
                     />
                   </div>
                 </div>

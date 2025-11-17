@@ -29,7 +29,7 @@ import {
   Minimize,
   Undo,
   Redo,
-  Youtube as YoutubeIcon, // add this if your lucide version supports it
+  // Youtube icon removed because it's not used in the toolbar currently
 } from "lucide-react";
 
 interface RichTextEditorProps {

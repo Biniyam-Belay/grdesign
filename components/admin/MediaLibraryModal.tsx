@@ -120,6 +120,7 @@ export default function MediaLibraryModal({
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
               {files.map((file) => {
                 const publicUrl = BUCKET_URL_PREFIX + bucket + "/" + file.name;
+                const optimizedUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/render/image/public/${bucket}/${file.name}?width=200&height=200&quality=75`;
                 const isSelected = selectedFileUrls.includes(publicUrl);
                 return (
                   <div
@@ -127,7 +128,7 @@ export default function MediaLibraryModal({
                     className="relative group aspect-square bg-neutral-100 rounded-lg overflow-hidden"
                   >
                     <Image
-                      src={publicUrl}
+                      src={optimizedUrl}
                       alt={file.name}
                       fill
                       className="object-cover"

@@ -5,22 +5,173 @@ import { createSupabaseClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import Image from "next/image";
 import { Project } from "@/lib/types";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy, arrayMove } from "@dnd-kit/sortable";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+
+interface SortableProjectItemProps {
+  project: Project;
+  handleDelete: (project: Project) => void;
+  viewMode: "grid" | "list";
+}
+
+function SortableProjectItem({ project, handleDelete, viewMode }: SortableProjectItemProps) {
+  const sortableId = project.id ?? project.slug;
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: sortableId,
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    zIndex: isDragging ? 1 : 0,
+    opacity: isDragging ? 0.8 : 1,
+  };
+
+  const commonContent = (
+    <>
+      <div className="relative aspect-square overflow-hidden bg-neutral-100">
+        {project.thumb && (
+          <Image src={project.thumb} alt={project.title} fill className="object-cover" />
+        )}
+        <div className="absolute top-3 right-3 flex gap-2">
+          <Link
+            href={`/admin/projects/edit/${project.slug}`}
+            className="p-2 bg-white/90 rounded-lg shadow-lg"
+          >
+            <svg
+              className="h-4 w-4 text-neutral-700"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              />
+            </svg>
+          </Link>
+          <button
+            onClick={() => handleDelete(project)}
+            className="p-2 bg-red-500/90 rounded-lg shadow-lg"
+          >
+            <svg
+              className="h-4 w-4 text-white"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div className="p-5">
+        <h3 className="text-lg font-semibold text-neutral-900">{project.title}</h3>
+        {project.excerpt && (
+          <p className="text-sm text-neutral-600 line-clamp-2">{project.excerpt}</p>
+        )}
+      </div>
+    </>
+  );
+
+  const listItemContent = (
+    <>
+      <div className="relative w-24 h-24 rounded-xl overflow-hidden bg-neutral-100 flex-shrink-0">
+        {project.thumb && (
+          <Image src={project.thumb} alt={project.title} fill className="object-cover" />
+        )}
+      </div>
+      <div className="flex-1 min-w-0">
+        <h3 className="text-lg font-semibold text-neutral-900">{project.title}</h3>
+        {project.excerpt && <p className="text-sm text-neutral-600">{project.excerpt}</p>}
+      </div>
+      <div className="flex gap-2 flex-shrink-0">
+        <Link
+          href={`/admin/projects/edit/${project.slug}`}
+          className="p-3 bg-neutral-100 rounded-xl"
+        >
+          <svg
+            className="h-5 w-5 text-neutral-700"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+            />
+          </svg>
+        </Link>
+        <button onClick={() => handleDelete(project)} className="p-3 bg-red-100 rounded-xl">
+          <svg
+            className="h-5 w-5 text-red-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+            />
+          </svg>
+        </button>
+      </div>
+    </>
+  );
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className={`group bg-white rounded-2xl shadow-lg border border-neutral-200 overflow-hidden cursor-grab ${
+        isDragging ? "ring-2 ring-purple-500" : ""
+      } ${viewMode === "list" ? "flex items-center gap-6 p-6" : ""}`}
+    >
+      {viewMode === "grid" ? commonContent : listItemContent}
+    </div>
+  );
+}
 
 export default function ProjectManagement() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
-  const [mounted, setMounted] = useState(false);
   const [error, setError] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filterCategory, setFilterCategory] = useState<string>("all");
+  const [mounted, setMounted] = useState(false);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [brokenThumbs, setBrokenThumbs] = useState<Record<string, boolean>>({});
   const supabase = createSupabaseClient();
 
   useEffect(() => {
-    // This triggers the entry animations
+    // Trigger entry animations similar to other management pages
     setMounted(true);
   }, []);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    window.location.href = "/admin/login";
+  };
 
   const fetchProjects = useCallback(async () => {
     try {
@@ -30,20 +181,21 @@ export default function ProjectManagement() {
       const {
         data: { session },
       } = await supabase.auth.getSession();
+
       if (!session) {
-        throw new Error("You are not signed in. Please log in again.");
+        window.location.href = "/admin/login";
+        return;
       }
 
-      const { data, error } = await supabase.functions.invoke("projects", {
-        body: { action: "list" },
-        headers: {
-          Authorization: `Bearer ${session.access_token}`,
-        },
-      });
+      const { data, error } = await supabase
+        .from("projects")
+        .select("*")
+        .order("position", { ascending: true });
 
       if (error) throw error;
-      setProjects((data?.projects as Project[]) || []);
+      setProjects(data || []);
     } catch (err) {
+      console.error("Error fetching projects:", err);
       setError(err instanceof Error ? err.message : "Failed to fetch projects");
     } finally {
       setLoading(false);
@@ -57,7 +209,7 @@ export default function ProjectManagement() {
   const handleDelete = async (project: Project) => {
     if (
       !confirm(
-        `Are you sure you want to delete "${project.title}"? This will also permanently delete all associated images and cannot be undone.`,
+        `Are you sure you want to delete "${project.title}"? This will also permanently delete the associated image.`,
       )
     )
       return;
@@ -66,56 +218,91 @@ export default function ProjectManagement() {
       const {
         data: { session },
       } = await supabase.auth.getSession();
-      if (!session) throw new Error("You are not signed in. Please log in again.");
-
-      const pathsToDelete: string[] = [];
-      if (project.thumb)
-        pathsToDelete.push(project.thumb.substring(project.thumb.lastIndexOf("/") + 1));
-      if (project.video)
-        pathsToDelete.push(project.video.substring(project.video.lastIndexOf("/") + 1));
-      if (project.mobileHeroSrc)
-        pathsToDelete.push(
-          project.mobileHeroSrc.substring(project.mobileHeroSrc.lastIndexOf("/") + 1),
-        );
-      if (project.featuredSrc)
-        pathsToDelete.push(project.featuredSrc.substring(project.featuredSrc.lastIndexOf("/") + 1));
-      if (project.gallery) {
-        project.gallery.forEach((item) => {
-          if (item.src) pathsToDelete.push(item.src.substring(item.src.lastIndexOf("/") + 1));
-        });
+      if (!session) {
+        window.location.href = "/admin/login";
+        return;
       }
 
-      const uniquePaths = [...new Set(pathsToDelete.filter((p) => p))];
-
-      if (uniquePaths.length > 0) {
-        await supabase.storage.from("project-images").remove(uniquePaths);
+      // 1. Delete image from storage
+      if (project.thumb) {
+        const filePath = project.thumb.substring(project.thumb.lastIndexOf("/") + 1);
+        if (filePath) {
+          const { error: storageError } = await supabase.storage
+            .from("project-images")
+            .remove([filePath]);
+          if (storageError) {
+            // Log error but don't block DB deletion
+            console.error("Failed to delete image from storage:", storageError.message);
+          }
+        }
       }
 
-      await supabase.from("projects").delete().eq("id", project.id);
+      // 2. Delete record from database
+      const { error: dbError } = await supabase.from("projects").delete().eq("id", project.id);
+      if (dbError) throw dbError;
 
-      await fetch("/api/revalidate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ path: "/work", type: "layout" }),
-      });
-
+      // 3. Update UI
       setProjects((prev) => prev.filter((p) => p.id !== project.id));
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to delete project");
+      console.error("Delete error:", err);
+      alert("Failed to delete project: " + (err as Error).message);
     }
   };
 
-  const filteredProjects = projects.filter((project) => {
-    const matchesSearch =
-      project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      project.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = filterCategory === "all" || project.type === filterCategory;
-    return matchesSearch && matchesCategory;
-  });
+  const sensors = useSensors(useSensor(PointerSensor), useSensor(KeyboardSensor));
 
-  const categories = Array.from(
-    new Set(projects.filter((p) => p.type).map((p) => p.type as string)),
+  const updateProjectOrder = useCallback(
+    async (newOrder: Project[]) => {
+      try {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+
+        if (!session) {
+          window.location.href = "/admin/login";
+          return;
+        }
+
+        const updates = newOrder.map((project, index) => ({
+          id: project.id,
+          position: index,
+        }));
+
+        // Instead of a single upsert, perform individual updates for each project
+        // This ensures only the position is updated and other fields are not touched
+        const updatePromises = updates.map(async (updateData) => {
+          const { error: updateError } = await supabase
+            .from("projects")
+            .update({ position: updateData.position })
+            .eq("id", updateData.id);
+          if (updateError) throw updateError;
+        });
+
+        await Promise.all(updatePromises);
+        // Optionally, re-fetch projects to ensure consistency, or just rely on local state
+        // fetchProjects();
+      } catch (err) {
+        console.error("Error updating project order:", err);
+        alert("Failed to update project order: " + (err as Error).message);
+      }
+    },
+    [supabase],
   );
+
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id) {
+      setProjects((items) => {
+        const getSortableId = (p: Project) => p.id ?? p.slug;
+        const oldIndex = items.findIndex((item) => getSortableId(item) === active.id);
+        const newIndex = items.findIndex((item) => getSortableId(item) === over?.id);
+        const newOrder = arrayMove(items, oldIndex, newIndex);
+        updateProjectOrder(newOrder); // Call function to update database
+        return newOrder;
+      });
+    }
+  };
 
   if (loading) {
     return (
@@ -171,13 +358,19 @@ export default function ProjectManagement() {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth={1.5}
-                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      d="M4 6h16M4 12h16M4 18h16"
                     />
                   </svg>
                 </div>
                 <h1 className="text-lg font-semibold text-neutral-900">Manage Projects</h1>
               </div>
             </div>
+            <button
+              onClick={handleLogout}
+              className="hidden sm:inline-flex items-center justify-center rounded-lg border border-neutral-200/80 bg-white px-4 py-2 text-sm font-medium text-neutral-700 shadow-sm hover:bg-neutral-50 transition-colors duration-200"
+            >
+              Logout
+            </button>
           </div>
         </div>
       </header>
@@ -208,44 +401,7 @@ export default function ProjectManagement() {
           )}
 
           <div className="mb-8 flex flex-col sm:flex-row gap-3 items-center justify-between">
-            <div className="relative w-full max-w-sm">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                <svg
-                  className="h-5 w-5 text-neutral-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
-              </div>
-              <input
-                type="text"
-                placeholder="Search projects..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="block w-full rounded-lg border border-neutral-200/80 bg-white py-2.5 pl-10 pr-3 text-sm placeholder-neutral-500 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10 transition-all"
-              />
-            </div>
-
             <div className="flex items-center gap-3 w-full sm:w-auto">
-              <select
-                value={filterCategory}
-                onChange={(e) => setFilterCategory(e.target.value)}
-                className="flex-1 w-full rounded-lg border border-neutral-200/80 bg-white px-3 py-2.5 text-sm font-medium text-neutral-700 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10 transition-all"
-              >
-                <option value="all">All Categories</option>
-                {categories.map((category) => (
-                  <option key={category} value={category}>
-                    {category}
-                  </option>
-                ))}
-              </select>
               <div className="flex rounded-lg border border-neutral-200/80 bg-white p-1">
                 <button
                   onClick={() => setViewMode("grid")}
@@ -277,34 +433,30 @@ export default function ProjectManagement() {
                 </button>
               </div>
             </div>
+
+            <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
+              <Link
+                href="/admin/projects/new"
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-neutral-200/80 bg-white px-4 py-2 text-sm font-semibold text-neutral-800 transition-all duration-200 ease-in-out hover:bg-neutral-50 hover:-translate-y-px active:scale-95"
+              >
+                Add Single
+              </Link>
+            </div>
           </div>
+
           <div className="mb-8 border-t border-neutral-200/80 pt-6 flex items-center justify-between">
             <p className="text-sm text-neutral-500">
-              <span className="font-medium text-black">{filteredProjects.length}</span>
-              <span> {filteredProjects.length === 1 ? "project" : "projects"} found</span>
+              <span className="font-medium text-black">{projects.length}</span>
+              <span> {projects.length === 1 ? "project" : "projects"} found</span>
             </p>
-            <Link
-              href="/admin/projects/new"
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-black px-4 py-2 text-sm font-semibold text-white transition-all duration-200 ease-in-out hover:bg-neutral-800 hover:-translate-y-px active:scale-95"
-            >
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 4v16m8-8H4"
-                />
-              </svg>
-              New Project
-            </Link>
           </div>
         </div>
 
-        {filteredProjects.length === 0 ? (
+        {projects.length === 0 ? (
           <div
             className={`transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`}
           >
-            <div className="flex flex-col items-center justify-center py-20 text-center border-2 border-dashed border-neutral-200 rounded-2xl">
+            <div className="flex flex-col items-center justify-center py-20 text-center border-2 border-dashed border-neutral-200 rounded-2xl bg-white/70">
               <div className="mb-4 h-16 w-16 rounded-full bg-neutral-100 flex items-center justify-center">
                 <svg
                   className="h-8 w-8 text-neutral-400"
@@ -316,237 +468,57 @@ export default function ProjectManagement() {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={1.5}
-                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    d="M4 6h16M4 12h16M4 18h16"
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-neutral-900 mb-2">No projects found</h3>
+              <h3 className="text-lg font-semibold text-neutral-900 mb-2">No projects yet</h3>
               <p className="text-neutral-500 mb-6 max-w-xs">
-                {searchQuery
-                  ? `Your search for "${searchQuery}" did not return any results.`
-                  : "Get started by creating your first project."}
+                Get started by adding your first project.
               </p>
               <Link
                 href="/admin/projects/new"
                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-black text-white rounded-lg font-medium transition-all duration-200 ease-in-out hover:bg-neutral-800 hover:-translate-y-px active:scale-95"
               >
-                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 4v16m8-8H4"
-                  />
-                </svg>
-                Create First Project
+                Add Your First Project
               </Link>
             </div>
           </div>
-        ) : viewMode === "grid" ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredProjects.map((project, index) => (
-              <div
-                key={project.id}
-                className={`group relative transition-all duration-500 ease-in-out ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
-                style={{ transitionDelay: `${index * 50}ms` }}
-              >
-                <div className="relative h-full overflow-hidden rounded-2xl border border-neutral-200/80 bg-white transition-all duration-300 ease-in-out hover:shadow-xl hover:shadow-neutral-200/80 hover:-translate-y-1">
-                  <div className="relative aspect-video overflow-hidden bg-neutral-100">
-                    {project.thumb && !brokenThumbs[project.id || ""] ? (
-                      <Image
-                        src={project.thumb}
-                        alt={project.title}
-                        fill
-                        className="object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
-                        onError={() =>
-                          setBrokenThumbs((prev) => ({ ...prev, [project.id || ""]: true }))
-                        }
-                      />
-                    ) : (
-                      <div className="flex h-full items-center justify-center">
-                        <svg
-                          className="h-12 w-12 text-neutral-300"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={1.5}
-                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                          />
-                        </svg>
-                      </div>
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                  </div>
-
-                  <div className="p-5">
-                    <div className="mb-3 flex items-start justify-between gap-2">
-                      <h3 className="text-lg font-semibold text-neutral-900 line-clamp-2">
-                        {project.title}
-                      </h3>
-                      <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
-                        <span className="inline-flex items-center rounded-md bg-neutral-100 px-2 py-1 text-xs font-medium text-neutral-700">
-                          {project.type || "Project"}
-                        </span>
-                        {project.featured && (
-                          <span className="inline-flex items-center rounded-md bg-neutral-800 text-white px-2 py-1 text-xs font-medium">
-                            <svg className="h-3 w-3 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
-                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                            </svg>
-                            Featured
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    <p className="text-sm text-neutral-500 line-clamp-2 mb-4">{project.excerpt}</p>
-
-                    <div className="flex items-center gap-2 pt-2 border-t border-neutral-100">
-                      <Link
-                        href={`/admin/projects/edit/${project.slug}`}
-                        className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-neutral-100 px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-200 transition-colors duration-200"
-                      >
-                        <svg
-                          className="h-4 w-4"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={1.5}
-                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                          />
-                        </svg>
-                        Edit
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(project)}
-                        disabled={!project.id}
-                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-neutral-200/80 text-neutral-500 hover:border-black hover:text-black transition-colors duration-200 disabled:opacity-50"
-                        title="Delete project"
-                      >
-                        <svg
-                          className="h-4 w-4"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={1.5}
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
         ) : (
-          <div className="space-y-3">
-            {filteredProjects.map((project, index) => (
-              <div
-                key={project.id}
-                className={`group transition-all duration-500 ease-in-out ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
-                style={{ transitionDelay: `${index * 30}ms` }}
-              >
-                <div className="flex items-center gap-4 rounded-xl border border-neutral-200/80 bg-white p-3 transition-all duration-300 ease-in-out hover:shadow-lg hover:border-neutral-300 hover:translate-x-1">
-                  <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg bg-neutral-100">
-                    {project.thumb && !brokenThumbs[project.id || ""] ? (
-                      <Image
-                        src={project.thumb}
-                        alt={project.title}
-                        fill
-                        className="object-cover"
-                        onError={() =>
-                          setBrokenThumbs((prev) => ({ ...prev, [project.id || ""]: true }))
-                        }
-                      />
-                    ) : (
-                      <div className="flex h-full items-center justify-center">
-                        <svg
-                          className="h-8 w-8 text-neutral-300"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={1.5}
-                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                          />
-                        </svg>
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-base font-semibold text-neutral-900 truncate">
-                      {project.title}
-                    </h3>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="inline-flex items-center rounded-md bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-700">
-                        {project.type || "Project"}
-                      </span>
-                      {project.featured && (
-                        <span className="inline-flex items-center rounded-md bg-neutral-800 text-white px-2 py-0.5 text-xs font-medium">
-                          Featured
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <Link
-                      href={`/admin/projects/edit/${project.slug}`}
-                      className="flex items-center gap-2 rounded-lg bg-neutral-100 px-3 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-200 transition-colors duration-200"
-                    >
-                      <svg
-                        className="h-4 w-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1.5}
-                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                        />
-                      </svg>
-                      <span className="hidden sm:inline">Edit</span>
-                    </Link>
-                    <button
-                      onClick={() => handleDelete(project)}
-                      disabled={!project.id}
-                      className="flex h-8 w-8 items-center justify-center rounded-lg border border-neutral-200/80 text-neutral-500 hover:border-black hover:text-black transition-colors duration-200 disabled:opacity-50"
-                      title="Delete project"
-                    >
-                      <svg
-                        className="h-4 w-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1.5}
-                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                        />
-                      </svg>
-                    </button>
-                  </div>
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              items={projects.map((project) => project.id ?? project.slug)}
+              strategy={verticalListSortingStrategy}
+            >
+              {viewMode === "grid" ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {projects.map((project) => (
+                    <SortableProjectItem
+                      key={project.id ?? project.slug}
+                      project={project}
+                      handleDelete={handleDelete}
+                      viewMode="grid"
+                    />
+                  ))}
                 </div>
-              </div>
-            ))}
-          </div>
+              ) : (
+                <div className="space-y-4">
+                  {projects.map((project) => (
+                    <SortableProjectItem
+                      key={project.id ?? project.slug}
+                      project={project}
+                      handleDelete={handleDelete}
+                      viewMode="list"
+                    />
+                  ))}
+                </div>
+              )}
+            </SortableContext>
+          </DndContext>
         )}
       </main>
     </div>

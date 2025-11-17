@@ -6,6 +6,7 @@ import Footer from "@components/layout/Footer";
 import { VideoCacheProvider } from "@lib/hooks/useVideoCache";
 import { Analytics } from "@vercel/analytics/next";
 import LoadingIndicator from "@components/ui/LoadingIndicator";
+import { ToastProvider } from "@components/ui/ToastProvider";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -47,12 +48,14 @@ export default function RootLayout({
       </head>
       <body className="font-sans antialiased bg-white text-neutral-900">
         <LoadingIndicator />
-        <VideoCacheProvider>
-          <Header />
-          {children}
-          <Analytics />
-          <Footer />
-        </VideoCacheProvider>
+        <ToastProvider>
+          <VideoCacheProvider>
+            <Header />
+            {children}
+            <Analytics />
+            <Footer />
+          </VideoCacheProvider>
+        </ToastProvider>
       </body>
     </html>
   );
