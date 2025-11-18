@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-// Note: framer-motion is imported elsewhere for potential future animation; currently unused.
+import { motion, AnimatePresence } from "framer-motion";
 import { Star } from "lucide-react";
 import Image from "next/image";
 import gsap from "gsap";
@@ -234,56 +234,69 @@ export default function SocialProofSection() {
             </div>
           ) : testimonials.length > 0 ? (
             <div className="testimonials-container" style={{ opacity: 1 }}>
-              <div className="bg-neutral-50 rounded-xl p-8 h-full flex flex-col justify-center min-h-[480px]">
-                {/* Rating with Star Icons */}
-                <div className="flex justify-center lg:justify-start mb-6">
-                  <div className="flex items-center gap-0.5">
-                    {[...Array(testimonials[activeTestimonial].rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-neutral-900 text-neutral-900" />
-                    ))}
-                  </div>
-                </div>
-
-                {/* Quote */}
-                <blockquote className="text-base md:text-lg text-neutral-700 mb-8 leading-relaxed text-center lg:text-left">
-                  "{testimonials[activeTestimonial].content}"
-                </blockquote>
-
-                {/* Author & Results */}
-                <div className="flex flex-col gap-4 mb-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-neutral-200 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-neutral-700 font-medium text-sm">
-                        {testimonials[activeTestimonial].name
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")}
-                      </span>
-                    </div>
-                    <div className="text-left">
-                      <div className="font-medium text-neutral-900 text-sm">
-                        {testimonials[activeTestimonial].name}
+              <div className="bg-neutral-50 rounded-xl p-8 min-h-[550px] flex flex-col justify-between">
+                <AnimatePresence mode="wait">
+                  {testimonials[activeTestimonial] && (
+                    <motion.div
+                      key={activeTestimonial}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="flex flex-col h-full"
+                    >
+                      {/* Rating with Star Icons */}
+                      <div className="flex justify-center lg:justify-start mb-6">
+                        <div className="flex items-center gap-0.5">
+                          {[...Array(testimonials[activeTestimonial].rating)].map((_, i) => (
+                            <Star key={i} className="w-4 h-4 fill-neutral-900 text-neutral-900" />
+                          ))}
+                        </div>
                       </div>
-                      <div className="text-xs text-neutral-500">
-                        {testimonials[activeTestimonial].role},{" "}
-                        {testimonials[activeTestimonial].company}
+
+                      {/* Quote */}
+                      <blockquote className="text-base md:text-lg text-neutral-700 mb-8 leading-relaxed text-center lg:text-left flex-grow">
+                        "{testimonials[activeTestimonial].content}"
+                      </blockquote>
+
+                      {/* Author & Results */}
+                      <div className="flex flex-col gap-4 mb-6">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-neutral-200 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span className="text-neutral-700 font-medium text-sm">
+                              {testimonials[activeTestimonial].name
+                                .split(" ")
+                                .map((n) => n[0])
+                                .join("")}
+                            </span>
+                          </div>
+                          <div className="text-left">
+                            <div className="font-medium text-neutral-900 text-sm">
+                              {testimonials[activeTestimonial].name}
+                            </div>
+                            <div className="text-xs text-neutral-500">
+                              {testimonials[activeTestimonial].role},{" "}
+                              {testimonials[activeTestimonial].company}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="bg-white border border-neutral-200 rounded-lg px-4 py-2 self-start">
+                          <div className="text-neutral-800 font-medium text-sm">
+                            {testimonials[activeTestimonial].result}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
 
-                  <div className="bg-white border border-neutral-200 rounded-lg px-4 py-2 self-start">
-                    <div className="text-neutral-800 font-medium text-sm">
-                      {testimonials[activeTestimonial].result}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="text-xs text-neutral-500 mb-6 text-center lg:text-left">
-                  {testimonials[activeTestimonial].project}
-                </div>
+                      <div className="text-xs text-neutral-500 mb-6 text-center lg:text-left">
+                        {testimonials[activeTestimonial].project}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
                 {/* Navigation */}
-                <div className="flex justify-center lg:justify-start gap-2">
+                <div className="flex justify-center lg:justify-start gap-2 flex-shrink-0">
                   {testimonials.map((_, index) => (
                     <button
                       key={index}
