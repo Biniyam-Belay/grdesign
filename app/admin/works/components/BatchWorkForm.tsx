@@ -123,13 +123,13 @@ export default function BatchWorkForm() {
   return (
     <>
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50">
-        <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-neutral-200/50 shadow-sm">
+        <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-[#0B132B]/10/50 shadow-sm">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 items-center justify-between gap-4">
               <div className="flex items-center gap-4">
                 <Link
                   href="/admin/works"
-                  className="flex items-center gap-2 text-neutral-600 hover:text-neutral-900"
+                  className="flex items-center gap-2 text-[#0B132B]/60 hover:text-[#0B132B]"
                 >
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path
@@ -142,7 +142,7 @@ export default function BatchWorkForm() {
                   <span className="font-medium text-sm">Back to Works</span>
                 </Link>
                 <div className="h-6 w-px bg-neutral-300" />
-                <h1 className="text-lg font-semibold text-neutral-900">Add Works in Batch</h1>
+                <h1 className="text-lg font-semibold text-[#0B132B]">Add Works in Batch</h1>
               </div>
             </div>
           </div>
@@ -157,19 +157,17 @@ export default function BatchWorkForm() {
                 </div>
               )}
 
-              <div className="bg-white rounded-2xl shadow-xl border border-neutral-200 p-8">
-                <h2 className="text-xl font-semibold text-neutral-900 mb-4">1. Add Images</h2>
-                <p className="text-sm text-neutral-600 mb-4">
+              <div className="bg-white rounded-2xl shadow-xl border border-[#0B132B]/10 p-8">
+                <h2 className="text-xl font-semibold text-[#0B132B] mb-4">1. Add Images</h2>
+                <p className="text-sm text-[#0B132B]/60 mb-4">
                   Upload new images or select existing ones from your library.
                 </p>
-                <div className="p-6 border border-neutral-200 rounded-xl">
-                  <h3 className="text-base font-semibold text-neutral-800 mb-3">
-                    Upload New Images
-                  </h3>
+                <div className="p-6 border border-[#0B132B]/10 rounded-xl">
+                  <h3 className="text-base font-semibold text-[#0B132B] mb-3">Upload New Images</h3>
                   <BatchImageUpload bucket="works" onChange={handleUploadChange} />
                 </div>
                 <div className="text-center my-4">
-                  <span className="text-sm font-semibold text-neutral-500">OR</span>
+                  <span className="text-sm font-semibold text-[#0B132B]/50">OR</span>
                 </div>
                 <button
                   type="button"
@@ -181,13 +179,13 @@ export default function BatchWorkForm() {
               </div>
 
               {newWorks.length > 0 && (
-                <div className="bg-white rounded-2xl shadow-xl border border-neutral-200 p-8">
-                  <h2 className="text-xl font-semibold text-neutral-900 mb-6">2. Edit Details</h2>
+                <div className="bg-white rounded-2xl shadow-xl border border-[#0B132B]/10 p-8">
+                  <h2 className="text-xl font-semibold text-[#0B132B] mb-6">2. Edit Details</h2>
                   <div className="space-y-8">
                     {newWorks.map((work, index) => (
                       <div
                         key={work.url}
-                        className="grid grid-cols-1 md:grid-cols-3 gap-6 border-t border-neutral-200 pt-6 first:border-t-0 first:pt-0"
+                        className="grid grid-cols-1 md:grid-cols-3 gap-6 border-t border-[#0B132B]/10 pt-6 first:border-t-0 first:pt-0"
                       >
                         <div className="md:col-span-1">
                           <Image
@@ -201,7 +199,7 @@ export default function BatchWorkForm() {
                         </div>
                         <div className="md:col-span-2 space-y-4">
                           <div>
-                            <label className="block text-sm font-semibold text-neutral-900 mb-2">
+                            <label className="block text-sm font-semibold text-[#0B132B] mb-2">
                               Title
                             </label>
                             <input
@@ -209,11 +207,11 @@ export default function BatchWorkForm() {
                               value={work.title}
                               onChange={(e) => handleWorkChange(index, "title", e.target.value)}
                               required
-                              className="w-full rounded-xl border-neutral-300 focus:border-purple-500 focus:ring-purple-500/20"
+                              className="w-full rounded-xl border-[#0B132B]/20 focus:border-purple-500 focus:ring-purple-500/20"
                             />
                           </div>
                           <div>
-                            <label className="block text-sm font-semibold text-neutral-900 mb-2">
+                            <label className="block text-sm font-semibold text-[#0B132B] mb-2">
                               Description
                             </label>
                             <textarea
@@ -222,12 +220,12 @@ export default function BatchWorkForm() {
                                 handleWorkChange(index, "description", e.target.value)
                               }
                               rows={2}
-                              className="w-full rounded-xl border-neutral-300 focus:border-purple-500 focus:ring-purple-500/20"
+                              className="w-full rounded-xl border-[#0B132B]/20 focus:border-purple-500 focus:ring-purple-500/20"
                             />
                           </div>
                           <div className="grid grid-cols-2 gap-4">
                             <div>
-                              <label className="block text-sm font-semibold text-neutral-900 mb-2">
+                              <label className="block text-sm font-semibold text-[#0B132B] mb-2">
                                 Aspect Ratio
                               </label>
                               <select
@@ -236,7 +234,7 @@ export default function BatchWorkForm() {
                                   handleWorkChange(index, "aspect_ratio", e.target.value)
                                 }
                                 required
-                                className="w-full rounded-xl border-neutral-300 focus:border-purple-500 focus:ring-purple-500/20"
+                                className="w-full rounded-xl border-[#0B132B]/20 focus:border-purple-500 focus:ring-purple-500/20"
                               >
                                 <option value="square">Square (1:1)</option>
                                 <option value="portrait45">Portrait (4:5)</option>
@@ -244,7 +242,7 @@ export default function BatchWorkForm() {
                               </select>
                             </div>
                             <div>
-                              <label className="block text-sm font-semibold text-neutral-900 mb-2">
+                              <label className="block text-sm font-semibold text-[#0B132B] mb-2">
                                 Display Order
                               </label>
                               <input
@@ -254,7 +252,7 @@ export default function BatchWorkForm() {
                                   handleWorkChange(index, "featured_order", e.target.value)
                                 }
                                 required
-                                className="w-full rounded-xl border-neutral-300 focus:border-purple-500 focus:ring-purple-500/20"
+                                className="w-full rounded-xl border-[#0B132B]/20 focus:border-purple-500 focus:ring-purple-500/20"
                               />
                             </div>
                           </div>
@@ -269,7 +267,7 @@ export default function BatchWorkForm() {
                 <button
                   type="button"
                   onClick={() => router.back()}
-                  className="px-6 py-3 text-neutral-700 hover:text-neutral-900 font-medium"
+                  className="px-6 py-3 text-[#0B132B]/80 hover:text-[#0B132B] font-medium"
                 >
                   Cancel
                 </button>

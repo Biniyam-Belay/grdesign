@@ -61,7 +61,7 @@ export default function TestimonialManagement() {
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
         <div className="text-center">
           <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-green-600 border-r-transparent mb-4"></div>
-          <p className="text-neutral-600">Loading testimonials...</p>
+          <p className="text-[#0B132B]/60">Loading testimonials...</p>
         </div>
       </div>
     );
@@ -69,13 +69,13 @@ export default function TestimonialManagement() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
-      <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-neutral-200/50 shadow-sm">
+      <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-[#0B132B]/10/50 shadow-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <Link
                 href="/admin"
-                className="flex items-center gap-2 text-neutral-600 hover:text-neutral-900"
+                className="flex items-center gap-2 text-[#0B132B]/60 hover:text-[#0B132B]"
               >
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
@@ -88,18 +88,18 @@ export default function TestimonialManagement() {
                 <span className="font-medium text-sm">Dashboard</span>
               </Link>
             </div>
-            <h1 className="text-lg font-semibold text-neutral-900">Manage Testimonials</h1>
+            <h1 className="text-lg font-semibold text-[#0B132B]">Manage Testimonials</h1>
           </div>
         </div>
       </header>
 
       <div className="relative z-10 py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between bg-white rounded-2xl shadow-lg border border-neutral-200 p-6 mb-6">
-            <div className="flex items-center gap-1 bg-neutral-100 rounded-xl p-1">
+          <div className="flex items-center justify-between bg-white rounded-2xl shadow-lg border border-[#0B132B]/10 p-6 mb-6">
+            <div className="flex items-center gap-1 bg-white/50 border border-[#0B132B]/10 rounded-xl p-1">
               <button
                 onClick={() => setViewMode("grid")}
-                className={`px-3 py-2 rounded-lg transition-all ${viewMode === "grid" ? "bg-white shadow-sm text-purple-600" : "text-neutral-600 hover:text-neutral-900"}`}
+                className={`px-3 py-2 rounded-lg transition-all ${viewMode === "grid" ? "bg-white shadow-sm text-purple-600" : "text-[#0B132B]/60 hover:text-[#0B132B]"}`}
               >
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
@@ -112,7 +112,7 @@ export default function TestimonialManagement() {
               </button>
               <button
                 onClick={() => setViewMode("list")}
-                className={`px-3 py-2 rounded-lg transition-all ${viewMode === "list" ? "bg-white shadow-sm text-purple-600" : "text-neutral-600 hover:text-neutral-900"}`}
+                className={`px-3 py-2 rounded-lg transition-all ${viewMode === "list" ? "bg-white shadow-sm text-purple-600" : "text-[#0B132B]/60 hover:text-[#0B132B]"}`}
               >
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
@@ -135,16 +135,16 @@ export default function TestimonialManagement() {
           {error && <div className="mb-6 bg-red-50 p-4 rounded-lg text-red-800">{error}</div>}
 
           {testimonials.length === 0 ? (
-            <div className="text-center py-16 bg-white rounded-2xl shadow-lg border border-neutral-200">
-              <h3 className="text-xl font-semibold text-neutral-900 mb-2">No testimonials yet</h3>
-              <p className="text-neutral-600">Add your first testimonial to see it here.</p>
+            <div className="text-center py-16 bg-white rounded-2xl shadow-lg border border-[#0B132B]/10">
+              <h3 className="text-xl font-semibold text-[#0B132B] mb-2">No testimonials yet</h3>
+              <p className="text-[#0B132B]/60">Add your first testimonial to see it here.</p>
             </div>
           ) : viewMode === "grid" ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {testimonials.map((testimonial) => (
                 <div
                   key={testimonial.id}
-                  className="group bg-white rounded-2xl shadow-lg border border-neutral-200 overflow-hidden flex flex-col"
+                  className="group bg-white rounded-2xl shadow-lg border border-[#0B132B]/10 overflow-hidden flex flex-col"
                 >
                   <div className="p-6 flex-1">
                     <div className="flex items-center gap-4 mb-4">
@@ -158,13 +158,13 @@ export default function TestimonialManagement() {
                           unoptimized
                         />
                       ) : (
-                        <div className="w-12 h-12 rounded-full bg-neutral-200 flex items-center justify-center text-neutral-500 font-semibold">
+                        <div className="w-12 h-12 rounded-full bg-neutral-200 flex items-center justify-center text-[#0B132B]/50 font-semibold">
                           ?
                         </div>
                       )}
                       <div>
-                        <p className="font-semibold text-neutral-900">{testimonial.name}</p>
-                        <p className="text-sm text-neutral-600">{testimonial.role}</p>
+                        <p className="font-semibold text-[#0B132B]">{testimonial.name}</p>
+                        <p className="text-sm text-[#0B132B]/60">{testimonial.role}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-0.5 mb-4">
@@ -172,17 +172,17 @@ export default function TestimonialManagement() {
                         <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
                       ))}
                     </div>
-                    <blockquote className="text-neutral-700 text-sm italic border-l-2 border-neutral-200 pl-4">
+                    <blockquote className="text-[#0B132B]/80 text-sm italic border-l-2 border-[#0B132B]/10 pl-4">
                       "{testimonial.content}"
                     </blockquote>
                   </div>
-                  <div className="bg-neutral-50/70 p-4 border-t border-neutral-200 flex items-center justify-end gap-2">
+                  <div className="bg-[#0B132B]/5/70 p-4 border-t border-[#0B132B]/10 flex items-center justify-end gap-2">
                     <Link
                       href={`/admin/testimonials/edit/${testimonial.id}`}
                       className="p-2 rounded-lg hover:bg-neutral-200 transition-colors"
                     >
                       <svg
-                        className="w-4 h-4 text-neutral-600"
+                        className="w-4 h-4 text-[#0B132B]/60"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -218,7 +218,7 @@ export default function TestimonialManagement() {
               ))}
             </div>
           ) : (
-            <div className="bg-white rounded-2xl shadow-lg border border-neutral-200">
+            <div className="bg-white rounded-2xl shadow-lg border border-[#0B132B]/10">
               <ul className="divide-y divide-neutral-200">
                 {testimonials.map((testimonial) => (
                   <li key={testimonial.id} className="flex items-center justify-between gap-6 p-6">
@@ -233,13 +233,13 @@ export default function TestimonialManagement() {
                           unoptimized
                         />
                       ) : (
-                        <div className="w-12 h-12 rounded-full bg-neutral-200 flex items-center justify-center text-neutral-500 font-semibold">
+                        <div className="w-12 h-12 rounded-full bg-neutral-200 flex items-center justify-center text-[#0B132B]/50 font-semibold">
                           ?
                         </div>
                       )}
                       <div>
-                        <p className="font-semibold text-neutral-900">{testimonial.name}</p>
-                        <p className="text-sm text-neutral-600">
+                        <p className="font-semibold text-[#0B132B]">{testimonial.name}</p>
+                        <p className="text-sm text-[#0B132B]/60">
                           {testimonial.role}, {testimonial.company}
                         </p>
                       </div>
@@ -247,10 +247,10 @@ export default function TestimonialManagement() {
                     <div className="flex items-center gap-2">
                       <Link
                         href={`/admin/testimonials/edit/${testimonial.id}`}
-                        className="p-2 rounded-lg hover:bg-neutral-100"
+                        className="p-2 rounded-lg hover:bg-white/50 border border-[#0B132B]/10"
                       >
                         <svg
-                          className="w-5 h-5 text-neutral-600"
+                          className="w-5 h-5 text-[#0B132B]/60"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"

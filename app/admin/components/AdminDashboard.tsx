@@ -181,52 +181,54 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-white text-neutral-800">
+    <div className="min-h-screen bg-[#F5F5F0] text-[#0B132B] font-sans selection:bg-[#FF0033]/20">
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-neutral-400/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-neutral-400/10 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-1/4 -left-20 w-[50vh] h-[50vh] bg-[#0055FF]/5 rounded-full blur-[100px] animate-pulse" />
+        <div className="absolute bottom-1/4 -right-20 w-[50vh] h-[50vh] bg-[#FF0033]/5 rounded-full blur-[100px] animate-pulse delay-1000" />
       </div>
 
-      <header className="sticky top-0 z-40 bg-white/60 backdrop-blur-lg border-b border-neutral-200/80">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
+      <header className="sticky top-0 z-40 bg-[#F5F5F0]/80 backdrop-blur-xl border-b border-[#0B132B]/10">
+        <div className="mx-auto max-w-8xl px-6 lg:px-12">
+          <div className="flex h-[72px] items-center justify-between">
             <div className="flex items-center gap-6">
               <Link
                 href="/"
-                className="inline-flex items-baseline gap-1.5 font-serif text-xl text-black hover:opacity-75 transition-opacity"
+                className="inline-flex items-baseline gap-0.5 text-xl tracking-tight transition-opacity hover:opacity-80"
               >
-                <span className="font-semibold">Bini</span>
-                <span className="font-medium text-neutral-400">.B</span>
+                <span className="font-bold text-[#0B132B]">Ilaala</span>
+                <span className="font-bold text-[#FF0033]">.Studio</span>
               </Link>
               <div className="hidden md:flex items-center gap-3">
-                <div className="h-1.5 w-1.5 rounded-full bg-neutral-300" />
-                <span className="text-xs tracking-[0.2em] uppercase text-neutral-500 font-medium">
-                  Admin
+                <div className="h-1.5 w-1.5 rounded-full bg-[#0B132B]/30" />
+                <span className="text-[10px] tracking-[0.3em] uppercase text-[#0B132B]/50 font-bold">
+                  Command Center
                 </span>
               </div>
             </div>
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-neutral-100/60 rounded-full border border-neutral-200/70">
-              <div className="h-2 w-2 rounded-full bg-black animate-pulse" />
-              <span className="text-xs text-neutral-600 font-medium">Online</span>
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-white/40 rounded-full border border-[#0B132B]/10">
+              <div className="h-2 w-2 rounded-full bg-[#FF0033] animate-pulse" />
+              <span className="text-[10px] uppercase font-bold tracking-widest text-[#0B132B]/70">
+                Admin Active
+              </span>
             </div>
           </div>
         </div>
       </header>
 
-      <main className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+      <main className="relative mx-auto max-w-8xl px-6 lg:px-12 py-16">
         <div
           className={`mb-16 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
         >
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
             <div>
-              <div className="flex items-center gap-3 mb-2">
-                <div className="h-10 w-1 bg-black rounded-full" />
-                <h1 className="text-4xl md:text-5xl font-bold tracking-tighter text-neutral-900">
-                  Welcome back
+              <div className="flex items-center gap-4 mb-3">
+                <div className="h-12 w-[3px] bg-gradient-to-b from-[#0055FF] to-[#01BBFF]" />
+                <h1 className="text-4xl md:text-5xl font-light tracking-[-0.03em] text-[#0B132B]">
+                  Welcome back<span className="font-semibold text-[#FF0033]">.</span>
                 </h1>
               </div>
-              <p className="text-neutral-500 text-lg ml-7">
-                Ready to create something amazing today?
+              <p className="text-[#0B132B]/50 font-light text-lg ml-5">
+                Manage the archive and orchestrate the platform.
               </p>
             </div>
             <div className="flex items-center flex-wrap gap-2">
@@ -235,12 +237,14 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
                   key={action.href}
                   href={action.href}
                   title={action.label}
-                  className={`group flex items-center gap-2 ${action.showLabel ? "px-3.5 py-2" : "h-9 w-9 justify-center"} rounded-lg bg-neutral-100 hover:bg-black text-neutral-600 hover:text-white transition-all duration-200 hover:-translate-y-px`}
+                  className={`group flex items-center gap-2 ${action.showLabel ? "px-4 py-2.5" : "h-11 w-11 justify-center"} bg-white/40 border border-[#0B132B]/10 hover:bg-[#0B132B] hover:border-[#0B132B] text-[#0B132B] hover:text-white transition-all duration-300 hover:shadow-[0_10px_30px_rgba(11,19,43,0.15)]`}
                   style={{ transitionDelay: `${index * 50}ms` }}
                 >
                   {action.icon}
                   {action.showLabel && (
-                    <span className="text-sm font-medium whitespace-nowrap">{action.label}</span>
+                    <span className="text-xs uppercase font-bold tracking-[0.15em] whitespace-nowrap pt-[2px]">
+                      {action.label}
+                    </span>
                   )}
                 </Link>
               ))}
@@ -248,7 +252,7 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-12">
           {cards.map((card, index) => (
             <Link
               key={card.href}
@@ -256,60 +260,69 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
               className={`group relative overflow-hidden transition-all duration-500 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
               style={{ transitionDelay: `${(index + 1) * 100}ms` }}
             >
-              <div className="relative h-full border border-neutral-200/80 rounded-2xl bg-white p-6 transition-all duration-300 hover:shadow-xl hover:shadow-neutral-200/80 hover:scale-[1.02]">
-                <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-neutral-100 text-neutral-500 transition-all duration-300 group-hover:bg-black group-hover:text-white mb-4">
+              <div className="relative h-full border border-[#0B132B]/10 bg-white/50 p-8 transition-all duration-500 hover:bg-white hover:border-[#0055FF]/30 hover:shadow-[0_20px_60px_-15px_rgba(0,85,255,0.15)] group-hover:-translate-y-1">
+                <div className="inline-flex h-12 w-12 items-center justify-center bg-[#0B132B]/5 text-[#0B132B]/60 transition-all duration-500 group-hover:bg-[#0055FF] group-hover:text-white mb-6">
                   {card.icon}
                 </div>
-                <h3 className="text-lg font-semibold text-neutral-900 mb-1">{card.title}</h3>
-                <p className="text-sm text-neutral-500 mb-4">{card.description}</p>
-                <div className="absolute bottom-6 right-6 flex items-center justify-center h-8 w-8 rounded-full bg-neutral-100 group-hover:bg-black transition-all duration-300">
+                <h3 className="text-xl font-medium tracking-tight text-[#0B132B] mb-2">
+                  {card.title}
+                </h3>
+                <p className="text-sm font-light text-[#0B132B]/50 leading-relaxed max-w-[90%] mb-12">
+                  {card.description}
+                </p>
+
+                <div className="absolute bottom-8 right-8 flex items-center justify-center h-10 w-10 border border-[#0B132B]/10 text-[#0B132B]/30 group-hover:bg-[#FF0033] group-hover:border-[#FF0033] group-hover:text-white transition-all duration-500">
                   <svg
-                    className="h-5 w-5 text-neutral-500 group-hover:text-white transition-transform duration-300 group-hover:translate-x-0.5"
+                    className="h-4 w-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
-                    strokeWidth={1.5}
+                    strokeWidth={2}
                   >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      d="M13 7l5 5m0 0l-5 5m5-5H6"
+                      d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
                     />
                   </svg>
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-br from-white/0 to-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
+                {/* Micro hover gradient sweep */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-[#0055FF]/0 via-[#0055FF]/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
               </div>
             </Link>
           ))}
         </div>
 
         <div
-          className={`border border-neutral-200/80 rounded-2xl bg-white p-6 transition-all duration-500 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+          className={`border border-[#0B132B]/10 bg-white/50 p-6 lg:p-8 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
           style={{ transitionDelay: "400ms" }}
         >
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+            <div className="flex items-center gap-5">
               <div className="relative">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-black text-white font-semibold text-lg">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#0B132B] text-white font-medium text-lg">
                   {user.email?.charAt(0).toUpperCase()}
                 </div>
-                <div className="absolute -bottom-0.5 -right-0.5 h-4 w-4 rounded-full bg-black border-2 border-white" />
+                <div className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full bg-[#FF0033] border-2 border-[#F5F5F0]" />
               </div>
-              <div>
-                <p className="text-sm font-semibold text-neutral-900">Your Account</p>
-                <p className="text-sm text-neutral-600">{user.email}</p>
+              <div className="flex flex-col">
+                <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#FF0033] mb-0.5">
+                  Administrator
+                </span>
+                <p className="text-base font-medium text-[#0B132B]">{user.email}</p>
               </div>
             </div>
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-neutral-700 hover:text-black border border-neutral-300 rounded-lg hover:border-black bg-white hover:bg-neutral-50 transition-all duration-200 w-full sm:w-auto justify-center"
+              className="flex items-center gap-2 px-6 py-3 text-sm font-bold uppercase tracking-[0.1em] text-[#0B132B]/60 hover:text-white border border-[#0B132B]/10 hover:border-[#FF0033] bg-white/40 hover:bg-[#FF0033] transition-all duration-300 w-full sm:w-auto justify-center group"
             >
+              Sign Out
               <svg
-                className="h-4 w-4"
+                className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                strokeWidth={1.5}
+                strokeWidth={2}
               >
                 <path
                   strokeLinecap="round"
@@ -317,14 +330,13 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
                   d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                 />
               </svg>
-              Sign Out
             </button>
           </div>
         </div>
 
-        <footer className="mt-16 pt-8 border-t border-neutral-200/80">
-          <p className="text-sm text-neutral-500 text-center">
-            CMS · {new Date().getFullYear()} Bini.B
+        <footer className="mt-20 pt-8 border-t border-[#0B132B]/10">
+          <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#0B132B]/30 text-center">
+            {new Date().getFullYear()} © Ilaala.Studio Command System
           </p>
         </footer>
       </main>

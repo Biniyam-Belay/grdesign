@@ -144,69 +144,56 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-white">
+    <div className="flex min-h-screen bg-[#F5F5F0] text-[#0B132B] font-sans selection:bg-[#FF0033]/20">
       {/* Left Panel - Login Form */}
       <div className="flex w-full flex-col lg:w-1/2 xl:w-2/5">
         {/* Header */}
-        <header className="flex-shrink-0 backdrop-blur-xl bg-white/80 border-b border-neutral-200/50 shadow-sm">
+        <header className="flex-shrink-0 backdrop-blur-xl bg-[#F5F5F0]/80 border-b border-[#0B132B]/10 shadow-sm relative z-10">
           <div className="px-8 lg:px-12">
-            <div className="flex h-16 items-center justify-between gap-4">
+            <div className="flex h-[72px] items-center justify-between gap-4">
               <Link
                 href="/"
-                className="flex items-center gap-2 text-neutral-600 hover:text-neutral-900 transition-all hover:scale-105"
+                className="flex items-center gap-2 text-[#0B132B]/60 hover:text-[#0B132B] transition-all"
               >
-                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                  />
-                </svg>
-                <span className="font-medium text-sm">Home</span>
+                <span className="font-bold text-[#0B132B] tracking-tight">Ilaala</span>
+                <span className="font-bold text-[#FF0033]">.Studio</span>
               </Link>
-              <div className="h-6 w-px bg-neutral-300" />
+              <div className="h-6 w-px bg-[#0B132B]/10" />
               <div className="flex items-center gap-2">
-                <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                  <svg
-                    className="h-5 w-5 text-white"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.5}
-                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                    />
-                  </svg>
-                </div>
-                <h1 className="text-lg font-semibold text-neutral-900">Admin Login</h1>
+                <div className="h-2 w-2 rounded-full bg-[#FF0033] animate-pulse" />
+                <h1 className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#0B132B]/70">
+                  Admin Login
+                </h1>
               </div>
             </div>
           </div>
         </header>
 
         {/* Login Form - Centered */}
-        <div className="flex flex-1 items-center justify-center px-8 lg:px-12 xl:px-16 py-12">
+        <div className="flex flex-1 items-center justify-center px-8 lg:px-12 xl:px-16 py-12 relative z-10">
           <div className="w-full max-w-md">
-            <div className="mb-10">
-              <h1 className="text-3xl font-semibold tracking-tight text-neutral-900 mb-2">
-                Welcome back
+            <div className="mb-10 flex flex-col items-start">
+              <div className="h-10 w-1 bg-[#FF0033] mb-4" />
+              <h1 className="text-4xl font-light tracking-[-0.03em] text-[#0B132B] mb-3">
+                System Access<span className="font-bold text-[#FF0033]">.</span>
               </h1>
-              <p className="text-neutral-500">Sign in to your account to continue</p>
+              <p className="text-[#0B132B]/50 font-light text-lg">
+                Authenticate to manage the platform.
+              </p>
             </div>
 
             {error && (
-              <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4">
-                <p className="text-sm text-red-800">{error}</p>
+              <div className="mb-8 border-l-2 border-[#FF0033] bg-[#FF0033]/5 p-4">
+                <p className="text-sm font-medium text-[#FF0033]">{error}</p>
               </div>
             )}
 
             <form onSubmit={handleLogin} className="space-y-6">
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-neutral-700 mb-2">
+                <label
+                  htmlFor="email"
+                  className="block text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/60 mb-3"
+                >
                   Email address
                 </label>
                 <input
@@ -217,15 +204,15 @@ export default function LoginPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full rounded-lg border border-neutral-300 px-4 py-3 text-neutral-900 placeholder-neutral-400 focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900 transition-colors"
-                  placeholder="you@example.com"
+                  className="block w-full bg-white/40 border border-[#0B132B]/10 px-4 py-3.5 text-[#0B132B] font-medium placeholder-[#0B132B]/30 focus:border-[#0055FF] focus:bg-white focus:outline-none focus:ring-0 transition-all"
+                  placeholder="admin@ilaala.studio"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="password"
-                  className="block text-sm font-medium text-neutral-700 mb-2"
+                  className="block text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/60 mb-3"
                 >
                   Password
                 </label>
@@ -238,13 +225,13 @@ export default function LoginPage() {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="block w-full rounded-lg border border-neutral-300 px-4 py-3 pr-12 text-neutral-900 placeholder-neutral-400 focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900 transition-colors"
+                    className="block w-full bg-white/40 border border-[#0B132B]/10 px-4 py-3.5 pr-12 text-[#0B132B] font-medium placeholder-[#0B132B]/30 focus:border-[#0055FF] focus:bg-white focus:outline-none focus:ring-0 transition-all tracking-[0.2em]"
                     placeholder="••••••••"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600 transition-colors p-1"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#0B132B]/40 hover:text-[#0B132B] transition-colors p-2"
                     aria-label={showPassword ? "Hide password" : "Show password"}
                   >
                     {showPassword ? (
@@ -257,7 +244,7 @@ export default function LoginPage() {
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          strokeWidth={2}
+                          strokeWidth={1.5}
                           d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
                         />
                       </svg>
@@ -271,13 +258,13 @@ export default function LoginPage() {
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          strokeWidth={2}
+                          strokeWidth={1.5}
                           d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                         />
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          strokeWidth={2}
+                          strokeWidth={1.5}
                           d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                         />
                       </svg>
@@ -286,100 +273,80 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full rounded-lg bg-neutral-900 px-4 py-3 text-sm font-semibold text-white hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-              >
-                {loading ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <svg
-                      className="animate-spin h-4 w-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
-                    Signing in...
-                  </span>
-                ) : (
-                  "Sign in"
-                )}
-              </button>
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full group relative flex items-center justify-center bg-[#0B132B] px-4 py-4 uppercase tracking-[0.2em] text-[11px] font-bold text-white hover:bg-[#FF0033] hover:shadow-[0_10px_30px_rgba(255,0,51,0.25)] focus:outline-none transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
+                >
+                  <div className="relative z-10 flex items-center gap-3">
+                    {loading ? (
+                      <>
+                        <div className="h-3 w-3 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                        <span>Verifying...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Authenticate</span>
+                        <svg
+                          className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          strokeWidth="2"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M14 5l7 7m0 0l-7 7m7-7H3"
+                          ></path>
+                        </svg>
+                      </>
+                    )}
+                  </div>
+                </button>
+              </div>
             </form>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="p-8 lg:p-12 flex-shrink-0">
-          <p className="text-xs text-neutral-400">
-            © {new Date().getFullYear()} Bini.B. All rights reserved.
+        <div className="p-8 lg:p-12 flex-shrink-0 border-t border-[#0B132B]/5">
+          <p className="text-[9px] uppercase tracking-[0.3em] font-bold text-[#0B132B]/30">
+            © {new Date().getFullYear()} Ilaala Studio Access
           </p>
         </div>
       </div>
 
-      {/* Right Panel - Quote Display with Mesh Gradient */}
-      <div className="hidden lg:flex lg:w-1/2 xl:w-3/5 relative overflow-hidden">
-        {/* Mesh Gradient Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-950" />
+      {/* Right Panel - Immersive Dark Overlay */}
+      <div className="hidden lg:flex lg:w-1/2 xl:w-3/5 relative overflow-hidden bg-[#0B132B]">
+        {/* Abstract Cinematic Glows */}
+        <div
+          className="absolute top-1/4 -left-20 w-[60vh] h-[60vh] rounded-full bg-[#0055FF]/15 blur-[120px] pointer-events-none animate-pulse"
+          style={{ animationDuration: "8s" }}
+        />
+        <div
+          className="absolute bottom-1/4 -right-20 w-[60vh] h-[60vh] rounded-full bg-[#FF0033]/15 blur-[120px] pointer-events-none animate-pulse"
+          style={{ animationDuration: "12s" }}
+        />
 
-        {/* Mesh Gradient Orbs */}
-        <div className="absolute top-0 left-0 w-full h-full">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-blob" />
-          <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-blue-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000" />
-          <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-indigo-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000" />
-          <div className="absolute top-1/2 right-1/3 w-80 h-80 bg-violet-500/20 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-3000" />
-        </div>
-
-        {/* Subtle Grid Pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.02)_1px,transparent_1px)] bg-[size:64px_64px]" />
-
-        {/* Dark Overlay for Text Contrast */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30" />
+        {/* Subtle Grid overlay for texture */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(245,245,240,.03)_1px,transparent_1px),linear-gradient(90deg,rgba(245,245,240,.03)_1px,transparent_1px)] bg-[size:40px_40px]" />
 
         {/* Quote Content */}
-        <div className="relative z-10 flex items-center justify-center p-12 xl:p-20">
+        <div className="relative z-10 flex flex-col justify-end p-12 xl:p-24 h-full text-white">
           <div className="max-w-2xl">
-            <div className="mb-8">
-              <svg
-                className="w-12 h-12 text-white/20"
-                fill="currentColor"
-                viewBox="0 0 32 32"
-                aria-hidden="true"
-              >
-                <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z" />
-              </svg>
-            </div>
-
-            <blockquote className="space-y-6">
-              <p className="text-2xl xl:text-3xl font-light text-white leading-relaxed">
-                {quote.text}
+            <div className="h-10 w-1 bg-[#FF0033] mb-8" />
+            <blockquote className="space-y-8">
+              <p className="text-3xl xl:text-4xl font-light tracking-[-0.03em] leading-[1.3] text-white">
+                "{quote.text}"
               </p>
-              <footer className="flex items-center gap-3">
-                <div className="h-px flex-1 bg-white/10" />
-                <cite className="text-sm text-white/60 not-italic font-medium">{quote.author}</cite>
+              <footer className="flex items-center gap-4 border-t border-white/10 pt-6">
+                <cite className="text-[10px] uppercase font-bold tracking-[0.3em] text-[#0055FF]">
+                  {quote.author}
+                </cite>
               </footer>
             </blockquote>
-
-            {/* Decorative Element */}
-            <div className="mt-16 flex items-center gap-2">
-              <div className="h-px w-8 bg-white/20" />
-              <div className="h-1 w-1 rounded-full bg-white/40" />
-              <div className="h-px w-16 bg-white/10" />
-            </div>
           </div>
         </div>
       </div>

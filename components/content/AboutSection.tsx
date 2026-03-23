@@ -1,383 +1,199 @@
 "use client";
 
-import React, { useRef, useState } from "react";
 import Link from "next/link";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { AnimatePresence, motion } from "framer-motion";
-import useIsomorphicLayoutEffect from "@lib/useIsomorphicLayoutEffect";
-
-gsap.registerPlugin(ScrollTrigger);
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 
 const services = [
   {
-    id: "branding",
-    icon: "🎨",
-    title: "Brand Identity Design",
+    num: "01",
+    title: "Brand Strategy & Identity",
     description:
-      "Logo design, brand guidelines, and complete visual identity systems that make you memorable.",
-    features: ["Logo & Mark Design", "Brand Guidelines", "Color Palette", "Typography System"],
-    deliveryTime: "Starting at 1-2 weeks",
-    badge: "Trending",
-    popular: false,
+      "Designing logos, complete visual systems, and comprehensive brand guidelines that position you exactly where you need to be.",
+    tags: ["Logos", "Guidelines", "Color", "Typography"],
   },
   {
-    id: "social",
-    icon: "📈",
-    title: "Social Media Design",
+    num: "02",
+    title: "Social Media Architecture",
     description:
-      "Scroll-stopping social content and campaigns that build your audience and drive engagement.",
-    features: ["Social Templates", "Campaign Design", "Content Strategy", "Brand Consistency"],
-    deliveryTime: "Starting at 5-10 days",
-    popular: true,
+      "Creating scroll-stopping social content, managing campaigns, and designing templates to ensure absolute brand consistency and growth.",
+    tags: ["Content", "Campaigns", "Templates", "Management"],
   },
   {
-    id: "ui-ux",
-    icon: "📱",
-    title: "UI/UX Design",
+    num: "03",
+    title: "UI/UX & Web Development",
     description:
-      "User-centered interfaces that convert visitors into customers and increase engagement.",
-    features: ["Competitor Analysis", "Wireframing", "UI Design", "Prototyping"],
-    deliveryTime: "Starting at 7-10 days",
-    popular: false,
+      "Architecting user-centered interfaces and developing fast, responsive applications that convert visitors into lasting clients.",
+    tags: ["Wireframing", "Websites", "Interaction", "SEO"],
   },
   {
-    id: "web-dev",
-    icon: "💻",
-    title: "Web Development",
+    num: "04",
+    title: "Editorial & Print Design",
     description:
-      "Fast, responsive websites built with modern tech that rank well and convert visitors.",
-    features: ["Responsive Design", "SEO Optimized", "Fast Loading", "CMS Integration"],
-    deliveryTime: "Starting at 2-4 weeks",
-    popular: false,
+      "Crafting tangible experiences through posters, decks, packaging, and marketing materials with unapologetic clarity.",
+    tags: ["Posters", "Pitch Decks", "Print", "Packaging"],
   },
 ];
 
 const process = [
   {
-    step: "01",
-    title: "Discovery Call",
-    description: "We discuss your goals, target audience, and project requirements in detail.",
-    duration: "30-60 min",
+    step: "Alignment",
+    desc: "A focused strategy session to unearth your goals and map out the exact requirements for market dominance.",
+    time: "Day 1",
   },
   {
-    step: "02",
-    title: "Strategy & Planning",
-    description: "I create a custom strategy and timeline tailored to your specific needs.",
-    duration: "1-2 days",
+    step: "Concept",
+    desc: "Developing the creative direction and visual architecture tailored exclusively to your brand positioning.",
+    time: "Week 1",
   },
   {
-    step: "03",
-    title: "Design & Development",
-    description: "I bring your vision to life with regular updates and feedback loops.",
-    duration: "5-14 days",
+    step: "Execution",
+    desc: "Refining the chosen direction into a pixel-perfect, cohesive system with structured feedback loops.",
+    time: "Week 2–3",
   },
   {
-    step: "04",
-    title: "Launch & Support",
-    description: "Final delivery with all files, plus 30 days of free support and revisions.",
-    duration: "Ongoing",
+    step: "Delivery",
+    desc: "Handing over complete source files, documentation, and providing priority support post-launch.",
+    time: "Week 4",
   },
 ];
 
-const smallGigsProcess = [
-  {
-    step: "01",
-    title: "Briefing",
-    description: "A quick chat to understand your needs.",
-    duration: "15-30 min",
-  },
-  {
-    step: "02",
-    title: "Design",
-    description: "I'll get to work on your design.",
-    duration: "1-3 days",
-  },
-  {
-    step: "03",
-    title: "Delivery",
-    description: "You'll receive your files, ready to use.",
-    duration: "Within 24h",
-  },
-];
-
-const ServicesAndProcessSection = () => {
-  const rootRef = useRef<HTMLElement>(null!);
-  const [processType, setProcessType] = useState<"long-term" | "small-gigs">("small-gigs");
-
-  useIsomorphicLayoutEffect(() => {
-    if (!rootRef.current) return;
-    const ctx = gsap.context(() => {
-      // Set initial states to ensure cards are visible
-      gsap.set(".service-card", { opacity: 1, y: 0 });
-      gsap.set(".process-step", { opacity: 1, x: 0 });
-
-      // Only animate if user prefers motion
-      const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (prefersReduced) return;
-
-      // Simple, reliable animations
-      gsap.fromTo(
-        ".service-card",
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.4,
-          stagger: 0.1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: ".services-grid",
-            start: "top 85%",
-            toggleActions: "play none none none",
-          },
-        },
-      );
-
-      gsap.fromTo(
-        ".process-step",
-        { opacity: 0, y: 15 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          stagger: 0.1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: ".process-timeline",
-            start: "top 85%",
-            toggleActions: "play none none none",
-          },
-        },
-      );
-    }, rootRef);
-    return () => ctx.revert();
-  }, []);
-
-  const currentProcess = processType === "long-term" ? process : smallGigsProcess;
+export default function AboutSection() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
     <section
-      ref={rootRef}
-      className="sticky top-0 z-10 bg-white py-24 md:py-32 px-6"
-      style={{ marginTop: "-1px" }}
+      id="services"
+      className="bg-[#F5F5F0] text-[#0B132B] py-20 lg:py-32 px-4 sm:px-6 lg:px-12 w-full border-t border-[#0B132B]/8"
     >
-      <div className="mx-auto w-full max-w-7xl">
-        {/* Services Section */}
-        <div className="mb-20">
-          {/* Header - Minimal */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-neutral-100 text-neutral-600 px-4 py-2 rounded-full text-xs font-medium mb-6">
-              <div className="w-1 h-1 bg-neutral-400 rounded-full"></div>
-              Strategic Services
+      <div ref={ref} className="w-full max-w-8xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8 mb-40">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:col-span-4 max-w-sm lg:sticky lg:top-48 self-start mb-12 lg:mb-0"
+          >
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-12 h-[2px] bg-gradient-to-r from-[#0055FF] to-[#01BBFF]" />
+              <span className="text-[12px] text-[#0B132B] uppercase tracking-[0.55em] font-black">
+                Expertise
+              </span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-light text-neutral-900 mb-4">
-              Services that
-              <span className="font-medium"> deliver results</span>
+
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl font-light tracking-[-0.05em] leading-[1.05] text-[#0B132B] mb-6 sm:mb-8">
+              Expertise <br />
+              <span className="font-semibold">
+                Distilled<span className="text-[#0055FF]">.</span>
+              </span>
             </h2>
-            <p className="text-lg text-neutral-600 max-w-2xl mx-auto leading-relaxed">
-              Comprehensive design and development solutions for ambitious brands.
+            <p className="text-[#0B132B]/60 font-light leading-relaxed text-base sm:text-lg mb-10 sm:mb-12">
+              Every discipline required to launch, scale, and define your brand in the digital
+              landscape. We execute with precision and intent.
             </p>
-          </div>
-
-          {/* Services Grid - Minimal */}
-          <div className="services-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 px-6 md:px-0">
-            {services.map((service) => (
-              <div
-                key={service.id}
-                className="service-card relative bg-neutral-50 rounded-lg p-6 transition-all duration-200 hover:bg-neutral-100 max-w-sm mx-auto md:max-w-none"
-                style={{ opacity: 1, transform: "translateY(0px)" }}
-              >
-                {service.badge && (
-                  <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-medium">
-                      {service.badge}
-                    </span>
-                  </div>
-                )}
-                {service.popular && (
-                  <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-neutral-900 text-white px-3 py-1 rounded-full text-xs font-medium">
-                      Popular
-                    </span>
-                  </div>
-                )}
-
-                <div className="text-center">
-                  <h3 className="text-lg font-semibold text-neutral-900 mb-3">{service.title}</h3>
-                  <p className="text-neutral-600 text-sm mb-4 leading-relaxed">
-                    {service.description}
-                  </p>
-
-                  {/* Features - Left Aligned within Center Container */}
-                  <ul className="text-xs text-neutral-500 mb-4 space-y-1.5 inline-block text-left">
-                    {service.features.slice(0, 3).map((feature, idx) => (
-                      <li key={idx} className="flex items-center gap-2">
-                        <span className="w-1 h-1 bg-neutral-400 rounded-full shrink-0"></span>
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  {/* Delivery Time - Minimal */}
-                  <div className="border-t border-neutral-200 pt-4">
-                    <div className="text-sm font-medium text-neutral-600">
-                      <span className="text-neutral-500">Delivery:</span> {service.deliveryTime}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* CTA for Services - Minimal */}
-          <div className="text-center">
             <Link
               href="https://calendar.app.google/1RTjShD5sgqBmm3K7"
-              className="inline-flex items-center gap-2 bg-neutral-900 text-white px-6 py-3 rounded-lg font-medium transition-all hover:bg-neutral-800"
+              className="inline-flex items-center gap-3 uppercase text-[10px] font-bold tracking-[0.25em] text-white bg-gradient-to-r from-[#0055FF] to-[#01BBFF] px-8 py-5 hover:shadow-[0_10px_30px_rgba(0,85,255,0.3)] transition-all duration-300"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Discuss Your Project
+              Initiate Project
               <svg
-                className="transition-transform group-hover:translate-x-1"
                 width="14"
                 height="14"
                 viewBox="0 0 24 24"
                 fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
               >
-                <path
-                  d="M5 12h14M12 5l7 7-7 7"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                />
+                <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
             </Link>
-            <p className="text-xs text-neutral-500 mt-3">
-              Free consultation • No commitment required
-            </p>
+          </motion.div>
+
+          <div className="lg:col-span-8 flex flex-col w-full border-t border-[#0B132B]/8">
+            {services.map((svc, i) => (
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.8, delay: i * 0.15, ease: [0.22, 1, 0.36, 1] }}
+                key={svc.num}
+                className="group flex flex-col md:flex-row gap-6 md:gap-12 py-10 md:py-16 border-b border-[#0B132B]/8 hover:bg-white/40 transition-colors px-6 -mx-6 md:px-8 md:-mx-8"
+              >
+                <div className="text-[#0B132B]/30 font-light text-xl md:text-2xl pt-1">
+                  {svc.num}
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-2xl md:text-3xl font-medium tracking-tight mb-4 text-[#0B132B]">
+                    {svc.title}
+                  </h3>
+                  <p className="text-[#0B132B]/60 font-light text-lg md:text-xl leading-relaxed mb-6 max-w-2xl">
+                    {svc.description}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {svc.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0B132B]/60 bg-[#0B132B]/5 px-3 py-1.5 border border-[#0B132B]/10"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
 
-        {/* Process Section */}
-        <div>
-          {/* Process Header - Minimal */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-neutral-100 text-neutral-600 px-4 py-2 rounded-full text-xs font-medium mb-6">
-              <div className="w-1 h-1 bg-neutral-400 rounded-full"></div>
-              Process
+        <div className="w-full flex flex-col md:flex-row gap-16 lg:gap-32 pt-32 border-t border-[#0B132B]/8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="md:w-1/3"
+          >
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-12 h-[2px] bg-[#FF0033]" />
+              <span className="text-[12px] text-[#0B132B] uppercase tracking-[0.55em] font-black">
+                Process
+              </span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-light text-neutral-900 mb-4">
-              How we
-              <span className="font-medium"> work together</span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-[-0.05em] leading-[1.05] text-[#0B132B] mb-6 sm:mb-8">
+              The <br />
+              <span className="font-semibold">
+                Framework<span className="text-[#FF0033]">.</span>
+              </span>
             </h2>
-            <p className="text-lg text-neutral-600 max-w-2xl mx-auto leading-relaxed">
-              A proven approach that ensures successful project outcomes.
+            <p className="text-[#0B132B]/60 font-light text-base sm:text-lg md:text-xl max-w-sm mb-12 md:mb-0">
+              A battle-tested methodology designed for speed, clarity, and uncompromising
+              excellence.
             </p>
-          </div>
+          </motion.div>
 
-          {/* Toggle */}
-          <div className="flex justify-center mb-8">
-            <div className="flex items-center gap-2 rounded-full bg-neutral-100 p-1">
-              <button
-                onClick={() => setProcessType("small-gigs")}
-                className={`px-4 py-1 text-sm font-medium rounded-full transition-colors ${
-                  processType === "small-gigs" ? "bg-white text-neutral-900" : "text-neutral-600"
-                }`}
+          <div className="md:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-12 sm:gap-16 pt-4 lg:pt-0">
+            {process.map((step, i) => (
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.8, delay: 0.2 + i * 0.15, ease: [0.22, 1, 0.36, 1] }}
+                key={i}
+                className="flex flex-col border-l border-[#0B132B]/10 pl-6 lg:pl-8 group hover:border-[#0055FF]/50 transition-colors duration-300"
               >
-                Small Gigs
-              </button>
-              <button
-                onClick={() => setProcessType("long-term")}
-                className={`px-4 py-1 text-sm font-medium rounded-full transition-colors ${
-                  processType === "long-term" ? "bg-white text-neutral-900" : "text-neutral-600"
-                }`}
-              >
-                Long-term Projects
-              </button>
-            </div>
-          </div>
-
-          {/* Process Timeline - Horizontal with Connecting Line */}
-          <div className="relative min-h-[200px]">
-            {/* Connecting Line */}
-            <div
-              className="hidden lg:block absolute top-4 left-0 right-0 h-0.5 bg-linear-to-r from-transparent via-neutral-200 to-transparent"
-              style={{ top: "16px" }}
-            ></div>
-
-            <div className="flex justify-center">
-              <div
-                className={`process-timeline grid ${
-                  processType === "long-term"
-                    ? "grid-cols-1 md:grid-cols-4 gap-8"
-                    : "grid-cols-1 md:grid-cols-3 gap-8"
-                }`}
-              >
-                <AnimatePresence mode="wait">
-                  {currentProcess.map((step) => (
-                    <motion.div
-                      key={step.step}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.2 }}
-                      className="process-step relative"
-                    >
-                      {/* Step Number Circle */}
-                      <div className="relative z-10 w-8 h-8 border-2 border-neutral-900 bg-white text-neutral-900 rounded-full flex items-center justify-center text-sm font-bold mb-4 mx-auto">
-                        {step.step}
-                      </div>
-
-                      {/* Content */}
-                      <div className="text-center">
-                        <h3 className="text-base font-semibold text-neutral-900 mb-2">
-                          {step.title}
-                        </h3>
-                        <p className="text-neutral-600 text-sm mb-3 leading-relaxed">
-                          {step.description}
-                        </p>
-                        <div className="text-xs text-neutral-500 bg-neutral-100 px-2 py-1 rounded-full inline-block">
-                          {step.duration}
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </div>
-            </div>
-          </div>
-
-          {/* Process CTA - Minimal */}
-          <div className="text-center mt-12">
-            <div className="bg-neutral-900 rounded-xl p-8 max-w-2xl mx-auto">
-              <h3 className="text-2xl font-light text-white mb-4">Ready to start your project?</h3>
-              <p className="text-neutral-300 mb-6">
-                Schedule a consultation to discuss your requirements.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link
-                  href="https://calendar.app.google/1RTjShD5sgqBmm3K7"
-                  className="inline-flex items-center justify-center gap-2 bg-white text-neutral-900 px-6 py-3 rounded-lg font-medium transition-all hover:shadow-lg"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Schedule Call
-                </Link>
-                <Link
-                  href="/work"
-                  className="inline-flex items-center justify-center gap-2 border border-neutral-700 text-neutral-300 px-6 py-3 rounded-lg font-medium transition-all hover:border-neutral-600"
-                >
-                  View Work
-                </Link>
-              </div>
-            </div>
+                <span className="text-[10px] uppercase font-bold tracking-[0.25em] text-[#0B132B]/40 mb-4 group-hover:text-[#0055FF] transition-colors">
+                  {step.time}
+                </span>
+                <h4 className="text-2xl md:text-3xl font-medium tracking-tight mb-4 text-[#0B132B]">
+                  {step.step}
+                </h4>
+                <p className="text-[#0B132B]/60 font-light leading-relaxed">{step.desc}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </div>
     </section>
   );
-};
-
-export default ServicesAndProcessSection;
+}

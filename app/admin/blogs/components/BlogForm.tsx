@@ -139,13 +139,13 @@ export default function BlogForm({ blog, isEditing = false }: BlogFormProps) {
       </div>
 
       {/* Header */}
-      <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-neutral-200/50 shadow-sm">
+      <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-[#0B132B]/10/50 shadow-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <Link
                 href="/admin/blogs"
-                className="flex items-center gap-2 text-neutral-600 hover:text-neutral-900 transition-all hover:scale-105"
+                className="flex items-center gap-2 text-[#0B132B]/60 hover:text-[#0B132B] transition-all hover:scale-105"
               >
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
@@ -174,7 +174,7 @@ export default function BlogForm({ blog, isEditing = false }: BlogFormProps) {
                     />
                   </svg>
                 </div>
-                <h1 className="text-lg font-semibold text-neutral-900">
+                <h1 className="text-lg font-semibold text-[#0B132B]">
                   {isEditing ? "Edit Blog Post" : "Create New Post"}
                 </h1>
               </div>
@@ -197,10 +197,10 @@ export default function BlogForm({ blog, isEditing = false }: BlogFormProps) {
             {/* Left Column - Basic Information */}
             <div className="lg:col-span-2 space-y-8">
               {/* Post Details */}
-              <div className="border border-neutral-200 rounded-lg bg-white p-8">
+              <div className="border border-[#0B132B]/10 rounded-lg bg-white p-8">
                 <div className="mb-6">
-                  <h2 className="text-lg font-medium text-neutral-900">Post Content</h2>
-                  <p className="text-sm text-neutral-600 mt-1">
+                  <h2 className="text-lg font-medium text-[#0B132B]">Post Content</h2>
+                  <p className="text-sm text-[#0B132B]/60 mt-1">
                     The main content and details of your blog post.
                   </p>
                 </div>
@@ -218,7 +218,7 @@ export default function BlogForm({ blog, isEditing = false }: BlogFormProps) {
                       required
                       value={formData.title}
                       onChange={(e) => handleTitleChange(e.target.value)}
-                      className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors text-lg"
+                      className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors text-lg"
                       placeholder="Enter a compelling title..."
                     />
                   </FormField>
@@ -238,7 +238,7 @@ export default function BlogForm({ blog, isEditing = false }: BlogFormProps) {
                       onChange={(e) =>
                         setFormData((prev) => ({ ...prev, excerpt: e.target.value }))
                       }
-                      className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
+                      className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
                       placeholder="A brief summary of your post..."
                     />
                   </FormField>
@@ -246,9 +246,9 @@ export default function BlogForm({ blog, isEditing = false }: BlogFormProps) {
               </div>
 
               {/* Enhanced Content Editor */}
-              <div className="border border-neutral-200 rounded-lg bg-white overflow-hidden">
+              <div className="border border-[#0B132B]/10 rounded-lg bg-white overflow-hidden">
                 {/* Editor Header */}
-                <div className="border-b border-neutral-200 bg-neutral-50 px-6 py-4">
+                <div className="border-b border-[#0B132B]/10 bg-[#0B132B]/5 px-6 py-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="flex items-center gap-2">
@@ -267,10 +267,10 @@ export default function BlogForm({ blog, isEditing = false }: BlogFormProps) {
                             />
                           </svg>
                         </div>
-                        <h3 className="text-lg font-semibold text-neutral-900">Article Content</h3>
+                        <h3 className="text-lg font-semibold text-[#0B132B]">Article Content</h3>
                       </div>
                       <div className="h-6 w-px bg-neutral-300" />
-                      <div className="flex items-center gap-1 text-sm text-neutral-600">
+                      <div className="flex items-center gap-1 text-sm text-[#0B132B]/60">
                         <svg
                           className="h-4 w-4"
                           fill="none"
@@ -289,7 +289,7 @@ export default function BlogForm({ blog, isEditing = false }: BlogFormProps) {
                     </div>
 
                     {/* Word Count & Stats */}
-                    <div className="flex items-center gap-4 text-sm text-neutral-600">
+                    <div className="flex items-center gap-4 text-sm text-[#0B132B]/60">
                       <div className="flex items-center gap-1">
                         <svg
                           className="h-4 w-4"
@@ -393,9 +393,9 @@ export default function BlogForm({ blog, isEditing = false }: BlogFormProps) {
                   </FormField>
 
                   {/* Quick Actions Bar */}
-                  <div className="mt-6 pt-6 border-t border-neutral-200">
+                  <div className="mt-6 pt-6 border-t border-[#0B132B]/10">
                     <div className="flex items-center justify-between text-sm">
-                      <div className="flex items-center gap-4 text-neutral-600">
+                      <div className="flex items-center gap-4 text-[#0B132B]/60">
                         <div className="flex items-center gap-2">
                           <svg
                             className="h-4 w-4"
@@ -432,7 +432,7 @@ export default function BlogForm({ blog, isEditing = false }: BlogFormProps) {
                       <div className="flex items-center gap-2">
                         <button
                           type="button"
-                          className="flex items-center gap-2 px-3 py-1.5 text-sm text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded-lg transition-colors"
+                          className="flex items-center gap-2 px-3 py-1.5 text-sm text-[#0B132B]/60 hover:text-[#0B132B] hover:bg-white/50 border border-[#0B132B]/10 rounded-lg transition-colors"
                         >
                           <svg
                             className="h-4 w-4"
@@ -451,7 +451,7 @@ export default function BlogForm({ blog, isEditing = false }: BlogFormProps) {
                         </button>
                         <button
                           type="button"
-                          className="flex items-center gap-2 px-3 py-1.5 text-sm text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded-lg transition-colors"
+                          className="flex items-center gap-2 px-3 py-1.5 text-sm text-[#0B132B]/60 hover:text-[#0B132B] hover:bg-white/50 border border-[#0B132B]/10 rounded-lg transition-colors"
                         >
                           <svg
                             className="h-4 w-4"
@@ -484,10 +484,10 @@ export default function BlogForm({ blog, isEditing = false }: BlogFormProps) {
             {/* Right Column - Settings & Metadata */}
             <div className="space-y-8">
               {/* Publication Settings */}
-              <div className="border border-neutral-200 rounded-lg bg-white p-6">
+              <div className="border border-[#0B132B]/10 rounded-lg bg-white p-6">
                 <div className="mb-6">
-                  <h3 className="text-lg font-medium text-neutral-900">Publication</h3>
-                  <p className="text-sm text-neutral-600 mt-1">
+                  <h3 className="text-lg font-medium text-[#0B132B]">Publication</h3>
+                  <p className="text-sm text-[#0B132B]/60 mt-1">
                     Settings and metadata for your post.
                   </p>
                 </div>
@@ -505,7 +505,7 @@ export default function BlogForm({ blog, isEditing = false }: BlogFormProps) {
                       required
                       value={formData.date}
                       onChange={(e) => setFormData((prev) => ({ ...prev, date: e.target.value }))}
-                      className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                      className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
                     />
                   </FormField>
 
@@ -522,7 +522,7 @@ export default function BlogForm({ blog, isEditing = false }: BlogFormProps) {
                       required
                       value={formData.slug}
                       onChange={(e) => setFormData((prev) => ({ ...prev, slug: e.target.value }))}
-                      className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                      className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
                       placeholder="url-friendly-slug"
                     />
                   </FormField>
@@ -539,17 +539,17 @@ export default function BlogForm({ blog, isEditing = false }: BlogFormProps) {
                       value={formData.tags}
                       onChange={(e) => setFormData((prev) => ({ ...prev, tags: e.target.value }))}
                       placeholder="design, ui/ux, development"
-                      className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                      className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
                     />
                   </FormField>
                 </div>
               </div>
 
               {/* Featured Image */}
-              <div className="border border-neutral-200 rounded-lg bg-white p-6">
+              <div className="border border-[#0B132B]/10 rounded-lg bg-white p-6">
                 <div className="mb-6">
-                  <h3 className="text-lg font-medium text-neutral-900">Featured Image</h3>
-                  <p className="text-sm text-neutral-600 mt-1">
+                  <h3 className="text-lg font-medium text-[#0B132B]">Featured Image</h3>
+                  <p className="text-sm text-[#0B132B]/60 mt-1">
                     Upload or select the main image for your post.
                   </p>
                 </div>
@@ -569,10 +569,10 @@ export default function BlogForm({ blog, isEditing = false }: BlogFormProps) {
               </div>
 
               {/* Actions */}
-              <div className="border border-neutral-200/50 rounded-2xl bg-white shadow-sm p-6">
+              <div className="border border-[#0B132B]/10/50 rounded-2xl bg-white shadow-sm p-6">
                 <div className="space-y-4">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-neutral-700 font-medium">Status</span>
+                    <span className="text-[#0B132B]/80 font-medium">Status</span>
                     <span className="flex items-center gap-1.5 text-green-600 font-medium">
                       <div className="h-2 w-2 rounded-full bg-green-500"></div>
                       Ready to publish
@@ -629,7 +629,7 @@ export default function BlogForm({ blog, isEditing = false }: BlogFormProps) {
 
                     <Link
                       href="/admin/blogs"
-                      className="w-full text-center px-4 py-2.5 text-sm font-medium text-neutral-700 hover:text-neutral-900 transition-all border border-neutral-300 rounded-xl hover:border-neutral-400 bg-white hover:bg-neutral-50 hover:shadow-sm"
+                      className="w-full text-center px-4 py-2.5 text-sm font-medium text-[#0B132B]/80 hover:text-[#0B132B] transition-all border border-[#0B132B]/20 rounded-xl hover:border-neutral-400 bg-white hover:bg-[#0B132B]/5 hover:shadow-sm"
                     >
                       Cancel
                     </Link>

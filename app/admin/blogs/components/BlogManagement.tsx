@@ -118,27 +118,27 @@ export default function BlogManagement() {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center transition-opacity duration-300">
         <div className="text-center">
-          <div className="inline-block h-10 w-10 animate-spin rounded-full border-4 border-neutral-200 border-t-black" />
-          <p className="mt-4 text-neutral-600 font-medium">Loading blog posts...</p>
+          <div className="inline-block h-10 w-10 animate-spin rounded-full border-4 border-[#0B132B]/10 border-t-black" />
+          <p className="mt-4 text-[#0B132B]/60 font-medium">Loading blog posts...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white text-neutral-800">
+    <div className="min-h-screen bg-[#F5F5F0] text-[#0B132B] selection:bg-[#FF0033]/20">
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-neutral-400/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-neutral-400/10 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-1/4 -left-20 w-[60vh] h-[60vh] bg-[#0055FF]/5 rounded-full blur-[100px] animate-pulse" />
+        <div className="absolute bottom-1/4 -right-20 w-[60vh] h-[60vh] bg-[#FF0033]/5 rounded-full blur-[100px] animate-pulse delay-1000" />
       </div>
 
-      <header className="sticky top-0 z-40 bg-white/60 backdrop-blur-lg border-b border-neutral-200/80">
+      <header className="sticky top-0 z-40 bg-[#F5F5F0]/80 backdrop-blur-xl border-b border-[#0B132B]/10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <Link
                 href="/admin"
-                className="flex items-center gap-2 text-neutral-500 hover:text-black transition-all duration-200 group"
+                className="flex items-center gap-2 text-[#0B132B]/50 hover:text-[#0B132B] transition-all duration-200 group"
               >
                 <svg
                   className="h-5 w-5 transition-transform duration-200 ease-in-out group-hover:-translate-x-1"
@@ -157,9 +157,9 @@ export default function BlogManagement() {
               </Link>
               <div className="h-5 w-px bg-neutral-200/80" />
               <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-lg bg-neutral-100 flex items-center justify-center">
+                <div className="h-8 w-8 rounded-lg bg-white/50 border border-[#0B132B]/10 flex items-center justify-center">
                   <svg
-                    className="h-5 w-5 text-neutral-600"
+                    className="h-5 w-5 text-[#0B132B]/60"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -172,7 +172,7 @@ export default function BlogManagement() {
                     />
                   </svg>
                 </div>
-                <h1 className="text-lg font-semibold text-neutral-900">Manage Posts</h1>
+                <h1 className="text-lg font-semibold text-[#0B132B]">Manage Posts</h1>
               </div>
             </div>
           </div>
@@ -184,10 +184,10 @@ export default function BlogManagement() {
           className={`transition-all duration-500 ease-in-out ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
         >
           {error && (
-            <div className="mb-6 rounded-xl border border-neutral-300 bg-neutral-100/80 p-4 animate-shake">
+            <div className="mb-6 rounded-xl border border-[#0B132B]/20 bg-white/40 p-4 animate-shake">
               <div className="flex items-start gap-3">
                 <svg
-                  className="h-5 w-5 text-neutral-800 mt-0.5 flex-shrink-0"
+                  className="h-5 w-5 text-[#0B132B] mt-0.5 flex-shrink-0"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -199,7 +199,7 @@ export default function BlogManagement() {
                     d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                <p className="text-sm text-neutral-800 font-medium">{error}</p>
+                <p className="text-sm text-[#0B132B] font-medium">{error}</p>
               </div>
             </div>
           )}
@@ -208,7 +208,7 @@ export default function BlogManagement() {
             <div className="relative w-full max-w-sm">
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                 <svg
-                  className="h-5 w-5 text-neutral-400"
+                  className="h-5 w-5 text-[#0B132B]/30"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -226,7 +226,7 @@ export default function BlogManagement() {
                 placeholder="Search blog posts..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="block w-full rounded-lg border border-neutral-200/80 bg-white py-2.5 pl-10 pr-3 text-sm placeholder-neutral-500 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10 transition-all"
+                className="block w-full rounded-lg border border-[#0B132B]/10 bg-white py-2.5 pl-10 pr-3 text-sm placeholder-neutral-500 focus:border-[#0055FF] focus:outline-none focus:ring-2 focus:ring-[#0055FF]/10 transition-all"
               />
             </div>
 
@@ -234,7 +234,7 @@ export default function BlogManagement() {
               <select
                 value={filterTag}
                 onChange={(e) => setFilterTag(e.target.value)}
-                className="flex-1 w-full rounded-lg border border-neutral-200/80 bg-white px-3 py-2.5 text-sm font-medium text-neutral-700 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10 transition-all"
+                className="flex-1 w-full rounded-lg border border-[#0B132B]/10 bg-white px-3 py-2.5 text-sm font-medium text-[#0B132B]/80 focus:border-[#0055FF] focus:outline-none focus:ring-2 focus:ring-[#0055FF]/10 transition-all"
               >
                 <option value="all">All Tags</option>
                 {allTags.map((tag) => (
@@ -243,10 +243,10 @@ export default function BlogManagement() {
                   </option>
                 ))}
               </select>
-              <div className="flex rounded-lg border border-neutral-200/80 bg-white p-1">
+              <div className="flex rounded-lg border border-[#0B132B]/10 bg-white p-1">
                 <button
                   onClick={() => setViewMode("grid")}
-                  className={`flex items-center justify-center h-8 w-8 rounded-md text-sm font-medium transition-colors duration-200 ${viewMode === "grid" ? "bg-black text-white" : "text-neutral-500 hover:bg-neutral-100 hover:text-black"}`}
+                  className={`flex items-center justify-center h-8 w-8 rounded-md text-sm font-medium transition-colors duration-200 ${viewMode === "grid" ? "bg-[#0B132B] text-white hover:bg-[#FF0033] hover:shadow-[0_10px_20px_rgba(255,0,51,0.2)] border-none transition-all duration-300" : "text-[#0B132B]/50 hover:bg-white/50 border border-[#0B132B]/10 hover:text-[#0B132B]"}`}
                   title="Grid View"
                 >
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -260,7 +260,7 @@ export default function BlogManagement() {
                 </button>
                 <button
                   onClick={() => setViewMode("list")}
-                  className={`flex items-center justify-center h-8 w-8 rounded-md text-sm font-medium transition-colors duration-200 ${viewMode === "list" ? "bg-black text-white" : "text-neutral-500 hover:bg-neutral-100 hover:text-black"}`}
+                  className={`flex items-center justify-center h-8 w-8 rounded-md text-sm font-medium transition-colors duration-200 ${viewMode === "list" ? "bg-[#0B132B] text-white hover:bg-[#FF0033] hover:shadow-[0_10px_20px_rgba(255,0,51,0.2)] border-none transition-all duration-300" : "text-[#0B132B]/50 hover:bg-white/50 border border-[#0B132B]/10 hover:text-[#0B132B]"}`}
                   title="List View"
                 >
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -275,14 +275,14 @@ export default function BlogManagement() {
               </div>
             </div>
           </div>
-          <div className="mb-8 border-t border-neutral-200/80 pt-6 flex items-center justify-between">
-            <p className="text-sm text-neutral-500">
-              <span className="font-medium text-black">{filteredBlogs.length}</span>
+          <div className="mb-8 border-t border-[#0B132B]/10 pt-6 flex items-center justify-between">
+            <p className="text-sm text-[#0B132B]/50">
+              <span className="font-medium text-[#0B132B]">{filteredBlogs.length}</span>
               <span> {filteredBlogs.length === 1 ? "post" : "posts"} found</span>
             </p>
             <Link
               href="/admin/blogs/new"
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-black px-4 py-2 text-sm font-semibold text-white transition-all duration-200 ease-in-out hover:bg-neutral-800 hover:-translate-y-px active:scale-95"
+              className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#0B132B] px-4 py-2 text-sm font-semibold text-white transition-all duration-200 ease-in-out hover:bg-neutral-800 hover:-translate-y-px active:scale-95"
             >
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
@@ -301,10 +301,10 @@ export default function BlogManagement() {
           <div
             className={`transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`}
           >
-            <div className="flex flex-col items-center justify-center py-20 text-center border-2 border-dashed border-neutral-200 rounded-2xl">
-              <div className="mb-4 h-16 w-16 rounded-full bg-neutral-100 flex items-center justify-center">
+            <div className="flex flex-col items-center justify-center py-20 text-center border-2 border-dashed border-[#0B132B]/10 rounded-2xl">
+              <div className="mb-4 h-16 w-16 rounded-full bg-white/50 border border-[#0B132B]/10 flex items-center justify-center">
                 <svg
-                  className="h-8 w-8 text-neutral-400"
+                  className="h-8 w-8 text-[#0B132B]/30"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -317,15 +317,15 @@ export default function BlogManagement() {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-neutral-900 mb-2">No blog posts found</h3>
-              <p className="text-neutral-500 mb-6 max-w-xs">
+              <h3 className="text-lg font-semibold text-[#0B132B] mb-2">No blog posts found</h3>
+              <p className="text-[#0B132B]/50 mb-6 max-w-xs">
                 {searchQuery
                   ? `Your search for "${searchQuery}" did not return any results.`
                   : "Get started by creating your first blog post."}
               </p>
               <Link
                 href="/admin/blogs/new"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-black text-white rounded-lg font-medium transition-all duration-200 ease-in-out hover:bg-neutral-800 hover:-translate-y-px active:scale-95"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0B132B] text-white hover:bg-[#FF0033] hover:shadow-[0_10px_20px_rgba(255,0,51,0.2)] border-none transition-all duration-300 rounded-lg font-medium transition-all duration-200 ease-in-out hover:bg-neutral-800 hover:-translate-y-px active:scale-95"
               >
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
@@ -347,22 +347,22 @@ export default function BlogManagement() {
                 className={`group relative transition-all duration-500 ease-in-out ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
                 style={{ transitionDelay: `${index * 50}ms` }}
               >
-                <div className="relative h-full overflow-hidden rounded-2xl border border-neutral-200/80 bg-white transition-all duration-300 ease-in-out hover:shadow-xl hover:shadow-neutral-200/80 hover:-translate-y-1">
+                <div className="relative h-full overflow-hidden rounded-2xl border border-[#0B132B]/10 bg-white transition-all duration-300 ease-in-out hover:shadow-xl hover:shadow-neutral-200/80 hover:-translate-y-1">
                   <div className="p-5">
                     <div className="mb-3 flex items-start justify-between gap-4">
-                      <h3 className="text-lg font-semibold text-neutral-900 line-clamp-2 group-hover:text-black">
+                      <h3 className="text-lg font-semibold text-[#0B132B] line-clamp-2 group-hover:text-[#0B132B]">
                         {blog.title}
                       </h3>
-                      <span className="text-xs text-neutral-500 font-medium whitespace-nowrap pt-1">
+                      <span className="text-xs text-[#0B132B]/50 font-medium whitespace-nowrap pt-1">
                         {formatDate(blog.date)}
                       </span>
                     </div>
-                    <p className="text-sm text-neutral-500 line-clamp-3 mb-4">{blog.excerpt}</p>
+                    <p className="text-sm text-[#0B132B]/50 line-clamp-3 mb-4">{blog.excerpt}</p>
                     <div className="mb-5 flex flex-wrap gap-1.5">
                       {blog.tags?.slice(0, 3).map((tag) => (
                         <span
                           key={tag}
-                          className="inline-flex items-center rounded-md bg-neutral-100 px-2 py-1 text-xs font-medium text-neutral-700"
+                          className="inline-flex items-center rounded-md bg-white/50 border border-[#0B132B]/10 px-2 py-1 text-xs font-medium text-[#0B132B]/80"
                         >
                           {tag}
                         </span>
@@ -371,7 +371,7 @@ export default function BlogManagement() {
                     <div className="flex items-center gap-2">
                       <Link
                         href={`/admin/blogs/edit/${blog.slug}`}
-                        className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-neutral-100 px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-200 transition-colors duration-200"
+                        className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-white/50 border border-[#0B132B]/10 px-3 py-2 text-sm font-medium text-[#0B132B]/80 hover:bg-neutral-200 transition-colors duration-200"
                       >
                         <svg
                           className="h-4 w-4"
@@ -391,7 +391,7 @@ export default function BlogManagement() {
                       <button
                         onClick={() => handleDelete(blog)}
                         disabled={!blog.id}
-                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-neutral-200/80 text-neutral-500 hover:border-black hover:text-black transition-colors duration-200 disabled:opacity-50"
+                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#0B132B]/10 text-[#0B132B]/50 hover:border-black hover:text-[#0B132B] transition-colors duration-200 disabled:opacity-50"
                         title="Delete blog post"
                       >
                         <svg
@@ -422,13 +422,13 @@ export default function BlogManagement() {
                 className={`group transition-all duration-500 ease-in-out ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
                 style={{ transitionDelay: `${index * 30}ms` }}
               >
-                <div className="flex items-center gap-4 rounded-xl border border-neutral-200/80 bg-white p-4 transition-all duration-300 ease-in-out hover:shadow-lg hover:border-neutral-300 hover:translate-x-1">
+                <div className="flex items-center gap-4 rounded-xl border border-[#0B132B]/10 bg-white p-4 transition-all duration-300 ease-in-out hover:shadow-lg hover:border-[#0B132B]/20 hover:translate-x-1">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-4 mb-1">
-                      <h3 className="text-base font-semibold text-neutral-900 truncate">
+                      <h3 className="text-base font-semibold text-[#0B132B] truncate">
                         {blog.title}
                       </h3>
-                      <span className="text-xs text-neutral-500 font-medium whitespace-nowrap">
+                      <span className="text-xs text-[#0B132B]/50 font-medium whitespace-nowrap">
                         {formatDate(blog.date)}
                       </span>
                     </div>
@@ -436,7 +436,7 @@ export default function BlogManagement() {
                       {blog.tags?.slice(0, 3).map((tag) => (
                         <span
                           key={tag}
-                          className="inline-flex items-center rounded-md bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-700"
+                          className="inline-flex items-center rounded-md bg-white/50 border border-[#0B132B]/10 px-2 py-0.5 text-xs font-medium text-[#0B132B]/80"
                         >
                           {tag}
                         </span>
@@ -446,7 +446,7 @@ export default function BlogManagement() {
                   <div className="flex items-center gap-2 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <Link
                       href={`/admin/blogs/edit/${blog.slug}`}
-                      className="flex items-center gap-2 rounded-lg bg-neutral-100 px-3 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-200 transition-colors duration-200"
+                      className="flex items-center gap-2 rounded-lg bg-white/50 border border-[#0B132B]/10 px-3 py-1.5 text-sm font-medium text-[#0B132B]/80 hover:bg-neutral-200 transition-colors duration-200"
                     >
                       <svg
                         className="h-4 w-4"
@@ -466,7 +466,7 @@ export default function BlogManagement() {
                     <button
                       onClick={() => handleDelete(blog)}
                       disabled={!blog.id}
-                      className="flex h-8 w-8 items-center justify-center rounded-lg border border-neutral-200/80 text-neutral-500 hover:border-black hover:text-black transition-colors duration-200 disabled:opacity-50"
+                      className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#0B132B]/10 text-[#0B132B]/50 hover:border-black hover:text-[#0B132B] transition-colors duration-200 disabled:opacity-50"
                       title="Delete blog post"
                     >
                       <svg

@@ -305,13 +305,13 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
       </div>
 
       {/* Header */}
-      <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-neutral-200/50 shadow-sm">
+      <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-[#0B132B]/10/50 shadow-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <Link
                 href="/admin/projects"
-                className="flex items-center gap-2 text-neutral-600 hover:text-neutral-900 transition-all hover:scale-105"
+                className="flex items-center gap-2 text-[#0B132B]/60 hover:text-[#0B132B] transition-all hover:scale-105"
               >
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
@@ -340,7 +340,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                     />
                   </svg>
                 </div>
-                <h1 className="text-lg font-semibold text-neutral-900">
+                <h1 className="text-lg font-semibold text-[#0B132B]">
                   {isEditing ? "Edit Project" : "Create New Project"}
                 </h1>
               </div>
@@ -378,7 +378,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
             {/* Left Column - Main Content */}
             <div className="lg:col-span-2 space-y-8">
               {/* Basic Project Information */}
-              <div className="border border-neutral-200/50 rounded-2xl bg-white shadow-sm p-8">
+              <div className="border border-[#0B132B]/10/50 rounded-2xl bg-white shadow-sm p-8">
                 <div className="mb-6 flex items-start gap-3">
                   <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 flex items-center justify-center flex-shrink-0">
                     <svg
@@ -396,8 +396,8 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                     </svg>
                   </div>
                   <div>
-                    <h2 className="text-lg font-semibold text-neutral-900">Project Overview</h2>
-                    <p className="text-sm text-neutral-600 mt-1">
+                    <h2 className="text-lg font-semibold text-[#0B132B]">Project Overview</h2>
+                    <p className="text-sm text-[#0B132B]/60 mt-1">
                       Core information about your project
                     </p>
                   </div>
@@ -407,7 +407,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                   <div>
                     <label
                       htmlFor="title"
-                      className="block text-sm font-medium text-neutral-700 mb-2"
+                      className="block text-sm font-medium text-[#0B132B]/80 mb-2"
                     >
                       Project Title
                     </label>
@@ -418,7 +418,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                       required
                       value={formData.title}
                       onChange={(e) => handleTitleChange(e.target.value)}
-                      className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors text-lg"
+                      className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors text-lg"
                       placeholder="Enter project title..."
                     />
                   </div>
@@ -426,7 +426,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                   <div>
                     <label
                       htmlFor="excerpt"
-                      className="block text-sm font-medium text-neutral-700 mb-2"
+                      className="block text-sm font-medium text-[#0B132B]/80 mb-2"
                     >
                       Project Description
                     </label>
@@ -439,7 +439,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                       onChange={(e) =>
                         setFormData((prev) => ({ ...prev, excerpt: e.target.value }))
                       }
-                      className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
+                      className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
                       placeholder="Brief description of the project..."
                     />
                   </div>
@@ -448,7 +448,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                     <div>
                       <label
                         htmlFor="roles"
-                        className="block text-sm font-medium text-neutral-700 mb-2"
+                        className="block text-sm font-medium text-[#0B132B]/80 mb-2"
                       >
                         Roles & Technologies
                       </label>
@@ -461,15 +461,15 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                           setFormData((prev) => ({ ...prev, roles: e.target.value }))
                         }
                         placeholder="Frontend Development, UI Design, React"
-                        className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                        className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
                       />
-                      <p className="text-xs text-neutral-500 mt-1">Separate with commas</p>
+                      <p className="text-xs text-[#0B132B]/50 mt-1">Separate with commas</p>
                     </div>
 
                     <div>
                       <label
                         htmlFor="tools"
-                        className="block text-sm font-medium text-neutral-700 mb-2"
+                        className="block text-sm font-medium text-[#0B132B]/80 mb-2"
                       >
                         Tools Used
                       </label>
@@ -482,16 +482,16 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                           setFormData((prev) => ({ ...prev, tools: e.target.value }))
                         }
                         placeholder="Figma, React, Next.js"
-                        className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                        className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
                       />
-                      <p className="text-xs text-neutral-500 mt-1">Separate with commas</p>
+                      <p className="text-xs text-[#0B132B]/50 mt-1">Separate with commas</p>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Project Media - Moved from sidebar */}
-              <div className="border border-neutral-200/50 rounded-2xl bg-white shadow-sm p-8">
+              <div className="border border-[#0B132B]/10/50 rounded-2xl bg-white shadow-sm p-8">
                 <div className="mb-6 flex items-start gap-3">
                   <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 flex items-center justify-center flex-shrink-0">
                     <svg
@@ -509,8 +509,8 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                     </svg>
                   </div>
                   <div>
-                    <h2 className="text-lg font-semibold text-neutral-900">Media & Assets</h2>
-                    <p className="text-sm text-neutral-600 mt-1">
+                    <h2 className="text-lg font-semibold text-[#0B132B]">Media & Assets</h2>
+                    <p className="text-sm text-[#0B132B]/60 mt-1">
                       Visual content for your project showcase
                     </p>
                   </div>
@@ -525,7 +525,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                       onUpload={(url) => setFormData((prev) => ({ ...prev, thumb: url }))}
                       label="Thumbnail Image"
                     />
-                    <p className="text-xs text-neutral-500 mt-2">
+                    <p className="text-xs text-[#0B132B]/50 mt-2">
                       Main project thumbnail for cards and listings
                     </p>
                   </div>
@@ -538,7 +538,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                       onUpload={(url) => setFormData((prev) => ({ ...prev, mobileHeroSrc: url }))}
                       label="Mobile Hero (optional)"
                     />
-                    <p className="text-xs text-neutral-500 mt-2">
+                    <p className="text-xs text-[#0B132B]/50 mt-2">
                       Alternative hero image optimized for mobile
                     </p>
                   </div>
@@ -548,7 +548,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                 <div className="mt-6">
                   <label
                     htmlFor="video"
-                    className="block text-sm font-medium text-neutral-700 mb-2"
+                    className="block text-sm font-medium text-[#0B132B]/80 mb-2"
                   >
                     Video URL (optional)
                   </label>
@@ -558,22 +558,22 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                     id="video"
                     value={formData.video}
                     onChange={(e) => setFormData((prev) => ({ ...prev, video: e.target.value }))}
-                    className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                    className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
                     placeholder="https://example.com/video.mp4"
                   />
                 </div>
 
                 {/* Gallery Section */}
-                <div className="mt-6 pt-6 border-t border-neutral-200">
+                <div className="mt-6 pt-6 border-t border-[#0B132B]/10">
                   <div className="flex items-center justify-between mb-3">
                     <div>
-                      <h3 className="text-sm font-semibold text-neutral-900">Project Gallery</h3>
-                      <p className="text-xs text-neutral-500 mt-0.5">
+                      <h3 className="text-sm font-semibold text-[#0B132B]">Project Gallery</h3>
+                      <p className="text-xs text-[#0B132B]/50 mt-0.5">
                         Add multiple images for detailed project showcase
                       </p>
                     </div>
                     {gallery.length > 0 && (
-                      <span className="text-xs font-medium text-neutral-500 bg-neutral-100 px-3 py-1.5 rounded-full">
+                      <span className="text-xs font-medium text-[#0B132B]/50 bg-white/50 border border-[#0B132B]/10 px-3 py-1.5 rounded-full">
                         {gallery.length} {gallery.length === 1 ? "image" : "images"}
                       </span>
                     )}
@@ -581,22 +581,22 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
 
                   {/* Gallery Grid - SCROLLABLE */}
                   {gallery.length > 0 && (
-                    <div className="mb-4 max-h-[500px] overflow-y-auto rounded-xl border border-neutral-200 bg-neutral-50/50 p-4">
+                    <div className="mb-4 max-h-[500px] overflow-y-auto rounded-xl border border-[#0B132B]/10 bg-[#0B132B]/5/50 p-4">
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                         {gallery.map((img, idx) => (
                           <div
                             key={idx}
-                            className="relative group bg-white rounded-xl shadow-sm border border-neutral-200 overflow-hidden hover:shadow-md transition-all"
+                            className="relative group bg-white rounded-xl shadow-sm border border-[#0B132B]/10 overflow-hidden hover:shadow-md transition-all"
                           >
                             {/* Image Preview */}
-                            <div className="relative w-full aspect-square bg-neutral-100">
+                            <div className="relative w-full aspect-square bg-white/50 border border-[#0B132B]/10">
                               <Image
                                 src={img.src}
                                 alt={img.alt || `Gallery image ${idx + 1}`}
                                 fill
                                 className="object-cover"
                               />
-                              <div className="absolute top-2 left-2 w-6 h-6 rounded-full bg-black text-white text-xs flex items-center justify-center font-bold shadow-lg">
+                              <div className="absolute top-2 left-2 w-6 h-6 rounded-full bg-[#0B132B] text-white hover:bg-[#FF0033] hover:shadow-[0_10px_20px_rgba(255,0,51,0.2)] border-none transition-all duration-300 text-xs flex items-center justify-center font-bold shadow-lg">
                                 {idx + 1}
                               </div>
                             </div>
@@ -612,7 +612,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                                   setGallery(updated);
                                 }}
                                 placeholder="Alt text"
-                                className="w-full px-2 py-1.5 text-sm border border-neutral-300 rounded-lg focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition-colors"
+                                className="w-full px-2 py-1.5 text-sm border border-[#0B132B]/20 rounded-lg focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition-colors"
                               />
                               <button
                                 type="button"
@@ -642,7 +642,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                   )}
 
                   {/* Add New Gallery Image */}
-                  <div className="border-2 border-dashed border-neutral-300 rounded-xl p-5 bg-gradient-to-br from-neutral-50 to-neutral-100/50 hover:border-purple-300 hover:bg-purple-50/30 transition-all">
+                  <div className="border-2 border-dashed border-[#0B132B]/20 rounded-xl p-5 bg-gradient-to-br from-neutral-50 to-neutral-100/50 hover:border-purple-300 hover:bg-purple-50/30 transition-all">
                     <BatchImageUpload
                       bucket="project-images"
                       onChange={(uploads) => {
@@ -657,11 +657,11 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                 </div>
 
                 {/* Additional Fields */}
-                <div className="mt-6 pt-6 border-t border-neutral-200 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="mt-6 pt-6 border-t border-[#0B132B]/10 grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
                     <label
                       htmlFor="alt"
-                      className="block text-sm font-medium text-neutral-700 mb-2"
+                      className="block text-sm font-medium text-[#0B132B]/80 mb-2"
                     >
                       Default Alt Text
                     </label>
@@ -671,16 +671,16 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                       id="alt"
                       value={formData.alt}
                       onChange={(e) => setFormData((prev) => ({ ...prev, alt: e.target.value }))}
-                      className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                      className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
                       placeholder="General image description"
                     />
-                    <p className="text-xs text-neutral-500 mt-1">Fallback for accessibility</p>
+                    <p className="text-xs text-[#0B132B]/50 mt-1">Fallback for accessibility</p>
                   </div>
 
                   <div>
                     <label
                       htmlFor="credits"
-                      className="block text-sm font-medium text-neutral-700 mb-2"
+                      className="block text-sm font-medium text-[#0B132B]/80 mb-2"
                     >
                       Image Credits
                     </label>
@@ -692,21 +692,21 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                       onChange={(e) =>
                         setFormData((prev) => ({ ...prev, credits: e.target.value }))
                       }
-                      className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                      className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
                       placeholder="Photo credits, attributions..."
                     />
-                    <p className="text-xs text-neutral-500 mt-1">Attribution for images</p>
+                    <p className="text-xs text-[#0B132B]/50 mt-1">Attribution for images</p>
                   </div>
                 </div>
               </div>
 
               {/* Case Study Details */}
-              <div className="border border-neutral-200 rounded-lg bg-white p-8">
+              <div className="border border-[#0B132B]/10 rounded-lg bg-white p-8">
                 <div className="mb-6">
-                  <h2 className="text-lg font-medium text-neutral-900">
+                  <h2 className="text-lg font-medium text-[#0B132B]">
                     {relevantFields.caseStudyTitle}
                   </h2>
-                  <p className="text-sm text-neutral-600 mt-1">
+                  <p className="text-sm text-[#0B132B]/60 mt-1">
                     Project-specific details based on type: {formData.type}
                   </p>
                 </div>
@@ -715,7 +715,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                   <div>
                     <label
                       htmlFor="problem"
-                      className="block text-sm font-medium text-neutral-700 mb-2"
+                      className="block text-sm font-medium text-[#0B132B]/80 mb-2"
                     >
                       {relevantFields.problemLabel}
                     </label>
@@ -727,7 +727,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                       onChange={(e) =>
                         setFormData((prev) => ({ ...prev, problem: e.target.value }))
                       }
-                      className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
+                      className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
                       placeholder={`What ${formData.type === "ui-ux" ? "user problem" : formData.type === "branding" ? "brand challenge" : "challenge"} did this project solve?`}
                     />
                   </div>
@@ -735,7 +735,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                   <div>
                     <label
                       htmlFor="solution"
-                      className="block text-sm font-medium text-neutral-700 mb-2"
+                      className="block text-sm font-medium text-[#0B132B]/80 mb-2"
                     >
                       {relevantFields.solutionLabel}
                     </label>
@@ -747,7 +747,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                       onChange={(e) =>
                         setFormData((prev) => ({ ...prev, solution: e.target.value }))
                       }
-                      className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
+                      className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
                       placeholder={`How did you solve the ${formData.type === "ui-ux" ? "user experience" : "problem"}?`}
                     />
                   </div>
@@ -757,7 +757,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                       <div>
                         <label
                           htmlFor="approach"
-                          className="block text-sm font-medium text-neutral-700 mb-2"
+                          className="block text-sm font-medium text-[#0B132B]/80 mb-2"
                         >
                           {relevantFields.approachLabel}
                         </label>
@@ -769,7 +769,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                           onChange={(e) =>
                             setFormData((prev) => ({ ...prev, approach: e.target.value }))
                           }
-                          className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
+                          className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
                           placeholder={`Your ${formData.type === "ui-ux" ? "design methodology" : formData.type === "web-dev" ? "development approach" : "methodology"}...`}
                         />
                       </div>
@@ -778,7 +778,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                         <div>
                           <label
                             htmlFor="outcome"
-                            className="block text-sm font-medium text-neutral-700 mb-2"
+                            className="block text-sm font-medium text-[#0B132B]/80 mb-2"
                           >
                             {relevantFields.outcomeLabel}
                           </label>
@@ -790,7 +790,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                             onChange={(e) =>
                               setFormData((prev) => ({ ...prev, outcome: e.target.value }))
                             }
-                            className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
+                            className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
                             placeholder={`${formData.type === "ui-ux" ? "User impact and metrics" : formData.type === "web-dev" ? "Performance results" : "Results and impact"}...`}
                           />
                         </div>
@@ -802,7 +802,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                     <div>
                       <label
                         htmlFor="highlights"
-                        className="block text-sm font-medium text-neutral-700 mb-2"
+                        className="block text-sm font-medium text-[#0B132B]/80 mb-2"
                       >
                         Key Highlights
                       </label>
@@ -814,10 +814,10 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                         onChange={(e) =>
                           setFormData((prev) => ({ ...prev, highlights: e.target.value }))
                         }
-                        className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
+                        className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
                         placeholder={`One highlight per line:\n${formData.type === "ui-ux" ? "40% faster task completion\nImproved accessibility score\nReduced user errors by 60%" : formData.type === "web-dev" ? "99+ Lighthouse performance score\nCustom GSAP animations\nResponsive mobile-first design" : "Premium color system with accessible contrast\nVersatile logo variants for all media\nGrid-based layout rules for consistency"}`}
                       />
-                      <p className="text-xs text-neutral-500 mt-1">
+                      <p className="text-xs text-[#0B132B]/50 mt-1">
                         Enter each highlight on a new line
                       </p>
                     </div>
@@ -827,7 +827,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                     <div>
                       <label
                         htmlFor="deliverables"
-                        className="block text-sm font-medium text-neutral-700 mb-2"
+                        className="block text-sm font-medium text-[#0B132B]/80 mb-2"
                       >
                         Project Deliverables
                       </label>
@@ -839,10 +839,10 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                         onChange={(e) =>
                           setFormData((prev) => ({ ...prev, deliverables: e.target.value }))
                         }
-                        className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
+                        className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
                         placeholder={`One deliverable per line:\n${formData.type === "ui-ux" ? "User research report\nPersonas and journey maps\nWireframes and prototypes\nHigh-fidelity UI designs" : formData.type === "web-dev" ? "Responsive website\nPerformance optimization\nSEO optimization\nDeployment setup" : "Logo system\nBrand guidelines\nDesign kit\nTemplates"}`}
                       />
-                      <p className="text-xs text-neutral-500 mt-1">
+                      <p className="text-xs text-[#0B132B]/50 mt-1">
                         Enter each deliverable on a new line
                       </p>
                     </div>
@@ -852,7 +852,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                     <div>
                       <label
                         htmlFor="process"
-                        className="block text-sm font-medium text-neutral-700 mb-2"
+                        className="block text-sm font-medium text-[#0B132B]/80 mb-2"
                       >
                         Process Steps (JSON Format)
                       </label>
@@ -864,10 +864,10 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                         onChange={(e) =>
                           setFormData((prev) => ({ ...prev, process: e.target.value }))
                         }
-                        className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none font-mono text-sm"
+                        className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none font-mono text-sm"
                         placeholder={`[\n  {\n    "title": "Discovery",\n    "body": "Research and analysis phase..."\n  },\n  {\n    "title": "Design",\n    "body": "Concept development and iteration..."\n  }\n]`}
                       />
-                      <p className="text-xs text-neutral-500 mt-1">
+                      <p className="text-xs text-[#0B132B]/50 mt-1">
                         Enter process steps as JSON array with title and body fields
                       </p>
                     </div>
@@ -880,10 +880,10 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
             <div className="space-y-8">
               <div className="lg:sticky lg:top-24 space-y-6">
                 {/* Project Settings */}
-                <div className="border border-neutral-200 rounded-lg bg-white p-6 shadow-sm">
+                <div className="border border-[#0B132B]/10 rounded-lg bg-white p-6 shadow-sm">
                   <div className="mb-6">
-                    <h3 className="text-lg font-medium text-neutral-900">Settings</h3>
-                    <p className="text-sm text-neutral-600 mt-1">
+                    <h3 className="text-lg font-medium text-[#0B132B]">Settings</h3>
+                    <p className="text-sm text-[#0B132B]/60 mt-1">
                       Project configuration and metadata.
                     </p>
                   </div>
@@ -892,7 +892,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                     <div>
                       <label
                         htmlFor="slug"
-                        className="block text-sm font-medium text-neutral-700 mb-2"
+                        className="block text-sm font-medium text-[#0B132B]/80 mb-2"
                       >
                         URL Slug
                       </label>
@@ -903,16 +903,16 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                         required
                         value={formData.slug}
                         onChange={(e) => setFormData((prev) => ({ ...prev, slug: e.target.value }))}
-                        className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                        className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
                         placeholder="url-friendly-slug"
                       />
-                      <p className="text-xs text-neutral-500 mt-1">Used in the project URL</p>
+                      <p className="text-xs text-[#0B132B]/50 mt-1">Used in the project URL</p>
                     </div>
 
                     <div>
                       <label
                         htmlFor="type"
-                        className="block text-sm font-medium text-neutral-700 mb-2"
+                        className="block text-sm font-medium text-[#0B132B]/80 mb-2"
                       >
                         Project Type
                       </label>
@@ -923,7 +923,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                         onChange={(e) =>
                           setFormData((prev) => ({ ...prev, type: e.target.value as ProjectType }))
                         }
-                        className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                        className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
                       >
                         <option value="web-dev">Web Development</option>
                         <option value="ui-ux">UI/UX Design</option>
@@ -931,7 +931,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                         <option value="social">Social Media</option>
                         <option value="print">Print Design</option>
                       </select>
-                      <p className="text-xs text-neutral-500 mt-1">
+                      <p className="text-xs text-[#0B132B]/50 mt-1">
                         This affects which fields are shown below
                       </p>
                     </div>
@@ -940,7 +940,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                       <div>
                         <label
                           htmlFor="year"
-                          className="block text-sm font-medium text-neutral-700 mb-2"
+                          className="block text-sm font-medium text-[#0B132B]/80 mb-2"
                         >
                           Year
                         </label>
@@ -952,7 +952,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                           onChange={(e) =>
                             setFormData((prev) => ({ ...prev, year: e.target.value }))
                           }
-                          className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                          className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
                           placeholder="2024"
                         />
                       </div>
@@ -960,7 +960,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                       <div>
                         <label
                           htmlFor="client"
-                          className="block text-sm font-medium text-neutral-700 mb-2"
+                          className="block text-sm font-medium text-[#0B132B]/80 mb-2"
                         >
                           Client
                         </label>
@@ -972,7 +972,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                           onChange={(e) =>
                             setFormData((prev) => ({ ...prev, client: e.target.value }))
                           }
-                          className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                          className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
                           placeholder="Client name"
                         />
                       </div>
@@ -987,13 +987,13 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                         onChange={(e) =>
                           setFormData((prev) => ({ ...prev, featured: e.target.checked }))
                         }
-                        className="h-4 w-4 text-neutral-900 focus:ring-neutral-900 border-neutral-300 rounded"
+                        className="h-4 w-4 text-[#0B132B] focus:ring-neutral-900 border-[#0B132B]/20 rounded"
                       />
-                      <label htmlFor="featured" className="text-sm font-medium text-neutral-700">
+                      <label htmlFor="featured" className="text-sm font-medium text-[#0B132B]/80">
                         Show on Homepage
                       </label>
                     </div>
-                    <p className="text-xs text-neutral-500">
+                    <p className="text-xs text-[#0B132B]/50">
                       Display this project in the "Selected Work" section on the homepage (max 6
                       projects recommended)
                     </p>
@@ -1024,10 +1024,10 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                   </div>
 
                   {/* Actions */}
-                  <div className="border border-neutral-200 rounded-lg bg-white p-6">
+                  <div className="border border-[#0B132B]/10 rounded-lg bg-white p-6">
                     <div className="space-y-4">
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-neutral-700">Status</span>
+                        <span className="text-[#0B132B]/80">Status</span>
                         <span className="text-green-600 font-medium">Ready to publish</span>
                       </div>
 
@@ -1085,7 +1085,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
 
                         <Link
                           href="/admin/projects"
-                          className="w-full text-center px-4 py-2.5 text-sm font-medium text-neutral-700 hover:text-neutral-900 transition-all border border-neutral-300 rounded-xl hover:border-neutral-400 bg-white hover:bg-neutral-50 hover:shadow-sm"
+                          className="w-full text-center px-4 py-2.5 text-sm font-medium text-[#0B132B]/80 hover:text-[#0B132B] transition-all border border-[#0B132B]/20 rounded-xl hover:border-neutral-400 bg-white hover:bg-[#0B132B]/5 hover:shadow-sm"
                         >
                           Cancel
                         </Link>

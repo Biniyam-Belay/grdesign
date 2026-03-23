@@ -39,7 +39,7 @@ function SortableProjectItem({ project, handleDelete, viewMode }: SortableProjec
 
   const commonContent = (
     <>
-      <div className="relative aspect-square overflow-hidden bg-neutral-100">
+      <div className="relative aspect-square overflow-hidden bg-white/50 border border-[#0B132B]/10">
         {project.thumb && (
           <Image src={project.thumb} alt={project.title} fill className="object-cover" />
         )}
@@ -49,7 +49,7 @@ function SortableProjectItem({ project, handleDelete, viewMode }: SortableProjec
             className="p-2 bg-white/90 rounded-lg shadow-lg"
           >
             <svg
-              className="h-4 w-4 text-neutral-700"
+              className="h-4 w-4 text-[#0B132B]/80"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -83,9 +83,9 @@ function SortableProjectItem({ project, handleDelete, viewMode }: SortableProjec
         </div>
       </div>
       <div className="p-5">
-        <h3 className="text-lg font-semibold text-neutral-900">{project.title}</h3>
+        <h3 className="text-lg font-semibold text-[#0B132B]">{project.title}</h3>
         {project.excerpt && (
-          <p className="text-sm text-neutral-600 line-clamp-2">{project.excerpt}</p>
+          <p className="text-sm text-[#0B132B]/60 line-clamp-2">{project.excerpt}</p>
         )}
       </div>
     </>
@@ -93,22 +93,22 @@ function SortableProjectItem({ project, handleDelete, viewMode }: SortableProjec
 
   const listItemContent = (
     <>
-      <div className="relative w-24 h-24 rounded-xl overflow-hidden bg-neutral-100 flex-shrink-0">
+      <div className="relative w-24 h-24 rounded-xl overflow-hidden bg-white/50 border border-[#0B132B]/10 flex-shrink-0">
         {project.thumb && (
           <Image src={project.thumb} alt={project.title} fill className="object-cover" />
         )}
       </div>
       <div className="flex-1 min-w-0">
-        <h3 className="text-lg font-semibold text-neutral-900">{project.title}</h3>
-        {project.excerpt && <p className="text-sm text-neutral-600">{project.excerpt}</p>}
+        <h3 className="text-lg font-semibold text-[#0B132B]">{project.title}</h3>
+        {project.excerpt && <p className="text-sm text-[#0B132B]/60">{project.excerpt}</p>}
       </div>
       <div className="flex gap-2 flex-shrink-0">
         <Link
           href={`/admin/projects/edit/${project.slug}`}
-          className="p-3 bg-neutral-100 rounded-xl"
+          className="p-3 bg-white/50 border border-[#0B132B]/10 rounded-xl"
         >
           <svg
-            className="h-5 w-5 text-neutral-700"
+            className="h-5 w-5 text-[#0B132B]/80"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -146,7 +146,7 @@ function SortableProjectItem({ project, handleDelete, viewMode }: SortableProjec
       style={style}
       {...attributes}
       {...listeners}
-      className={`group bg-white rounded-2xl shadow-lg border border-neutral-200 overflow-hidden cursor-grab ${
+      className={`group bg-white rounded-2xl shadow-lg border border-[#0B132B]/10 overflow-hidden cursor-grab ${
         isDragging ? "ring-2 ring-purple-500" : ""
       } ${viewMode === "list" ? "flex items-center gap-6 p-6" : ""}`}
     >
@@ -308,27 +308,27 @@ export default function ProjectManagement() {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center transition-opacity duration-300">
         <div className="text-center">
-          <div className="inline-block h-10 w-10 animate-spin rounded-full border-4 border-neutral-200 border-t-black" />
-          <p className="mt-4 text-neutral-600 font-medium">Loading projects...</p>
+          <div className="inline-block h-10 w-10 animate-spin rounded-full border-4 border-[#0B132B]/10 border-t-black" />
+          <p className="mt-4 text-[#0B132B]/60 font-medium">Loading projects...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white text-neutral-800">
+    <div className="min-h-screen bg-[#F5F5F0] text-[#0B132B] selection:bg-[#FF0033]/20">
       <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-neutral-400/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-neutral-400/10 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-1/4 -left-20 w-[60vh] h-[60vh] bg-[#0055FF]/5 rounded-full blur-[100px] animate-pulse" />
+        <div className="absolute bottom-1/4 -right-20 w-[60vh] h-[60vh] bg-[#FF0033]/5 rounded-full blur-[100px] animate-pulse delay-1000" />
       </div>
 
-      <header className="sticky top-0 z-40 bg-white/60 backdrop-blur-lg border-b border-neutral-200/80">
+      <header className="sticky top-0 z-40 bg-[#F5F5F0]/80 backdrop-blur-xl border-b border-[#0B132B]/10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <Link
                 href="/admin"
-                className="flex items-center gap-2 text-neutral-500 hover:text-black transition-all duration-200 group"
+                className="flex items-center gap-2 text-[#0B132B]/50 hover:text-[#0B132B] transition-all duration-200 group"
               >
                 <svg
                   className="h-5 w-5 transition-transform duration-200 ease-in-out group-hover:-translate-x-1"
@@ -347,9 +347,9 @@ export default function ProjectManagement() {
               </Link>
               <div className="h-5 w-px bg-neutral-200/80" />
               <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-lg bg-neutral-100 flex items-center justify-center">
+                <div className="h-8 w-8 rounded-lg bg-white/50 border border-[#0B132B]/10 flex items-center justify-center">
                   <svg
-                    className="h-5 w-5 text-neutral-600"
+                    className="h-5 w-5 text-[#0B132B]/60"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -362,12 +362,12 @@ export default function ProjectManagement() {
                     />
                   </svg>
                 </div>
-                <h1 className="text-lg font-semibold text-neutral-900">Manage Projects</h1>
+                <h1 className="text-lg font-semibold text-[#0B132B]">Manage Projects</h1>
               </div>
             </div>
             <button
               onClick={handleLogout}
-              className="hidden sm:inline-flex items-center justify-center rounded-lg border border-neutral-200/80 bg-white px-4 py-2 text-sm font-medium text-neutral-700 shadow-sm hover:bg-neutral-50 transition-colors duration-200"
+              className="hidden sm:inline-flex items-center justify-center rounded-lg border border-[#0B132B]/10 bg-white px-4 py-2 text-sm font-medium text-[#0B132B]/80 shadow-sm hover:bg-[#0B132B]/5 transition-colors duration-200"
             >
               Logout
             </button>
@@ -380,10 +380,10 @@ export default function ProjectManagement() {
           className={`transition-all duration-500 ease-in-out ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
         >
           {error && (
-            <div className="mb-6 rounded-xl border border-neutral-300 bg-neutral-100/80 p-4 animate-shake">
+            <div className="mb-6 rounded-xl border border-[#0B132B]/20 bg-white/40 p-4 animate-shake">
               <div className="flex items-start gap-3">
                 <svg
-                  className="h-5 w-5 text-neutral-800 mt-0.5 flex-shrink-0"
+                  className="h-5 w-5 text-[#0B132B] mt-0.5 flex-shrink-0"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -395,17 +395,17 @@ export default function ProjectManagement() {
                     d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                <p className="text-sm text-neutral-800 font-medium">{error}</p>
+                <p className="text-sm text-[#0B132B] font-medium">{error}</p>
               </div>
             </div>
           )}
 
           <div className="mb-8 flex flex-col sm:flex-row gap-3 items-center justify-between">
             <div className="flex items-center gap-3 w-full sm:w-auto">
-              <div className="flex rounded-lg border border-neutral-200/80 bg-white p-1">
+              <div className="flex rounded-lg border border-[#0B132B]/10 bg-white p-1">
                 <button
                   onClick={() => setViewMode("grid")}
-                  className={`flex items-center justify-center h-8 w-8 rounded-md text-sm font-medium transition-colors duration-200 ${viewMode === "grid" ? "bg-black text-white" : "text-neutral-500 hover:bg-neutral-100 hover:text-black"}`}
+                  className={`flex items-center justify-center h-8 w-8 rounded-md text-sm font-medium transition-colors duration-200 ${viewMode === "grid" ? "bg-[#0B132B] text-white hover:bg-[#FF0033] hover:shadow-[0_10px_20px_rgba(255,0,51,0.2)] border-none transition-all duration-300" : "text-[#0B132B]/50 hover:bg-white/50 border border-[#0B132B]/10 hover:text-[#0B132B]"}`}
                   title="Grid View"
                 >
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -419,7 +419,7 @@ export default function ProjectManagement() {
                 </button>
                 <button
                   onClick={() => setViewMode("list")}
-                  className={`flex items-center justify-center h-8 w-8 rounded-md text-sm font-medium transition-colors duration-200 ${viewMode === "list" ? "bg-black text-white" : "text-neutral-500 hover:bg-neutral-100 hover:text-black"}`}
+                  className={`flex items-center justify-center h-8 w-8 rounded-md text-sm font-medium transition-colors duration-200 ${viewMode === "list" ? "bg-[#0B132B] text-white hover:bg-[#FF0033] hover:shadow-[0_10px_20px_rgba(255,0,51,0.2)] border-none transition-all duration-300" : "text-[#0B132B]/50 hover:bg-white/50 border border-[#0B132B]/10 hover:text-[#0B132B]"}`}
                   title="List View"
                 >
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -437,16 +437,16 @@ export default function ProjectManagement() {
             <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
               <Link
                 href="/admin/projects/new"
-                className="inline-flex items-center justify-center gap-2 rounded-lg border border-neutral-200/80 bg-white px-4 py-2 text-sm font-semibold text-neutral-800 transition-all duration-200 ease-in-out hover:bg-neutral-50 hover:-translate-y-px active:scale-95"
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-[#0B132B]/10 bg-white px-4 py-2 text-sm font-semibold text-[#0B132B] transition-all duration-200 ease-in-out hover:bg-[#0B132B]/5 hover:-translate-y-px active:scale-95"
               >
                 Add Single
               </Link>
             </div>
           </div>
 
-          <div className="mb-8 border-t border-neutral-200/80 pt-6 flex items-center justify-between">
-            <p className="text-sm text-neutral-500">
-              <span className="font-medium text-black">{projects.length}</span>
+          <div className="mb-8 border-t border-[#0B132B]/10 pt-6 flex items-center justify-between">
+            <p className="text-sm text-[#0B132B]/50">
+              <span className="font-medium text-[#0B132B]">{projects.length}</span>
               <span> {projects.length === 1 ? "project" : "projects"} found</span>
             </p>
           </div>
@@ -456,10 +456,10 @@ export default function ProjectManagement() {
           <div
             className={`transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`}
           >
-            <div className="flex flex-col items-center justify-center py-20 text-center border-2 border-dashed border-neutral-200 rounded-2xl bg-white/70">
-              <div className="mb-4 h-16 w-16 rounded-full bg-neutral-100 flex items-center justify-center">
+            <div className="flex flex-col items-center justify-center py-20 text-center border-2 border-dashed border-[#0B132B]/10 rounded-2xl bg-white/70">
+              <div className="mb-4 h-16 w-16 rounded-full bg-white/50 border border-[#0B132B]/10 flex items-center justify-center">
                 <svg
-                  className="h-8 w-8 text-neutral-400"
+                  className="h-8 w-8 text-[#0B132B]/30"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -472,13 +472,13 @@ export default function ProjectManagement() {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-neutral-900 mb-2">No projects yet</h3>
-              <p className="text-neutral-500 mb-6 max-w-xs">
+              <h3 className="text-lg font-semibold text-[#0B132B] mb-2">No projects yet</h3>
+              <p className="text-[#0B132B]/50 mb-6 max-w-xs">
                 Get started by adding your first project.
               </p>
               <Link
                 href="/admin/projects/new"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-black text-white rounded-lg font-medium transition-all duration-200 ease-in-out hover:bg-neutral-800 hover:-translate-y-px active:scale-95"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0B132B] text-white hover:bg-[#FF0033] hover:shadow-[0_10px_20px_rgba(255,0,51,0.2)] border-none transition-all duration-300 rounded-lg font-medium transition-all duration-200 ease-in-out hover:bg-neutral-800 hover:-translate-y-px active:scale-95"
               >
                 Add Your First Project
               </Link>

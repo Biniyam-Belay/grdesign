@@ -29,7 +29,7 @@ const StarRating = ({
           type="button"
           onClick={() => setRating(star)}
           className={`transition-transform duration-200 ease-in-out hover:scale-125 ${
-            star <= rating ? "text-amber-400" : "text-neutral-300"
+            star <= rating ? "text-amber-400" : "text-[#0B132B]/20"
           }`}
         >
           <Star className="w-6 h-6" fill="currentColor" />
@@ -40,7 +40,7 @@ const StarRating = ({
 };
 
 const inputClasses =
-  "block w-full px-4 py-2 text-neutral-800 bg-white border border-neutral-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 transition-all duration-200 ease-in-out hover:border-neutral-400";
+  "block w-full px-4 py-2 text-[#0B132B] bg-white border border-[#0B132B]/20 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 transition-all duration-200 ease-in-out hover:border-neutral-400";
 
 export default function TestimonialForm({ testimonial, isEditing = false }: TestimonialFormProps) {
   const router = useRouter();
@@ -101,17 +101,17 @@ export default function TestimonialForm({ testimonial, isEditing = false }: Test
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-green-50">
-      <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-neutral-200/50 shadow-sm">
+      <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-[#0B132B]/10/50 shadow-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between gap-4">
             <Link
               href="/admin/testimonials"
-              className="flex items-center gap-2 text-neutral-600 hover:text-neutral-900 transition-colors"
+              className="flex items-center gap-2 text-[#0B132B]/60 hover:text-[#0B132B] transition-colors"
             >
               <ChevronLeft className="h-5 w-5" />
               <span className="font-medium text-sm">Back to Testimonials</span>
             </Link>
-            <h1 className="text-lg font-semibold text-neutral-900">
+            <h1 className="text-lg font-semibold text-[#0B132B]">
               {isEditing ? "Edit Testimonial" : "Create New Testimonial"}
             </h1>
           </div>
@@ -122,7 +122,7 @@ export default function TestimonialForm({ testimonial, isEditing = false }: Test
         <div className="max-w-4xl mx-auto">
           <form
             onSubmit={handleSubmit}
-            className="bg-white p-8 rounded-2xl shadow-lg border border-neutral-200/80"
+            className="bg-white p-8 rounded-2xl shadow-lg border border-[#0B132B]/10"
           >
             {error && (
               <div className="mb-6 bg-red-100 border border-red-200 p-4 rounded-lg text-red-800 text-sm">
@@ -140,7 +140,7 @@ export default function TestimonialForm({ testimonial, isEditing = false }: Test
                   label="Author Image"
                 />
                 <div className="w-full">
-                  <label className="block text-sm font-medium text-neutral-700 mb-2 text-center lg:text-left">
+                  <label className="block text-sm font-medium text-[#0B132B]/80 mb-2 text-center lg:text-left">
                     Rating
                   </label>
                   <StarRating rating={formData.rating} setRating={handleRatingChange} />
@@ -150,7 +150,7 @@ export default function TestimonialForm({ testimonial, isEditing = false }: Test
               {/* Right Column for Text Fields */}
               <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-neutral-700 mb-1">
+                  <label className="block text-sm font-medium text-[#0B132B]/80 mb-1">
                     Full Name
                   </label>
                   <input
@@ -163,7 +163,7 @@ export default function TestimonialForm({ testimonial, isEditing = false }: Test
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-1">Role</label>
+                  <label className="block text-sm font-medium text-[#0B132B]/80 mb-1">Role</label>
                   <input
                     type="text"
                     name="role"
@@ -173,7 +173,9 @@ export default function TestimonialForm({ testimonial, isEditing = false }: Test
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-1">Company</label>
+                  <label className="block text-sm font-medium text-[#0B132B]/80 mb-1">
+                    Company
+                  </label>
                   <input
                     type="text"
                     name="company"
@@ -183,7 +185,7 @@ export default function TestimonialForm({ testimonial, isEditing = false }: Test
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-neutral-700 mb-1">
+                  <label className="block text-sm font-medium text-[#0B132B]/80 mb-1">
                     Testimonial Content
                   </label>
                   <textarea
@@ -196,7 +198,7 @@ export default function TestimonialForm({ testimonial, isEditing = false }: Test
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-1">
+                  <label className="block text-sm font-medium text-[#0B132B]/80 mb-1">
                     Result Highlight
                   </label>
                   <input
@@ -209,7 +211,9 @@ export default function TestimonialForm({ testimonial, isEditing = false }: Test
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-1">Project</label>
+                  <label className="block text-sm font-medium text-[#0B132B]/80 mb-1">
+                    Project
+                  </label>
                   <input
                     type="text"
                     name="project"
@@ -222,11 +226,11 @@ export default function TestimonialForm({ testimonial, isEditing = false }: Test
               </div>
             </div>
 
-            <div className="flex justify-end gap-4 pt-8 mt-8 border-t border-neutral-200">
+            <div className="flex justify-end gap-4 pt-8 mt-8 border-t border-[#0B132B]/10">
               <button
                 type="button"
                 onClick={() => router.back()}
-                className="px-6 py-2 text-neutral-700 bg-neutral-100 hover:bg-neutral-200 rounded-lg transition-colors font-medium"
+                className="px-6 py-2 text-[#0B132B]/80 bg-white/50 border border-[#0B132B]/10 hover:bg-neutral-200 rounded-lg transition-colors font-medium"
               >
                 Cancel
               </button>

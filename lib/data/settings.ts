@@ -28,6 +28,15 @@ export interface HeroSettings {
     slots: string;
     period: string;
   };
+  clientLogosText: {
+    tagline: string;
+    title: string;
+  };
+  capabilitiesIntro: {
+    tagline: string;
+    maintext: string;
+    subtext: string;
+  };
   banner: {
     text: string;
     cta_text: string;
@@ -49,6 +58,8 @@ export async function getHeroSettings(): Promise<HeroSettings> {
     urgencyRes,
     limitedCapacityRes,
     bannerRes,
+    clientLogosRes,
+    capabilitiesIntroRes,
   ] = await Promise.all([
     supabase.from("site_settings").select("value").eq("key", "hero_availability").single(),
     supabase.from("site_settings").select("value").eq("key", "hero_experience_years").single(),
@@ -59,6 +70,8 @@ export async function getHeroSettings(): Promise<HeroSettings> {
     supabase.from("site_settings").select("value").eq("key", "hero_urgency").single(),
     supabase.from("site_settings").select("value").eq("key", "hero_limited_capacity").single(),
     supabase.from("site_settings").select("value").eq("key", "banner").single(),
+    supabase.from("site_settings").select("value").eq("key", "home_client_logos").single(),
+    supabase.from("site_settings").select("value").eq("key", "home_capabilities_intro").single(),
   ]);
 
   return {
@@ -94,6 +107,17 @@ export async function getHeroSettings(): Promise<HeroSettings> {
       title: "Limited Capacity",
       slots: "3 project slots",
       period: "this month",
+    },
+    clientLogosText: clientLogosRes.data?.value || {
+      tagline: "Trusted By",
+      title: "Proud to work with visionary brands.",
+    },
+    capabilitiesIntro: capabilitiesIntroRes.data?.value || {
+      tagline: "Capabilities",
+      maintext:
+        'We architect complete **visual systems**, **digital products**, and **brand narratives** for those who <span class="text-[#FF0033] font-bold">refuse to be ordinary.</span>',
+      subtext:
+        "Merging strategic rigor with relentless art direction. We deliver cohesive branding and high-performance digital experiences that command attention.",
     },
     banner: bannerRes.data?.value || {
       text: "",
@@ -180,6 +204,28 @@ export async function updateHeroSettings(settings: Partial<HeroSettings>): Promi
         .from("site_settings")
         .upsert(
           { key: "hero_limited_capacity", value: settings.limitedCapacity },
+          { onConflict: "key" },
+        ),
+    );
+  }
+
+  if (settings.clientLogosText) {
+    updates.push(
+      supabase
+        .from("site_settings")
+        .upsert(
+          { key: "home_client_logos", value: settings.clientLogosText },
+          { onConflict: "key" },
+        ),
+    );
+  }
+
+  if (settings.capabilitiesIntro) {
+    updates.push(
+      supabase
+        .from("site_settings")
+        .upsert(
+          { key: "home_capabilities_intro", value: settings.capabilitiesIntro },
           { onConflict: "key" },
         ),
     );

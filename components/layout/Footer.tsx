@@ -1,36 +1,83 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const pathname = usePathname();
+
+  if (pathname?.startsWith("/admin")) return null;
+
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId?: string) => {
+    if (pathname === "/") {
+      e.preventDefault();
+
+      let targetPosition = 0;
+      if (targetId) {
+        const element = document.getElementById(targetId);
+        if (!element) return;
+        targetPosition = element.getBoundingClientRect().top + window.scrollY;
+      }
+
+      const startPosition = window.scrollY;
+      const distance = targetPosition - startPosition;
+
+      if (distance === 0) {
+        if (targetId) window.history.pushState(null, "", `/#${targetId}`);
+        else window.history.pushState(null, "", "/");
+        return;
+      }
+
+      const duration = 1200; // ms
+      let start: number | null = null;
+
+      const easeInOutQuint = (t: number) =>
+        t < 0.5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2;
+
+      const animation = (currentTime: number) => {
+        if (start === null) start = currentTime;
+        const timeElapsed = currentTime - start;
+        const progress = Math.min(timeElapsed / duration, 1);
+
+        window.scrollTo(0, startPosition + distance * easeInOutQuint(progress));
+
+        if (timeElapsed < duration) {
+          requestAnimationFrame(animation);
+        } else {
+          if (targetId) window.history.pushState(null, "", `/#${targetId}`);
+          else window.history.pushState(null, "", "/");
+        }
+      };
+
+      requestAnimationFrame(animation);
+    }
+  };
 
   return (
-    <footer className="bg-white border-t border-neutral-200">
-      <div className="px-4 sm:px-8 lg:px-12 py-12">
-        <div className="grid w-full grid-cols-1 gap-10 md:grid-cols-12">
+    <footer className="bg-[#F5F5F0] border-t border-[#0B132B]/8">
+      <div className="mx-auto max-w-8xl px-6 lg:px-12 py-16 lg:py-24 w-full">
+        <div className="grid w-full grid-cols-1 gap-16 md:grid-cols-12">
           {/* Brand + short bio */}
-          <div className="md:col-span-6">
+          <div className="md:col-span-6 flex flex-col items-start">
             <Link
               href="/"
-              className="inline-flex items-baseline gap-1 font-serif text-2xl text-black group"
-              aria-label="Bini.B home"
+              onClick={(e) => handleSmoothScroll(e)}
+              className="group inline-flex items-baseline gap-0.5 flex-1"
+              aria-label="Ilaala.Studio home"
             >
-              <span
-                className="font-medium transition-colors"
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#EDFF00")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "")}
-              >
-                Bini
+              <span className="text-[#0B132B] font-bold text-4xl tracking-tight group-hover:text-[#0B132B]/60 transition-colors duration-300">
+                Ilaala
               </span>
-              <span className="text-neutral-400">.B</span>
+              <span className="text-[#FF0033] text-4xl font-bold">.Studio</span>
             </Link>
-            <p className="mt-4 max-w-md text-sm text-neutral-600">
-              Independent designer crafting clear, effective brands and interfaces.
+            <p className="mt-6 max-w-sm text-lg font-light text-[#0B132B]/60 leading-relaxed">
+              Strategic design and digital products for those who refuse to be ordinary. Crafting
+              clear, effective brands and interfaces.
             </p>
 
-            {/* Socials (simple text links keep it minimal) */}
-            <div className="mt-6 flex items-center gap-4">
+            {/* Socials */}
+            <div className="mt-8 flex flex-wrap items-center gap-6">
               {[
                 {
                   label: "Instagram",
@@ -46,37 +93,41 @@ export default function Footer() {
                   aria-label={label}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-neutral-500 transition-colors"
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "#FC703C")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "")}
+                  className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#0B132B]/50 hover:text-[#FF0033] transition-colors duration-300 relative group"
                 >
                   {label}
+                  <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#FF0033] transition-all duration-300 group-hover:w-full"></span>
                 </a>
               ))}
             </div>
           </div>
 
           {/* Nav + contact */}
-          <div className="md:col-span-6 md:ml-auto">
-            <nav aria-label="Footer Navigation" className="mb-6">
-              <ul className="flex flex-wrap gap-6 text-sm">
-                {["Work", "About", "Contact"].map((item) => (
+          <div className="md:col-span-6 lg:col-span-5 md:ml-auto flex flex-col gap-12 pt-2 md:pt-0">
+            <nav aria-label="Footer Navigation">
+              <ul className="flex flex-wrap gap-8">
+                {["Work", "Services", "Contact"].map((item) => (
                   <li key={item}>
                     {item === "Contact" ? (
                       <Link
                         href="https://calendar.app.google/1RTjShD5sgqBmm3K7"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-neutral-700 hover:text-black transition-colors"
+                        className="text-sm font-semibold uppercase tracking-[0.15em] text-[#0B132B]/80 hover:text-[#FF0033] transition-colors duration-300 flex items-center gap-2 group"
                       >
                         {item}
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#FF0033] scale-0 group-hover:scale-100 transition-transform duration-300" />
                       </Link>
                     ) : (
                       <Link
-                        href={`/${item.toLowerCase()}`}
-                        className="text-neutral-700 hover:text-black transition-colors"
+                        href={item === "Services" ? "/#services" : `/${item.toLowerCase()}`}
+                        onClick={
+                          item === "Services" ? (e) => handleSmoothScroll(e, "services") : undefined
+                        }
+                        className="text-sm font-semibold uppercase tracking-[0.15em] text-[#0B132B]/80 hover:text-[#FF0033] transition-colors duration-300 flex items-center gap-2 group"
                       >
                         {item}
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#FF0033] scale-0 group-hover:scale-100 transition-transform duration-300" />
                       </Link>
                     )}
                   </li>
@@ -84,21 +135,29 @@ export default function Footer() {
               </ul>
             </nav>
 
-            <div className="text-sm">
+            <div className="text-sm flex flex-col gap-3">
               <a
                 href="mailto:biniyam.be.go@gmail.com"
-                className="text-neutral-700 hover:text-black transition-colors"
+                className="text-xl md:text-2xl font-light text-[#0B132B] hover:text-[#FF0033] transition-colors duration-300 tracking-tight"
               >
                 biniyam.be.go@gmail.com
               </a>
-              <p className="mt-2 text-neutral-600">Based in Addis Ababa · Working worldwide</p>
+              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#0B132B]/40">
+                Based in Addis Ababa · Working Worldwide
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Single, tidy bottom line */}
-        <div className="mt-10 border-t border-neutral-200 pt-6 text-xs text-neutral-500">
-          © {year} Bini.B
+        {/* Bottom edge */}
+        <div className="mt-20 border-t border-[#0B132B]/8 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#0B132B]/30">
+            © {year} Ilaala.Studio — All Rights Reserved
+          </div>
+
+          <div className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#0B132B]/30 flex items-center gap-1">
+            Build with <span className="text-[#FF0033]">precision</span>
+          </div>
         </div>
       </div>
     </footer>

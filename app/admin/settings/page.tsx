@@ -47,6 +47,12 @@ export default function SettingsPage() {
       cta_link: "",
       enabled: false,
     },
+    clientLogosText: { tagline: "Trusted By", title: "Proud to work with visionary brands." },
+    capabilitiesIntro: {
+      tagline: "Capabilities",
+      maintext: "We architect complete visual systems",
+      subtext: "Merging strategic rigor with relentless art direction.",
+    },
   });
 
   const [passwordData, setPasswordData] = useState({
@@ -144,7 +150,7 @@ export default function SettingsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-neutral-50">
+      <div className="min-h-screen flex items-center justify-center bg-[#0B132B]/5">
         <div className="animate-spin rounded-full h-8 w-8 border-2 border-neutral-900 border-t-transparent"></div>
       </div>
     );
@@ -159,13 +165,13 @@ export default function SettingsPage() {
       </div>
 
       {/* Header */}
-      <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-neutral-200/50 shadow-sm">
+      <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-[#0B132B]/10/50 shadow-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <Link
                 href="/admin"
-                className="flex items-center gap-2 text-neutral-600 hover:text-neutral-900 transition-all hover:scale-105"
+                className="flex items-center gap-2 text-[#0B132B]/60 hover:text-[#0B132B] transition-all hover:scale-105"
               >
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
@@ -182,12 +188,12 @@ export default function SettingsPage() {
                 <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
                   <SettingsIcon className="h-5 w-5 text-white" strokeWidth={1.5} />
                 </div>
-                <h1 className="text-lg font-semibold text-neutral-900">Settings</h1>
+                <h1 className="text-lg font-semibold text-[#0B132B]">Settings</h1>
               </div>
             </div>
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-neutral-700 hover:text-neutral-900 border border-neutral-300 rounded-xl hover:border-neutral-400 bg-white hover:bg-neutral-50 transition-all duration-200 hover:shadow-sm"
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#0B132B]/80 hover:text-[#0B132B] border border-[#0B132B]/20 rounded-xl hover:border-neutral-400 bg-white hover:bg-[#0B132B]/5 transition-all duration-200 hover:shadow-sm"
             >
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
@@ -206,11 +212,11 @@ export default function SettingsPage() {
       <main className="relative mx-auto max-w-4xl px-6 py-12">
         <div className="space-y-8">
           {/* Hero Settings */}
-          <section className="bg-white rounded-2xl border border-neutral-200 p-8">
+          <section className="bg-white rounded-2xl border border-[#0B132B]/10 p-8">
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h2 className="text-lg font-semibold text-neutral-900">Homepage Settings</h2>
-                <p className="text-sm text-neutral-500 mt-1">
+                <h2 className="text-lg font-semibold text-[#0B132B]">Homepage Settings</h2>
+                <p className="text-sm text-[#0B132B]/50 mt-1">
                   Control hero section content and availability status
                 </p>
               </div>
@@ -219,7 +225,7 @@ export default function SettingsPage() {
             <div className="space-y-8">
               {/* Hero Text */}
               <div className="space-y-4">
-                <label className="text-sm font-medium text-neutral-700">Hero Text</label>
+                <label className="text-sm font-medium text-[#0B132B]/80">Hero Text</label>
                 <div className="grid gap-4">
                   <input
                     type="text"
@@ -230,7 +236,7 @@ export default function SettingsPage() {
                         heroText: { ...settings.heroText, kicker: e.target.value },
                       })
                     }
-                    className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                    className="px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
                     placeholder="Kicker text"
                   />
                   <input
@@ -242,7 +248,7 @@ export default function SettingsPage() {
                         heroText: { ...settings.heroText, title1: e.target.value },
                       })
                     }
-                    className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                    className="px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
                     placeholder="Primary title"
                   />
                   <input
@@ -254,7 +260,7 @@ export default function SettingsPage() {
                         heroText: { ...settings.heroText, title2: e.target.value },
                       })
                     }
-                    className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                    className="px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
                     placeholder="Secondary title"
                   />
                   <textarea
@@ -266,7 +272,7 @@ export default function SettingsPage() {
                       })
                     }
                     rows={2}
-                    className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all resize-none text-neutral-900"
+                    className="px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all resize-none text-[#0B132B]"
                     placeholder="Subtitle"
                   />
                 </div>
@@ -274,21 +280,21 @@ export default function SettingsPage() {
 
               {/* Mobile Subtitle */}
               <div>
-                <label className="text-sm font-medium text-neutral-700 block mb-2">
+                <label className="text-sm font-medium text-[#0B132B]/80 block mb-2">
                   Mobile Subtitle
                 </label>
                 <textarea
                   value={settings.mobileSubtitle}
                   onChange={(e) => setSettings({ ...settings, mobileSubtitle: e.target.value })}
                   rows={3}
-                  className="w-full px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all resize-none text-neutral-900"
+                  className="w-full px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all resize-none text-[#0B132B]"
                   placeholder="Subtitle for mobile view"
                 />
               </div>
 
               {/* Credentials */}
               <div className="space-y-4">
-                <label className="text-sm font-medium text-neutral-700">Credentials</label>
+                <label className="text-sm font-medium text-[#0B132B]/80">Credentials</label>
                 <div className="grid gap-4">
                   <input
                     type="text"
@@ -299,7 +305,7 @@ export default function SettingsPage() {
                         credentials: { ...settings.credentials, primary: e.target.value },
                       })
                     }
-                    className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                    className="px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
                     placeholder="Primary credential"
                   />
                   <input
@@ -311,7 +317,7 @@ export default function SettingsPage() {
                         credentials: { ...settings.credentials, secondary: e.target.value },
                       })
                     }
-                    className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                    className="px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
                     placeholder="Secondary credential"
                   />
                   <input
@@ -323,7 +329,7 @@ export default function SettingsPage() {
                         credentials: { ...settings.credentials, turnaround: e.target.value },
                       })
                     }
-                    className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                    className="px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
                     placeholder="Turnaround time"
                   />
                 </div>
@@ -331,7 +337,7 @@ export default function SettingsPage() {
 
               {/* Trust Signals */}
               <div>
-                <label className="text-sm font-medium text-neutral-700 block mb-2">
+                <label className="text-sm font-medium text-[#0B132B]/80 block mb-2">
                   Trust Signals (one per line)
                 </label>
                 <textarea
@@ -343,14 +349,14 @@ export default function SettingsPage() {
                     })
                   }
                   rows={3}
-                  className="w-full px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all resize-none text-neutral-900"
+                  className="w-full px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all resize-none text-[#0B132B]"
                   placeholder="Quality guarantee&#10;Same-day response&#10;Revision-friendly"
                 />
               </div>
 
               {/* Urgency */}
               <div className="space-y-4">
-                <label className="text-sm font-medium text-neutral-700">Urgency</label>
+                <label className="text-sm font-medium text-[#0B132B]/80">Urgency</label>
                 <div className="grid gap-4">
                   <input
                     type="text"
@@ -361,7 +367,7 @@ export default function SettingsPage() {
                         urgency: { ...settings.urgency, text: e.target.value },
                       })
                     }
-                    className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                    className="px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
                     placeholder="Urgency text"
                   />
                   <input
@@ -373,7 +379,7 @@ export default function SettingsPage() {
                         urgency: { ...settings.urgency, highlight: e.target.value },
                       })
                     }
-                    className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                    className="px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
                     placeholder="Urgency highlight"
                   />
                 </div>
@@ -381,7 +387,7 @@ export default function SettingsPage() {
 
               {/* Limited Capacity */}
               <div className="space-y-4">
-                <label className="text-sm font-medium text-neutral-700">Limited Capacity</label>
+                <label className="text-sm font-medium text-[#0B132B]/80">Limited Capacity</label>
                 <div className="grid gap-4">
                   <input
                     type="text"
@@ -392,7 +398,7 @@ export default function SettingsPage() {
                         limitedCapacity: { ...settings.limitedCapacity, title: e.target.value },
                       })
                     }
-                    className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                    className="px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
                     placeholder="Limited capacity title"
                   />
                   <input
@@ -404,7 +410,7 @@ export default function SettingsPage() {
                         limitedCapacity: { ...settings.limitedCapacity, slots: e.target.value },
                       })
                     }
-                    className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                    className="px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
                     placeholder="Number of slots"
                   />
                   <input
@@ -416,7 +422,7 @@ export default function SettingsPage() {
                         limitedCapacity: { ...settings.limitedCapacity, period: e.target.value },
                       })
                     }
-                    className="px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                    className="px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
                     placeholder="Period (e.g., this month)"
                   />
                 </div>
@@ -424,7 +430,7 @@ export default function SettingsPage() {
 
               {/* Experience Years */}
               <div>
-                <label className="text-sm font-medium text-neutral-700 block mb-2">
+                <label className="text-sm font-medium text-[#0B132B]/80 block mb-2">
                   Years of Experience
                 </label>
                 <input
@@ -435,13 +441,13 @@ export default function SettingsPage() {
                   onChange={(e) =>
                     setSettings({ ...settings, experienceYears: parseInt(e.target.value) || 0 })
                   }
-                  className="w-32 px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                  className="w-32 px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
                 />
               </div>
 
               {/* Availability Status */}
               <div>
-                <label className="text-sm font-medium text-neutral-700 block mb-3">
+                <label className="text-sm font-medium text-[#0B132B]/80 block mb-3">
                   Availability Status
                 </label>
                 <div className="grid grid-cols-3 gap-3">
@@ -467,7 +473,7 @@ export default function SettingsPage() {
                         ${
                           settings.availability.status === option.value
                             ? "border-neutral-900 bg-neutral-900 text-white"
-                            : "border-neutral-200 hover:border-neutral-300 text-neutral-700"
+                            : "border-[#0B132B]/10 hover:border-[#0B132B]/20 text-[#0B132B]/80"
                         }
                       `}
                     >
@@ -490,7 +496,7 @@ export default function SettingsPage() {
 
               {/* Availability Label */}
               <div>
-                <label className="text-sm font-medium text-neutral-700 block mb-2">
+                <label className="text-sm font-medium text-[#0B132B]/80 block mb-2">
                   Availability Label
                 </label>
                 <input
@@ -502,7 +508,7 @@ export default function SettingsPage() {
                       availability: { ...settings.availability, label: e.target.value },
                     })
                   }
-                  className="w-full px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+                  className="w-full px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
                   placeholder="e.g., Available for 1 project"
                 />
               </div>
@@ -521,70 +527,45 @@ export default function SettingsPage() {
             </div>
           </section>
 
-          {/* Promotional Banner Settings */}
-          <section className="bg-white rounded-2xl border border-neutral-200 p-8">
+          {/* Sliding Marquee Settings */}
+          <section className="bg-white rounded-2xl border border-[#0B132B]/10 p-8">
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h2 className="text-lg font-semibold text-neutral-900">Promotional Banner</h2>
-                <p className="text-sm text-neutral-500 mt-1">
-                  Control the promotional banner at the top of the site.
+                <h2 className="text-lg font-semibold text-[#0B132B]">Sliding Marquee Banner</h2>
+                <p className="text-sm text-[#0B132B]/50 mt-1">
+                  Control the premium scrolling editorial text at the top of the site.
                 </p>
               </div>
             </div>
 
             <div className="space-y-8">
-              {/* Banner Text */}
-              <div className="space-y-4">
-                <label className="text-sm font-medium text-neutral-700">Banner Text</label>
-                <input
-                  type="text"
-                  value={settings.banner.text}
+              {/* Marquee Phrases */}
+              <div>
+                <label className="text-sm font-medium text-[#0B132B]/80 block mb-2">
+                  Marquee Phrases (one per line)
+                </label>
+                <textarea
+                  value={settings.banner.text ? settings.banner.text.replace(/✦/g, "\n") : ""}
                   onChange={(e) =>
                     setSettings({
                       ...settings,
-                      banner: { ...settings.banner, text: e.target.value },
+                      banner: {
+                        ...settings.banner,
+                        text: e.target.value, // Save raw text with newlines
+                      },
                     })
                   }
-                  className="w-full px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
-                  placeholder="e.g., Now available for new projects!"
+                  rows={4}
+                  className="w-full px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B] resize-none font-medium leading-relaxed"
+                  placeholder="Currently taking on 4 new projects this month&#10;Reserve your spot to collaborate with us&#10;Crafting premium digital experiences&#10;Let's build something beautiful together"
                 />
+                <p className="text-xs text-[#0B132B]/50 mt-2">
+                  Enter each phrase on a new line. The frontend will automatically convert these
+                  lines into a seamless scrolling feed separated by red ✦ stars.
+                </p>
               </div>
 
-              {/* Banner CTA */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium text-neutral-700">CTA Text</label>
-                  <input
-                    type="text"
-                    value={settings.banner.cta_text}
-                    onChange={(e) =>
-                      setSettings({
-                        ...settings,
-                        banner: { ...settings.banner, cta_text: e.target.value },
-                      })
-                    }
-                    className="w-full px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
-                    placeholder="e.g., Book a call"
-                  />
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-neutral-700">CTA Link</label>
-                  <input
-                    type="text"
-                    value={settings.banner.cta_link}
-                    onChange={(e) =>
-                      setSettings({
-                        ...settings,
-                        banner: { ...settings.banner, cta_link: e.target.value },
-                      })
-                    }
-                    className="w-full px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
-                    placeholder="e.g., /contact"
-                  />
-                </div>
-              </div>
-
-              {/* Banner Enabled */}
+              {/* Banner Enabled Toggle */}
               <div>
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input
@@ -596,25 +577,27 @@ export default function SettingsPage() {
                         banner: { ...settings.banner, enabled: e.target.checked },
                       })
                     }
-                    className="h-4 w-4 text-neutral-900 focus:ring-neutral-900 border-neutral-300 rounded"
+                    className="h-4 w-4 text-[#0B132B] focus:ring-neutral-900 border-[#0B132B]/20 rounded transition-colors"
                   />
-                  <span className="text-sm font-medium text-neutral-700">Enable Banner</span>
+                  <span className="text-sm font-medium text-[#0B132B]/80">
+                    Display marquee banner globally
+                  </span>
                 </label>
               </div>
             </div>
           </section>
 
           {/* Security Settings */}
-          <section className="bg-white rounded-2xl border border-neutral-200 p-8">
+          <section className="bg-white rounded-2xl border border-[#0B132B]/10 p-8">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-lg font-semibold text-neutral-900">Security</h2>
-                <p className="text-sm text-neutral-500 mt-1">Manage your account password</p>
+                <h2 className="text-lg font-semibold text-[#0B132B]">Security</h2>
+                <p className="text-sm text-[#0B132B]/50 mt-1">Manage your account password</p>
               </div>
               {!showPasswordSection && (
                 <button
                   onClick={() => setShowPasswordSection(true)}
-                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-neutral-700 hover:text-neutral-900 border border-neutral-200 rounded-lg hover:bg-neutral-50 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#0B132B]/80 hover:text-[#0B132B] border border-[#0B132B]/10 rounded-lg hover:bg-[#0B132B]/5 transition-colors"
                 >
                   <Key className="w-4 h-4" />
                   Change Password
@@ -627,7 +610,7 @@ export default function SettingsPage() {
                 <div>
                   <label
                     htmlFor="currentPassword"
-                    className="text-sm font-medium text-neutral-700 block mb-2"
+                    className="text-sm font-medium text-[#0B132B]/80 block mb-2"
                   >
                     Current Password
                   </label>
@@ -638,7 +621,7 @@ export default function SettingsPage() {
                     onChange={(e) =>
                       setPasswordData({ ...passwordData, currentPassword: e.target.value })
                     }
-                    className="w-full px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all"
+                    className="w-full px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all"
                     required
                     autoComplete="current-password"
                   />
@@ -647,7 +630,7 @@ export default function SettingsPage() {
                 <div>
                   <label
                     htmlFor="newPassword"
-                    className="text-sm font-medium text-neutral-700 block mb-2"
+                    className="text-sm font-medium text-[#0B132B]/80 block mb-2"
                   >
                     New Password
                   </label>
@@ -658,18 +641,18 @@ export default function SettingsPage() {
                     onChange={(e) =>
                       setPasswordData({ ...passwordData, newPassword: e.target.value })
                     }
-                    className="w-full px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all"
+                    className="w-full px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all"
                     required
                     minLength={8}
                     autoComplete="new-password"
                   />
-                  <p className="text-xs text-neutral-500 mt-1.5">Minimum 8 characters</p>
+                  <p className="text-xs text-[#0B132B]/50 mt-1.5">Minimum 8 characters</p>
                 </div>
 
                 <div>
                   <label
                     htmlFor="confirmPassword"
-                    className="text-sm font-medium text-neutral-700 block mb-2"
+                    className="text-sm font-medium text-[#0B132B]/80 block mb-2"
                   >
                     Confirm New Password
                   </label>
@@ -680,7 +663,7 @@ export default function SettingsPage() {
                     onChange={(e) =>
                       setPasswordData({ ...passwordData, confirmPassword: e.target.value })
                     }
-                    className="w-full px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all"
+                    className="w-full px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all"
                     required
                     minLength={8}
                     autoComplete="new-password"
@@ -698,7 +681,7 @@ export default function SettingsPage() {
                         confirmPassword: "",
                       });
                     }}
-                    className="px-4 py-2.5 text-sm font-medium text-neutral-700 border border-neutral-200 rounded-lg hover:bg-neutral-50 transition-colors"
+                    className="px-4 py-2.5 text-sm font-medium text-[#0B132B]/80 border border-[#0B132B]/10 rounded-lg hover:bg-[#0B132B]/5 transition-colors"
                   >
                     Cancel
                   </button>

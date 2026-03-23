@@ -105,7 +105,7 @@ export default function WorkForm({ work, isEditing = false }: WorkFormProps) {
             <div className="flex items-center space-x-4">
               <Link
                 href="/admin/works"
-                className="inline-flex items-center text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors"
+                className="inline-flex items-center text-sm font-medium text-[#0B132B]/60 hover:text-[#0B132B] transition-colors"
               >
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -117,7 +117,7 @@ export default function WorkForm({ work, isEditing = false }: WorkFormProps) {
                 </svg>
                 Back to Works
               </Link>
-              <div className="text-lg font-semibold text-neutral-900">
+              <div className="text-lg font-semibold text-[#0B132B]">
                 {isEditing ? "Edit Work" : "New Work"}
               </div>
             </div>
@@ -137,36 +137,38 @@ export default function WorkForm({ work, isEditing = false }: WorkFormProps) {
           {/* Basic Information */}
           <div className="space-y-6">
             <div>
-              <h2 className="text-lg font-semibold text-neutral-900 mb-4">Basic Information</h2>
+              <h2 className="text-lg font-semibold text-[#0B132B] mb-4">Basic Information</h2>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-2">Title *</label>
+                  <label className="block text-sm font-medium text-[#0B132B]/80 mb-2">
+                    Title *
+                  </label>
                   <input
                     type="text"
                     name="title"
                     value={formData.title}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-transparent"
                     placeholder="Enter work title"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-2">Slug *</label>
+                  <label className="block text-sm font-medium text-[#0B132B]/80 mb-2">Slug *</label>
                   <input
                     type="text"
                     name="slug"
                     value={formData.slug}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 py-2 border border-neutral-300 rounded-lg bg-neutral-50 focus:ring-2 focus:ring-neutral-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg bg-[#0B132B]/5 focus:ring-2 focus:ring-neutral-500 focus:border-transparent"
                     readOnly={isEditing}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-2">
+                  <label className="block text-sm font-medium text-[#0B132B]/80 mb-2">
                     Description
                   </label>
                   <textarea
@@ -174,7 +176,7 @@ export default function WorkForm({ work, isEditing = false }: WorkFormProps) {
                     value={formData.description || ""}
                     onChange={handleChange}
                     rows={3}
-                    className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-transparent"
                     placeholder="Brief description of the work"
                   />
                 </div>
@@ -183,12 +185,10 @@ export default function WorkForm({ work, isEditing = false }: WorkFormProps) {
 
             {/* Media & Categorization */}
             <div>
-              <h2 className="text-lg font-semibold text-neutral-900 mb-4">
-                Media & Categorization
-              </h2>
+              <h2 className="text-lg font-semibold text-[#0B132B] mb-4">Media & Categorization</h2>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-2">
+                  <label className="block text-sm font-medium text-[#0B132B]/80 mb-2">
                     Category
                   </label>
                   <input
@@ -196,7 +196,7 @@ export default function WorkForm({ work, isEditing = false }: WorkFormProps) {
                     name="category"
                     value={formData.category}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-transparent"
                     placeholder="e.g., UI/UX, Web Design, Branding"
                     list="category-suggestions"
                   />
@@ -210,7 +210,7 @@ export default function WorkForm({ work, isEditing = false }: WorkFormProps) {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-2">
+                  <label className="block text-sm font-medium text-[#0B132B]/80 mb-2">
                     Featured Image *
                   </label>
                   <ImageUpload
@@ -221,7 +221,7 @@ export default function WorkForm({ work, isEditing = false }: WorkFormProps) {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-2">
+                  <label className="block text-sm font-medium text-[#0B132B]/80 mb-2">
                     Aspect Ratio *
                   </label>
                   <select
@@ -229,7 +229,7 @@ export default function WorkForm({ work, isEditing = false }: WorkFormProps) {
                     value={formData.aspect_ratio}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-transparent"
                   >
                     <option value="square">Square (1:1)</option>
                     <option value="portrait45">Portrait (4:5)</option>
@@ -241,9 +241,9 @@ export default function WorkForm({ work, isEditing = false }: WorkFormProps) {
 
             {/* Display Settings */}
             <div>
-              <h2 className="text-lg font-semibold text-neutral-900 mb-4">Display Settings</h2>
+              <h2 className="text-lg font-semibold text-[#0B132B] mb-4">Display Settings</h2>
               <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-2">
+                <label className="block text-sm font-medium text-[#0B132B]/80 mb-2">
                   Display Order *
                 </label>
                 <input
@@ -253,18 +253,18 @@ export default function WorkForm({ work, isEditing = false }: WorkFormProps) {
                   onChange={handleChange}
                   required
                   min="0"
-                  className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-transparent"
                 />
               </div>
             </div>
           </div>
 
           {/* Actions */}
-          <div className="flex items-center justify-end space-x-4 pt-6 border-t border-neutral-200">
+          <div className="flex items-center justify-end space-x-4 pt-6 border-t border-[#0B132B]/10">
             <button
               type="button"
               onClick={() => router.back()}
-              className="px-4 py-2 text-sm font-medium text-neutral-700 border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-colors"
+              className="px-4 py-2 text-sm font-medium text-[#0B132B]/80 border border-[#0B132B]/20 rounded-lg hover:bg-[#0B132B]/5 transition-colors"
             >
               Cancel
             </button>

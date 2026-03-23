@@ -95,7 +95,7 @@ export default function RichTextEditor({
         },
         codeBlock: {
           HTMLAttributes: {
-            class: "bg-neutral-100 rounded-lg p-4 font-mono text-sm",
+            class: "bg-white/50 border border-[#0B132B]/10 rounded-lg p-4 font-mono text-sm",
           },
         },
       }),
@@ -197,15 +197,15 @@ export default function RichTextEditor({
 
   return (
     <div
-      className={`border border-neutral-300 rounded-lg bg-white transition-all duration-300 ${
+      className={`border border-[#0B132B]/20 rounded-lg bg-white transition-all duration-300 ${
         isFullscreen ? "fixed inset-0 z-50 m-4" : ""
-      } ${isDistractionFree ? "bg-neutral-50" : ""}`}
+      } ${isDistractionFree ? "bg-[#0B132B]/5" : ""}`}
     >
       {/* Enhanced Toolbar */}
-      <div className="border-b border-neutral-200 bg-white p-4">
+      <div className="border-b border-[#0B132B]/10 bg-white p-4">
         <div className="flex flex-wrap items-center gap-1">
           {/* Text Formatting */}
-          <div className="flex items-center gap-1 border-r border-neutral-200 pr-3 mr-3">
+          <div className="flex items-center gap-1 border-r border-[#0B132B]/10 pr-3 mr-3">
             {features.toolbar?.headings && (
               <>
                 <select
@@ -225,7 +225,7 @@ export default function RichTextEditor({
                       }
                     }
                   }}
-                  className="text-sm border border-neutral-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="text-sm border border-[#0B132B]/20 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="paragraph">Paragraph</option>
                   <option value="1">Heading 1</option>
@@ -238,8 +238,8 @@ export default function RichTextEditor({
             {features.toolbar?.bold && (
               <button
                 onClick={() => editor.chain().focus().toggleBold().run()}
-                className={`p-2 rounded hover:bg-neutral-100 ${
-                  editor.isActive("bold") ? "bg-neutral-200 text-neutral-900" : "text-neutral-600"
+                className={`p-2 rounded hover:bg-white/50 border border-[#0B132B]/10 ${
+                  editor.isActive("bold") ? "bg-neutral-200 text-[#0B132B]" : "text-[#0B132B]/60"
                 }`}
                 title="Bold"
               >
@@ -250,8 +250,8 @@ export default function RichTextEditor({
             {features.toolbar?.italic && (
               <button
                 onClick={() => editor.chain().focus().toggleItalic().run()}
-                className={`p-2 rounded hover:bg-neutral-100 ${
-                  editor.isActive("italic") ? "bg-neutral-200 text-neutral-900" : "text-neutral-600"
+                className={`p-2 rounded hover:bg-white/50 border border-[#0B132B]/10 ${
+                  editor.isActive("italic") ? "bg-neutral-200 text-[#0B132B]" : "text-[#0B132B]/60"
                 }`}
                 title="Italic"
               >
@@ -262,10 +262,10 @@ export default function RichTextEditor({
             {features.toolbar?.underline && (
               <button
                 onClick={() => editor.chain().focus().toggleUnderline().run()}
-                className={`p-2 rounded hover:bg-neutral-100 ${
+                className={`p-2 rounded hover:bg-white/50 border border-[#0B132B]/10 ${
                   editor.isActive("underline")
-                    ? "bg-neutral-200 text-neutral-900"
-                    : "text-neutral-600"
+                    ? "bg-neutral-200 text-[#0B132B]"
+                    : "text-[#0B132B]/60"
                 }`}
                 title="Underline"
               >
@@ -275,14 +275,14 @@ export default function RichTextEditor({
           </div>
 
           {/* Alignment & Lists */}
-          <div className="flex items-center gap-1 border-r border-neutral-200 pr-3 mr-3">
+          <div className="flex items-center gap-1 border-r border-[#0B132B]/10 pr-3 mr-3">
             {features.toolbar?.alignLeft && (
               <button
                 onClick={() => editor.chain().focus().setTextAlign("left").run()}
-                className={`p-2 rounded hover:bg-neutral-100 ${
+                className={`p-2 rounded hover:bg-white/50 border border-[#0B132B]/10 ${
                   editor.isActive({ textAlign: "left" })
-                    ? "bg-neutral-200 text-neutral-900"
-                    : "text-neutral-600"
+                    ? "bg-neutral-200 text-[#0B132B]"
+                    : "text-[#0B132B]/60"
                 }`}
                 title="Align Left"
               >
@@ -293,10 +293,10 @@ export default function RichTextEditor({
             {features.toolbar?.bulletList && (
               <button
                 onClick={() => editor.chain().focus().toggleBulletList().run()}
-                className={`p-2 rounded hover:bg-neutral-100 ${
+                className={`p-2 rounded hover:bg-white/50 border border-[#0B132B]/10 ${
                   editor.isActive("bulletList")
-                    ? "bg-neutral-200 text-neutral-900"
-                    : "text-neutral-600"
+                    ? "bg-neutral-200 text-[#0B132B]"
+                    : "text-[#0B132B]/60"
                 }`}
                 title="Bullet List"
               >
@@ -307,10 +307,10 @@ export default function RichTextEditor({
             {features.toolbar?.orderedList && (
               <button
                 onClick={() => editor.chain().focus().toggleOrderedList().run()}
-                className={`p-2 rounded hover:bg-neutral-100 ${
+                className={`p-2 rounded hover:bg-white/50 border border-[#0B132B]/10 ${
                   editor.isActive("orderedList")
-                    ? "bg-neutral-200 text-neutral-900"
-                    : "text-neutral-600"
+                    ? "bg-neutral-200 text-[#0B132B]"
+                    : "text-[#0B132B]/60"
                 }`}
                 title="Numbered List"
               >
@@ -324,7 +324,7 @@ export default function RichTextEditor({
             {features.toolbar?.link && (
               <button
                 onClick={() => setLink()}
-                className="p-2 rounded hover:bg-neutral-100 text-neutral-600"
+                className="p-2 rounded hover:bg-white/50 border border-[#0B132B]/10 text-[#0B132B]/60"
                 title="Add Link"
               >
                 <LinkIcon className="h-4 w-4" />
@@ -334,7 +334,7 @@ export default function RichTextEditor({
             {features.toolbar?.image && (
               <button
                 onClick={addImage}
-                className="p-2 rounded hover:bg-neutral-100 text-neutral-600"
+                className="p-2 rounded hover:bg-white/50 border border-[#0B132B]/10 text-[#0B132B]/60"
                 title="Add Image from URL"
               >
                 <ImageIcon className="h-4 w-4" />
@@ -344,7 +344,7 @@ export default function RichTextEditor({
             {features.toolbar?.youtube && (
               <button
                 onClick={addYoutubeVideo}
-                className="p-2 rounded hover:bg-neutral-100 text-neutral-600"
+                className="p-2 rounded hover:bg-white/50 border border-[#0B132B]/10 text-[#0B132B]/60"
                 title="Add YouTube Video"
               >
                 {/* Reuse an existing icon; swap to a YouTube-specific icon later if you like */}
@@ -355,7 +355,7 @@ export default function RichTextEditor({
             {features.toolbar?.table && (
               <button
                 onClick={addTable}
-                className="p-2 rounded hover:bg-neutral-100 text-neutral-600"
+                className="p-2 rounded hover:bg-white/50 border border-[#0B132B]/10 text-[#0B132B]/60"
                 title="Add Table"
               >
                 <TableIcon className="h-4 w-4" />
@@ -365,10 +365,10 @@ export default function RichTextEditor({
             {features.toolbar?.codeBlock && (
               <button
                 onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-                className={`p-2 rounded hover:bg-neutral-100 ${
+                className={`p-2 rounded hover:bg-white/50 border border-[#0B132B]/10 ${
                   editor.isActive("codeBlock")
-                    ? "bg-neutral-200 text-neutral-900"
-                    : "text-neutral-600"
+                    ? "bg-neutral-200 text-[#0B132B]"
+                    : "text-[#0B132B]/60"
                 }`}
                 title="Code Block"
               >
@@ -382,7 +382,7 @@ export default function RichTextEditor({
             {features.layout?.fullscreen && (
               <button
                 onClick={() => setIsFullscreen(!isFullscreen)}
-                className="p-2 rounded hover:bg-neutral-100 text-neutral-600"
+                className="p-2 rounded hover:bg-white/50 border border-[#0B132B]/10 text-[#0B132B]/60"
                 title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
               >
                 <Maximize className="h-4 w-4" />
@@ -392,8 +392,8 @@ export default function RichTextEditor({
             {features.layout?.distractionFree && (
               <button
                 onClick={() => setIsDistractionFree(!isDistractionFree)}
-                className={`p-2 rounded hover:bg-neutral-100 ${
-                  isDistractionFree ? "bg-neutral-200 text-neutral-900" : "text-neutral-600"
+                className={`p-2 rounded hover:bg-white/50 border border-[#0B132B]/10 ${
+                  isDistractionFree ? "bg-neutral-200 text-[#0B132B]" : "text-[#0B132B]/60"
                 }`}
                 title="Distraction Free Mode"
               >
@@ -405,7 +405,7 @@ export default function RichTextEditor({
 
         {/* Link Input */}
         {editor.isActive("link") && (
-          <div className="mt-3 p-2 bg-neutral-50 rounded border">
+          <div className="mt-3 p-2 bg-[#0B132B]/5 rounded border">
             <div className="flex gap-2">
               <input
                 type="text"
@@ -433,8 +433,8 @@ export default function RichTextEditor({
       </div>
 
       {/* Enhanced Status Bar */}
-      <div className="border-t border-neutral-200 bg-neutral-50 px-4 py-2">
-        <div className="flex items-center justify-between text-sm text-neutral-600">
+      <div className="border-t border-[#0B132B]/10 bg-[#0B132B]/5 px-4 py-2">
+        <div className="flex items-center justify-between text-sm text-[#0B132B]/60">
           <div className="flex items-center gap-4">
             {features.advanced?.wordCount && (
               <span>{editor.storage.characterCount.words()} words</span>
