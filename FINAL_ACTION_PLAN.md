@@ -48,7 +48,7 @@ SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
 - [ ] Remove ALL actual credentials from `.env.example`
 - [ ] Use placeholders only
 - [ ] Verify `.env.local` is in `.gitignore` ✅ (already is)
-- [ ] Commit the cleaned `.env.example`
+- [ ] Commit the cleaned `.env.example` and yeah
 
 ---
 
