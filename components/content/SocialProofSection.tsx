@@ -150,8 +150,7 @@ export default function SocialProofSection() {
                     className="absolute inset-0 h-full bg-gradient-to-r from-[#0055FF] to-[#01BBFF]"
                   />
                 </div>
-                <div className="flex justify-between items-center text-[10px] uppercase tracking-[0.3em] font-bold text-[#0B132B]/25">
-                  <span className="flex items-center gap-2">Pair Shuffle</span>
+                <div className="flex justify-end items-center text-[10px] uppercase tracking-[0.3em] font-bold text-[#0B132B]/25">
                   <span>
                     {String(activePairIdx + 1).padStart(2, "0")}&nbsp;/&nbsp;
                     {String(pairs.length).padStart(2, "0")}
@@ -162,7 +161,7 @@ export default function SocialProofSection() {
           </motion.div>
 
           {/* RIGHT: Unified Row Slider (8 cols) */}
-          <div className="lg:col-span-8 relative h-[860px] sm:h-[900px] md:h-[560px] overflow-hidden mt-8 lg:mt-0">
+          <div className="lg:col-span-8 relative md:h-[560px] md:overflow-hidden mt-8 lg:mt-0">
             <AnimatePresence mode="popLayout" initial={false}>
               <motion.div
                 key={activePairIdx}
@@ -174,12 +173,12 @@ export default function SocialProofSection() {
                   duration: 1.6,
                   ease: [0.76, 0, 0.24, 1],
                 }}
-                className="absolute inset-0 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10"
+                className="md:absolute md:inset-0 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10"
               >
                 {currentPair.map((t, i) => (
                   <div
                     key={`${activePairIdx}-${i}`}
-                    className="flex flex-col justify-between p-10 lg:p-14 border border-[#0B132B]/8 bg-white/40 shadow-[0_45px_100px_-30px_rgba(0,0,0,0.05)] group relative overflow-hidden"
+                    className="flex flex-col justify-between p-8 sm:p-10 lg:p-14 border border-[#0B132B]/8 bg-white/40 shadow-[0_45px_100px_-30px_rgba(0,0,0,0.05)] group relative overflow-hidden"
                   >
                     {/* Corner Glow */}
                     <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-[#0055FF]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-[40px] z-0" />
@@ -189,7 +188,7 @@ export default function SocialProofSection() {
                         “
                       </span>
                       <h3
-                        className={`${getFontSize(t.content)} font-medium leading-[1.25] tracking-[-0.04em] text-[#0B132B] max-h-[320px] overflow-hidden`}
+                        className={`${getFontSize(t.content)} font-medium leading-[1.25] tracking-[-0.04em] text-[#0B132B] md:max-h-[320px] md:overflow-hidden`}
                       >
                         {t.content}
                       </h3>

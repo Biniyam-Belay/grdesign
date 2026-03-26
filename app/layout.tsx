@@ -24,13 +24,13 @@ export const metadata: Metadata = {
     template: "%s | Ilaala.Studio",
   },
   description:
-    "Independent design studio crafting clear, effective brands, visual systems, and digital interfaces for those who refuse to be ordinary. Based in Addis Ababa, working worldwide.",
+    "Independent design studio crafting clear, effective brands, visual systems, and digital interfaces for those who refuse to be ordinary. Working worldwide.",
   keywords: [
     "Brand Strategy",
     "UI/UX Design",
     "Web Development",
     "Editorial Design",
-    "Addis Ababa Design Studio",
+    "Independent Design Studio",
     "Digital Products",
     "Visual Identity",
     "Ilaala",
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     url: "https://binigrdesign.vercel.app/",
     title: "Ilaala.Studio | Strategic Design & Digital Products",
     description:
-      "Independent design studio crafting clear, effective brands, visual systems, and digital interfaces. Based in Addis Ababa.",
+      "Independent design studio crafting clear, effective brands, visual systems, and digital interfaces. Working worldwide.",
     siteName: "Ilaala.Studio",
     images: [
       {

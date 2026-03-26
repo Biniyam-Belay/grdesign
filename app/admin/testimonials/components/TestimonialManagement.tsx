@@ -11,8 +11,13 @@ export default function TestimonialManagement() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [mounted, setMounted] = useState(false);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const supabase = createSupabaseClient();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const fetchTestimonials = useCallback(async () => {
     try {
@@ -58,237 +63,289 @@ export default function TestimonialManagement() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
-        <div className="text-center">
-          <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-green-600 border-r-transparent mb-4"></div>
-          <p className="text-[#0B132B]/60">Loading testimonials...</p>
-        </div>
+      <div className="min-h-screen flex items-center justify-center bg-[#F5F5F0]">
+        <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#0B132B] border-t-transparent"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
-      <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-[#0B132B]/10/50 shadow-sm">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#F5F5F0] text-[#0B132B] selection:bg-[#FF0033]/20 pb-24">
+      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 -left-20 w-[50vh] h-[50vh] bg-[#0055FF]/5 rounded-full blur-[100px] animate-pulse" />
+        <div className="absolute bottom-1/4 -right-20 w-[50vh] h-[50vh] bg-[#FF0033]/5 rounded-full blur-[100px] animate-pulse delay-1000" />
+      </div>
+
+      {/* Header */}
+      <header className="sticky top-0 z-40 bg-[#F5F5F0]/80 backdrop-blur-xl border-b border-[#0B132B]/10">
+        <div className="mx-auto max-w-8xl px-6 lg:px-12">
           <div className="flex h-16 items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <Link
                 href="/admin"
-                className="flex items-center gap-2 text-[#0B132B]/60 hover:text-[#0B132B]"
+                className="flex items-center gap-2 text-[#0B132B]/50 hover:text-[#FF0033] transition-all duration-300 group"
               >
-                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                  />
-                </svg>
-                <span className="font-medium text-sm">Dashboard</span>
+                <span className="text-[10px] uppercase tracking-[0.2em] font-bold">
+                  ← Dashboard
+                </span>
               </Link>
+              <div className="h-5 w-px bg-[#0B132B]/10" />
+              <div className="flex items-center gap-3">
+                <h1 className="text-xl font-medium tracking-tight text-[#0B132B]">Testimonials</h1>
+              </div>
             </div>
-            <h1 className="text-lg font-semibold text-[#0B132B]">Manage Testimonials</h1>
+
+            <Link
+              href="/admin/testimonials/new"
+              className="hidden sm:inline-flex items-center justify-center gap-2 bg-[#0B132B] text-white px-5 py-2.5 text-[9px] uppercase font-bold tracking-[0.2em] transition-all duration-300 hover:bg-[#FF0033] hover:shadow-[0_5px_15px_rgba(255,0,51,0.25)] rounded-none"
+            >
+              Add Testimonial
+            </Link>
           </div>
         </div>
       </header>
 
-      <div className="relative z-10 py-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between bg-white rounded-2xl shadow-lg border border-[#0B132B]/10 p-6 mb-6">
-            <div className="flex items-center gap-1 bg-white/50 border border-[#0B132B]/10 rounded-xl p-1">
-              <button
-                onClick={() => setViewMode("grid")}
-                className={`px-3 py-2 rounded-lg transition-all ${viewMode === "grid" ? "bg-white shadow-sm text-purple-600" : "text-[#0B132B]/60 hover:text-[#0B132B]"}`}
-              >
-                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                  />
-                </svg>
-              </button>
-              <button
-                onClick={() => setViewMode("list")}
-                className={`px-3 py-2 rounded-lg transition-all ${viewMode === "list" ? "bg-white shadow-sm text-purple-600" : "text-[#0B132B]/60 hover:text-[#0B132B]"}`}
-              >
-                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              </button>
+      {/* Main */}
+      <main className="relative mx-auto max-w-8xl px-6 lg:px-12 py-12">
+        <div
+          className={`transition-all duration-500 ease-in-out ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+        >
+          {error && (
+            <div className="mb-6 border border-[#FF0033]/20 bg-[#FF0033]/5 p-4">
+              <p className="text-sm text-[#FF0033] font-medium">{error}</p>
             </div>
+          )}
+
+          {/* Controls */}
+          <div className="mb-8 flex flex-col sm:flex-row gap-4 items-center justify-between">
+            <div className="flex items-center gap-3 w-full sm:w-auto">
+              <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/40 mr-2">
+                VIEW
+              </span>
+              <div className="flex bg-white/50 border border-[#0B132B]/10 p-0.5">
+                <button
+                  onClick={() => setViewMode("grid")}
+                  className={`flex items-center justify-center h-10 w-10 text-sm font-medium transition-colors duration-200 ${viewMode === "grid" ? "bg-[#0B132B] text-white" : "text-[#0B132B]/40 hover:bg-[#0B132B]/5 hover:text-[#0B132B]"}`}
+                  title="Grid View"
+                >
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                    />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => setViewMode("list")}
+                  className={`flex items-center justify-center h-10 w-10 text-sm font-medium transition-colors duration-200 ${viewMode === "list" ? "bg-[#0B132B] text-white" : "text-[#0B132B]/40 hover:bg-[#0B132B]/5 hover:text-[#0B132B]"}`}
+                  title="List View"
+                >
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
             <Link
               href="/admin/testimonials/new"
-              className="bg-purple-500 text-white px-5 py-2 rounded-lg font-semibold shadow-md hover:bg-purple-600"
+              className="sm:hidden inline-flex items-center justify-center bg-[#0B132B] text-white px-5 py-2.5 text-[9px] uppercase font-bold tracking-[0.2em] transition-all duration-300 hover:bg-[#FF0033] rounded-none w-full"
             >
-              Add New Testimonial
+              Add Testimonial
             </Link>
           </div>
 
-          {error && <div className="mb-6 bg-red-50 p-4 rounded-lg text-red-800">{error}</div>}
+          {/* Counter */}
+          <div className="mb-8 border-t border-[#0B132B]/10 pt-6 flex items-center justify-between">
+            <p className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/40">
+              <span className="text-[#0B132B]">{testimonials.length}</span> / TESTIMONIALS
+            </p>
+          </div>
+        </div>
 
-          {testimonials.length === 0 ? (
-            <div className="text-center py-16 bg-white rounded-2xl shadow-lg border border-[#0B132B]/10">
-              <h3 className="text-xl font-semibold text-[#0B132B] mb-2">No testimonials yet</h3>
-              <p className="text-[#0B132B]/60">Add your first testimonial to see it here.</p>
+        {testimonials.length === 0 ? (
+          <div
+            className={`transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`}
+          >
+            <div className="flex flex-col items-center justify-center py-24 text-center border border-dashed border-[#0B132B]/10 bg-white/30">
+              <h3 className="text-xl font-medium text-[#0B132B] mb-3">No testimonials yet</h3>
+              <p className="text-sm text-[#0B132B]/40 mb-8 max-w-xs">
+                Add your first testimonial to see it here.
+              </p>
+              <Link
+                href="/admin/testimonials/new"
+                className="inline-flex items-center gap-2 bg-[#0B132B] text-white px-8 py-4 text-[10px] uppercase font-bold tracking-[0.25em] transition-all duration-300 hover:bg-[#FF0033]"
+              >
+                Add First Testimonial
+              </Link>
             </div>
-          ) : viewMode === "grid" ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {testimonials.map((testimonial) => (
-                <div
-                  key={testimonial.id}
-                  className="group bg-white rounded-2xl shadow-lg border border-[#0B132B]/10 overflow-hidden flex flex-col"
-                >
+          </div>
+        ) : viewMode === "grid" ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {testimonials.map((testimonial, index) => (
+              <div
+                key={testimonial.id}
+                className={`group transition-all duration-500 ease-in-out ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+                style={{ transitionDelay: `${index * 50}ms` }}
+              >
+                <div className="relative h-full overflow-hidden bg-white/50 border border-[#0B132B]/10 transition-all duration-300 ease-in-out hover:bg-white hover:border-[#0055FF]/30 flex flex-col">
+                  {/* Content */}
                   <div className="p-6 flex-1">
-                    <div className="flex items-center gap-4 mb-4">
+                    {/* Author */}
+                    <div className="flex items-center gap-4 mb-5">
                       {testimonial.image ? (
                         <Image
                           src={testimonial.image}
                           alt={testimonial.name}
-                          width={48}
-                          height={48}
-                          className="rounded-full object-cover w-12 h-12"
+                          width={40}
+                          height={40}
+                          className="w-10 h-10 object-cover"
                           unoptimized
                         />
                       ) : (
-                        <div className="w-12 h-12 rounded-full bg-neutral-200 flex items-center justify-center text-[#0B132B]/50 font-semibold">
-                          ?
+                        <div className="w-10 h-10 bg-[#0B132B]/5 flex items-center justify-center text-[#0B132B]/30 font-bold text-sm">
+                          {testimonial.name?.charAt(0)?.toUpperCase() || "?"}
                         </div>
                       )}
                       <div>
-                        <p className="font-semibold text-[#0B132B]">{testimonial.name}</p>
-                        <p className="text-sm text-[#0B132B]/60">{testimonial.role}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-0.5 mb-4">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                      ))}
-                    </div>
-                    <blockquote className="text-[#0B132B]/80 text-sm italic border-l-2 border-[#0B132B]/10 pl-4">
-                      "{testimonial.content}"
-                    </blockquote>
-                  </div>
-                  <div className="bg-[#0B132B]/5/70 p-4 border-t border-[#0B132B]/10 flex items-center justify-end gap-2">
-                    <Link
-                      href={`/admin/testimonials/edit/${testimonial.id}`}
-                      className="p-2 rounded-lg hover:bg-neutral-200 transition-colors"
-                    >
-                      <svg
-                        className="w-4 h-4 text-[#0B132B]/60"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                        />
-                      </svg>
-                    </Link>
-                    <button
-                      onClick={() => handleDelete(testimonial)}
-                      className="p-2 rounded-lg hover:bg-red-100 transition-colors"
-                    >
-                      <svg
-                        className="w-4 h-4 text-red-600"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="bg-white rounded-2xl shadow-lg border border-[#0B132B]/10">
-              <ul className="divide-y divide-neutral-200">
-                {testimonials.map((testimonial) => (
-                  <li key={testimonial.id} className="flex items-center justify-between gap-6 p-6">
-                    <div className="flex items-center gap-4">
-                      {testimonial.image ? (
-                        <Image
-                          src={testimonial.image}
-                          alt={testimonial.name}
-                          width={48}
-                          height={48}
-                          className="rounded-full object-cover w-12 h-12"
-                          unoptimized
-                        />
-                      ) : (
-                        <div className="w-12 h-12 rounded-full bg-neutral-200 flex items-center justify-center text-[#0B132B]/50 font-semibold">
-                          ?
-                        </div>
-                      )}
-                      <div>
-                        <p className="font-semibold text-[#0B132B]">{testimonial.name}</p>
-                        <p className="text-sm text-[#0B132B]/60">
-                          {testimonial.role}, {testimonial.company}
+                        <p className="text-sm font-medium text-[#0B132B] tracking-tight">
+                          {testimonial.name}
+                        </p>
+                        <p className="text-[10px] uppercase tracking-[0.15em] text-[#0B132B]/40 font-bold">
+                          {testimonial.role}
+                          {testimonial.company ? ` · ${testimonial.company}` : ""}
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Link
-                        href={`/admin/testimonials/edit/${testimonial.id}`}
-                        className="p-2 rounded-lg hover:bg-white/50 border border-[#0B132B]/10"
-                      >
-                        <svg
-                          className="w-5 h-5 text-[#0B132B]/60"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                          />
-                        </svg>
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(testimonial)}
-                        className="p-2 rounded-lg hover:bg-red-100"
-                      >
-                        <svg
-                          className="w-5 h-5 text-red-600"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                          />
-                        </svg>
-                      </button>
+
+                    {/* Rating */}
+                    <div className="flex items-center gap-0.5 mb-4">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <Star key={i} className="w-3.5 h-3.5 fill-[#0B132B] text-[#0B132B]" />
+                      ))}
+                      {[...Array(5 - (testimonial.rating || 0))].map((_, i) => (
+                        <Star
+                          key={`empty-${i}`}
+                          className="w-3.5 h-3.5 fill-transparent text-[#0B132B]/15"
+                        />
+                      ))}
                     </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-      </div>
+
+                    {/* Quote */}
+                    <blockquote className="text-sm font-light text-[#0B132B]/60 line-clamp-4 leading-relaxed border-l-2 border-[#0B132B]/10 pl-4">
+                      &ldquo;{testimonial.content}&rdquo;
+                    </blockquote>
+
+                    {testimonial.result && (
+                      <div className="mt-4 inline-flex bg-[#0055FF]/5 px-2 py-1">
+                        <span className="text-[9px] font-bold uppercase tracking-[0.1em] text-[#0055FF]/70">
+                          {testimonial.result}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex items-center gap-0 border-t border-[#0B132B]/5 px-6 py-3">
+                    <Link
+                      href={`/admin/testimonials/edit/${testimonial.id}`}
+                      className="flex-1 text-[9px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/50 hover:text-[#0055FF] transition-colors py-2"
+                    >
+                      EDIT
+                    </Link>
+                    <button
+                      onClick={() => handleDelete(testimonial)}
+                      className="text-[9px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/30 hover:text-[#FF0033] transition-colors py-2 px-2"
+                      title="Delete"
+                    >
+                      DELETE
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="space-y-0">
+            {testimonials.map((testimonial, index) => (
+              <div
+                key={testimonial.id}
+                className={`group transition-all duration-500 ease-in-out ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+                style={{ transitionDelay: `${index * 30}ms` }}
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center gap-6 border-b border-[#0B132B]/10 bg-white/50 p-6 transition-all duration-300 ease-in-out hover:bg-white hover:border-[#0055FF]/30">
+                  {/* Avatar */}
+                  <div className="flex-shrink-0">
+                    {testimonial.image ? (
+                      <Image
+                        src={testimonial.image}
+                        alt={testimonial.name}
+                        width={48}
+                        height={48}
+                        className="w-12 h-12 object-cover"
+                        unoptimized
+                      />
+                    ) : (
+                      <div className="w-12 h-12 bg-[#0B132B]/5 flex items-center justify-center text-[#0B132B]/30 font-bold">
+                        {testimonial.name?.charAt(0)?.toUpperCase() || "?"}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-3 mb-1">
+                      <h3 className="text-lg tracking-tight font-medium text-[#0B132B]">
+                        {testimonial.name}
+                      </h3>
+                      <div className="flex items-center gap-0.5">
+                        {[...Array(testimonial.rating)].map((_, i) => (
+                          <Star key={i} className="w-3 h-3 fill-[#0B132B] text-[#0B132B]" />
+                        ))}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0B132B]/40">
+                        {testimonial.role}
+                        {testimonial.company ? ` · ${testimonial.company}` : ""}
+                      </span>
+                      {testimonial.result && (
+                        <span className="inline-flex px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.1em] text-[#0055FF]/60 border-l border-[#0B132B]/10">
+                          {testimonial.result}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex items-center justify-end gap-6 sm:gap-4 flex-shrink-0 pt-4 sm:pt-0 border-t sm:border-t-0 border-[#0B132B]/5">
+                    <Link
+                      href={`/admin/testimonials/edit/${testimonial.id}`}
+                      className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/50 hover:text-[#0055FF] transition-colors"
+                    >
+                      EDIT
+                    </Link>
+                    <button
+                      onClick={() => handleDelete(testimonial)}
+                      className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/30 hover:text-[#FF0033] transition-colors"
+                      title="Delete"
+                    >
+                      DELETE
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </main>
     </div>
   );
 }

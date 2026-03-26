@@ -43,6 +43,21 @@ export interface HeroSettings {
     cta_link: string;
     enabled: boolean;
   };
+  heroBanner: {
+    desktopImage: string;
+    mobileImage: string;
+  };
+  contactInfo: {
+    email: string;
+    phone: string;
+    bookingLink: string;
+  };
+  socialLinks: {
+    instagram: string;
+    linkedin: string;
+    dribbble: string;
+    behance: string;
+  };
 }
 
 export async function getHeroSettings(): Promise<HeroSettings> {
@@ -60,6 +75,9 @@ export async function getHeroSettings(): Promise<HeroSettings> {
     bannerRes,
     clientLogosRes,
     capabilitiesIntroRes,
+    heroBannerRes,
+    contactInfoRes,
+    socialLinksRes,
   ] = await Promise.all([
     supabase.from("site_settings").select("value").eq("key", "hero_availability").single(),
     supabase.from("site_settings").select("value").eq("key", "hero_experience_years").single(),
@@ -72,6 +90,9 @@ export async function getHeroSettings(): Promise<HeroSettings> {
     supabase.from("site_settings").select("value").eq("key", "banner").single(),
     supabase.from("site_settings").select("value").eq("key", "home_client_logos").single(),
     supabase.from("site_settings").select("value").eq("key", "home_capabilities_intro").single(),
+    supabase.from("site_settings").select("value").eq("key", "hero_banner_images").single(),
+    supabase.from("site_settings").select("value").eq("key", "contact_info").single(),
+    supabase.from("site_settings").select("value").eq("key", "social_links").single(),
   ]);
 
   return {
@@ -124,6 +145,21 @@ export async function getHeroSettings(): Promise<HeroSettings> {
       cta_text: "",
       cta_link: "",
       enabled: false,
+    },
+    heroBanner: heroBannerRes.data?.value || {
+      desktopImage: "",
+      mobileImage: "",
+    },
+    contactInfo: contactInfoRes.data?.value || {
+      email: "biniyam.be.go@gmail.com",
+      phone: "+251 911 234 567",
+      bookingLink: "https://calendar.app.google/1RTjShD5sgqBmm3K7",
+    },
+    socialLinks: socialLinksRes.data?.value || {
+      instagram: "https://www.instagram.com/bini.b.g?igsh=enp4OTM1NDU5YjNj",
+      linkedin: "https://www.linkedin.com/in/biniyam-belay-147673270/",
+      dribbble: "https://dribbble.com/bini-yam",
+      behance: "https://www.behance.net/biniyambelay",
     },
   };
 }
@@ -236,6 +272,30 @@ export async function updateHeroSettings(settings: Partial<HeroSettings>): Promi
       supabase
         .from("site_settings")
         .upsert({ key: "banner", value: settings.banner }, { onConflict: "key" }),
+    );
+  }
+
+  if (settings.heroBanner) {
+    updates.push(
+      supabase
+        .from("site_settings")
+        .upsert({ key: "hero_banner_images", value: settings.heroBanner }, { onConflict: "key" }),
+    );
+  }
+
+  if (settings.contactInfo) {
+    updates.push(
+      supabase
+        .from("site_settings")
+        .upsert({ key: "contact_info", value: settings.contactInfo }, { onConflict: "key" }),
+    );
+  }
+
+  if (settings.socialLinks) {
+    updates.push(
+      supabase
+        .from("site_settings")
+        .upsert({ key: "social_links", value: settings.socialLinks }, { onConflict: "key" }),
     );
   }
 

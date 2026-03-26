@@ -75,13 +75,13 @@ export default function WorkPage() {
 
               <div className="flex flex-col gap-6 md:max-w-md pb-2">
                 <p className="text-lg lg:text-xl font-light text-[#0B132B]/60 leading-relaxed">
-                  Identity, editorial, packaging, and digital projects—created from Addis Ababa and
+                  Identity, editorial, packaging, and digital projects—crafted with intention and
                   shipped worldwide.
                 </p>
                 <div className="flex items-center gap-4">
                   <div className="w-8 h-[1px] bg-[#FF0033]" />
                   <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#FF0033]">
-                    EAT / UTC+3
+                    Always Creating
                   </span>
                 </div>
               </div>

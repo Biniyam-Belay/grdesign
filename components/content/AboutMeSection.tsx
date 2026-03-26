@@ -70,9 +70,9 @@ export default function AboutMeSection() {
                   Personal
                 </h3>
                 <p className="text-[0.98rem] leading-relaxed text-neutral-600">
-                  I’m bini. I live in Addis Ababa. I like quiet visuals, neat grids, and coffee that
-                  bites. I steal colors from street signs. I keep a folder called “nice corners.” I
-                  like shoes. I don’t like clutter.
+                  I’m bini. I like quiet visuals, neat grids, and coffee that bites. I steal colors
+                  from street signs. I keep a folder called “nice corners.” I like shoes. I don’t
+                  like clutter.
                 </p>
               </div>
 

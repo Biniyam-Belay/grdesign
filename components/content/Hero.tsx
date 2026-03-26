@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Instagram, Linkedin, Dribbble } from "lucide-react";
+import { SiBehance } from "react-icons/si";
 import { AnimatePresence, motion } from "framer-motion";
 import { getHeroSettings, type HeroSettings } from "@/lib/data/settings";
 
@@ -24,7 +25,10 @@ export default function Hero() {
 
   return (
     <section className="bg-[#F5F5F0] text-[#0B132B] w-full flex flex-col font-sans relative overflow-hidden">
-      <div className="w-full max-w-8xl mx-auto flex flex-col px-6 lg:px-12 pt-[calc(72px+10vh)] pb-8">
+      <div
+        className="w-full max-w-8xl mx-auto flex flex-col px-6 lg:px-12 pt-[calc(72px+10vh)] pb-8 transition-opacity duration-700 ease-out"
+        style={{ opacity: settings ? 1 : 0 }}
+      >
         {/* TOP 30% — 3 Columns (50 / 25 / 25), no dividers */}
         <div className="flex-none lg:h-[30%] w-full grid grid-cols-1 lg:grid-cols-4 gap-0 mb-4 pt-4">
           {/* Column 1: 50% width — headline + CTA at 80% */}
@@ -53,7 +57,10 @@ export default function Hero() {
 
               {/* CTA */}
               <Link
-                href="https://calendar.app.google/1RTjShD5sgqBmm3K7"
+                href={
+                  settings?.contactInfo?.bookingLink ||
+                  "https://calendar.app.google/1RTjShD5sgqBmm3K7"
+                }
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group w-max flex items-center gap-5 mt-2"
@@ -117,17 +124,19 @@ export default function Hero() {
                 Get in touch
               </span>
               <a
-                href="mailto:biniyam.be.go@gmail.com"
+                href={`mailto:${settings?.contactInfo?.email || "biniyam.be.go@gmail.com"}`}
                 className="text-base font-medium text-[#0B132B]/80 hover:text-[#FF0033] transition-colors"
               >
-                biniyam.be.go@gmail.com
+                {settings?.contactInfo?.email || "biniyam.be.go@gmail.com"}
               </a>
-              <a
-                href="tel:+251911234567"
-                className="text-sm font-light text-[#0B132B]/40 hover:text-[#0B132B]/80 transition-colors"
-              >
-                +251 911 234 567
-              </a>
+              {settings?.contactInfo?.phone && (
+                <a
+                  href={`tel:${settings.contactInfo.phone.replace(/\s/g, "")}`}
+                  className="text-sm font-light text-[#0B132B]/40 hover:text-[#0B132B]/80 transition-colors"
+                >
+                  {settings.contactInfo.phone}
+                </a>
+              )}
             </div>
           </div>
 
@@ -138,33 +147,50 @@ export default function Hero() {
                 Follow Along
               </span>
               <div className="flex gap-6 text-[#0B132B]/30">
-                <a
-                  href="https://www.instagram.com/bini.b.g?igsh=enp4OTM1NDU5YjNj"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Instagram"
-                  className="hover:text-[#FF0033] transition-all duration-300"
-                >
-                  <Instagram size={22} strokeWidth={1.5} />
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/biniyam-belay-147673270/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="LinkedIn"
-                  className="hover:text-[#FF0033] transition-all duration-300"
-                >
-                  <Linkedin size={22} strokeWidth={1.5} />
-                </a>
-                <a
-                  href="https://dribbble.com/bini-yam"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Dribbble"
-                  className="hover:text-[#FF0033] transition-all duration-300"
-                >
-                  <Dribbble size={22} strokeWidth={1.5} />
-                </a>
+                {settings?.socialLinks?.instagram && (
+                  <a
+                    href={settings.socialLinks.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram"
+                    className="hover:text-[#FF0033] transition-all duration-300"
+                  >
+                    <Instagram size={22} strokeWidth={1.5} />
+                  </a>
+                )}
+                {settings?.socialLinks?.linkedin && (
+                  <a
+                    href={settings.socialLinks.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="LinkedIn"
+                    className="hover:text-[#FF0033] transition-all duration-300"
+                  >
+                    <Linkedin size={22} strokeWidth={1.5} />
+                  </a>
+                )}
+                {settings?.socialLinks?.dribbble && (
+                  <a
+                    href={settings.socialLinks.dribbble}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Dribbble"
+                    className="hover:text-[#FF0033] transition-all duration-300"
+                  >
+                    <Dribbble size={22} strokeWidth={1.5} />
+                  </a>
+                )}
+                {settings?.socialLinks?.behance && (
+                  <a
+                    href={settings.socialLinks.behance}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Behance"
+                    className="hover:text-[#FF0033] transition-all duration-300"
+                  >
+                    <SiBehance size={22} />
+                  </a>
+                )}
               </div>
             </div>
             <div className="flex flex-col items-end gap-2">
@@ -189,20 +215,21 @@ export default function Hero() {
 
         {/* IMAGE BANNER — extends to 110vh total, gap above */}
         <div className="w-full overflow-hidden relative h-[80vh] md:h-[110vh] mt-[6vh]">
-          {/* Image */}
+          {/* Desktop Image */}
           <div
-            className="absolute inset-0 bg-cover bg-center transition-transform duration-[3000ms] hover:scale-[1.03]"
+            className="absolute inset-0 bg-cover bg-center transition-transform duration-[3000ms] hover:scale-[1.03] hidden md:block"
             style={{
-              backgroundImage:
-                "url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop')",
+              backgroundImage: `url('${settings?.heroBanner?.desktopImage || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop"}')`,
             }}
           />
-          {/* Shiny red tint overlay */}
-          <div className="absolute inset-0 bg-[#FF0033]/25 mix-blend-color pointer-events-none" />
+          {/* Mobile Image */}
+          <div
+            className="absolute inset-0 bg-cover bg-center transition-transform duration-[3000ms] hover:scale-[1.03] block md:hidden"
+            style={{
+              backgroundImage: `url('${settings?.heroBanner?.mobileImage || settings?.heroBanner?.desktopImage || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop"}')`,
+            }}
+          />
           {/* Bottom vignette — fades into light bg now */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#F5F5F0]/80 via-[#F5F5F0]/10 to-transparent pointer-events-none" />
-          {/* Specular shine */}
-          <div className="absolute top-0 right-0 w-[70%] h-[70%] bg-gradient-to-bl from-white/30 via-transparent to-transparent -translate-y-1/4 translate-x-1/4 pointer-events-none mix-blend-overlay blur-2xl" />
         </div>
       </div>
     </section>

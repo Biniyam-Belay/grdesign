@@ -2,10 +2,17 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { getHeroSettings, type HeroSettings } from "@/lib/data/settings";
 
 export default function Footer() {
   const year = new Date().getFullYear();
   const pathname = usePathname();
+  const [settings, setSettings] = useState<HeroSettings | null>(null);
+
+  useEffect(() => {
+    getHeroSettings().then(setSettings).catch(console.error);
+  }, []);
 
   if (pathname?.startsWith("/admin")) return null;
 
@@ -54,6 +61,33 @@ export default function Footer() {
     }
   };
 
+  const scrollToTop = () => {
+    const startPosition = window.scrollY;
+    if (startPosition === 0) return;
+
+    const duration = 1200; // 1.2 seconds for cinematic feel
+    let start: number | null = null;
+
+    // S-curve: Slow start, fast middle, slow end
+    const easeInOutQuint = (t: number) =>
+      t < 0.5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2;
+
+    const animation = (currentTime: number) => {
+      if (start === null) start = currentTime;
+      const timeElapsed = currentTime - start;
+      const progress = Math.min(timeElapsed / duration, 1);
+
+      // We are going from startPosition down to 0, so distance is -startPosition
+      window.scrollTo(0, startPosition - startPosition * easeInOutQuint(progress));
+
+      if (timeElapsed < duration) {
+        requestAnimationFrame(animation);
+      }
+    };
+
+    requestAnimationFrame(animation);
+  };
+
   return (
     <footer className="bg-[#F5F5F0] border-t border-[#0B132B]/8">
       <div className="mx-auto max-w-8xl px-6 lg:px-12 py-16 lg:py-24 w-full">
@@ -81,24 +115,39 @@ export default function Footer() {
               {[
                 {
                   label: "Instagram",
-                  href: "https://www.instagram.com/bini.b.g?igsh=enp4OTM1NDU5YjNj",
+                  href:
+                    settings?.socialLinks?.instagram ||
+                    "https://www.instagram.com/bini.b.g?igsh=enp4OTM1NDU5YjNj",
                 },
-                { label: "Dribbble", href: "https://dribbble.com/bini-yam" },
-                { label: "LinkedIn", href: "https://www.linkedin.com/in/biniyam-belay-147673270/" },
-                { label: "Behance", href: "https://www.behance.net/biniyambelay" },
-              ].map(({ label, href }) => (
-                <a
-                  key={label}
-                  href={href}
-                  aria-label={label}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#0B132B]/50 hover:text-[#FF0033] transition-colors duration-300 relative group"
-                >
-                  {label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#FF0033] transition-all duration-300 group-hover:w-full"></span>
-                </a>
-              ))}
+                {
+                  label: "Dribbble",
+                  href: settings?.socialLinks?.dribbble || "https://dribbble.com/bini-yam",
+                },
+                {
+                  label: "LinkedIn",
+                  href:
+                    settings?.socialLinks?.linkedin ||
+                    "https://www.linkedin.com/in/biniyam-belay-147673270/",
+                },
+                {
+                  label: "Behance",
+                  href: settings?.socialLinks?.behance || "https://www.behance.net/biniyambelay",
+                },
+              ]
+                .filter((item) => item.href.trim().length > 0)
+                .map(({ label, href }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    aria-label={label}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#0B132B]/50 hover:text-[#FF0033] transition-colors duration-300 relative group"
+                  >
+                    {label}
+                    <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#FF0033] transition-all duration-300 group-hover:w-full"></span>
+                  </a>
+                ))}
             </div>
           </div>
 
@@ -110,7 +159,10 @@ export default function Footer() {
                   <li key={item}>
                     {item === "Contact" ? (
                       <Link
-                        href="https://calendar.app.google/1RTjShD5sgqBmm3K7"
+                        href={
+                          settings?.contactInfo?.bookingLink ||
+                          "https://calendar.app.google/1RTjShD5sgqBmm3K7"
+                        }
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-sm font-semibold uppercase tracking-[0.15em] text-[#0B132B]/80 hover:text-[#FF0033] transition-colors duration-300 flex items-center gap-2 group"
@@ -137,13 +189,13 @@ export default function Footer() {
 
             <div className="text-sm flex flex-col gap-3">
               <a
-                href="mailto:biniyam.be.go@gmail.com"
+                href={`mailto:${settings?.contactInfo?.email || "biniyam.be.go@gmail.com"}`}
                 className="text-xl md:text-2xl font-light text-[#0B132B] hover:text-[#FF0033] transition-colors duration-300 tracking-tight"
               >
-                biniyam.be.go@gmail.com
+                {settings?.contactInfo?.email || "biniyam.be.go@gmail.com"}
               </a>
               <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#0B132B]/40">
-                Based in Addis Ababa · Working Worldwide
+                Remote-First · Working Worldwide
               </p>
             </div>
           </div>
@@ -155,9 +207,12 @@ export default function Footer() {
             © {year} Ilaala.Studio — All Rights Reserved
           </div>
 
-          <div className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#0B132B]/30 flex items-center gap-1">
-            Build with <span className="text-[#FF0033]">precision</span>
-          </div>
+          <button
+            onClick={scrollToTop}
+            className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#0B132B]/30 hover:text-[#FF0033] transition-colors flex items-center gap-1"
+          >
+            Back to Top ↑
+          </button>
         </div>
       </div>
     </footer>

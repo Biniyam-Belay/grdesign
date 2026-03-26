@@ -34,7 +34,6 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
     year: project?.year?.toString() || "",
     client: project?.client || "",
     mobileHeroSrc: project?.mobileHeroSrc || "",
-    // New fields for different project types
     highlights: project?.highlights?.join("\n") || "",
     deliverables: project?.deliverables?.join("\n") || "",
     process: project?.process
@@ -44,7 +43,6 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
       : "",
   });
 
-  // Separate state for gallery images (array of { src, alt })
   const [gallery, setGallery] = useState<Array<{ src: string; alt: string }>>(
     project?.gallery || [],
   );
@@ -71,7 +69,6 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
     }));
   };
 
-  // Get fields relevant to current project type
   const getRelevantFields = (type: string) => {
     switch (type) {
       case "branding":
@@ -167,41 +164,32 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
         .split(",")
         .map((role) => role.trim())
         .filter((role) => role.length > 0);
-
       const toolsArray = formData.tools
         .split(",")
         .map((tool) => tool.trim())
         .filter((tool) => tool.length > 0);
-
-      // Parse highlights and deliverables arrays
       const highlightsArray = formData.highlights
         .split("\n")
         .map((item) => item.trim())
         .filter((item) => item.length > 0);
-
       const deliverablesArray = formData.deliverables
         .split("\n")
         .map((item) => item.trim())
         .filter((item) => item.length > 0);
 
-      // Parse process array if provided: must be valid JSON or null
       let processArray: unknown = null;
       if (formData.process.trim()) {
         try {
-          const parsed = JSON.parse(formData.process);
-          processArray = parsed;
+          processArray = JSON.parse(formData.process);
         } catch {
-          // If JSON parsing fails, do not send an invalid value
           processArray = null;
         }
       }
 
-      // Basic validation before hitting the DB
       if (rolesArray.length === 0) {
         throw new Error("Please add at least one role (e.g., Frontend, UI Design)");
       }
 
-      // Ensure slug is unique (excluding the current project when editing)
       const slugCheckQuery = supabase
         .from("projects")
         .select("id")
@@ -211,9 +199,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
         isEditing && project?.id
           ? await slugCheckQuery.neq("id", project.id)
           : await slugCheckQuery;
-      if (slugCheck.error) {
-        throw slugCheck.error;
-      }
+      if (slugCheck.error) throw slugCheck.error;
       if (slugCheck.data && slugCheck.data.length > 0) {
         throw new Error(
           "This slug is already used by another project. Please choose a different slug.",
@@ -240,12 +226,9 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
         client: formData.client?.trim() ? formData.client : null,
         mobileHeroSrc: formData.mobileHeroSrc?.trim() ? formData.mobileHeroSrc : null,
         gallery: gallery.length > 0 ? gallery : null,
-        // Add new fields based on project type
         highlights: highlightsArray.length > 0 ? highlightsArray : null,
         deliverables: deliverablesArray.length > 0 ? deliverablesArray : null,
       };
-
-      // Only include process if it's valid JSON (object/array) or explicitly null
       projectData.process = processArray === null ? null : processArray;
 
       const action = isEditing && project?.id ? "update" : "create";
@@ -254,25 +237,17 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
           ? { action, id: project.id, data: projectData }
           : { action, data: projectData };
 
-      // Get session for auth
       const {
         data: { session },
       } = await supabase.auth.getSession();
-      if (!session) {
-        throw new Error("You are not signed in. Please log in again.");
-      }
+      if (!session) throw new Error("You are not signed in. Please log in again.");
 
       const { error } = await supabase.functions.invoke("projects", {
         body: payload,
-        headers: {
-          Authorization: `Bearer ${session.access_token}`,
-        },
+        headers: { Authorization: `Bearer ${session.access_token}` },
       });
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
-      // Revalidate project paths to clear Next.js cache
       await Promise.all([
         fetch("/api/revalidate", {
           method: "POST",
@@ -289,59 +264,40 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
       router.push("/admin/projects");
     } catch (err) {
       const e = err as { message?: string; details?: string; hint?: string; code?: string };
-      const msg = e.message || e.details || e.hint || e.code || "Failed to save project";
-      setError(msg);
+      setError(e.message || e.details || e.hint || e.code || "Failed to save project");
     } finally {
       setLoading(false);
     }
   };
 
+  const inputClass =
+    "w-full bg-white border border-[#0B132B]/10 px-4 py-3 text-sm text-[#0B132B] focus:outline-none focus:border-[#0055FF]/50 transition-colors";
+  const labelClass =
+    "block text-[10px] uppercase font-bold tracking-[0.15em] text-[#0B132B]/60 mb-2";
+  const hintClass = "text-[10px] text-[#0B132B]/40 mt-1.5";
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-neutral-50">
-      {/* Animated Background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-purple-400/5 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-pink-400/5 rounded-full blur-3xl animate-pulse delay-1000" />
+    <div className="min-h-screen bg-[#F5F5F0] text-[#0B132B] font-sans selection:bg-[#FF0033]/20 pb-20">
+      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 -left-20 w-[50vh] h-[50vh] bg-[#0055FF]/5 rounded-full blur-[100px] animate-pulse" />
+        <div className="absolute bottom-1/4 -right-20 w-[50vh] h-[50vh] bg-[#FF0033]/5 rounded-full blur-[100px] animate-pulse delay-1000" />
       </div>
 
       {/* Header */}
-      <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-[#0B132B]/10/50 shadow-sm">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <header className="sticky top-0 z-40 bg-[#F5F5F0]/80 backdrop-blur-xl border-b border-[#0B132B]/10">
+        <div className="mx-auto max-w-8xl px-6 lg:px-12">
           <div className="flex h-16 items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <Link
                 href="/admin/projects"
-                className="flex items-center gap-2 text-[#0B132B]/60 hover:text-[#0B132B] transition-all hover:scale-105"
+                className="flex items-center gap-2 text-[#0B132B]/50 hover:text-[#FF0033] transition-all duration-300 group"
               >
-                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                  />
-                </svg>
-                <span className="font-medium text-sm">Back to Projects</span>
+                <span className="text-[10px] uppercase tracking-[0.2em] font-bold">← Archive</span>
               </Link>
-              <div className="h-6 w-px bg-neutral-300" />
-              <div className="flex items-center gap-2">
-                <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                  <svg
-                    className="h-5 w-5 text-white"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.5}
-                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                    />
-                  </svg>
-                </div>
-                <h1 className="text-lg font-semibold text-[#0B132B]">
-                  {isEditing ? "Edit Project" : "Create New Project"}
+              <div className="h-5 w-px bg-[#0B132B]/10" />
+              <div className="flex items-center gap-3">
+                <h1 className="text-xl font-medium tracking-tight text-[#0B132B]">
+                  {isEditing ? "Edit Project" : "New Project"}
                 </h1>
               </div>
             </div>
@@ -350,65 +306,28 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
       </header>
 
       {/* Main Content */}
-      <main className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+      <main className="relative mx-auto max-w-8xl px-6 lg:px-12 py-8">
         {error && (
-          <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 animate-shake">
-            <div className="flex items-start gap-3">
-              <svg
-                className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              <p className="text-sm text-red-800 font-medium">{error}</p>
-            </div>
+          <div className="mb-6 border border-[#FF0033]/20 bg-[#FF0033]/5 p-4">
+            <p className="text-sm text-[#FF0033] font-medium">{error}</p>
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-8">
-          {/* Two Column Layout */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left Column - Main Content */}
             <div className="lg:col-span-2 space-y-8">
-              {/* Basic Project Information */}
-              <div className="border border-[#0B132B]/10/50 rounded-2xl bg-white shadow-sm p-8">
-                <div className="mb-6 flex items-start gap-3">
-                  <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 flex items-center justify-center flex-shrink-0">
-                    <svg
-                      className="h-5 w-5 text-purple-600"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M13 10V3L4 14h7v7l9-11h-7z"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <h2 className="text-lg font-semibold text-[#0B132B]">Project Overview</h2>
-                    <p className="text-sm text-[#0B132B]/60 mt-1">
-                      Core information about your project
-                    </p>
-                  </div>
+              {/* Project Overview */}
+              <div className="bg-white/50 backdrop-blur-sm border border-[#0B132B]/10 p-8 transition-all duration-500 hover:bg-white hover:border-[#0055FF]/30">
+                <div className="mb-6">
+                  <h2 className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B] flex items-center gap-3">
+                    <span className="h-[1px] w-4 bg-[#0B132B]/20"></span> Project Overview
+                  </h2>
                 </div>
 
                 <div className="space-y-6">
                   <div>
-                    <label
-                      htmlFor="title"
-                      className="block text-sm font-medium text-[#0B132B]/80 mb-2"
-                    >
+                    <label htmlFor="title" className={labelClass}>
                       Project Title
                     </label>
                     <input
@@ -418,16 +337,13 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                       required
                       value={formData.title}
                       onChange={(e) => handleTitleChange(e.target.value)}
-                      className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors text-lg"
+                      className={inputClass}
                       placeholder="Enter project title..."
                     />
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="excerpt"
-                      className="block text-sm font-medium text-[#0B132B]/80 mb-2"
-                    >
+                    <label htmlFor="excerpt" className={labelClass}>
                       Project Description
                     </label>
                     <textarea
@@ -439,17 +355,14 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                       onChange={(e) =>
                         setFormData((prev) => ({ ...prev, excerpt: e.target.value }))
                       }
-                      className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
+                      className={`${inputClass} resize-none`}
                       placeholder="Brief description of the project..."
                     />
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
-                      <label
-                        htmlFor="roles"
-                        className="block text-sm font-medium text-[#0B132B]/80 mb-2"
-                      >
+                      <label htmlFor="roles" className={labelClass}>
                         Roles & Technologies
                       </label>
                       <input
@@ -461,16 +374,12 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                           setFormData((prev) => ({ ...prev, roles: e.target.value }))
                         }
                         placeholder="Frontend Development, UI Design, React"
-                        className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                        className={inputClass}
                       />
-                      <p className="text-xs text-[#0B132B]/50 mt-1">Separate with commas</p>
+                      <p className={hintClass}>Separate with commas</p>
                     </div>
-
                     <div>
-                      <label
-                        htmlFor="tools"
-                        className="block text-sm font-medium text-[#0B132B]/80 mb-2"
-                      >
+                      <label htmlFor="tools" className={labelClass}>
                         Tools Used
                       </label>
                       <input
@@ -482,42 +391,23 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                           setFormData((prev) => ({ ...prev, tools: e.target.value }))
                         }
                         placeholder="Figma, React, Next.js"
-                        className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                        className={inputClass}
                       />
-                      <p className="text-xs text-[#0B132B]/50 mt-1">Separate with commas</p>
+                      <p className={hintClass}>Separate with commas</p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Project Media - Moved from sidebar */}
-              <div className="border border-[#0B132B]/10/50 rounded-2xl bg-white shadow-sm p-8">
-                <div className="mb-6 flex items-start gap-3">
-                  <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 flex items-center justify-center flex-shrink-0">
-                    <svg
-                      className="h-5 w-5 text-purple-600"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <h2 className="text-lg font-semibold text-[#0B132B]">Media & Assets</h2>
-                    <p className="text-sm text-[#0B132B]/60 mt-1">
-                      Visual content for your project showcase
-                    </p>
-                  </div>
+              {/* Media & Assets */}
+              <div className="bg-white/50 backdrop-blur-sm border border-[#0B132B]/10 p-8 transition-all duration-500 hover:bg-white hover:border-[#0055FF]/30">
+                <div className="mb-6">
+                  <h2 className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B] flex items-center gap-3">
+                    <span className="h-[1px] w-4 bg-[#0B132B]/20"></span> Media & Assets
+                  </h2>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  {/* Thumbnail */}
                   <div>
                     <ImageUpload
                       bucket="project-images"
@@ -525,12 +415,8 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                       onUpload={(url) => setFormData((prev) => ({ ...prev, thumb: url }))}
                       label="Thumbnail Image"
                     />
-                    <p className="text-xs text-[#0B132B]/50 mt-2">
-                      Main project thumbnail for cards and listings
-                    </p>
+                    <p className={hintClass}>Main project thumbnail for cards and listings</p>
                   </div>
-
-                  {/* Mobile Hero */}
                   <div>
                     <ImageUpload
                       bucket="project-images"
@@ -538,18 +424,13 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                       onUpload={(url) => setFormData((prev) => ({ ...prev, mobileHeroSrc: url }))}
                       label="Mobile Hero (optional)"
                     />
-                    <p className="text-xs text-[#0B132B]/50 mt-2">
-                      Alternative hero image optimized for mobile
-                    </p>
+                    <p className={hintClass}>Alternative hero image optimized for mobile</p>
                   </div>
                 </div>
 
                 {/* Video URL */}
                 <div className="mt-6">
-                  <label
-                    htmlFor="video"
-                    className="block text-sm font-medium text-[#0B132B]/80 mb-2"
-                  >
+                  <label htmlFor="video" className={labelClass}>
                     Video URL (optional)
                   </label>
                   <input
@@ -558,50 +439,43 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                     id="video"
                     value={formData.video}
                     onChange={(e) => setFormData((prev) => ({ ...prev, video: e.target.value }))}
-                    className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                    className={inputClass}
                     placeholder="https://example.com/video.mp4"
                   />
                 </div>
 
                 {/* Gallery Section */}
                 <div className="mt-6 pt-6 border-t border-[#0B132B]/10">
-                  <div className="flex items-center justify-between mb-3">
-                    <div>
-                      <h3 className="text-sm font-semibold text-[#0B132B]">Project Gallery</h3>
-                      <p className="text-xs text-[#0B132B]/50 mt-0.5">
-                        Add multiple images for detailed project showcase
-                      </p>
-                    </div>
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/60">
+                      Project Gallery
+                    </h3>
                     {gallery.length > 0 && (
-                      <span className="text-xs font-medium text-[#0B132B]/50 bg-white/50 border border-[#0B132B]/10 px-3 py-1.5 rounded-full">
-                        {gallery.length} {gallery.length === 1 ? "image" : "images"}
+                      <span className="text-[9px] uppercase font-bold tracking-[0.15em] text-[#0B132B]/40 bg-[#0B132B]/5 px-2 py-1">
+                        {gallery.length} {gallery.length === 1 ? "IMAGE" : "IMAGES"}
                       </span>
                     )}
                   </div>
 
-                  {/* Gallery Grid - SCROLLABLE */}
                   {gallery.length > 0 && (
-                    <div className="mb-4 max-h-[500px] overflow-y-auto rounded-xl border border-[#0B132B]/10 bg-[#0B132B]/5/50 p-4">
+                    <div className="mb-4 max-h-[500px] overflow-y-auto border border-[#0B132B]/5 bg-[#0B132B]/[0.02] p-4">
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                         {gallery.map((img, idx) => (
                           <div
                             key={idx}
-                            className="relative group bg-white rounded-xl shadow-sm border border-[#0B132B]/10 overflow-hidden hover:shadow-md transition-all"
+                            className="relative group bg-white border border-[#0B132B]/10 overflow-hidden transition-all hover:border-[#0055FF]/30"
                           >
-                            {/* Image Preview */}
-                            <div className="relative w-full aspect-square bg-white/50 border border-[#0B132B]/10">
+                            <div className="relative w-full aspect-square bg-[#0B132B]/5">
                               <Image
                                 src={img.src}
                                 alt={img.alt || `Gallery image ${idx + 1}`}
                                 fill
                                 className="object-cover"
                               />
-                              <div className="absolute top-2 left-2 w-6 h-6 rounded-full bg-[#0B132B] text-white hover:bg-[#FF0033] hover:shadow-[0_10px_20px_rgba(255,0,51,0.2)] border-none transition-all duration-300 text-xs flex items-center justify-center font-bold shadow-lg">
+                              <div className="absolute top-2 left-2 w-6 h-6 bg-[#0B132B] text-white text-[9px] flex items-center justify-center font-bold">
                                 {idx + 1}
                               </div>
                             </div>
-
-                            {/* Input Fields & Remove Button */}
                             <div className="p-3 space-y-2">
                               <input
                                 type="text"
@@ -612,16 +486,16 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                                   setGallery(updated);
                                 }}
                                 placeholder="Alt text"
-                                className="w-full px-2 py-1.5 text-sm border border-[#0B132B]/20 rounded-lg focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition-colors"
+                                className="w-full bg-white border border-[#0B132B]/10 px-3 py-2 text-xs focus:outline-none focus:border-[#0055FF]/50 transition-colors"
                               />
                               <button
                                 type="button"
                                 onClick={() => setGallery(gallery.filter((_, i) => i !== idx))}
-                                className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                                className="absolute top-2 right-2 p-1.5 bg-[#FF0033] text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                                 title="Remove image"
                               >
                                 <svg
-                                  className="w-4 h-4"
+                                  className="w-3 h-3"
                                   fill="none"
                                   viewBox="0 0 24 24"
                                   stroke="currentColor"
@@ -641,8 +515,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                     </div>
                   )}
 
-                  {/* Add New Gallery Image */}
-                  <div className="border-2 border-dashed border-[#0B132B]/20 rounded-xl p-5 bg-gradient-to-br from-neutral-50 to-neutral-100/50 hover:border-purple-300 hover:bg-purple-50/30 transition-all">
+                  <div className="border border-dashed border-[#0B132B]/15 p-5 bg-white/30 hover:border-[#0055FF]/30 transition-all">
                     <BatchImageUpload
                       bucket="project-images"
                       onChange={(uploads) => {
@@ -659,10 +532,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                 {/* Additional Fields */}
                 <div className="mt-6 pt-6 border-t border-[#0B132B]/10 grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
-                    <label
-                      htmlFor="alt"
-                      className="block text-sm font-medium text-[#0B132B]/80 mb-2"
-                    >
+                    <label htmlFor="alt" className={labelClass}>
                       Default Alt Text
                     </label>
                     <input
@@ -671,17 +541,13 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                       id="alt"
                       value={formData.alt}
                       onChange={(e) => setFormData((prev) => ({ ...prev, alt: e.target.value }))}
-                      className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                      className={inputClass}
                       placeholder="General image description"
                     />
-                    <p className="text-xs text-[#0B132B]/50 mt-1">Fallback for accessibility</p>
+                    <p className={hintClass}>Fallback for accessibility</p>
                   </div>
-
                   <div>
-                    <label
-                      htmlFor="credits"
-                      className="block text-sm font-medium text-[#0B132B]/80 mb-2"
-                    >
+                    <label htmlFor="credits" className={labelClass}>
                       Image Credits
                     </label>
                     <input
@@ -692,31 +558,30 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                       onChange={(e) =>
                         setFormData((prev) => ({ ...prev, credits: e.target.value }))
                       }
-                      className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                      className={inputClass}
                       placeholder="Photo credits, attributions..."
                     />
-                    <p className="text-xs text-[#0B132B]/50 mt-1">Attribution for images</p>
+                    <p className={hintClass}>Attribution for images</p>
                   </div>
                 </div>
               </div>
 
               {/* Case Study Details */}
-              <div className="border border-[#0B132B]/10 rounded-lg bg-white p-8">
+              <div className="bg-white/50 backdrop-blur-sm border border-[#0B132B]/10 p-8 transition-all duration-500 hover:bg-white hover:border-[#0055FF]/30">
                 <div className="mb-6">
-                  <h2 className="text-lg font-medium text-[#0B132B]">
+                  <h2 className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B] flex items-center gap-3">
+                    <span className="h-[1px] w-4 bg-[#0B132B]/20"></span>{" "}
                     {relevantFields.caseStudyTitle}
                   </h2>
-                  <p className="text-sm text-[#0B132B]/60 mt-1">
-                    Project-specific details based on type: {formData.type}
+                  <p className="text-[10px] text-[#0B132B]/40 mt-2 ml-7">
+                    Project-specific details based on type:{" "}
+                    <span className="uppercase tracking-wider font-bold">{formData.type}</span>
                   </p>
                 </div>
 
                 <div className="space-y-6">
                   <div>
-                    <label
-                      htmlFor="problem"
-                      className="block text-sm font-medium text-[#0B132B]/80 mb-2"
-                    >
+                    <label htmlFor="problem" className={labelClass}>
                       {relevantFields.problemLabel}
                     </label>
                     <textarea
@@ -727,16 +592,13 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                       onChange={(e) =>
                         setFormData((prev) => ({ ...prev, problem: e.target.value }))
                       }
-                      className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
+                      className={`${inputClass} resize-none`}
                       placeholder={`What ${formData.type === "ui-ux" ? "user problem" : formData.type === "branding" ? "brand challenge" : "challenge"} did this project solve?`}
                     />
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="solution"
-                      className="block text-sm font-medium text-[#0B132B]/80 mb-2"
-                    >
+                    <label htmlFor="solution" className={labelClass}>
                       {relevantFields.solutionLabel}
                     </label>
                     <textarea
@@ -747,7 +609,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                       onChange={(e) =>
                         setFormData((prev) => ({ ...prev, solution: e.target.value }))
                       }
-                      className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
+                      className={`${inputClass} resize-none`}
                       placeholder={`How did you solve the ${formData.type === "ui-ux" ? "user experience" : "problem"}?`}
                     />
                   </div>
@@ -755,10 +617,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                   {relevantFields.showApproach && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       <div>
-                        <label
-                          htmlFor="approach"
-                          className="block text-sm font-medium text-[#0B132B]/80 mb-2"
-                        >
+                        <label htmlFor="approach" className={labelClass}>
                           {relevantFields.approachLabel}
                         </label>
                         <textarea
@@ -769,17 +628,13 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                           onChange={(e) =>
                             setFormData((prev) => ({ ...prev, approach: e.target.value }))
                           }
-                          className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
+                          className={`${inputClass} resize-none`}
                           placeholder={`Your ${formData.type === "ui-ux" ? "design methodology" : formData.type === "web-dev" ? "development approach" : "methodology"}...`}
                         />
                       </div>
-
                       {relevantFields.showOutcome && (
                         <div>
-                          <label
-                            htmlFor="outcome"
-                            className="block text-sm font-medium text-[#0B132B]/80 mb-2"
-                          >
+                          <label htmlFor="outcome" className={labelClass}>
                             {relevantFields.outcomeLabel}
                           </label>
                           <textarea
@@ -790,7 +645,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                             onChange={(e) =>
                               setFormData((prev) => ({ ...prev, outcome: e.target.value }))
                             }
-                            className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
+                            className={`${inputClass} resize-none`}
                             placeholder={`${formData.type === "ui-ux" ? "User impact and metrics" : formData.type === "web-dev" ? "Performance results" : "Results and impact"}...`}
                           />
                         </div>
@@ -800,10 +655,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
 
                   {relevantFields.showHighlights && (
                     <div>
-                      <label
-                        htmlFor="highlights"
-                        className="block text-sm font-medium text-[#0B132B]/80 mb-2"
-                      >
+                      <label htmlFor="highlights" className={labelClass}>
                         Key Highlights
                       </label>
                       <textarea
@@ -814,21 +666,16 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                         onChange={(e) =>
                           setFormData((prev) => ({ ...prev, highlights: e.target.value }))
                         }
-                        className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
-                        placeholder={`One highlight per line:\n${formData.type === "ui-ux" ? "40% faster task completion\nImproved accessibility score\nReduced user errors by 60%" : formData.type === "web-dev" ? "99+ Lighthouse performance score\nCustom GSAP animations\nResponsive mobile-first design" : "Premium color system with accessible contrast\nVersatile logo variants for all media\nGrid-based layout rules for consistency"}`}
+                        className={`${inputClass} resize-none`}
+                        placeholder={`One highlight per line:\n${formData.type === "ui-ux" ? "40% faster task completion\nImproved accessibility score" : formData.type === "web-dev" ? "99+ Lighthouse performance score\nCustom GSAP animations" : "Premium color system\nVersatile logo variants"}`}
                       />
-                      <p className="text-xs text-[#0B132B]/50 mt-1">
-                        Enter each highlight on a new line
-                      </p>
+                      <p className={hintClass}>Enter each highlight on a new line</p>
                     </div>
                   )}
 
                   {relevantFields.showDeliverables && (
                     <div>
-                      <label
-                        htmlFor="deliverables"
-                        className="block text-sm font-medium text-[#0B132B]/80 mb-2"
-                      >
+                      <label htmlFor="deliverables" className={labelClass}>
                         Project Deliverables
                       </label>
                       <textarea
@@ -839,21 +686,16 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                         onChange={(e) =>
                           setFormData((prev) => ({ ...prev, deliverables: e.target.value }))
                         }
-                        className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none"
-                        placeholder={`One deliverable per line:\n${formData.type === "ui-ux" ? "User research report\nPersonas and journey maps\nWireframes and prototypes\nHigh-fidelity UI designs" : formData.type === "web-dev" ? "Responsive website\nPerformance optimization\nSEO optimization\nDeployment setup" : "Logo system\nBrand guidelines\nDesign kit\nTemplates"}`}
+                        className={`${inputClass} resize-none`}
+                        placeholder={`One deliverable per line:\n${formData.type === "ui-ux" ? "User research report\nWireframes and prototypes" : formData.type === "web-dev" ? "Responsive website\nSEO optimization" : "Logo system\nBrand guidelines"}`}
                       />
-                      <p className="text-xs text-[#0B132B]/50 mt-1">
-                        Enter each deliverable on a new line
-                      </p>
+                      <p className={hintClass}>Enter each deliverable on a new line</p>
                     </div>
                   )}
 
                   {relevantFields.showProcess && (
                     <div>
-                      <label
-                        htmlFor="process"
-                        className="block text-sm font-medium text-[#0B132B]/80 mb-2"
-                      >
+                      <label htmlFor="process" className={labelClass}>
                         Process Steps (JSON Format)
                       </label>
                       <textarea
@@ -864,10 +706,10 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                         onChange={(e) =>
                           setFormData((prev) => ({ ...prev, process: e.target.value }))
                         }
-                        className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors resize-none font-mono text-sm"
-                        placeholder={`[\n  {\n    "title": "Discovery",\n    "body": "Research and analysis phase..."\n  },\n  {\n    "title": "Design",\n    "body": "Concept development and iteration..."\n  }\n]`}
+                        className={`${inputClass} resize-none font-mono text-xs`}
+                        placeholder={`[\n  {\n    "title": "Discovery",\n    "body": "Research and analysis phase..."\n  }\n]`}
                       />
-                      <p className="text-xs text-[#0B132B]/50 mt-1">
+                      <p className={hintClass}>
                         Enter process steps as JSON array with title and body fields
                       </p>
                     </div>
@@ -876,24 +718,20 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
               </div>
             </div>
 
-            {/* Right Column - Settings & Media - STICKY */}
+            {/* Right Column - Settings */}
             <div className="space-y-8">
               <div className="lg:sticky lg:top-24 space-y-6">
                 {/* Project Settings */}
-                <div className="border border-[#0B132B]/10 rounded-lg bg-white p-6 shadow-sm">
+                <div className="bg-white/50 backdrop-blur-sm border border-[#0B132B]/10 p-8 transition-all duration-500 hover:bg-white hover:border-[#0055FF]/30">
                   <div className="mb-6">
-                    <h3 className="text-lg font-medium text-[#0B132B]">Settings</h3>
-                    <p className="text-sm text-[#0B132B]/60 mt-1">
-                      Project configuration and metadata.
-                    </p>
+                    <h2 className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B] flex items-center gap-3">
+                      <span className="h-[1px] w-4 bg-[#0B132B]/20"></span> Settings
+                    </h2>
                   </div>
 
-                  <div className="space-y-4">
+                  <div className="space-y-6">
                     <div>
-                      <label
-                        htmlFor="slug"
-                        className="block text-sm font-medium text-[#0B132B]/80 mb-2"
-                      >
+                      <label htmlFor="slug" className={labelClass}>
                         URL Slug
                       </label>
                       <input
@@ -903,17 +741,14 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                         required
                         value={formData.slug}
                         onChange={(e) => setFormData((prev) => ({ ...prev, slug: e.target.value }))}
-                        className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                        className={inputClass}
                         placeholder="url-friendly-slug"
                       />
-                      <p className="text-xs text-[#0B132B]/50 mt-1">Used in the project URL</p>
+                      <p className={hintClass}>Used in the project URL</p>
                     </div>
 
                     <div>
-                      <label
-                        htmlFor="type"
-                        className="block text-sm font-medium text-[#0B132B]/80 mb-2"
-                      >
+                      <label htmlFor="type" className={labelClass}>
                         Project Type
                       </label>
                       <select
@@ -923,7 +758,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                         onChange={(e) =>
                           setFormData((prev) => ({ ...prev, type: e.target.value as ProjectType }))
                         }
-                        className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                        className={`${inputClass} appearance-none`}
                       >
                         <option value="web-dev">Web Development</option>
                         <option value="ui-ux">UI/UX Design</option>
@@ -931,17 +766,12 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                         <option value="social">Social Media</option>
                         <option value="print">Print Design</option>
                       </select>
-                      <p className="text-xs text-[#0B132B]/50 mt-1">
-                        This affects which fields are shown below
-                      </p>
+                      <p className={hintClass}>This affects which fields are shown</p>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label
-                          htmlFor="year"
-                          className="block text-sm font-medium text-[#0B132B]/80 mb-2"
-                        >
+                        <label htmlFor="year" className={labelClass}>
                           Year
                         </label>
                         <input
@@ -952,16 +782,12 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                           onChange={(e) =>
                             setFormData((prev) => ({ ...prev, year: e.target.value }))
                           }
-                          className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                          className={inputClass}
                           placeholder="2024"
                         />
                       </div>
-
                       <div>
-                        <label
-                          htmlFor="client"
-                          className="block text-sm font-medium text-[#0B132B]/80 mb-2"
-                        >
+                        <label htmlFor="client" className={labelClass}>
                           Client
                         </label>
                         <input
@@ -972,13 +798,13 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                           onChange={(e) =>
                             setFormData((prev) => ({ ...prev, client: e.target.value }))
                           }
-                          className="w-full px-3 py-2 border border-[#0B132B]/20 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 transition-colors"
+                          className={inputClass}
                           placeholder="Client name"
                         />
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-3 pt-2">
+                    <div className="flex items-center gap-3 pt-2 border-t border-[#0B132B]/5">
                       <input
                         id="featured"
                         name="featured"
@@ -987,109 +813,53 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                         onChange={(e) =>
                           setFormData((prev) => ({ ...prev, featured: e.target.checked }))
                         }
-                        className="h-4 w-4 text-[#0B132B] focus:ring-neutral-900 border-[#0B132B]/20 rounded"
+                        className="h-4 w-4 accent-[#0B132B] border-[#0B132B]/20"
                       />
-                      <label htmlFor="featured" className="text-sm font-medium text-[#0B132B]/80">
+                      <label
+                        htmlFor="featured"
+                        className="text-[10px] uppercase font-bold tracking-[0.15em] text-[#0B132B]/60"
+                      >
                         Show on Homepage
                       </label>
                     </div>
-                    <p className="text-xs text-[#0B132B]/50">
-                      Display this project in the "Selected Work" section on the homepage (max 6
-                      projects recommended)
+                    <p className={hintClass}>
+                      Display this project in the &ldquo;Selected Work&rdquo; section on the
+                      homepage (max 6 projects recommended)
                     </p>
                   </div>
                 </div>
 
-                {/* Project Type Info */}
-                <div className="border border-blue-200/50 rounded-2xl bg-gradient-to-br from-blue-50 to-cyan-50 p-5 shadow-sm">
+                {/* Info Panel */}
+                <div className="bg-[#0055FF]/5 border border-[#0055FF]/10 p-6">
                   <div className="flex items-center gap-2 mb-3">
-                    <div className="h-8 w-8 rounded-lg bg-blue-100 flex items-center justify-center">
-                      <svg
-                        className="h-4 w-4 text-blue-600"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                    </div>
-                    <h3 className="text-sm font-semibold text-blue-900">
+                    <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0055FF]/70">
                       {relevantFields.caseStudyTitle}
-                    </h3>
+                    </span>
                   </div>
+                  <p className="text-[11px] text-[#0B132B]/50 leading-relaxed">
+                    Fill out the case study fields on the left to create a rich project detail page.
+                    Fields adjust based on project type.
+                  </p>
+                </div>
 
-                  {/* Actions */}
-                  <div className="border border-[#0B132B]/10 rounded-lg bg-white p-6">
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-[#0B132B]/80">Status</span>
-                        <span className="text-green-600 font-medium">Ready to publish</span>
-                      </div>
+                {/* Actions */}
+                <div className="bg-white/50 backdrop-blur-sm border border-[#0B132B]/10 p-8 transition-all duration-500 hover:bg-white hover:border-[#0B132B]/50">
+                  <div className="space-y-4">
+                    <div className="flex flex-col gap-3">
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className="bg-[#0B132B] hover:bg-[#FF0033] text-white px-8 py-4 text-[10px] uppercase font-bold tracking-[0.25em] transition-all duration-300 w-full disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                      >
+                        {loading ? "SAVING..." : isEditing ? "UPDATE PROJECT" : "CREATE PROJECT"}
+                      </button>
 
-                      <div className="flex flex-col gap-3">
-                        <button
-                          type="submit"
-                          disabled={loading}
-                          className="group relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                        >
-                          <span className="relative z-10 flex items-center justify-center gap-2">
-                            {loading ? (
-                              <>
-                                <svg
-                                  className="h-5 w-5 animate-spin"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <circle
-                                    className="opacity-25"
-                                    cx="12"
-                                    cy="12"
-                                    r="10"
-                                    stroke="currentColor"
-                                    strokeWidth="4"
-                                  />
-                                  <path
-                                    className="opacity-75"
-                                    fill="currentColor"
-                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                                  />
-                                </svg>
-                                <span>Saving...</span>
-                              </>
-                            ) : (
-                              <>
-                                <span>{isEditing ? "Update Project" : "Create Project"}</span>
-                                <svg
-                                  className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M5 13l4 4L19 7"
-                                  />
-                                </svg>
-                              </>
-                            )}
-                          </span>
-                          <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
-                        </button>
-
-                        <Link
-                          href="/admin/projects"
-                          className="w-full text-center px-4 py-2.5 text-sm font-medium text-[#0B132B]/80 hover:text-[#0B132B] transition-all border border-[#0B132B]/20 rounded-xl hover:border-neutral-400 bg-white hover:bg-[#0B132B]/5 hover:shadow-sm"
-                        >
-                          Cancel
-                        </Link>
-                      </div>
+                      <Link
+                        href="/admin/projects"
+                        className="text-center bg-white hover:bg-[#0B132B]/5 border border-[#0B132B]/10 px-8 py-4 text-[10px] uppercase font-bold tracking-[0.25em] transition-all duration-300 w-full text-[#0B132B]/70 hover:border-[#0B132B]/30"
+                      >
+                        CANCEL
+                      </Link>
                     </div>
                   </div>
                 </div>

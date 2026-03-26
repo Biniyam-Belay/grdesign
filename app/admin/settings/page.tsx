@@ -5,7 +5,8 @@ import Link from "next/link";
 import { getHeroSettings, updateHeroSettings, type HeroSettings } from "@/lib/data/settings";
 import { createSupabaseClient } from "@/lib/supabase/client";
 import { useToast } from "@/components/ui/ToastProvider";
-import { Save, Key, Settings as SettingsIcon } from "lucide-react";
+import { Save, Key, Settings as SettingsIcon, ImageIcon, Globe } from "lucide-react";
+import ImageUpload from "@/components/ui/ImageUpload";
 
 export default function SettingsPage() {
   const supabase = createSupabaseClient();
@@ -14,6 +15,7 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(false);
   const [changingPassword, setChangingPassword] = useState(false);
   const [showPasswordSection, setShowPasswordSection] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   const [settings, setSettings] = useState<HeroSettings>({
     availability: { status: "available", label: "Available for 1 project" },
@@ -53,6 +55,21 @@ export default function SettingsPage() {
       maintext: "We architect complete visual systems",
       subtext: "Merging strategic rigor with relentless art direction.",
     },
+    heroBanner: {
+      desktopImage: "",
+      mobileImage: "",
+    },
+    contactInfo: {
+      email: "biniyam.be.go@gmail.com",
+      phone: "+251 911 234 567",
+      bookingLink: "https://calendar.app.google/1RTjShD5sgqBmm3K7",
+    },
+    socialLinks: {
+      instagram: "",
+      linkedin: "",
+      dribbble: "",
+      behance: "",
+    },
   });
 
   const [passwordData, setPasswordData] = useState({
@@ -73,6 +90,7 @@ export default function SettingsPage() {
   }, [toast]);
 
   useEffect(() => {
+    setMounted(true);
     loadSettings();
   }, [loadSettings]);
 
@@ -148,555 +166,795 @@ export default function SettingsPage() {
     window.location.href = "/admin/login";
   };
 
-  if (loading) {
+  if (loading || !mounted) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0B132B]/5">
-        <div className="animate-spin rounded-full h-8 w-8 border-2 border-neutral-900 border-t-transparent"></div>
+      <div className="min-h-screen flex items-center justify-center bg-[#F5F5F0]">
+        <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#0B132B] border-t-transparent"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-neutral-50">
+    <div className="min-h-screen bg-[#F5F5F0] text-[#0B132B] font-sans selection:bg-[#FF0033]/20 pb-20">
       {/* Animated Background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-purple-400/5 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-blue-400/5 rounded-full blur-3xl animate-pulse delay-1000" />
+      <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+        <div className="absolute top-1/4 -left-20 w-[50vh] h-[50vh] bg-[#0055FF]/5 rounded-full blur-[100px] animate-pulse" />
+        <div className="absolute bottom-1/4 -right-20 w-[50vh] h-[50vh] bg-[#FF0033]/5 rounded-full blur-[100px] animate-pulse delay-1000" />
       </div>
 
       {/* Header */}
-      <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-[#0B132B]/10/50 shadow-sm">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
+      <header className="sticky top-0 z-40 bg-[#F5F5F0]/80 backdrop-blur-xl border-b border-[#0B132B]/10">
+        <div className="mx-auto max-w-8xl px-6 lg:px-12">
+          <div className="flex h-[72px] items-center justify-between">
+            <div className="flex items-center gap-6">
               <Link
                 href="/admin"
-                className="flex items-center gap-2 text-[#0B132B]/60 hover:text-[#0B132B] transition-all hover:scale-105"
+                className="inline-flex items-baseline gap-0.5 text-xl tracking-tight transition-opacity hover:opacity-80"
               >
-                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <span className="font-bold text-[#0B132B]">Ilaala</span>
+                <span className="font-bold text-[#FF0033]">.Studio</span>
+              </Link>
+              <div className="hidden md:flex items-center gap-3">
+                <div className="h-1.5 w-1.5 rounded-full bg-[#0B132B]/30" />
+                <span className="text-[10px] tracking-[0.3em] uppercase text-[#0B132B]/50 font-bold">
+                  Dashboard
+                </span>
+                <div className="h-1.5 w-1.5 rounded-full bg-[#0B132B]/30" />
+                <span className="text-[10px] tracking-[0.3em] uppercase text-[#FF0033] font-bold">
+                  Settings
+                </span>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-white/40 rounded-full border border-[#0B132B]/10 hover:bg-white transition-colors cursor-default">
+                <div className="h-2 w-2 rounded-full bg-[#FF0033] animate-pulse" />
+                <span className="text-[10px] uppercase font-bold tracking-widest text-[#0B132B]/70">
+                  Admin Active
+                </span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 group hover:text-[#FF0033] transition-colors p-2"
+                title="Sign Out"
+              >
+                <svg
+                  className="h-5 w-5 group-hover:translate-x-1 transition-transform"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                   />
                 </svg>
-                <span className="font-medium text-sm">Dashboard</span>
-              </Link>
-              <div className="h-6 w-px bg-neutral-300" />
-              <div className="flex items-center gap-2">
-                <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                  <SettingsIcon className="h-5 w-5 text-white" strokeWidth={1.5} />
-                </div>
-                <h1 className="text-lg font-semibold text-[#0B132B]">Settings</h1>
-              </div>
+              </button>
             </div>
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#0B132B]/80 hover:text-[#0B132B] border border-[#0B132B]/20 rounded-xl hover:border-neutral-400 bg-white hover:bg-[#0B132B]/5 transition-all duration-200 hover:shadow-sm"
-            >
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                />
-              </svg>
-              <span className="hidden sm:inline">Sign Out</span>
-            </button>
           </div>
         </div>
       </header>
 
-      <main className="relative mx-auto max-w-4xl px-6 py-12">
-        <div className="space-y-8">
-          {/* Hero Settings */}
-          <section className="bg-white rounded-2xl border border-[#0B132B]/10 p-8">
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h2 className="text-lg font-semibold text-[#0B132B]">Homepage Settings</h2>
-                <p className="text-sm text-[#0B132B]/50 mt-1">
-                  Control hero section content and availability status
-                </p>
-              </div>
+      <main className="relative mx-auto max-w-8xl px-6 lg:px-12 py-12 lg:py-16">
+        <div
+          className={`mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+        >
+          <div>
+            <div className="flex items-center gap-4 mb-3">
+              <div className="h-12 w-[3px] bg-gradient-to-b from-[#0B132B] to-[#FF0033]" />
+              <h1 className="text-4xl md:text-5xl font-light tracking-[-0.03em] text-[#0B132B]">
+                Settings<span className="font-semibold text-[#FF0033]">.</span>
+              </h1>
             </div>
+            <p className="text-[#0B132B]/50 font-light text-lg ml-5 max-w-2xl">
+              Control your website's content and availability status.
+            </p>
+          </div>
 
-            <div className="space-y-8">
-              {/* Hero Text */}
-              <div className="space-y-4">
-                <label className="text-sm font-medium text-[#0B132B]/80">Hero Text</label>
-                <div className="grid gap-4">
-                  <input
-                    type="text"
-                    value={settings.heroText.kicker}
-                    onChange={(e) =>
-                      setSettings({
-                        ...settings,
-                        heroText: { ...settings.heroText, kicker: e.target.value },
-                      })
-                    }
-                    className="px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
-                    placeholder="Kicker text"
-                  />
-                  <input
-                    type="text"
-                    value={settings.heroText.title1}
-                    onChange={(e) =>
-                      setSettings({
-                        ...settings,
-                        heroText: { ...settings.heroText, title1: e.target.value },
-                      })
-                    }
-                    className="px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
-                    placeholder="Primary title"
-                  />
-                  <input
-                    type="text"
-                    value={settings.heroText.title2}
-                    onChange={(e) =>
-                      setSettings({
-                        ...settings,
-                        heroText: { ...settings.heroText, title2: e.target.value },
-                      })
-                    }
-                    className="px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
-                    placeholder="Secondary title"
-                  />
-                  <textarea
-                    value={settings.heroText.subtitle}
-                    onChange={(e) =>
-                      setSettings({
-                        ...settings,
-                        heroText: { ...settings.heroText, subtitle: e.target.value },
-                      })
-                    }
-                    rows={2}
-                    className="px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all resize-none text-[#0B132B]"
-                    placeholder="Subtitle"
-                  />
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="group flex items-center justify-center gap-3 px-8 py-4 bg-[#FF0033] hover:bg-[#D50029] hover:shadow-[0_10px_40px_rgba(255,0,51,0.25)] text-white text-[10px] uppercase font-bold tracking-[0.2em] transition-all disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto hover:-translate-y-0.5"
+          >
+            <div className="relative">
+              <Save className="w-4 h-4" />
+              <div className="absolute inset-0 bg-white/20 blur-md rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </div>
+            {saving ? "Saving..." : "Save Changes"}
+          </button>
+        </div>
+
+        {/* 2-Column Grid Layout */}
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 lg:gap-8 items-start">
+          {/* LEFT COLUMN: Homepage Config (Wider) */}
+          <div className="col-span-1 xl:col-span-7 2xl:col-span-8 space-y-6 lg:space-y-8">
+            <section className="bg-white/50 backdrop-blur-sm border border-[#0B132B]/10 p-8 lg:p-10 transition-all duration-500 hover:bg-white hover:border-[#0055FF]/30 hover:shadow-[0_20px_60px_-15px_rgba(0,85,255,0.05)]">
+              <div className="flex items-center gap-4 mb-8">
+                <div className="h-8 w-8 bg-[#0B132B]/5 flex items-center justify-center text-[#0B132B]/60">
+                  <SettingsIcon className="w-4 h-4" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-medium tracking-tight text-[#0B132B] leading-none">
+                    Homepage Settings
+                  </h2>
+                  <p className="text-xs font-light text-[#0B132B]/50 mt-2 tracking-wide">
+                    Control hero section content and availability status.
+                  </p>
                 </div>
               </div>
 
-              {/* Mobile Subtitle */}
-              <div>
-                <label className="text-sm font-medium text-[#0B132B]/80 block mb-2">
-                  Mobile Subtitle
-                </label>
-                <textarea
-                  value={settings.mobileSubtitle}
-                  onChange={(e) => setSettings({ ...settings, mobileSubtitle: e.target.value })}
-                  rows={3}
-                  className="w-full px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all resize-none text-[#0B132B]"
-                  placeholder="Subtitle for mobile view"
-                />
-              </div>
-
-              {/* Credentials */}
-              <div className="space-y-4">
-                <label className="text-sm font-medium text-[#0B132B]/80">Credentials</label>
-                <div className="grid gap-4">
-                  <input
-                    type="text"
-                    value={settings.credentials.primary}
-                    onChange={(e) =>
-                      setSettings({
-                        ...settings,
-                        credentials: { ...settings.credentials, primary: e.target.value },
-                      })
-                    }
-                    className="px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
-                    placeholder="Primary credential"
-                  />
-                  <input
-                    type="text"
-                    value={settings.credentials.secondary}
-                    onChange={(e) =>
-                      setSettings({
-                        ...settings,
-                        credentials: { ...settings.credentials, secondary: e.target.value },
-                      })
-                    }
-                    className="px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
-                    placeholder="Secondary credential"
-                  />
-                  <input
-                    type="text"
-                    value={settings.credentials.turnaround}
-                    onChange={(e) =>
-                      setSettings({
-                        ...settings,
-                        credentials: { ...settings.credentials, turnaround: e.target.value },
-                      })
-                    }
-                    className="px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
-                    placeholder="Turnaround time"
-                  />
-                </div>
-              </div>
-
-              {/* Trust Signals */}
-              <div>
-                <label className="text-sm font-medium text-[#0B132B]/80 block mb-2">
-                  Trust Signals (one per line)
-                </label>
-                <textarea
-                  value={settings.trustSignals.join("\n")}
-                  onChange={(e) =>
-                    setSettings({
-                      ...settings,
-                      trustSignals: e.target.value.split("\n").map((s) => s.trim()),
-                    })
-                  }
-                  rows={3}
-                  className="w-full px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all resize-none text-[#0B132B]"
-                  placeholder="Quality guarantee&#10;Same-day response&#10;Revision-friendly"
-                />
-              </div>
-
-              {/* Urgency */}
-              <div className="space-y-4">
-                <label className="text-sm font-medium text-[#0B132B]/80">Urgency</label>
-                <div className="grid gap-4">
-                  <input
-                    type="text"
-                    value={settings.urgency.text}
-                    onChange={(e) =>
-                      setSettings({
-                        ...settings,
-                        urgency: { ...settings.urgency, text: e.target.value },
-                      })
-                    }
-                    className="px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
-                    placeholder="Urgency text"
-                  />
-                  <input
-                    type="text"
-                    value={settings.urgency.highlight}
-                    onChange={(e) =>
-                      setSettings({
-                        ...settings,
-                        urgency: { ...settings.urgency, highlight: e.target.value },
-                      })
-                    }
-                    className="px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
-                    placeholder="Urgency highlight"
-                  />
-                </div>
-              </div>
-
-              {/* Limited Capacity */}
-              <div className="space-y-4">
-                <label className="text-sm font-medium text-[#0B132B]/80">Limited Capacity</label>
-                <div className="grid gap-4">
-                  <input
-                    type="text"
-                    value={settings.limitedCapacity.title}
-                    onChange={(e) =>
-                      setSettings({
-                        ...settings,
-                        limitedCapacity: { ...settings.limitedCapacity, title: e.target.value },
-                      })
-                    }
-                    className="px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
-                    placeholder="Limited capacity title"
-                  />
-                  <input
-                    type="text"
-                    value={settings.limitedCapacity.slots}
-                    onChange={(e) =>
-                      setSettings({
-                        ...settings,
-                        limitedCapacity: { ...settings.limitedCapacity, slots: e.target.value },
-                      })
-                    }
-                    className="px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
-                    placeholder="Number of slots"
-                  />
-                  <input
-                    type="text"
-                    value={settings.limitedCapacity.period}
-                    onChange={(e) =>
-                      setSettings({
-                        ...settings,
-                        limitedCapacity: { ...settings.limitedCapacity, period: e.target.value },
-                      })
-                    }
-                    className="px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
-                    placeholder="Period (e.g., this month)"
-                  />
-                </div>
-              </div>
-
-              {/* Experience Years */}
-              <div>
-                <label className="text-sm font-medium text-[#0B132B]/80 block mb-2">
-                  Years of Experience
-                </label>
-                <input
-                  type="number"
-                  min="0"
-                  max="50"
-                  value={settings.experienceYears}
-                  onChange={(e) =>
-                    setSettings({ ...settings, experienceYears: parseInt(e.target.value) || 0 })
-                  }
-                  className="w-32 px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
-                />
-              </div>
-
-              {/* Availability Status */}
-              <div>
-                <label className="text-sm font-medium text-[#0B132B]/80 block mb-3">
-                  Availability Status
-                </label>
-                <div className="grid grid-cols-3 gap-3">
-                  {[
-                    { value: "available", label: "Available", color: "green" },
-                    { value: "limited", label: "Limited", color: "amber" },
-                    { value: "unavailable", label: "Unavailable", color: "red" },
-                  ].map((option) => (
-                    <button
-                      key={option.value}
-                      type="button"
-                      onClick={() =>
+              <div className="space-y-10">
+                {/* Hero Messaging (Grid inside) */}
+                <div className="space-y-4">
+                  <label className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/70 flex items-center gap-3">
+                    <span className="h-[1px] w-4 bg-[#0B132B]/20"></span> Hero Text
+                  </label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input
+                      type="text"
+                      value={settings.heroText.kicker}
+                      onChange={(e) =>
                         setSettings({
                           ...settings,
-                          availability: {
-                            ...settings.availability,
-                            status: option.value as "available" | "limited" | "unavailable",
-                          },
+                          heroText: { ...settings.heroText, kicker: e.target.value },
                         })
                       }
-                      className={`
-                        px-4 py-3 rounded-lg border-2 transition-all text-sm font-medium
-                        ${
-                          settings.availability.status === option.value
-                            ? "border-neutral-900 bg-neutral-900 text-white"
-                            : "border-[#0B132B]/10 hover:border-[#0B132B]/20 text-[#0B132B]/80"
+                      className="col-span-1 bg-white border border-[#0B132B]/10 px-4 py-3.5 text-sm text-[#0B132B] focus:outline-none focus:border-[#0055FF]/50 focus:ring-1 focus:ring-[#0055FF]/20 transition-all hover:border-[#0B132B]/30"
+                      placeholder="Kicker text (e.g. Portfolio)"
+                    />
+                    <div className="hidden md:block"></div>{" "}
+                    {/* Spacer for alignment if desired, or skip */}
+                    <input
+                      type="text"
+                      value={settings.heroText.title1}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          heroText: { ...settings.heroText, title1: e.target.value },
+                        })
+                      }
+                      className="col-span-1 bg-white border border-[#0B132B]/10 px-4 py-3.5 text-sm text-[#0B132B] focus:outline-none focus:border-[#0055FF]/50 focus:ring-1 focus:ring-[#0055FF]/20 transition-all hover:border-[#0B132B]/30"
+                      placeholder="Primary Title"
+                    />
+                    <input
+                      type="text"
+                      value={settings.heroText.title2}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          heroText: { ...settings.heroText, title2: e.target.value },
+                        })
+                      }
+                      className="col-span-1 bg-white border border-[#0B132B]/10 px-4 py-3.5 text-sm text-[#0B132B] focus:outline-none focus:border-[#0055FF]/50 focus:ring-1 focus:ring-[#0055FF]/20 transition-all hover:border-[#0B132B]/30"
+                      placeholder="Secondary Title"
+                    />
+                    <textarea
+                      value={settings.heroText.subtitle}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          heroText: { ...settings.heroText, subtitle: e.target.value },
+                        })
+                      }
+                      rows={2}
+                      className="col-span-1 md:col-span-2 bg-white border border-[#0B132B]/10 px-4 py-3.5 text-sm text-[#0B132B] focus:outline-none focus:border-[#0055FF]/50 focus:ring-1 focus:ring-[#0055FF]/20 transition-all resize-none hover:border-[#0B132B]/30"
+                      placeholder="Desktop Subtitle"
+                    />
+                    <textarea
+                      value={settings.mobileSubtitle}
+                      onChange={(e) => setSettings({ ...settings, mobileSubtitle: e.target.value })}
+                      rows={2}
+                      className="col-span-1 md:col-span-2 bg-white border border-[#0B132B]/10 px-4 py-3.5 text-sm text-[#0B132B] focus:outline-none focus:border-[#0055FF]/50 focus:ring-1 focus:ring-[#0055FF]/20 transition-all resize-none hover:border-[#0B132B]/30"
+                      placeholder="Mobile Viewport Subtitle"
+                    />
+                  </div>
+                </div>
+
+                {/* Performance & Capacity Stats */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pt-4 border-t border-[#0B132B]/5">
+                  <div className="space-y-4">
+                    <label className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/70 flex items-center gap-3">
+                      <span className="h-[1px] w-4 bg-[#0B132B]/20"></span> Limited Capacity
+                    </label>
+                    <div className="space-y-3">
+                      <input
+                        type="text"
+                        value={settings.limitedCapacity.title}
+                        onChange={(e) =>
+                          setSettings({
+                            ...settings,
+                            limitedCapacity: { ...settings.limitedCapacity, title: e.target.value },
+                          })
                         }
-                      `}
-                    >
-                      <div className="flex items-center justify-center gap-2">
-                        <span
-                          className={`inline-block w-2 h-2 rounded-full ${
-                            option.color === "green"
-                              ? "bg-green-500"
-                              : option.color === "amber"
-                                ? "bg-amber-500"
-                                : "bg-red-500"
-                          }`}
+                        className="w-full bg-white border border-[#0B132B]/10 px-4 py-3 text-sm text-[#0B132B] focus:outline-none focus:border-[#0055FF]/50 transition-colors"
+                        placeholder="Status Label (Limited Capacity)"
+                      />
+                      <input
+                        type="text"
+                        value={settings.limitedCapacity.slots}
+                        onChange={(e) =>
+                          setSettings({
+                            ...settings,
+                            limitedCapacity: { ...settings.limitedCapacity, slots: e.target.value },
+                          })
+                        }
+                        className="w-full bg-white border border-[#0B132B]/10 px-4 py-3 text-sm text-[#0B132B] focus:outline-none focus:border-[#0055FF]/50 transition-colors"
+                        placeholder="Slot Count (e.g. 3 project slots)"
+                      />
+                      <input
+                        type="text"
+                        value={settings.limitedCapacity.period}
+                        onChange={(e) =>
+                          setSettings({
+                            ...settings,
+                            limitedCapacity: {
+                              ...settings.limitedCapacity,
+                              period: e.target.value,
+                            },
+                          })
+                        }
+                        className="w-full bg-white border border-[#0B132B]/10 px-4 py-3 text-sm text-[#0B132B] focus:outline-none focus:border-[#0055FF]/50 transition-colors"
+                        placeholder="Timeframe (e.g. this month)"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <label className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/70 flex items-center gap-3">
+                      <span className="h-[1px] w-4 bg-[#0B132B]/20"></span> Credentials
+                    </label>
+                    <div className="space-y-3">
+                      <input
+                        type="text"
+                        value={settings.credentials.primary}
+                        onChange={(e) =>
+                          setSettings({
+                            ...settings,
+                            credentials: { ...settings.credentials, primary: e.target.value },
+                          })
+                        }
+                        className="w-full bg-white border border-[#0B132B]/10 px-4 py-3 text-sm text-[#0B132B] focus:outline-none focus:border-[#0055FF]/50 transition-colors"
+                        placeholder="Primary Credential"
+                      />
+                      <input
+                        type="text"
+                        value={settings.credentials.secondary}
+                        onChange={(e) =>
+                          setSettings({
+                            ...settings,
+                            credentials: { ...settings.credentials, secondary: e.target.value },
+                          })
+                        }
+                        className="w-full bg-white border border-[#0B132B]/10 px-4 py-3 text-sm text-[#0B132B] focus:outline-none focus:border-[#0055FF]/50 transition-colors"
+                        placeholder="Secondary Badge"
+                      />
+                      <input
+                        type="text"
+                        value={settings.credentials.turnaround}
+                        onChange={(e) =>
+                          setSettings({
+                            ...settings,
+                            credentials: { ...settings.credentials, turnaround: e.target.value },
+                          })
+                        }
+                        className="w-full bg-white border border-[#0B132B]/10 px-4 py-3 text-sm text-[#0B132B] focus:outline-none focus:border-[#0055FF]/50 transition-colors"
+                        placeholder="Turnaround Time"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <label className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/70 flex items-center gap-3">
+                      <span className="h-[1px] w-4 bg-[#0B132B]/20"></span> Urgency
+                    </label>
+                    <div className="space-y-3">
+                      <input
+                        type="text"
+                        value={settings.urgency.text}
+                        onChange={(e) =>
+                          setSettings({
+                            ...settings,
+                            urgency: { ...settings.urgency, text: e.target.value },
+                          })
+                        }
+                        className="w-full bg-white border border-[#0B132B]/10 px-4 py-3 text-sm text-[#0B132B] focus:outline-none focus:border-[#0055FF]/50 transition-colors"
+                        placeholder="Urgency Phrase"
+                      />
+                      <input
+                        type="text"
+                        value={settings.urgency.highlight}
+                        onChange={(e) =>
+                          setSettings({
+                            ...settings,
+                            urgency: { ...settings.urgency, highlight: e.target.value },
+                          })
+                        }
+                        className="w-full bg-white border border-[#0B132B]/10 px-4 py-3 text-sm text-[#0B132B] focus:outline-none focus:border-[#0055FF]/50 transition-colors"
+                        placeholder="Highlight Word"
+                      />
+                      <div>
+                        <label className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/50 block mb-2 mt-4">
+                          Years of Experience
+                        </label>
+                        <input
+                          type="number"
+                          min="0"
+                          max="50"
+                          value={settings.experienceYears}
+                          onChange={(e) =>
+                            setSettings({
+                              ...settings,
+                              experienceYears: parseInt(e.target.value) || 0,
+                            })
+                          }
+                          className="w-full bg-white border border-[#0B132B]/10 px-4 py-3 text-sm text-[#0B132B] focus:outline-none focus:border-[#0055FF]/50 transition-colors"
                         />
-                        {option.label}
                       </div>
-                    </button>
-                  ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Trust Signals & Availability (Grid 2-col) */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 border-t border-[#0B132B]/5">
+                  <div>
+                    <label className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/70 flex items-center gap-3 mb-3">
+                      <span className="h-[1px] w-4 bg-[#0B132B]/20"></span> Trust Signals
+                    </label>
+                    <textarea
+                      value={settings.trustSignals.join("\n")}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          trustSignals: e.target.value.split("\n").map((s) => s.trim()),
+                        })
+                      }
+                      rows={5}
+                      className="w-full bg-white border border-[#0B132B]/10 px-4 py-3 text-sm text-[#0B132B] focus:outline-none focus:border-[#0055FF]/50 transition-colors resize-none leading-relaxed"
+                      placeholder="Trust signals (one per line)"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/70 flex items-center gap-3 mb-3">
+                      <span className="h-[1px] w-4 bg-[#0B132B]/20"></span> Availability Status
+                    </label>
+                    <div className="flex flex-col gap-3">
+                      <input
+                        type="text"
+                        value={settings.availability.label}
+                        onChange={(e) =>
+                          setSettings({
+                            ...settings,
+                            availability: { ...settings.availability, label: e.target.value },
+                          })
+                        }
+                        className="w-full bg-white border border-[#0B132B]/10 px-4 py-3 text-sm text-[#0B132B] focus:outline-none focus:border-[#0055FF]/50 transition-colors"
+                        placeholder="e.g., Available for 1 project"
+                      />
+                      <div className="grid grid-cols-3 gap-2">
+                        {[
+                          { value: "available", label: "Open", hex: "#00E054" },
+                          { value: "limited", label: "Lim", hex: "#FFB000" },
+                          { value: "unavailable", label: "Closed", hex: "#FF0033" },
+                        ].map((option) => (
+                          <button
+                            key={option.value}
+                            type="button"
+                            onClick={() =>
+                              setSettings({
+                                ...settings,
+                                availability: {
+                                  ...settings.availability,
+                                  status: option.value as "available" | "limited" | "unavailable",
+                                },
+                              })
+                            }
+                            className={`
+                                 py-3 border transition-all text-[10px] font-bold uppercase tracking-widest flex justify-center items-center gap-2 relative overflow-hidden
+                                 ${
+                                   settings.availability.status === option.value
+                                     ? "border-[#0B132B] bg-[#0B132B] text-white"
+                                     : "border-[#0B132B]/10 bg-white/50 text-[#0B132B]/60 hover:bg-white hover:border-[#0B132B]/30"
+                                 }
+                              `}
+                          >
+                            <span
+                              className="inline-block w-1.5 h-1.5 rounded-full"
+                              style={{ backgroundColor: option.hex }}
+                            />
+                            <span className="relative z-10">{option.label}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Contact & Socials */}
+            <section className="bg-white/50 backdrop-blur-sm border border-[#0B132B]/10 p-8 lg:p-10 transition-all duration-500 hover:bg-white hover:border-[#0055FF]/30 hover:shadow-[0_20px_60px_-15px_rgba(0,85,255,0.05)]">
+              <div className="flex items-center gap-4 mb-8">
+                <div className="h-8 w-8 bg-[#0055FF]/5 flex items-center justify-center text-[#0055FF]">
+                  <Globe className="w-4 h-4" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-medium tracking-tight text-[#0B132B] leading-none">
+                    Contact & Socials
+                  </h2>
+                  <p className="text-xs font-light text-[#0B132B]/50 mt-2 tracking-wide">
+                    Manage contact details and social media links displayed on the site.
+                  </p>
                 </div>
               </div>
 
-              {/* Availability Label */}
-              <div>
-                <label className="text-sm font-medium text-[#0B132B]/80 block mb-2">
-                  Availability Label
-                </label>
-                <input
-                  type="text"
-                  value={settings.availability.label}
-                  onChange={(e) =>
-                    setSettings({
-                      ...settings,
-                      availability: { ...settings.availability, label: e.target.value },
-                    })
-                  }
-                  className="w-full px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B]"
-                  placeholder="e.g., Available for 1 project"
-                />
+              <div className="space-y-8">
+                {/* Contact Info */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-3">
+                    <label className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/70 flex items-center gap-3">
+                      <span className="h-[1px] w-4 bg-[#0B132B]/20"></span> Email Address
+                    </label>
+                    <input
+                      type="email"
+                      value={settings.contactInfo.email}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          contactInfo: { ...settings.contactInfo, email: e.target.value },
+                        })
+                      }
+                      className="w-full bg-white border border-[#0B132B]/10 px-4 py-3 text-sm text-[#0B132B] focus:outline-none focus:border-[#0055FF]/50 transition-colors"
+                      placeholder="hello@example.com"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/70 flex items-center gap-3">
+                      <span className="h-[1px] w-4 bg-[#0B132B]/20"></span> Phone Number
+                    </label>
+                    <input
+                      type="text"
+                      value={settings.contactInfo.phone}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          contactInfo: { ...settings.contactInfo, phone: e.target.value },
+                        })
+                      }
+                      className="w-full bg-white border border-[#0B132B]/10 px-4 py-3 text-sm text-[#0B132B] focus:outline-none focus:border-[#0055FF]/50 transition-colors"
+                      placeholder="+1 234 567 890"
+                    />
+                  </div>
+                  <div className="space-y-3 md:col-span-2">
+                    <label className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/70 flex items-center gap-3">
+                      <span className="h-[1px] w-4 bg-[#0B132B]/20"></span> Booking / CTA Link
+                    </label>
+                    <input
+                      type="url"
+                      value={settings.contactInfo.bookingLink}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          contactInfo: { ...settings.contactInfo, bookingLink: e.target.value },
+                        })
+                      }
+                      className="w-full bg-white border border-[#0B132B]/10 px-4 py-3 text-sm text-[#0B132B] focus:outline-none focus:border-[#0055FF]/50 transition-colors font-mono text-xs"
+                      placeholder="https://calendly.com/..."
+                    />
+                  </div>
+                </div>
+
+                {/* Social Links */}
+                <div className="pt-4 border-t border-[#0B132B]/5">
+                  <label className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/70 flex items-center gap-3 mb-4">
+                    <span className="h-[1px] w-4 bg-[#0B132B]/20"></span> Social Links
+                  </label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="relative">
+                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[10px] font-bold uppercase tracking-wider text-[#0B132B]/30">
+                        IG
+                      </span>
+                      <input
+                        type="url"
+                        value={settings.socialLinks.instagram}
+                        onChange={(e) =>
+                          setSettings({
+                            ...settings,
+                            socialLinks: { ...settings.socialLinks, instagram: e.target.value },
+                          })
+                        }
+                        className="w-full bg-white border border-[#0B132B]/10 pl-12 pr-4 py-3 text-sm text-[#0B132B] focus:outline-none focus:border-[#0055FF]/50 transition-colors"
+                        placeholder="https://instagram.com/..."
+                      />
+                    </div>
+                    <div className="relative">
+                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[10px] font-bold uppercase tracking-wider text-[#0B132B]/30">
+                        LI
+                      </span>
+                      <input
+                        type="url"
+                        value={settings.socialLinks.linkedin}
+                        onChange={(e) =>
+                          setSettings({
+                            ...settings,
+                            socialLinks: { ...settings.socialLinks, linkedin: e.target.value },
+                          })
+                        }
+                        className="w-full bg-white border border-[#0B132B]/10 pl-12 pr-4 py-3 text-sm text-[#0B132B] focus:outline-none focus:border-[#0055FF]/50 transition-colors"
+                        placeholder="https://linkedin.com/in/..."
+                      />
+                    </div>
+                    <div className="relative">
+                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[10px] font-bold uppercase tracking-wider text-[#0B132B]/30">
+                        DR
+                      </span>
+                      <input
+                        type="url"
+                        value={settings.socialLinks.dribbble}
+                        onChange={(e) =>
+                          setSettings({
+                            ...settings,
+                            socialLinks: { ...settings.socialLinks, dribbble: e.target.value },
+                          })
+                        }
+                        className="w-full bg-white border border-[#0B132B]/10 pl-12 pr-4 py-3 text-sm text-[#0B132B] focus:outline-none focus:border-[#0055FF]/50 transition-colors"
+                        placeholder="https://dribbble.com/..."
+                      />
+                    </div>
+                    <div className="relative">
+                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[10px] font-bold uppercase tracking-wider text-[#0B132B]/30">
+                        BE
+                      </span>
+                      <input
+                        type="url"
+                        value={settings.socialLinks.behance}
+                        onChange={(e) =>
+                          setSettings({
+                            ...settings,
+                            socialLinks: { ...settings.socialLinks, behance: e.target.value },
+                          })
+                        }
+                        className="w-full bg-white border border-[#0B132B]/10 pl-12 pr-4 py-3 text-sm text-[#0B132B] focus:outline-none focus:border-[#0055FF]/50 transition-colors"
+                        placeholder="https://behance.net/..."
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
+            </section>
 
-            {/* Save Button */}
-            <div className="flex justify-end mt-8 pt-6 border-t border-neutral-100">
-              <button
-                onClick={handleSave}
-                disabled={saving}
-                className="flex items-center gap-2 px-6 py-2.5 bg-neutral-900 text-white rounded-lg hover:bg-neutral-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
-              >
-                <Save className="w-4 h-4" />
-                {saving ? "Saving..." : "Save Changes"}
-              </button>
-            </div>
-          </section>
+            {/* Terminal Access (Security) */}
+            <section className="bg-white/50 backdrop-blur-sm border border-[#0B132B]/10 p-8 lg:p-10 transition-all duration-500 hover:bg-white hover:border-[#0B132B]/50 hover:shadow-[0_20px_60px_-15px_rgba(11,19,43,0.1)]">
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <h2 className="text-xl font-medium tracking-tight text-[#0B132B] leading-none">
+                    Security
+                  </h2>
+                  <p className="text-xs font-light text-[#0B132B]/50 mt-2 tracking-wide">
+                    Manage your account password.
+                  </p>
+                </div>
+                {!showPasswordSection && (
+                  <button
+                    onClick={() => setShowPasswordSection(true)}
+                    className="flex items-center gap-2 px-4 py-2 text-[9px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/60 hover:text-white border border-[#0B132B]/10 hover:bg-[#0B132B] hover:border-[#0B132B] transition-all whitespace-nowrap"
+                  >
+                    <Key className="w-3.5 h-3.5" /> Change Password
+                  </button>
+                )}
+              </div>
 
-          {/* Sliding Marquee Settings */}
-          <section className="bg-white rounded-2xl border border-[#0B132B]/10 p-8">
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h2 className="text-lg font-semibold text-[#0B132B]">Sliding Marquee Banner</h2>
-                <p className="text-sm text-[#0B132B]/50 mt-1">
-                  Control the premium scrolling editorial text at the top of the site.
+              {showPasswordSection && (
+                <form
+                  onSubmit={handlePasswordChange}
+                  className="space-y-6 animate-in fade-in slide-in-from-top-4 duration-500"
+                >
+                  <div>
+                    <label className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/70 block mb-2">
+                      Current Password
+                    </label>
+                    <input
+                      type="password"
+                      placeholder="Current Password"
+                      value={passwordData.currentPassword}
+                      onChange={(e) =>
+                        setPasswordData({ ...passwordData, currentPassword: e.target.value })
+                      }
+                      className="w-full bg-white border border-[#0B132B]/10 px-4 py-3 text-sm text-[#0B132B] focus:outline-none focus:border-[#0B132B]/80 transition-colors font-mono tracking-widest placeholder:font-sans placeholder:tracking-normal"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/70 block mb-2">
+                      New Password (min 8 characters)
+                    </label>
+                    <input
+                      type="password"
+                      placeholder="New Password"
+                      value={passwordData.newPassword}
+                      onChange={(e) =>
+                        setPasswordData({ ...passwordData, newPassword: e.target.value })
+                      }
+                      className="w-full bg-white border border-[#0B132B]/10 px-4 py-3 text-sm text-[#0B132B] focus:outline-none focus:border-[#0B132B]/80 transition-colors font-mono tracking-widest placeholder:font-sans placeholder:tracking-normal"
+                      required
+                      minLength={8}
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/70 block mb-2">
+                      Confirm New Password
+                    </label>
+                    <input
+                      type="password"
+                      placeholder="Confirm New Password"
+                      value={passwordData.confirmPassword}
+                      onChange={(e) =>
+                        setPasswordData({ ...passwordData, confirmPassword: e.target.value })
+                      }
+                      className="w-full bg-white border border-[#0B132B]/10 px-4 py-3 text-sm text-[#0B132B] focus:outline-none focus:border-[#0B132B]/80 transition-colors font-mono tracking-widest placeholder:font-sans placeholder:tracking-normal"
+                      required
+                      minLength={8}
+                    />
+                  </div>
+                  <div className="flex gap-3">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowPasswordSection(false);
+                        setPasswordData({
+                          currentPassword: "",
+                          newPassword: "",
+                          confirmPassword: "",
+                        });
+                      }}
+                      className="flex-1 py-3 text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/50 border border-[#0B132B]/10 hover:bg-white hover:text-[#0B132B] transition-all"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={changingPassword}
+                      className="flex-1 bg-[#0B132B] hover:bg-black text-white py-3 text-[10px] uppercase font-bold tracking-[0.2em] transition-all disabled:opacity-50"
+                    >
+                      {changingPassword ? "..." : "Update Password"}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </section>
+          </div>
+
+          {/* RIGHT COLUMN: Brand Imagery, Marquee, Terminal (Narrower) */}
+          <div className="col-span-1 xl:col-span-5 2xl:col-span-4 space-y-6 lg:space-y-8">
+            {/* Hero Brand Imagery */}
+            <section className="bg-white/50 backdrop-blur-sm border border-[#0B132B]/10 p-8 lg:p-10 transition-all duration-500 hover:bg-white hover:border-[#FF0033]/30 hover:shadow-[0_20px_60px_-15px_rgba(255,0,51,0.05)]">
+              <div className="flex items-center gap-4 mb-8">
+                <div className="h-8 w-8 bg-[#FF0033]/5 flex items-center justify-center text-[#FF0033]">
+                  <ImageIcon className="w-4 h-4" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-medium tracking-tight text-[#0B132B] leading-none">
+                    Hero Banner Images
+                  </h2>
+                  <p className="text-xs font-light text-[#0B132B]/50 mt-2 tracking-wide">
+                    Upload separate poster images for desktop and mobile views.
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-8">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/80 flex items-center gap-2">
+                      <span className="h-[1px] w-3 bg-[#FF0033]"></span> Desktop Banner
+                    </span>
+                    <span className="text-[9px] font-mono text-[#0B132B]/40">16:10 | 2.5K</span>
+                  </div>
+                  <ImageUpload
+                    bucket="site-assets"
+                    label=""
+                    value={settings.heroBanner.desktopImage}
+                    onChange={(url) =>
+                      setSettings({
+                        ...settings,
+                        heroBanner: { ...settings.heroBanner, desktopImage: url },
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/80 flex items-center gap-2">
+                      <span className="h-[1px] w-3 bg-[#FF0033]"></span> Mobile Banner
+                    </span>
+                    <span className="text-[9px] font-mono text-[#0B132B]/40">9:16 | 1080p</span>
+                  </div>
+                  <ImageUpload
+                    bucket="site-assets"
+                    label=""
+                    value={settings.heroBanner.mobileImage}
+                    onChange={(url) =>
+                      setSettings({
+                        ...settings,
+                        heroBanner: { ...settings.heroBanner, mobileImage: url },
+                      })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="mt-8 p-5 bg-white border border-[#0B132B]/10 flex gap-4 items-start">
+                <svg
+                  className="w-5 h-5 text-[#0055FF] flex-shrink-0 mt-0.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <p className="text-sm font-light text-[#0B132B]/70 leading-relaxed">
+                  <span className="font-semibold text-[#0B132B]">Fallback:</span> If no images are
+                  uploaded, the hero section will display the default abstract artwork.
                 </p>
               </div>
-            </div>
+            </section>
 
-            <div className="space-y-8">
-              {/* Marquee Phrases */}
-              <div>
-                <label className="text-sm font-medium text-[#0B132B]/80 block mb-2">
-                  Marquee Phrases (one per line)
+            {/* Marquee Ticker */}
+            <section className="bg-white/50 backdrop-blur-sm border border-[#0B132B]/10 p-8 lg:p-10 transition-all duration-500 hover:bg-white hover:border-[#0055FF]/30 hover:shadow-[0_20px_60px_-15px_rgba(0,85,255,0.05)]">
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <h2 className="text-xl font-medium tracking-tight text-[#0B132B] leading-none line-clamp-1">
+                    Sliding Marquee Banner
+                  </h2>
+                  <p className="text-xs font-light text-[#0B132B]/50 mt-2 tracking-wide">
+                    Control the premium scrolling editorial text at the top of the site.
+                  </p>
+                </div>
+                <label className="flex items-center cursor-pointer group">
+                  <div className="relative flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={settings.banner.enabled}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          banner: { ...settings.banner, enabled: e.target.checked },
+                        })
+                      }
+                      className="peer sr-only"
+                    />
+                    <div className="h-6 w-11 rounded-full bg-[#0B132B]/10 border border-[#0B132B]/20 peer-checked:bg-[#0055FF] peer-checked:border-[#0055FF] transition-colors after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:bg-white after:rounded-full after:transition-all peer-checked:after:translate-x-5" />
+                  </div>
                 </label>
+              </div>
+              <div className="space-y-4">
+                <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B]/80 flex items-center gap-2">
+                  <span className="h-[1px] w-3 bg-[#0055FF]"></span> Marquee Phrases
+                </span>
                 <textarea
                   value={settings.banner.text ? settings.banner.text.replace(/✦/g, "\n") : ""}
                   onChange={(e) =>
                     setSettings({
                       ...settings,
-                      banner: {
-                        ...settings.banner,
-                        text: e.target.value, // Save raw text with newlines
-                      },
+                      banner: { ...settings.banner, text: e.target.value },
                     })
                   }
-                  rows={4}
-                  className="w-full px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-[#0B132B] resize-none font-medium leading-relaxed"
-                  placeholder="Currently taking on 4 new projects this month&#10;Reserve your spot to collaborate with us&#10;Crafting premium digital experiences&#10;Let's build something beautiful together"
+                  rows={5}
+                  className="w-full bg-white border border-[#0B132B]/10 px-4 py-4 text-sm text-[#0B132B] focus:outline-none focus:border-[#0055FF]/50 transition-colors resize-none leading-relaxed"
+                  placeholder="Currently taking on 4 new projects this month&#10;Reserve your spot to collaborate with us&#10;Crafting premium digital experiences"
                 />
-                <p className="text-xs text-[#0B132B]/50 mt-2">
-                  Enter each phrase on a new line. The frontend will automatically convert these
-                  lines into a seamless scrolling feed separated by red ✦ stars.
+                <p className="text-[10px] font-bold tracking-widest uppercase text-[#0B132B]/40">
+                  <span className="text-[#FF0033]">✦</span> Separate phrases by newline.
                 </p>
               </div>
-
-              {/* Banner Enabled Toggle */}
-              <div>
-                <label className="flex items-center gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={settings.banner.enabled}
-                    onChange={(e) =>
-                      setSettings({
-                        ...settings,
-                        banner: { ...settings.banner, enabled: e.target.checked },
-                      })
-                    }
-                    className="h-4 w-4 text-[#0B132B] focus:ring-neutral-900 border-[#0B132B]/20 rounded transition-colors"
-                  />
-                  <span className="text-sm font-medium text-[#0B132B]/80">
-                    Display marquee banner globally
-                  </span>
-                </label>
-              </div>
-            </div>
-          </section>
-
-          {/* Security Settings */}
-          <section className="bg-white rounded-2xl border border-[#0B132B]/10 p-8">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-lg font-semibold text-[#0B132B]">Security</h2>
-                <p className="text-sm text-[#0B132B]/50 mt-1">Manage your account password</p>
-              </div>
-              {!showPasswordSection && (
-                <button
-                  onClick={() => setShowPasswordSection(true)}
-                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#0B132B]/80 hover:text-[#0B132B] border border-[#0B132B]/10 rounded-lg hover:bg-[#0B132B]/5 transition-colors"
-                >
-                  <Key className="w-4 h-4" />
-                  Change Password
-                </button>
-              )}
-            </div>
-
-            {showPasswordSection && (
-              <form onSubmit={handlePasswordChange} className="space-y-4">
-                <div>
-                  <label
-                    htmlFor="currentPassword"
-                    className="text-sm font-medium text-[#0B132B]/80 block mb-2"
-                  >
-                    Current Password
-                  </label>
-                  <input
-                    type="password"
-                    id="currentPassword"
-                    value={passwordData.currentPassword}
-                    onChange={(e) =>
-                      setPasswordData({ ...passwordData, currentPassword: e.target.value })
-                    }
-                    className="w-full px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all"
-                    required
-                    autoComplete="current-password"
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="newPassword"
-                    className="text-sm font-medium text-[#0B132B]/80 block mb-2"
-                  >
-                    New Password
-                  </label>
-                  <input
-                    type="password"
-                    id="newPassword"
-                    value={passwordData.newPassword}
-                    onChange={(e) =>
-                      setPasswordData({ ...passwordData, newPassword: e.target.value })
-                    }
-                    className="w-full px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all"
-                    required
-                    minLength={8}
-                    autoComplete="new-password"
-                  />
-                  <p className="text-xs text-[#0B132B]/50 mt-1.5">Minimum 8 characters</p>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="confirmPassword"
-                    className="text-sm font-medium text-[#0B132B]/80 block mb-2"
-                  >
-                    Confirm New Password
-                  </label>
-                  <input
-                    type="password"
-                    id="confirmPassword"
-                    value={passwordData.confirmPassword}
-                    onChange={(e) =>
-                      setPasswordData({ ...passwordData, confirmPassword: e.target.value })
-                    }
-                    className="w-full px-4 py-2.5 border border-[#0B132B]/10 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all"
-                    required
-                    minLength={8}
-                    autoComplete="new-password"
-                  />
-                </div>
-
-                <div className="flex gap-3 pt-4">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowPasswordSection(false);
-                      setPasswordData({
-                        currentPassword: "",
-                        newPassword: "",
-                        confirmPassword: "",
-                      });
-                    }}
-                    className="px-4 py-2.5 text-sm font-medium text-[#0B132B]/80 border border-[#0B132B]/10 rounded-lg hover:bg-[#0B132B]/5 transition-colors"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={changingPassword}
-                    className="flex items-center gap-2 px-6 py-2.5 bg-neutral-900 text-white rounded-lg hover:bg-neutral-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
-                  >
-                    <Key className="w-4 h-4" />
-                    {changingPassword ? "Updating..." : "Update Password"}
-                  </button>
-                </div>
-              </form>
-            )}
-          </section>
+            </section>
+          </div>
         </div>
       </main>
     </div>

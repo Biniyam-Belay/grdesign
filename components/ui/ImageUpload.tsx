@@ -6,7 +6,7 @@ import Image from "next/image";
 import MediaLibraryModal from "@/components/admin/MediaLibraryModal";
 
 interface ImageUploadProps {
-  bucket: "project-images" | "blog-images" | "works" | "testimonials";
+  bucket: "project-images" | "blog-images" | "works" | "testimonials" | "site-assets";
   onUpload?: (url: string) => void;
   onChange?: (url: string) => void;
   value?: string;

@@ -237,7 +237,7 @@ export default function FinalConversionSection() {
           </div>
 
           <div className="text-sm text-neutral-500">
-            Based in Addis Ababa, Ethiopia — Strategic partnerships worldwide
+            Independent studio — Strategic partnerships worldwide
           </div>
         </div>
       </div>
