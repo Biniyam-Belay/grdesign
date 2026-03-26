@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { createSupabaseClient } from "@/lib/supabase/client";
 
@@ -73,9 +73,18 @@ const getFontSize = (text: string) => {
 
 export default function SocialProofSection() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [activePairIdx, setActivePairIdx] = useState(0); // Index for the pair (0, 1, 2...)
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  // Detect mobile vs desktop for grouping
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   useEffect(() => {
     const fetchTestimonials = async () => {
@@ -90,23 +99,27 @@ export default function SocialProofSection() {
     fetchTestimonials();
   }, []);
 
-  // Calculate pairs (e.g., [T0, T1], [T2, T3], [T4, T5])
-  const pairs: Testimonial[][] = [];
-  for (let i = 0; i < testimonials.length; i += 2) {
-    const pair = testimonials.slice(i, i + 2);
-    // If odd number, we could potentially loop or just keep as single
-    if (pair.length > 0) pairs.push(pair);
+  // Group testimonials: 1 per slide on mobile, 2 per slide on desktop
+  const perSlide = isMobile ? 1 : 2;
+  const groups: Testimonial[][] = [];
+  for (let i = 0; i < testimonials.length; i += perSlide) {
+    const group = testimonials.slice(i, i + perSlide);
+    if (group.length > 0) groups.push(group);
   }
 
-  useEffect(() => {
-    if (pairs.length <= 1) return;
-    const interval = setInterval(() => {
-      setActivePairIdx((prev) => (prev + 1) % pairs.length);
-    }, 8000); // 8 seconds per pair
-    return () => clearInterval(interval);
-  }, [pairs.length]);
+  // Reset index when grouping changes (e.g. resize from desktop to mobile)
+  const groupCount = groups.length;
+  const safeIdx = groupCount > 0 ? activeIdx % groupCount : 0;
 
-  const currentPair = pairs[activePairIdx] || [];
+  useEffect(() => {
+    if (groupCount <= 1) return;
+    const interval = setInterval(() => {
+      setActiveIdx((prev) => (prev + 1) % groupCount);
+    }, 8000);
+    return () => clearInterval(interval);
+  }, [groupCount]);
+
+  const currentGroup = groups[safeIdx] || [];
 
   return (
     <section className="w-full bg-[#F5F5F0] px-4 sm:px-6 lg:px-12 pt-20 lg:pt-28 pb-32 lg:pb-48 border-t border-[#0B132B]/8">
@@ -143,7 +156,7 @@ export default function SocialProofSection() {
               <div className="flex flex-col gap-6 mt-14">
                 <div className="w-full h-[1.5px] bg-[#0B132B]/8 relative overflow-hidden">
                   <motion.div
-                    key={activePairIdx}
+                    key={safeIdx}
                     initial={{ x: "-100%" }}
                     animate={{ x: "0%" }}
                     transition={{ duration: 8, ease: "linear" }}
@@ -152,49 +165,49 @@ export default function SocialProofSection() {
                 </div>
                 <div className="flex justify-end items-center text-[10px] uppercase tracking-[0.3em] font-bold text-[#0B132B]/25">
                   <span>
-                    {String(activePairIdx + 1).padStart(2, "0")}&nbsp;/&nbsp;
-                    {String(pairs.length).padStart(2, "0")}
+                    {String(safeIdx + 1).padStart(2, "0")}&nbsp;/&nbsp;
+                    {String(groupCount).padStart(2, "0")}
                   </span>
                 </div>
               </div>
             </div>
           </motion.div>
 
-          {/* RIGHT: Unified Row Slider (8 cols) */}
-          <div className="lg:col-span-8 relative md:h-[560px] md:overflow-hidden mt-8 lg:mt-0">
-            <AnimatePresence mode="popLayout" initial={false}>
+          {/* RIGHT: Testimonial Slider (8 cols) */}
+          {/* Mobile: natural height, 1 card cycling all. Desktop: fixed height, 2 cards side-by-side */}
+          <div className="lg:col-span-8 relative md:h-[560px] overflow-hidden mt-8 lg:mt-0">
+            <AnimatePresence mode="wait" initial={false}>
               <motion.div
-                key={activePairIdx}
-                // UNIFIED ROW MOTION (S-Curve: Slow-Fast-Slow)
-                initial={{ x: "105%" }}
-                animate={{ x: 0 }}
-                exit={{ x: "-105%" }}
+                key={safeIdx}
+                initial={{ opacity: 0, x: 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -40 }}
                 transition={{
-                  duration: 1.6,
-                  ease: [0.76, 0, 0.24, 1],
+                  duration: 0.5,
+                  ease: [0.22, 1, 0.36, 1],
                 }}
                 className="md:absolute md:inset-0 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10"
               >
-                {currentPair.map((t, i) => (
+                {currentGroup.map((t, i) => (
                   <div
-                    key={`${activePairIdx}-${i}`}
-                    className="flex flex-col justify-between p-8 sm:p-10 lg:p-14 border border-[#0B132B]/8 bg-white/40 shadow-[0_45px_100px_-30px_rgba(0,0,0,0.05)] group relative overflow-hidden"
+                    key={`${safeIdx}-${i}`}
+                    className="flex flex-col justify-between p-6 sm:p-8 lg:p-14 border border-[#0B132B]/8 bg-white/40 shadow-[0_45px_100px_-30px_rgba(0,0,0,0.05)] group relative overflow-hidden"
                   >
                     {/* Corner Glow */}
                     <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-[#0055FF]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-[40px] z-0" />
 
-                    <div className="flex flex-col gap-6 relative z-10">
-                      <span className="text-[#FF0033] text-6xl font-serif leading-none select-none opacity-40">
-                        “
+                    <div className="flex flex-col gap-4 sm:gap-6 relative z-10">
+                      <span className="text-[#FF0033] text-5xl sm:text-6xl font-serif leading-none select-none opacity-40">
+                        &ldquo;
                       </span>
                       <h3
-                        className={`${getFontSize(t.content)} font-medium leading-[1.25] tracking-[-0.04em] text-[#0B132B] md:max-h-[320px] md:overflow-hidden`}
+                        className={`${getFontSize(t.content)} font-medium leading-[1.25] tracking-[-0.04em] text-[#0B132B]`}
                       >
                         {t.content}
                       </h3>
                     </div>
 
-                    <div className="flex flex-col gap-6 pt-10 border-t border-[#0B132B]/6 relative z-10">
+                    <div className="flex flex-col gap-4 sm:gap-6 pt-6 sm:pt-10 mt-6 sm:mt-0 border-t border-[#0B132B]/6 relative z-10">
                       <div className="flex flex-col gap-1">
                         <span className="text-base font-bold uppercase tracking-[0.1em] text-[#0B132B]">
                           {t.name}

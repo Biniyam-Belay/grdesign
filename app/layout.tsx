@@ -91,7 +91,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${outfit.variable} bg-white`} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${outfit.variable} bg-[#F5F5F0] overflow-x-hidden`}
+      suppressHydrationWarning
+    >
       <head>
         {/* Preconnect to critical origins */}
         {process.env.NEXT_PUBLIC_SUPABASE_URL && (
@@ -110,7 +114,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
-      <body className="font-sans antialiased bg-white text-neutral-900">
+      <body className="font-sans antialiased bg-[#F5F5F0] text-neutral-900 overflow-x-hidden">
         <LoadingIndicator />
         <ToastProvider>
           <VideoCacheProvider>
