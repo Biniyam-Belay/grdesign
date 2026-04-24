@@ -14,7 +14,7 @@ export default function Footer() {
     getHeroSettings().then(setSettings).catch(console.error);
   }, []);
 
-  if (pathname?.startsWith("/admin")) return null;
+  if (pathname?.startsWith("/studio")) return null;
 
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId?: string) => {
     if (pathname === "/") {

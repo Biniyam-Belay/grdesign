@@ -373,11 +373,18 @@ export default function ClientProject({
                 Visuals
               </span>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10" data-reveal-stagger>
+            <div
+              className={`grid grid-cols-1 gap-6 md:gap-10 ${
+                type === "social" ? "md:grid-cols-2 lg:grid-cols-3" : "md:grid-cols-2"
+              }`}
+              data-reveal-stagger
+            >
               {project.gallery.map((g, i) => (
                 <button
                   key={g.src}
-                  className="group relative overflow-hidden bg-[#F5F5F0] aspect-square will-change-transform"
+                  className={`group relative overflow-hidden bg-[#F5F5F0] will-change-transform ${
+                    type === "social" ? "aspect-square" : "aspect-[4/3]"
+                  }`}
                   onClick={() => setLbIndex(i)}
                   aria-label={`Open image: ${g.alt || project.title}`}
                   data-reveal

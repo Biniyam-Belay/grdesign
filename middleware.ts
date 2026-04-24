@@ -48,21 +48,21 @@ export async function middleware(request: NextRequest) {
 
   // Protect admin routes (except login page)
   if (
-    request.nextUrl.pathname.startsWith("/admin") &&
-    request.nextUrl.pathname !== "/admin/login"
+    request.nextUrl.pathname.startsWith("/studio") &&
+    request.nextUrl.pathname !== "/studio/login"
   ) {
     if (!user) {
       // Redirect to login page
       const url = request.nextUrl.clone();
-      url.pathname = "/admin/login";
+      url.pathname = "/studio/login";
       return NextResponse.redirect(url);
     }
   }
 
   // Redirect logged-in users away from login page
-  if (request.nextUrl.pathname === "/admin/login" && user) {
+  if (request.nextUrl.pathname === "/studio/login" && user) {
     const url = request.nextUrl.clone();
-    url.pathname = "/admin";
+    url.pathname = "/studio";
     return NextResponse.redirect(url);
   }
 

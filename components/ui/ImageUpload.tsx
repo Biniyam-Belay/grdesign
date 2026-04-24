@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect, useId } from "react";
 import { createSupabaseClient } from "@/lib/supabase/client";
 import Image from "next/image";
-import MediaLibraryModal from "@/components/admin/MediaLibraryModal";
+import MediaLibraryModal from "@/components/studio/MediaLibraryModal";
 
 interface ImageUploadProps {
   bucket: "project-images" | "blog-images" | "works" | "testimonials" | "site-assets";

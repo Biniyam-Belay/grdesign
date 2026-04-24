@@ -88,7 +88,7 @@ export default function Header() {
   };
 
   if (!isMounted) return null;
-  if (pathname?.startsWith("/admin")) return null;
+  if (pathname?.startsWith("/studio")) return null;
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50 flex flex-col">
