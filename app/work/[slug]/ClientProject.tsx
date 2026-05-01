@@ -3,19 +3,25 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { initGSAP } from "@lib/gsap";
 import { useReducedMotion } from "@lib/hooks/useReducedMotion";
+import { getHeroSettings, type HeroSettings } from "@lib/data/settings";
 import type { Project, ProjectType } from "@lib/types";
 import type { CSSProperties } from "react";
 import Lightbox from "@components/media/Lightbox";
 import Link from "next/link";
+import ProjectCard from "@components/content/ProjectCard";
 
 export default function ClientProject({
   project,
   prev,
   next,
+  related,
+  unrelated,
 }: {
   project: Project;
   prev?: { slug: string; title: string };
   next?: { slug: string; title: string };
+  related?: Project[];
+  unrelated?: Project[];
 }) {
   const reduced = useReducedMotion();
   const sectionsRef = useRef<HTMLElement | null>(null);
@@ -77,6 +83,20 @@ export default function ClientProject({
   const mobileHeroSrc = project.mobileHeroSrc || desktopHeroSrc;
 
   const type: ProjectType | undefined = project.type;
+  const isBrandingProject = type === "branding";
+  const relatedWorks = [...(related ?? []), ...(unrelated ?? [])].slice(0, 5);
+  const [settings, setSettings] = useState<HeroSettings | null>(null);
+  useEffect(() => {
+    let mounted = true;
+    getHeroSettings()
+      .then((s) => {
+        if (mounted) setSettings(s);
+      })
+      .catch(() => {});
+    return () => {
+      mounted = false;
+    };
+  }, []);
   // Let accents match the dark premium pop over the light #F5F5F0 base
   const accentByType: Partial<Record<ProjectType, string>> = {
     "web-dev": "#0055FF",
@@ -374,35 +394,114 @@ export default function ClientProject({
               </span>
             </div>
             <div
-              className={`grid grid-cols-1 gap-6 md:gap-10 ${
-                type === "social" ? "md:grid-cols-2 lg:grid-cols-3" : "md:grid-cols-2"
-              }`}
+              className={
+                isBrandingProject
+                  ? "flex flex-col gap-6 md:gap-10"
+                  : `grid grid-cols-1 gap-6 md:gap-10 ${type === "social" ? "md:grid-cols-2 lg:grid-cols-3" : "md:grid-cols-2"}`
+              }
               data-reveal-stagger
             >
-              {project.gallery.map((g, i) => (
-                <button
-                  key={g.src}
-                  className={`group relative overflow-hidden bg-[#F5F5F0] will-change-transform ${
-                    type === "social" ? "aspect-square" : "aspect-[4/3]"
-                  }`}
-                  onClick={() => setLbIndex(i)}
-                  aria-label={`Open image: ${g.alt || project.title}`}
-                  data-reveal
-                >
-                  <Image
-                    src={g.src}
-                    alt={g.alt || project.title}
-                    fill
-                    className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03] object-center"
-                    sizes="(min-width: 1024px) 50vw, 100vw"
-                  />
-                  <div className="absolute inset-0 bg-[#0B132B]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                </button>
-              ))}
+              {project.gallery.map((g, i) => {
+                const isVideo = /\.(mp4|webm|mov|ogg)$/i.test(g.src);
+                return (
+                  <button
+                    key={g.src}
+                    className={`group relative overflow-hidden bg-[#F5F5F0] will-change-transform ${
+                      isBrandingProject
+                        ? `w-full aspect-[16/9]`
+                        : type === "social"
+                          ? "aspect-square"
+                          : "aspect-[4/3]"
+                    }`}
+                    onClick={() => setLbIndex(i)}
+                    aria-label={`Open media: ${g.alt || project.title}`}
+                    data-reveal
+                  >
+                    {isVideo ? (
+                      <div className="absolute inset-0">
+                        <video
+                          src={g.src}
+                          className="w-full h-full object-cover"
+                          muted
+                          loop
+                          playsInline
+                          autoPlay
+                        />
+                      </div>
+                    ) : (
+                      <Image
+                        src={g.src}
+                        alt={g.alt || project.title}
+                        fill
+                        className={`object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${isBrandingProject ? "object-center" : "group-hover:scale-[1.03] object-center"}`}
+                        sizes={
+                          isBrandingProject
+                            ? "(min-width: 1024px) 100vw, 100vw"
+                            : "(min-width: 1024px) 50vw, 100vw"
+                        }
+                      />
+                    )}
+                    {!isBrandingProject && (
+                      <div className="absolute inset-0 bg-[#0B132B]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                    )}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </section>
       )}
+
+      {/* ===== Related Works ===== */}
+      {relatedWorks.length > 0 ? (
+        <section className="border-t border-[#0B132B]/8 bg-[#F5F5F0]">
+          <div className="mx-auto max-w-8xl px-6 lg:px-12 py-16">
+            <div className="flex items-center gap-4 mb-12">
+              <div className="w-12 h-[2px] bg-[#FF0033]" />
+              <span className="text-[12px] text-[#0B132B] uppercase tracking-[0.55em] font-black">
+                Related Works
+              </span>
+            </div>
+            <div className="overflow-x-auto overscroll-x-contain pb-3 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden [scrollbar-gutter:stable] [-webkit-overflow-scrolling:touch]">
+              <div className="flex flex-nowrap gap-6 min-w-max snap-x snap-mandatory">
+                {relatedWorks.map((r) => (
+                  <div key={r.slug} className="w-[300px] md:w-[360px] shrink-0 snap-start">
+                    <ProjectCard project={r} variant="standard" />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* CTA */}
+            <div className="mt-14 mx-auto max-w-5xl">
+              <div className="relative overflow-hidden border border-[#0B132B]/10 bg-white px-8 py-10 md:px-12 md:py-12 shadow-[0_20px_50px_rgba(11,19,43,0.08)]">
+                <div className="absolute -top-10 -right-8 h-36 w-36 rounded-full bg-[#0055FF]/10 blur-2xl" />
+                <div className="absolute -bottom-10 -left-8 h-36 w-36 rounded-full bg-[#FF0033]/10 blur-2xl" />
+                <div className="relative z-10 text-center">
+                  <p className="text-[10px] uppercase tracking-[0.24em] font-bold text-[#0B132B]/55 mb-4">
+                    Let&apos;s Build Your Next Launch
+                  </p>
+                  <h3 className="text-2xl md:text-3xl font-light tracking-tight text-[#0B132B] mb-4">
+                    Ready to turn your next idea into a standout project?
+                  </h3>
+                  <p className="text-[#0B132B]/70 max-w-2xl mx-auto mb-7">
+                    Share your goals and timeline, and we will shape a focused creative direction
+                    for your brand, digital product, or campaign.
+                  </p>
+                  <a
+                    href={settings?.contactInfo?.bookingLink || "mailto:biniyam.be.go@gmail.com"}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center justify-center bg-[#0B132B] text-white px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] font-bold hover:bg-[#FF0033] transition-colors"
+                  >
+                    Start a Project
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       {/* ===== Prev / Next strip ===== */}
       <section className="border-t border-[#0B132B]/8 bg-[#F5F5F0]">

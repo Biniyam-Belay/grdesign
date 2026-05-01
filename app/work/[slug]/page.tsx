@@ -50,5 +50,20 @@ export default async function ProjectPage(props: { params: Promise<Params> }) {
       ? { slug: list[idx + 1]!.slug, title: list[idx + 1]!.title }
       : undefined;
 
-  return <ClientProject project={project} prev={prev} next={next} />;
+  const related = list
+    .filter((p) => p.type === project.type && p.slug !== project.slug)
+    .slice(0, 3);
+  const unrelated = list
+    .filter((p) => p.type !== project.type && p.slug !== project.slug)
+    .slice(0, 3);
+
+  return (
+    <ClientProject
+      project={project}
+      prev={prev}
+      next={next}
+      related={related}
+      unrelated={unrelated}
+    />
+  );
 }

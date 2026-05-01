@@ -44,6 +44,8 @@ export default function Lightbox({ src, alt, onClose, onPrev, onNext }: Lightbox
     }
   }, [reduced]);
 
+  const isVideo = /\.(mp4|webm|mov|ogg)$/i.test(src);
+
   return (
     <div
       ref={dialogRef}
@@ -86,12 +88,21 @@ export default function Lightbox({ src, alt, onClose, onPrev, onNext }: Lightbox
             →
           </button>
         )}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={src}
-          alt={alt}
-          className="max-h-[90vh] w-auto rounded-md shadow-xl transition-transform duration-500"
-        />
+        {isVideo ? (
+          <video
+            src={src}
+            controls
+            autoPlay
+            className="max-h-[90vh] w-auto rounded-md shadow-xl transition-transform duration-500"
+          />
+        ) : (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={src}
+            alt={alt}
+            className="max-h-[90vh] w-auto rounded-md shadow-xl transition-transform duration-500"
+          />
+        )}
       </div>
     </div>
   );

@@ -53,5 +53,5 @@ export default async function EditProjectPage({ params }: EditProjectPageProps) 
     notFound();
   }
 
-  return <ProjectForm project={project} isEditing />;
+  return <ProjectForm project={project} isEditing allProjects={projects} />;
 }

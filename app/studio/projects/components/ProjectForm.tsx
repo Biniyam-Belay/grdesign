@@ -8,13 +8,15 @@ import Image from "next/image";
 import ImageUpload from "@/components/ui/ImageUpload";
 import BatchImageUpload from "@/components/ui/BatchImageUpload";
 import { Project, ProjectType } from "@/lib/types";
+import ProjectCard from "@components/content/ProjectCard";
 
 interface ProjectFormProps {
   project?: Project;
   isEditing?: boolean;
+  allProjects?: Project[];
 }
 
-export default function ProjectForm({ project, isEditing = false }: ProjectFormProps) {
+export default function ProjectForm({ project, isEditing = false, allProjects }: ProjectFormProps) {
   const [formData, setFormData] = useState({
     title: project?.title || "",
     slug: project?.slug || "",
@@ -153,6 +155,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
   };
 
   const relevantFields = getRelevantFields(formData.type);
+  const isBrandingProject = formData.type === "branding";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -456,61 +459,90 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                       </span>
                     )}
                   </div>
+                  <p className={hintClass}>
+                    {isBrandingProject
+                      ? "Branding projects render gallery images as centered A4-landscape frames with the same page margins on the public case study page."
+                      : "Gallery images render in a tiled grid on the public case study page."}
+                  </p>
 
                   {gallery.length > 0 && (
                     <div className="mb-4 max-h-[500px] overflow-y-auto border border-[#0B132B]/5 bg-[#0B132B]/[0.02] p-4">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                        {gallery.map((img, idx) => (
-                          <div
-                            key={idx}
-                            className="relative group bg-white border border-[#0B132B]/10 overflow-hidden transition-all hover:border-[#0055FF]/30"
-                          >
-                            <div className="relative w-full aspect-square bg-[#0B132B]/5">
-                              <Image
-                                src={img.src}
-                                alt={img.alt || `Gallery image ${idx + 1}`}
-                                fill
-                                className="object-cover"
-                              />
-                              <div className="absolute top-2 left-2 w-6 h-6 bg-[#0B132B] text-white text-[9px] flex items-center justify-center font-bold">
-                                {idx + 1}
+                      <div
+                        className={
+                          isBrandingProject
+                            ? "space-y-4"
+                            : "grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3"
+                        }
+                      >
+                        {gallery.map((img, idx) => {
+                          const isVideo = /\.(mp4|webm|mov|ogg)$/i.test(img.src);
+                          return (
+                            <div
+                              key={idx}
+                              className={`relative group bg-white border border-[#0B132B]/10 overflow-hidden transition-all hover:border-[#0055FF]/30 ${isBrandingProject ? "w-full" : ""}`}
+                            >
+                              <div
+                                className={`relative w-full bg-[#0B132B]/5 ${isBrandingProject ? "aspect-[16/9]" : "aspect-square"}`}
+                              >
+                                {isVideo ? (
+                                  <div className="absolute inset-0">
+                                    <video
+                                      src={img.src}
+                                      className="w-full h-full object-cover"
+                                      muted
+                                      loop
+                                      playsInline
+                                      autoPlay
+                                    />
+                                  </div>
+                                ) : (
+                                  <Image
+                                    src={img.src}
+                                    alt={img.alt || `Gallery image ${idx + 1}`}
+                                    fill
+                                    className="object-cover"
+                                  />
+                                )}
+                                <div className="absolute top-2 left-2 w-6 h-6 bg-[#0B132B] text-white text-[9px] flex items-center justify-center font-bold">
+                                  {idx + 1}
+                                </div>
+                              </div>
+                              <div className="p-3 space-y-2">
+                                <input
+                                  type="text"
+                                  value={img.alt}
+                                  onChange={(e) => {
+                                    const updated = [...gallery];
+                                    updated[idx] = { ...updated[idx], alt: e.target.value };
+                                    setGallery(updated);
+                                  }}
+                                  placeholder="Alt text"
+                                  className="w-full bg-white border border-[#0B132B]/10 px-3 py-2 text-xs focus:outline-none focus:border-[#0055FF]/50 transition-colors"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => setGallery(gallery.filter((_, i) => i !== idx))}
+                                  className="absolute top-2 right-2 p-1.5 bg-[#FF0033] text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                                  title="Remove image"
+                                >
+                                  <svg
+                                    className="w-3 h-3"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M6 18L18 6M6 6l12 12"
+                                    />
+                                  </svg>
+                                </button>
                               </div>
                             </div>
-                            <div className="p-3 space-y-2">
-                              <input
-                                type="text"
-                                value={img.alt}
-                                onChange={(e) => {
-                                  const updated = [...gallery];
-                                  updated[idx] = { ...updated[idx], alt: e.target.value };
-                                  setGallery(updated);
-                                }}
-                                placeholder="Alt text"
-                                className="w-full bg-white border border-[#0B132B]/10 px-3 py-2 text-xs focus:outline-none focus:border-[#0055FF]/50 transition-colors"
-                              />
-                              <button
-                                type="button"
-                                onClick={() => setGallery(gallery.filter((_, i) => i !== idx))}
-                                className="absolute top-2 right-2 p-1.5 bg-[#FF0033] text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                                title="Remove image"
-                              >
-                                <svg
-                                  className="w-3 h-3"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M6 18L18 6M6 6l12 12"
-                                  />
-                                </svg>
-                              </button>
-                            </div>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     </div>
                   )}
@@ -528,6 +560,23 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
                     />
                   </div>
                 </div>
+
+                {/* Related preview (admin) */}
+                {isEditing && allProjects && allProjects.length > 0 && (
+                  <div className="mt-8 bg-white/50 border border-[#0B132B]/10 p-6">
+                    <h3 className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#0B132B] mb-4">
+                      Related Works (preview)
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {allProjects
+                        .filter((p) => p.type === formData.type && p.slug !== formData.slug)
+                        .slice(0, 3)
+                        .map((p) => (
+                          <ProjectCard key={p.slug} project={p} variant="standard" />
+                        ))}
+                    </div>
+                  </div>
+                )}
 
                 {/* Additional Fields */}
                 <div className="mt-6 pt-6 border-t border-[#0B132B]/10 grid grid-cols-1 sm:grid-cols-2 gap-6">
