@@ -4,6 +4,7 @@ import { useState, useCallback, useMemo } from "react";
 import { useDropzone } from "react-dropzone";
 import { createSupabaseClient } from "@/lib/supabase/client";
 import Image from "next/image";
+import MediaLibraryModal from "@/components/studio/MediaLibraryModal";
 
 interface Upload {
   url: string;
@@ -30,6 +31,7 @@ export default function BatchImageUpload({
 }: BatchImageUploadProps) {
   const [files, setFiles] = useState<FilePreview[]>([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [isLibraryOpen, setIsLibraryOpen] = useState(false);
   const supabase = createSupabaseClient();
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -107,9 +109,24 @@ export default function BatchImageUpload({
     setIsUploading(false);
     if (successfulUploads.length > 0) {
       onChange(successfulUploads);
+      setFiles([]); // Clear local preview files after successful upload
     }
     // Clear any remaining intervals just in case
     intervalIds.forEach(clearInterval);
+  };
+
+  const handleLibrarySelect = (urls: string | string[]) => {
+    const urlArray = Array.isArray(urls) ? urls : [urls];
+    if (urlArray.length > 0) {
+      const uploads = urlArray.map((url) => {
+        // Extract basic filename for alt text
+        const pathParts = url.split("/");
+        const namePart = pathParts[pathParts.length - 1];
+        const name = decodeURIComponent(namePart).replace(/\.[^/.]+$/, "");
+        return { url, name };
+      });
+      onChange(uploads);
+    }
   };
 
   const dropzoneClasses = useMemo(
@@ -146,8 +163,26 @@ export default function BatchImageUpload({
         </div>
       </div>
 
+      <div className="flex justify-center mt-2">
+        <button
+          type="button"
+          onClick={() => setIsLibraryOpen(true)}
+          className="text-sm font-medium text-purple-600 hover:text-purple-700 bg-purple-50 px-4 py-2 rounded-lg transition-colors border border-purple-100 flex items-center gap-2"
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+            />
+          </svg>
+          Select from Bucket Library
+        </button>
+      </div>
+
       {files.length > 0 && (
-        <div className="space-y-4">
+        <div className="space-y-4 pt-2">
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {files.map((filePreview, index) => (
               <div
@@ -217,6 +252,14 @@ export default function BatchImageUpload({
           </button>
         </div>
       )}
+
+      <MediaLibraryModal
+        bucket={bucket}
+        isOpen={isLibraryOpen}
+        onClose={() => setIsLibraryOpen(false)}
+        onSelect={handleLibrarySelect}
+        multiple={true}
+      />
     </div>
   );
 }

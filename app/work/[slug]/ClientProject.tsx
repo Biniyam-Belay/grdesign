@@ -74,7 +74,19 @@ export default function ClientProject({
   const hasSolution = !!project.solution && project.solution.trim().length > 0;
   const hasHighlights = Array.isArray(project.highlights) && project.highlights.length > 0;
   const hasApproach = !!project.approach && project.approach.trim().length > 0;
-  const hasProcess = Array.isArray(project.process) && project.process.length > 0;
+  const processObj = project.process as
+    | { process?: { execution?: unknown }; execution?: unknown }
+    | null
+    | undefined;
+  const executionPath1 = Array.isArray(processObj?.process?.execution)
+    ? processObj?.process?.execution
+    : null;
+  const executionPath2 = Array.isArray(processObj?.execution) ? processObj?.execution : null;
+
+  const normalizedProcess = Array.isArray(project.process)
+    ? project.process
+    : executionPath1 || executionPath2 || [];
+  const hasProcess = Array.isArray(normalizedProcess) && normalizedProcess.length > 0;
   const hasOutcome = !!project.outcome && project.outcome.trim().length > 0;
   const hasDeliverables = Array.isArray(project.deliverables) && project.deliverables.length > 0;
 
@@ -347,19 +359,21 @@ export default function ClientProject({
                       className="md:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-10"
                       data-reveal-stagger
                     >
-                      {project.process!.map((step, idx) => (
+                      {normalizedProcess.map((step: Record<string, string>, idx: number) => (
                         <div
                           key={idx}
                           className="pl-6 border-l border-[#0B132B]/10 hover:border-[#0055FF]/40 transition-colors"
                         >
                           <div className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#0055FF] mb-3">
-                            Step 0{idx + 1}
+                            Step {step.step || `0${idx + 1}`}
                           </div>
                           <div className="text-2xl font-medium text-[#0B132B] mb-3">
-                            {step.title}
+                            {step.title || step.phase}
                           </div>
                           <p className="text-sm font-light text-[#0B132B]/60 leading-relaxed">
-                            {step.body}
+                            {typeof (step.body || step.description) === "string"
+                              ? (step.body || step.description).replace(/\[cite:\s*\d+\]/g, "")
+                              : step.body || step.description}
                           </p>
                         </div>
                       ))}
@@ -452,9 +466,63 @@ export default function ClientProject({
         </section>
       )}
 
+      {/* ===== CTA (Always Visible) ===== */}
+      <section className="bg-[#F5F5F0] border-t border-[#0B132B]/8 py-20 md:py-32 mt-16 md:mt-24">
+        <div className="mx-auto max-w-8xl px-6 lg:px-12">
+          <div
+            className="flex flex-col lg:flex-row lg:items-end justify-between gap-12"
+            data-reveal
+          >
+            <div className="flex flex-col gap-8 max-w-3xl">
+              <div className="flex items-center gap-4">
+                <div
+                  className="w-12 h-[2px] bg-[#FF0033]"
+                  style={{ backgroundColor: "var(--accent, #FF0033)" }}
+                />
+                <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#0B132B]/50">
+                  Let&apos;s Build Your Next Launch
+                </span>
+              </div>
+
+              <h2 className="text-4xl md:text-5xl lg:text-[64px] font-light tracking-[-0.04em] text-[#0B132B] leading-[1.05]">
+                Ready to turn your idea into a <br className="hidden lg:block" />
+                <span className="font-medium text-[#0B132B]">standout project?</span>
+              </h2>
+            </div>
+
+            <div className="flex-shrink-0 w-full lg:w-auto">
+              <a
+                href={settings?.contactInfo?.bookingLink || "mailto:biniyam.be.go@gmail.com"}
+                target="_blank"
+                rel="noreferrer"
+                className="group relative inline-flex items-center justify-between gap-8 bg-[#0B132B] text-white px-8 py-6 w-full lg:w-[320px] overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-[color:var(--accent,#FF0033)] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]" />
+                <span className="relative z-10 text-[11px] uppercase tracking-[0.2em] font-bold">
+                  Start a Project
+                </span>
+                <svg
+                  className="relative z-10 w-5 h-5 transform group-hover:translate-x-2 transition-transform duration-500 ease-out"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M5 12h14M12 5l7 7-7 7"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ===== Related Works ===== */}
       {relatedWorks.length > 0 ? (
-        <section className="border-t border-[#0B132B]/8 bg-[#F5F5F0]">
+        <section className="bg-[#F5F5F0]">
           <div className="mx-auto max-w-8xl px-6 lg:px-12 py-16">
             <div className="flex items-center gap-4 mb-12">
               <div className="w-12 h-[2px] bg-[#FF0033]" />
@@ -469,34 +537,6 @@ export default function ClientProject({
                     <ProjectCard project={r} variant="standard" />
                   </div>
                 ))}
-              </div>
-            </div>
-
-            {/* CTA */}
-            <div className="mt-14 mx-auto max-w-5xl">
-              <div className="relative overflow-hidden border border-[#0B132B]/10 bg-white px-8 py-10 md:px-12 md:py-12 shadow-[0_20px_50px_rgba(11,19,43,0.08)]">
-                <div className="absolute -top-10 -right-8 h-36 w-36 rounded-full bg-[#0055FF]/10 blur-2xl" />
-                <div className="absolute -bottom-10 -left-8 h-36 w-36 rounded-full bg-[#FF0033]/10 blur-2xl" />
-                <div className="relative z-10 text-center">
-                  <p className="text-[10px] uppercase tracking-[0.24em] font-bold text-[#0B132B]/55 mb-4">
-                    Let&apos;s Build Your Next Launch
-                  </p>
-                  <h3 className="text-2xl md:text-3xl font-light tracking-tight text-[#0B132B] mb-4">
-                    Ready to turn your next idea into a standout project?
-                  </h3>
-                  <p className="text-[#0B132B]/70 max-w-2xl mx-auto mb-7">
-                    Share your goals and timeline, and we will shape a focused creative direction
-                    for your brand, digital product, or campaign.
-                  </p>
-                  <a
-                    href={settings?.contactInfo?.bookingLink || "mailto:biniyam.be.go@gmail.com"}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center justify-center bg-[#0B132B] text-white px-7 py-3.5 text-[11px] uppercase tracking-[0.2em] font-bold hover:bg-[#FF0033] transition-colors"
-                  >
-                    Start a Project
-                  </a>
-                </div>
               </div>
             </div>
           </div>

@@ -60,9 +60,37 @@ export default function MediaLibraryModal({
     try {
       const { error } = await supabase.storage.from(bucket).remove([filePath]);
       if (error) throw error;
+      // Remove from selection if deleted
+      const publicUrl = BUCKET_URL_PREFIX + bucket + "/" + filePath;
+      setSelectedFileUrls((prev) => prev.filter((url) => url !== publicUrl));
       fetchFiles();
     } catch (err) {
       alert("Failed to delete file: " + (err as Error).message);
+    }
+  };
+
+  const handleDeleteSelected = async () => {
+    if (selectedFileUrls.length === 0) return;
+    if (
+      !confirm(
+        `Are you sure you want to permanently delete ${selectedFileUrls.length} selected image(s)? This action cannot be undone.`,
+      )
+    )
+      return;
+
+    try {
+      const filePaths = selectedFileUrls.map((url) => {
+        const parts = url.split("/");
+        return parts[parts.length - 1];
+      });
+
+      const { error } = await supabase.storage.from(bucket).remove(filePaths);
+      if (error) throw error;
+
+      setSelectedFileUrls([]);
+      fetchFiles();
+    } catch (err) {
+      alert("Failed to delete selected files: " + (err as Error).message);
     }
   };
 
@@ -96,7 +124,7 @@ export default function MediaLibraryModal({
               {bucket}
             </span>
           </h2>
-          <button onClick={onClose} className="p-2 rounded-full hover:bg-neutral-100">
+          <button type="button" onClick={onClose} className="p-2 rounded-full hover:bg-neutral-100">
             <svg
               className="w-6 h-6 text-neutral-600"
               fill="none"
@@ -134,6 +162,34 @@ export default function MediaLibraryModal({
                       className="object-cover"
                       unoptimized
                     />
+
+                    {/* Always allow deletion (top left so it doesn't collide with multi-select) */}
+                    <div className="absolute top-2 left-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(file.name);
+                        }}
+                        className="bg-red-600/90 text-white p-1.5 rounded hover:bg-red-700 backdrop-blur-sm shadow-sm"
+                        title="Delete image"
+                      >
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+
                     {multiple ? (
                       <div
                         onClick={() => toggleMultiSelect(file)}
@@ -162,16 +218,11 @@ export default function MediaLibraryModal({
                     ) : (
                       <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 p-2">
                         <button
+                          type="button"
                           onClick={() => handleSingleSelect(file)}
                           className="w-full text-sm bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700"
                         >
                           Select
-                        </button>
-                        <button
-                          onClick={() => handleDelete(file.name)}
-                          className="w-full text-sm bg-red-600 text-white py-2 rounded-md hover:bg-red-700"
-                        >
-                          Delete
                         </button>
                       </div>
                     )}
@@ -191,11 +242,23 @@ export default function MediaLibraryModal({
         </main>
 
         {multiple && (
-          <footer className="flex-shrink-0 p-6 border-t border-neutral-200 bg-neutral-50 flex justify-end">
+          <footer className="flex-shrink-0 p-6 border-t border-neutral-200 bg-neutral-50 flex justify-between">
+            {selectedFileUrls.length > 0 ? (
+              <button
+                type="button"
+                onClick={handleDeleteSelected}
+                className="bg-red-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-red-700 transition-colors shadow-sm"
+              >
+                {`Delete Selected (${selectedFileUrls.length})`}
+              </button>
+            ) : (
+              <div></div>
+            )}
             <button
+              type="button"
               onClick={handleMultiSelectConfirm}
               disabled={selectedFileUrls.length === 0}
-              className="bg-purple-600 text-white font-semibold px-6 py-3 rounded-lg disabled:bg-neutral-400"
+              className="bg-purple-600 text-white font-semibold px-6 py-3 rounded-lg disabled:bg-neutral-400 transition-colors shadow-sm"
             >
               {`Select ${selectedFileUrls.length} Image(s)`}
             </button>

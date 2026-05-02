@@ -46,12 +46,40 @@ export default async function EditProjectPage({ params }: EditProjectPageProps) 
     notFound();
   }
 
-  const projects = (data?.projects as Project[]) || [];
-  const project = projects.find((p) => p.slug === slug);
+  const projectsDb = data?.projects || [];
+  const projectDb = projectsDb.find(
+    (p: { slug: string; [key: string]: unknown }) => p.slug === slug,
+  );
 
-  if (!project) {
+  if (!projectDb) {
     notFound();
   }
 
-  return <ProjectForm project={project} isEditing allProjects={projects} />;
+  // Map from DB columns to Project object structure
+  const mappedProject: Project = {
+    id: projectDb.id,
+    type: projectDb.type,
+    slug: projectDb.slug,
+    title: projectDb.title,
+    excerpt: projectDb.excerpt,
+    thumb: projectDb.thumb,
+    video: projectDb.video,
+    roles: projectDb.roles || [],
+    tools: projectDb.tools || [],
+    alt: projectDb.alt,
+    credits: projectDb.credits,
+    gallery: projectDb.gallery,
+    mobileHeroSrc: projectDb.mobile_hero_src,
+    problem: projectDb.problem,
+    solution: projectDb.solution,
+    highlights: projectDb.highlights,
+    approach: projectDb.approach,
+    process: projectDb.process,
+    outcome: projectDb.outcome,
+    deliverables: projectDb.deliverables,
+    year: projectDb.year,
+    client: projectDb.client,
+  };
+
+  return <ProjectForm project={mappedProject} isEditing allProjects={projectsDb} />;
 }

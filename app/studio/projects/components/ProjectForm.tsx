@@ -185,7 +185,9 @@ export default function ProjectForm({ project, isEditing = false, allProjects }:
         try {
           processArray = JSON.parse(formData.process);
         } catch {
-          processArray = null;
+          throw new Error(
+            "Invalid JSON format in Process Steps. Please check your syntax (use double quotes for keys and string values).",
+          );
         }
       }
 

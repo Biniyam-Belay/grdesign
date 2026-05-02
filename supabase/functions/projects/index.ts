@@ -31,6 +31,7 @@ interface ProjectPayload {
   highlights?: string[] | null;
   deliverables?: string[] | null;
   process?: unknown | null;
+  position?: number;
 }
 
 function normalizeProjectData(raw: Record<string, unknown>): ProjectPayload {
@@ -200,9 +201,28 @@ serve(async (req) => {
       }
 
       if (action === "create") {
+        let nextPosition = 0;
+        let hasPositionColumn = false;
+
+        const { data: positionRows, error: positionError } = await supabase
+          .from("projects")
+          .select("position")
+          .order("position", { ascending: false })
+          .limit(1);
+
+        if (!positionError) {
+          hasPositionColumn = true;
+          nextPosition =
+            typeof positionRows?.[0]?.position === "number" ? positionRows[0].position + 1 : 0;
+        }
+
+        const insertPayload = hasPositionColumn
+          ? { ...payload, position: nextPosition }
+          : { ...payload };
+
         const { data, error } = await supabase
           .from("projects")
-          .insert([payload])
+          .insert([insertPayload])
           .select("id")
           .single();
         if (error) throw error;
@@ -245,10 +265,20 @@ serve(async (req) => {
     });
   } catch (err) {
     console.error("[projects] function error", err);
-    const message = (err as { message?: string })?.message || String(err);
-    return new Response(JSON.stringify({ error: message }), {
-      headers: { "Content-Type": "application/json", ...corsHeaders },
-      status: 500,
-    });
+    const errObj = err as { message?: string; details?: string; hint?: string; code?: string };
+    const message = errObj?.message || String(err);
+
+    return new Response(
+      JSON.stringify({
+        error: message,
+        details: errObj?.details,
+        hint: errObj?.hint,
+        code: errObj?.code,
+      }),
+      {
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+        status: 400,
+      },
+    );
   }
 });
