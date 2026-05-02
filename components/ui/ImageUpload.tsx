@@ -80,15 +80,17 @@ export default function ImageUpload({
     [bucket, onUpload, onChange, supabase.storage],
   );
 
+  const isVideoPreview = preview && /\.(mp4|webm|mov|ogg)$/i.test(preview);
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
-    if (!file.type.startsWith("image/")) {
-      alert("Please select an image file");
+    if (!file.type.startsWith("image/") && !file.type.startsWith("video/")) {
+      alert("Please select an image or video file");
       return;
     }
-    if (file.size > 10 * 1024 * 1024) {
-      alert("File size must be less than 10MB");
+    if (file.size > 25 * 1024 * 1024) {
+      alert("File size must be less than 25MB");
       return;
     }
     uploadImage(file);
@@ -117,14 +119,25 @@ export default function ImageUpload({
         {preview ? (
           <div className="relative">
             <div className="relative w-full h-48 bg-neutral-100 rounded-lg overflow-hidden">
-              <Image
-                src={preview}
-                alt="Preview"
-                fill
-                sizes="160px"
-                className="object-cover"
-                unoptimized
-              />
+              {isVideoPreview ? (
+                <video
+                  src={preview}
+                  className="w-full h-full object-cover"
+                  muted
+                  loop
+                  playsInline
+                  autoPlay
+                />
+              ) : (
+                <Image
+                  src={preview}
+                  alt="Preview"
+                  fill
+                  sizes="160px"
+                  className="object-cover"
+                  unoptimized
+                />
+              )}
               {uploading && (
                 <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
                   <div className="w-full max-w-xs px-4 text-center">
@@ -182,7 +195,7 @@ export default function ImageUpload({
             name="file-upload"
             type="file"
             className="sr-only"
-            accept="image/*"
+            accept="image/*,video/*"
             onChange={handleFileChange}
             disabled={uploading}
           />

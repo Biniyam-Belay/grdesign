@@ -23,6 +23,13 @@ export default function Hero() {
     return () => clearInterval(interval);
   }, []);
 
+  const desktopBannerSrc =
+    settings?.heroBanner?.desktopImage ||
+    "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop";
+  const mobileBannerSrc = settings?.heroBanner?.mobileImage || desktopBannerSrc;
+  const isDesktopVideo = /\.(mp4|webm|mov|ogg)$/i.test(desktopBannerSrc);
+  const isMobileVideo = /\.(mp4|webm|mov|ogg)$/i.test(mobileBannerSrc);
+
   return (
     <section className="bg-[#F5F5F0] text-[#0B132B] w-full flex flex-col font-sans relative overflow-hidden">
       <div
@@ -213,22 +220,44 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* IMAGE BANNER — extends to 110vh total, gap above */}
+        {/* IMAGE/VIDEO BANNER — extends to 110vh total, gap above */}
         <div className="w-full overflow-hidden relative h-[80vh] md:h-[110vh] mt-[6vh]">
-          {/* Desktop Image */}
-          <div
-            className="absolute inset-0 bg-cover bg-center transition-transform duration-[3000ms] hover:scale-[1.03] hidden md:block"
-            style={{
-              backgroundImage: `url('${settings?.heroBanner?.desktopImage || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop"}')`,
-            }}
-          />
-          {/* Mobile Image */}
-          <div
-            className="absolute inset-0 bg-cover bg-center transition-transform duration-[3000ms] hover:scale-[1.03] block md:hidden"
-            style={{
-              backgroundImage: `url('${settings?.heroBanner?.mobileImage || settings?.heroBanner?.desktopImage || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop"}')`,
-            }}
-          />
+          {/* Desktop Media */}
+          <div className="absolute inset-0 hidden md:block transition-transform duration-[3000ms] hover:scale-[1.03]">
+            {isDesktopVideo ? (
+              <video
+                src={desktopBannerSrc}
+                className="w-full h-full object-cover"
+                muted
+                loop
+                playsInline
+                autoPlay
+              />
+            ) : (
+              <div
+                className="w-full h-full bg-cover bg-center"
+                style={{ backgroundImage: `url('${desktopBannerSrc}')` }}
+              />
+            )}
+          </div>
+          {/* Mobile Media */}
+          <div className="absolute inset-0 block md:hidden transition-transform duration-[3000ms] hover:scale-[1.03]">
+            {isMobileVideo ? (
+              <video
+                src={mobileBannerSrc}
+                className="w-full h-full object-cover"
+                muted
+                loop
+                playsInline
+                autoPlay
+              />
+            ) : (
+              <div
+                className="w-full h-full bg-cover bg-center"
+                style={{ backgroundImage: `url('${mobileBannerSrc}')` }}
+              />
+            )}
+          </div>
           {/* Bottom vignette — fades into light bg now */}
         </div>
       </div>
