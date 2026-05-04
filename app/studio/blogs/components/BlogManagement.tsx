@@ -80,7 +80,10 @@ export default function BlogManagement() {
       }
 
       // 2. Delete the record from the database
-      const { error: dbError } = await supabase.from("blogs").delete().eq("id", blog.id);
+      const { error: dbError } = await supabase.functions.invoke("blogs", {
+        body: { action: "delete", id: blog.id },
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
       if (dbError) throw dbError;
 
       // 3. Revalidate and update UI

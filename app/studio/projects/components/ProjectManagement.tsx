@@ -128,7 +128,12 @@ function SortableProjectItem({
                 EDIT PROJECT
               </Link>
               <button
+                type="button"
+                onPointerDown={(e) => {
+                  e.stopPropagation();
+                }}
                 onClick={(e) => {
+                  e.preventDefault();
                   e.stopPropagation();
                   handleDelete(project);
                 }}
@@ -203,7 +208,12 @@ function SortableProjectItem({
             EDIT
           </Link>
           <button
+            type="button"
+            onPointerDown={(e) => {
+              e.stopPropagation();
+            }}
             onClick={(e) => {
+              e.preventDefault();
               e.stopPropagation();
               handleDelete(project);
             }}
@@ -264,8 +274,11 @@ export default function ProjectManagement() {
   }, [fetchProjects]);
 
   const handleDelete = async (project: Project) => {
+    // Wait for a tiny tick to ensure sortable pointer events don't eat the click
+    await new Promise((resolve) => setTimeout(resolve, 10));
+
     if (
-      !confirm(
+      !window.confirm(
         `Are you sure you want to delete "${project.title}"? This will also permanently delete the associated image.`,
       )
     )
@@ -292,7 +305,10 @@ export default function ProjectManagement() {
         }
       }
 
-      const { error: dbError } = await supabase.from("projects").delete().eq("id", project.id);
+      const { error: dbError } = await supabase.functions.invoke("projects", {
+        body: { action: "delete", id: project.id },
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
       if (dbError) throw dbError;
 
       setProjects((prev) => prev.filter((p) => p.id !== project.id));

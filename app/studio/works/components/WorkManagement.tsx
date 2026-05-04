@@ -238,7 +238,10 @@ export default function WorkManagement() {
       }
 
       // 2. Delete record from database
-      const { error: dbError } = await supabase.from("works").delete().eq("id", work.id);
+      const { error: dbError } = await supabase.functions.invoke("works", {
+        body: { action: "delete", id: work.id },
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
       if (dbError) throw dbError;
 
       // 3. Update UI
