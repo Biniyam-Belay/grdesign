@@ -415,20 +415,18 @@ export default function ClientProject({
               }
               data-reveal-stagger
             >
-              {project.gallery.map((g, i) => {
+              {project.gallery.map((g) => {
                 const isVideo = /\.(mp4|webm|mov|ogg)$/i.test(g.src);
                 return (
-                  <button
+                  <div
                     key={g.src}
-                    className={`group relative overflow-hidden bg-[#F5F5F0] will-change-transform ${
+                    className={`relative overflow-hidden bg-[#F5F5F0] ${
                       isBrandingProject
                         ? `w-full aspect-[16/9]`
                         : type === "social"
                           ? "aspect-square"
                           : "aspect-[4/3]"
                     }`}
-                    onClick={() => setLbIndex(i)}
-                    aria-label={`Open media: ${g.alt || project.title}`}
                     data-reveal
                   >
                     {isVideo ? (
@@ -447,7 +445,7 @@ export default function ClientProject({
                         src={g.src}
                         alt={g.alt || project.title}
                         fill
-                        className={`object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${isBrandingProject ? "object-center" : "group-hover:scale-[1.03] object-center"}`}
+                        className={`object-cover ${isBrandingProject ? "object-center" : "object-center"}`}
                         sizes={
                           isBrandingProject
                             ? "(min-width: 1024px) 100vw, 100vw"
@@ -455,10 +453,7 @@ export default function ClientProject({
                         }
                       />
                     )}
-                    {!isBrandingProject && (
-                      <div className="absolute inset-0 bg-[#0B132B]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                    )}
-                  </button>
+                  </div>
                 );
               })}
             </div>
