@@ -174,8 +174,8 @@ export default function SocialProofSection() {
           </motion.div>
 
           {/* RIGHT: Testimonial Slider (8 cols) */}
-          {/* Mobile: natural height, 1 card cycling all. Desktop: fixed height, 2 cards side-by-side */}
-          <div className="lg:col-span-8 relative md:h-[560px] overflow-hidden mt-8 lg:mt-0">
+          {/* Mobile: natural height, 1 card cycling all. Desktop: dynamic height, 2 cards side-by-side */}
+          <div className="lg:col-span-8 relative md:min-h-[460px] overflow-hidden mt-8 lg:mt-0">
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={safeIdx}
@@ -186,18 +186,18 @@ export default function SocialProofSection() {
                   duration: 0.5,
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                className="md:absolute md:inset-0 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10"
+                className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8"
               >
                 {currentGroup.map((t, i) => (
                   <div
                     key={`${safeIdx}-${i}`}
-                    className="flex flex-col justify-between p-6 sm:p-8 lg:p-14 border border-[#0B132B]/8 bg-white/40 shadow-[0_45px_100px_-30px_rgba(0,0,0,0.05)] group relative overflow-hidden"
+                    className="flex flex-col justify-between h-full p-6 sm:p-8 lg:p-10 border border-[#0B132B]/8 bg-white/40 shadow-[0_45px_100px_-30px_rgba(0,0,0,0.05)] group relative overflow-hidden"
                   >
                     {/* Corner Glow */}
                     <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-[#0055FF]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-[40px] z-0" />
 
-                    <div className="flex flex-col gap-4 sm:gap-6 relative z-10">
-                      <span className="text-[#FF0033] text-5xl sm:text-6xl font-serif leading-none select-none opacity-40">
+                    <div className="flex flex-col gap-3 sm:gap-4 relative z-10">
+                      <span className="text-[#FF0033] text-4xl sm:text-5xl font-serif leading-none select-none opacity-40">
                         &ldquo;
                       </span>
                       <h3
@@ -207,7 +207,7 @@ export default function SocialProofSection() {
                       </h3>
                     </div>
 
-                    <div className="flex flex-col gap-4 sm:gap-6 pt-6 sm:pt-10 mt-6 sm:mt-0 border-t border-[#0B132B]/6 relative z-10">
+                    <div className="flex flex-col gap-4 sm:gap-6 pt-5 sm:pt-8 mt-5 sm:mt-8 border-t border-[#0B132B]/6 relative z-10">
                       <div className="flex flex-col gap-1">
                         <span className="text-base font-bold uppercase tracking-[0.1em] text-[#0B132B]">
                           {t.name}

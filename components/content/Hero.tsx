@@ -59,7 +59,9 @@ export default function Hero() {
                     </motion.span>
                   </AnimatePresence>
                 </div>
-                <span className="font-semibold text-[#0B132B]">Let's collaborate.</span>
+                <span className="font-semibold text-[#0B132B] whitespace-nowrap">
+                  Let's collaborate.
+                </span>
               </h2>
 
               {/* CTA */}
