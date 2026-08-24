@@ -8,9 +8,15 @@ import { motion, useInView } from "framer-motion";
 import { createSupabaseClient } from "@/lib/supabase/client";
 import type { Project } from "@/lib/types";
 
+const STUDIO_START_YEAR = 2022;
+
+function getYearsInTheGame() {
+  return Math.max(new Date().getFullYear() - STUDIO_START_YEAR, 0);
+}
+
 const metrics = [
   {
-    target: 4,
+    target: getYearsInTheGame(),
     suffix: "+",
     label: "Years in the Game",
     desc: "Sharpening our craft across branding, digital, and print since day one.",

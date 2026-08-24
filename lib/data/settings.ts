@@ -60,108 +60,187 @@ export interface HeroSettings {
   };
 }
 
+const HERO_SETTINGS_CACHE_KEY = "ilaala.hero-settings-cache.v1";
+const HERO_SETTINGS_CACHE_TTL = 1000 * 60 * 60 * 6;
+
+interface HeroSettingsCachePayload {
+  timestamp: number;
+  data: HeroSettings;
+}
+
+let inFlightHeroSettingsPromise: Promise<HeroSettings> | null = null;
+
+function readHeroSettingsCache(allowExpired = false): HeroSettings | null {
+  if (typeof window === "undefined") return null;
+
+  try {
+    const rawCache = window.localStorage.getItem(HERO_SETTINGS_CACHE_KEY);
+    if (!rawCache) return null;
+
+    const parsedCache = JSON.parse(rawCache) as Partial<HeroSettingsCachePayload>;
+    if (!parsedCache?.data || typeof parsedCache.timestamp !== "number") return null;
+
+    const isExpired = Date.now() - parsedCache.timestamp > HERO_SETTINGS_CACHE_TTL;
+    if (isExpired && !allowExpired) return null;
+
+    return parsedCache.data;
+  } catch {
+    return null;
+  }
+}
+
+function writeHeroSettingsCache(settings: HeroSettings): void {
+  if (typeof window === "undefined") return;
+
+  try {
+    window.localStorage.setItem(
+      HERO_SETTINGS_CACHE_KEY,
+      JSON.stringify({ timestamp: Date.now(), data: settings }),
+    );
+  } catch {
+    // Ignore storage quota and privacy mode failures.
+  }
+}
+
+function clearHeroSettingsCache(): void {
+  if (typeof window === "undefined") return;
+
+  try {
+    window.localStorage.removeItem(HERO_SETTINGS_CACHE_KEY);
+  } catch {
+    // Ignore storage failures.
+  }
+}
+
 export async function getHeroSettings(): Promise<HeroSettings> {
-  const supabase = createSupabaseClient();
+  const cachedSettings = readHeroSettingsCache();
+  if (cachedSettings) {
+    return cachedSettings;
+  }
 
-  const [
-    availabilityRes,
-    experienceRes,
-    heroTextRes,
-    mobileSubtitleRes,
-    credentialsRes,
-    trustSignalsRes,
-    urgencyRes,
-    limitedCapacityRes,
-    bannerRes,
-    clientLogosRes,
-    capabilitiesIntroRes,
-    heroBannerRes,
-    contactInfoRes,
-    socialLinksRes,
-  ] = await Promise.all([
-    supabase.from("site_settings").select("value").eq("key", "hero_availability").single(),
-    supabase.from("site_settings").select("value").eq("key", "hero_experience_years").single(),
-    supabase.from("site_settings").select("value").eq("key", "hero_text").single(),
-    supabase.from("site_settings").select("value").eq("key", "hero_mobile_subtitle").single(),
-    supabase.from("site_settings").select("value").eq("key", "hero_credentials").single(),
-    supabase.from("site_settings").select("value").eq("key", "hero_trust_signals").single(),
-    supabase.from("site_settings").select("value").eq("key", "hero_urgency").single(),
-    supabase.from("site_settings").select("value").eq("key", "hero_limited_capacity").single(),
-    supabase.from("site_settings").select("value").eq("key", "banner").single(),
-    supabase.from("site_settings").select("value").eq("key", "home_client_logos").single(),
-    supabase.from("site_settings").select("value").eq("key", "home_capabilities_intro").single(),
-    supabase.from("site_settings").select("value").eq("key", "hero_banner_images").single(),
-    supabase.from("site_settings").select("value").eq("key", "contact_info").single(),
-    supabase.from("site_settings").select("value").eq("key", "social_links").single(),
-  ]);
+  if (inFlightHeroSettingsPromise) {
+    return inFlightHeroSettingsPromise;
+  }
 
-  return {
-    availability: availabilityRes.data?.value || {
-      status: "available",
-      label: "Available Now on Upwork",
-    },
-    experienceYears: experienceRes.data?.value?.years || 3,
-    heroText: heroTextRes.data?.value || {
-      kicker: "Professional Design Services",
-      title1: "Hire Expert Designer",
-      title2: "That Delivers Results",
-      subtitle:
-        "Professional graphic designer specializing in branding, social media, and web design — trusted by agencies, startups, and organizations for fast, quality delivery.",
-    },
-    mobileSubtitle:
-      mobileSubtitleRes.data?.value?.text ||
-      "Professional designer delivering graphic design, branding, social media content, and web solutions — perfect for agencies, startups, and HR teams hiring top talent.",
-    credentials: credentialsRes.data?.value || {
-      primary: "High Quality, Fast Turnaround",
-      secondary: "Rated Designer",
-    },
-    trustSignals: trustSignalsRes.data?.value?.items || [
-      "Quality guarantee",
-      "Same-day response",
-      "Revision-friendly",
-    ],
-    urgency: urgencyRes.data?.value || {
-      text: "Perfect for agencies & startups",
-      highlight: "Same-day response",
-    },
-    limitedCapacity: limitedCapacityRes.data?.value || {
-      title: "Limited Capacity",
-      slots: "3 project slots",
-      period: "this month",
-    },
-    clientLogosText: clientLogosRes.data?.value || {
-      tagline: "Trusted By",
-      title: "Proud to work with visionary brands.",
-    },
-    capabilitiesIntro: capabilitiesIntroRes.data?.value || {
-      tagline: "Capabilities",
-      maintext:
-        'We architect complete **visual systems**, **digital products**, and **brand narratives** for those who <span class="text-[#FF0033] font-bold">refuse to be ordinary.</span>',
-      subtext:
-        "Merging strategic rigor with relentless art direction. We deliver cohesive branding and high-performance digital experiences that command attention.",
-    },
-    banner: bannerRes.data?.value || {
-      text: "",
-      cta_text: "",
-      cta_link: "",
-      enabled: false,
-    },
-    heroBanner: heroBannerRes.data?.value || {
-      desktopImage: "",
-      mobileImage: "",
-    },
-    contactInfo: contactInfoRes.data?.value || {
-      email: "biniyam.be.go@gmail.com",
-      phone: "+251 911 234 567",
-      bookingLink: "https://calendar.app.google/1RTjShD5sgqBmm3K7",
-    },
-    socialLinks: socialLinksRes.data?.value || {
-      instagram: "https://www.instagram.com/bini.b.g?igsh=enp4OTM1NDU5YjNj",
-      linkedin: "https://www.linkedin.com/in/biniyam-belay-147673270/",
-      dribbble: "https://dribbble.com/bini-yam",
-      behance: "https://www.behance.net/biniyambelay",
-    },
-  };
+  inFlightHeroSettingsPromise = (async () => {
+    const supabase = createSupabaseClient();
+
+    const [
+      availabilityRes,
+      experienceRes,
+      heroTextRes,
+      mobileSubtitleRes,
+      credentialsRes,
+      trustSignalsRes,
+      urgencyRes,
+      limitedCapacityRes,
+      bannerRes,
+      clientLogosRes,
+      capabilitiesIntroRes,
+      heroBannerRes,
+      contactInfoRes,
+      socialLinksRes,
+    ] = await Promise.all([
+      supabase.from("site_settings").select("value").eq("key", "hero_availability").single(),
+      supabase.from("site_settings").select("value").eq("key", "hero_experience_years").single(),
+      supabase.from("site_settings").select("value").eq("key", "hero_text").single(),
+      supabase.from("site_settings").select("value").eq("key", "hero_mobile_subtitle").single(),
+      supabase.from("site_settings").select("value").eq("key", "hero_credentials").single(),
+      supabase.from("site_settings").select("value").eq("key", "hero_trust_signals").single(),
+      supabase.from("site_settings").select("value").eq("key", "hero_urgency").single(),
+      supabase.from("site_settings").select("value").eq("key", "hero_limited_capacity").single(),
+      supabase.from("site_settings").select("value").eq("key", "banner").single(),
+      supabase.from("site_settings").select("value").eq("key", "home_client_logos").single(),
+      supabase.from("site_settings").select("value").eq("key", "home_capabilities_intro").single(),
+      supabase.from("site_settings").select("value").eq("key", "hero_banner_images").single(),
+      supabase.from("site_settings").select("value").eq("key", "contact_info").single(),
+      supabase.from("site_settings").select("value").eq("key", "social_links").single(),
+    ]);
+
+    const settings: HeroSettings = {
+      availability: availabilityRes.data?.value || {
+        status: "available",
+        label: "Available Now on Upwork",
+      },
+      experienceYears: experienceRes.data?.value?.years || 3,
+      heroText: heroTextRes.data?.value || {
+        kicker: "Professional Design Services",
+        title1: "Hire Expert Designer",
+        title2: "That Delivers Results",
+        subtitle:
+          "Professional graphic designer specializing in branding, social media, and web design — trusted by agencies, startups, and organizations for fast, quality delivery.",
+      },
+      mobileSubtitle:
+        mobileSubtitleRes.data?.value?.text ||
+        "Professional designer delivering graphic design, branding, social media content, and web solutions — perfect for agencies, startups, and HR teams hiring top talent.",
+      credentials: credentialsRes.data?.value || {
+        primary: "High Quality, Fast Turnaround",
+        secondary: "Rated Designer",
+      },
+      trustSignals: trustSignalsRes.data?.value?.items || [
+        "Quality guarantee",
+        "Same-day response",
+        "Revision-friendly",
+      ],
+      urgency: urgencyRes.data?.value || {
+        text: "Perfect for agencies & startups",
+        highlight: "Same-day response",
+      },
+      limitedCapacity: limitedCapacityRes.data?.value || {
+        title: "Limited Capacity",
+        slots: "3 project slots",
+        period: "this month",
+      },
+      clientLogosText: clientLogosRes.data?.value || {
+        tagline: "Trusted By",
+        title: "Proud to work with visionary brands.",
+      },
+      capabilitiesIntro: capabilitiesIntroRes.data?.value || {
+        tagline: "Capabilities",
+        maintext:
+          'We architect complete **visual systems**, **digital products**, and **brand narratives** for those who <span class="text-[#FF0033] font-bold">refuse to be ordinary.</span>',
+        subtext:
+          "Merging strategic rigor with relentless art direction. We deliver cohesive branding and high-performance digital experiences that command attention.",
+      },
+      banner: bannerRes.data?.value || {
+        text: "",
+        cta_text: "",
+        cta_link: "",
+        enabled: false,
+      },
+      heroBanner: heroBannerRes.data?.value || {
+        desktopImage: "",
+        mobileImage: "",
+      },
+      contactInfo: contactInfoRes.data?.value || {
+        email: "biniyam.be.go@gmail.com",
+        phone: "+251 911 234 567",
+        bookingLink: "https://calendar.app.google/1RTjShD5sgqBmm3K7",
+      },
+      socialLinks: socialLinksRes.data?.value || {
+        instagram: "https://www.instagram.com/bini.b.g?igsh=enp4OTM1NDU5YjNj",
+        linkedin: "https://www.linkedin.com/in/biniyam-belay-147673270/",
+        dribbble: "https://dribbble.com/bini-yam",
+        behance: "https://www.behance.net/biniyambelay",
+      },
+    };
+
+    writeHeroSettingsCache(settings);
+    return settings;
+  })();
+
+  try {
+    return await inFlightHeroSettingsPromise;
+  } catch (error) {
+    const staleSettings = readHeroSettingsCache(true);
+    if (staleSettings) {
+      return staleSettings;
+    }
+
+    throw error;
+  } finally {
+    inFlightHeroSettingsPromise = null;
+  }
 }
 
 export async function updateHeroSettings(settings: Partial<HeroSettings>): Promise<void> {
@@ -306,4 +385,6 @@ export async function updateHeroSettings(settings: Partial<HeroSettings>): Promi
       throw new Error("Failed to update one or more settings.");
     }
   });
+
+  clearHeroSettingsCache();
 }

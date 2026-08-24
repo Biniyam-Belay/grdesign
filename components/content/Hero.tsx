@@ -9,6 +9,61 @@ import { getHeroSettings, type HeroSettings } from "@/lib/data/settings";
 
 const KICKER_PHRASES = ["New Brand?", "Brand Evolution?", "Market Leader?", "Future Legacy?"];
 
+function HeroMedia({
+  src,
+  fallbackSrc,
+  isVideo,
+  className,
+}: {
+  src: string;
+  fallbackSrc: string;
+  isVideo: boolean;
+  className: string;
+}) {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(false);
+  }, [src]);
+
+  return (
+    <div className={className}>
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url('${fallbackSrc}')` }}
+      />
+      {isVideo ? (
+        <video
+          key={src}
+          src={src}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-out ${
+            isLoaded ? "opacity-100" : "opacity-0"
+          }`}
+          muted
+          loop
+          playsInline
+          autoPlay
+          preload="auto"
+          onLoadedData={() => setIsLoaded(true)}
+        />
+      ) : (
+        <img
+          key={src}
+          src={src}
+          alt=""
+          aria-hidden="true"
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-out ${
+            isLoaded ? "opacity-100" : "opacity-0"
+          }`}
+          loading="eager"
+          decoding="async"
+          onLoad={() => setIsLoaded(true)}
+        />
+      )}
+    </div>
+  );
+}
+
 export default function Hero() {
   const [settings, setSettings] = useState<HeroSettings | null>(null);
   const [phraseIndex, setPhraseIndex] = useState(0);
@@ -32,10 +87,7 @@ export default function Hero() {
 
   return (
     <section className="bg-[#F5F5F0] text-[#0B132B] w-full flex flex-col font-sans relative overflow-hidden">
-      <div
-        className="w-full max-w-8xl mx-auto flex flex-col px-6 lg:px-12 pt-[calc(72px+10vh)] pb-8 transition-opacity duration-700 ease-out"
-        style={{ opacity: settings ? 1 : 0 }}
-      >
+      <div className="w-full max-w-8xl mx-auto flex flex-col px-6 lg:px-12 pt-[calc(72px+10vh)] pb-8">
         {/* TOP 30% — 3 Columns (50 / 25 / 25), no dividers */}
         <div className="flex-none lg:h-[30%] w-full grid grid-cols-1 lg:grid-cols-4 gap-0 mb-4 pt-4">
           {/* Column 1: 50% width — headline + CTA at 80% */}
@@ -225,41 +277,19 @@ export default function Hero() {
         {/* IMAGE/VIDEO BANNER — extends to 110vh total, gap above */}
         <div className="w-full overflow-hidden relative h-[80vh] md:h-[110vh] mt-[6vh]">
           {/* Desktop Media */}
-          <div className="absolute inset-0 hidden md:block transition-transform duration-[3000ms] hover:scale-[1.03]">
-            {isDesktopVideo ? (
-              <video
-                src={desktopBannerSrc}
-                className="w-full h-full object-cover"
-                muted
-                loop
-                playsInline
-                autoPlay
-              />
-            ) : (
-              <div
-                className="w-full h-full bg-cover bg-center"
-                style={{ backgroundImage: `url('${desktopBannerSrc}')` }}
-              />
-            )}
-          </div>
+          <HeroMedia
+            src={desktopBannerSrc}
+            fallbackSrc="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop"
+            isVideo={isDesktopVideo}
+            className="absolute inset-0 hidden md:block transition-transform duration-[3000ms] hover:scale-[1.03]"
+          />
           {/* Mobile Media */}
-          <div className="absolute inset-0 block md:hidden transition-transform duration-[3000ms] hover:scale-[1.03]">
-            {isMobileVideo ? (
-              <video
-                src={mobileBannerSrc}
-                className="w-full h-full object-cover"
-                muted
-                loop
-                playsInline
-                autoPlay
-              />
-            ) : (
-              <div
-                className="w-full h-full bg-cover bg-center"
-                style={{ backgroundImage: `url('${mobileBannerSrc}')` }}
-              />
-            )}
-          </div>
+          <HeroMedia
+            src={mobileBannerSrc}
+            fallbackSrc={desktopBannerSrc}
+            isVideo={isMobileVideo}
+            className="absolute inset-0 block md:hidden transition-transform duration-[3000ms] hover:scale-[1.03]"
+          />
           {/* Bottom vignette — fades into light bg now */}
         </div>
       </div>
