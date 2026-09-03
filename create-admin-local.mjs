@@ -1,9 +1,13 @@
 import { createClient } from '@supabase/supabase-js'
 import { randomBytes } from 'crypto'
 
-// Use environment variables or defaults for local development
 const supabaseUrl = process.env.SUPABASE_LOCAL_URL || 'http://localhost:54321'
-const supabaseServiceKey = process.env.SUPABASE_LOCAL_SERVICE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU'
+const supabaseServiceKey = process.env.SUPABASE_LOCAL_SERVICE_KEY
+
+if (!supabaseServiceKey) {
+  console.error('Missing SUPABASE_LOCAL_SERVICE_KEY')
+  process.exit(1)
+}
 
 const supabase = createClient(supabaseUrl, supabaseServiceKey, {
   auth: {
